@@ -5,6 +5,7 @@ ul{
     list-style-type:none;
 	margin-top:0;
 	padding:0;
+    position: relative;
 }
 nav{
     background-color:#006666;
@@ -24,6 +25,12 @@ nav ul{
 }
 nav li{
 	display:inline;
+    text-align: center;
+}
+
+.li-admin{
+    position:absolute;
+    right:10px;
 }
 
 
@@ -39,13 +46,13 @@ body {
     height: auto;
     border: 2px solid #000000;
     font-size: 5vw;
-    margin: 0 auto;
+    margin: 10px auto 20px;
 }
 
 .form {
-    height: 20px;
-    margin-top: 20px;
-    /* margin-bottom:20px; */
+    height: 25px;
+    margin:0 10px;
+    /* padding-top:5px; */
 }
 
 table {
@@ -72,6 +79,16 @@ td {
     border: 2px solid #000000;
 }
 
+.sub-h1{
+    margin-block-end:5px;
+    margin-block-start:5px;
+}
+
+.sub-h2{
+    margin-block-end:5px;
+    margin-block-start:5px;
+    font-size:100%;
+}
 .sub-button {
     width: 100px;
     height: 50px;
@@ -117,5 +134,9 @@ footer {
 @media(max-width:600px) {
     table {
         font-size: 80%;
+    }
+
+    .li-admin{
+        position:static;
     }
 }

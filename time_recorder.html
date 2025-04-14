@@ -12,16 +12,15 @@
     <header>
         <nav>
             <ul>
-                <li><a href="attendance_input.html">勤怠入力画面</a></li>
-                <li><a href="">シフト管理</a></li>
-                <li><a href="manage_employees.html">従業員管理</a></li>
-                <li><a href="submit_shifts.html">従業員シフト提出</a></li>
+                <li><a href="time_recorder.html">勤怠トップ</a></li>
+                <li><a href="">シフト表</a></li>
+                <li class="li-admin"><a href="index.html">ホームへ戻る</a></li>
             </ul>
         </nav>
     </header>
     <article>
-        <h1>勤怠入力画面</h1>
-        <h2>4月9日(水)</h2>
+        <h1 class="sub-h1">勤怠入力画面</h1>
+        <h2 class="sub-h2">4月9日(水)</h2>
         <div id="clock">--:--:--</div>
         <script>
             function updateClock() {
@@ -34,14 +33,17 @@
             updateClock();
             setInterval(updateClock, 1000);
         </script>
+        <hr>
         <form action="attendance_action.html" target="_self">
             <p>
                 <label for="employeeid">従業員ID
-                    <input name="employeeid" type="password" placeholder="半角で入力してください" required class="form">
+                    <input name="employeeid" type="password" placeholder="半角で入力してください" required
+                     class="form">
                 </label>
                 <button type="submit">ログイン</button>
             </p>
         </form>
+        <hr>
         <table>
             <caption>本日の勤務予定者</caption>
             <tr>
@@ -51,25 +53,25 @@
                 <th>退勤時刻</th>
             </tr>
             <tr>
-                <td>香椎ちはや</td>
+                <td>東郷</td>
                 <td>X</td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>吉塚はかた</td>
+                <td>吉塚</td>
                 <td>Y</td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>古賀ちどり</td>
+                <td>古賀</td>
                 <td>X</td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>黒崎おりお</td>
+                <td>黒崎</td>
                 <td>X</td>
                 <td></td>
                 <td></td>
@@ -77,10 +79,10 @@
         </table>
 
     </article>
-    <footer>
+    <!-- <footer>
         <p><span style="font-weight: bold">緊急連絡先</span>：<span class="tel-num">080-XXXX-XXXX（店長）</span>
             または　<span class="tel-num">080-YYYY-YYYY（社員：箱崎）</span></p>
-    </footer>
+    </footer> -->
 
 </body>
 
