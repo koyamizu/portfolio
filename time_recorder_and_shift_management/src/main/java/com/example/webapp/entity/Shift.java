@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Shift {
+	//シフトid
 	private Integer id;
+	//出勤日
 	private LocalDate date;
+	//従業員id
 	private String employee_id;
 }

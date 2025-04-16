@@ -6,16 +6,16 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.WorkTime;
+import com.example.webapp.entity.TimeStamp;
 
 @Mapper
 public interface TimeRecorderMapper {
 
 	List<Employee> selectTodaysEmployees();
 	
-	WorkTime selectWorkTimeById(@Param("id") String employee_id);
+	TimeStamp selectWorkTimeById(@Param("employee_id") String employee_id);
 	
-	void start(@Param("id") String employee_id);
+	void start(@Param("employee_id") String employee_id);
 	
-	void end(@Param("id") String employee_id);
+	void end(@Param("employee_id") String employee_id);
 }

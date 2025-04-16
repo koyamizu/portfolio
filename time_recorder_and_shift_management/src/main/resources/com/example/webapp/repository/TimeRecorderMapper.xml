@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.TimeRecorderMapper">
+	<!--当日出勤者選択 -->
+	<select id="selectTodaysEmployees"
+		resultType="com.example.webapp.entity.Employee">
+		SELECT e.name,t.start,t.end
+		FROM ((test_shift_table2504 s
+		INNER JOIN test_employees_list e
+		ON s.employee_id=e.id)
+		INNER JOIN test_timestamp2504 t
+		ON s.employee_id=t.employee_id)
+		WHERE s.date=CURRENT_DATE;
+	</select>
+	<insert id="start">
+		INSERT INTO test_timestamp2504(employee_id,start)
+		VALUES
+		(#{employee_id},CURRENT_TIME);
+	</insert>
+	<update id="end">
+		UPDATE test_timestamp2504
+		SET=CURRENT_TIME
+		WHERE
+		employee_id=#{employee_id}
+		AND DATE(start)=CURRENT_DATE;
+	</update>
+</mapper>

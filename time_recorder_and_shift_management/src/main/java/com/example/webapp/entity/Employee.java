@@ -1,5 +1,7 @@
 package com.example.webapp.entity;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,7 @@ public class Employee {
 //	電話番号
 	private String tel;
 //	住所
-	private String adress;
+	private String address;
+//	従業員とシフトとの1対多の関係
+	private List<Shift> shifts;
 }
