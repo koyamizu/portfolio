@@ -2,15 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.TimeRecorderMapper">
+
+	<resultMap id="EmployeeWithShiftResult"
+		type="com.example.webapp.entity.Employee">
+		<result property="name" column="name" />
+		<association property
+
+		<
+	</resultMap>
 	<!--当日出勤者選択 -->
+<!--	<select id="selectTodaysEmployees"-->
+<!--		resultType="com.example.webapp.entity.Employee">-->
+<!--		SELECT e.name-->
+<!--		FROM test_shift_table2504 s-->
+<!--		INNER JOIN-->
+<!--		test_employees_list e-->
+<!--		ON s.employee_id=e.id-->
+<!--		WHERE s.date=CURRENT_DATE;-->
+<!--	</select>-->
 	<select id="selectTodaysEmployees"
 		resultType="com.example.webapp.entity.Employee">
 		SELECT e.name,t.start,t.end
-		FROM ((test_shift_table2504 s
-		INNER JOIN test_employees_list e
-		ON s.employee_id=e.id)
-		INNER JOIN test_timestamp2504 t
-		ON s.employee_id=t.employee_id)
+		FROM shift_table2504 s
+		INNER JOIN employees_list e
+		ON s.employee_id=e.id
+		INNER JOIN timestamp2504 t
+		ON s.id=t.shift_id
 		WHERE s.date=CURRENT_DATE;
 	</select>
 	<insert id="start">
@@ -26,3 +43,15 @@
 		AND DATE(start)=CURRENT_DATE;
 	</update>
 </mapper>
+
+List
+<Employee> selectTodaysEmployees();
+
+	WorkTime
+	selectWorkTimeById(@Param("id") String employee_id);
+
+	void
+	start(@Param("id") String employee_id);
+
+	void end(@Param("id") String
+	employee_id);
