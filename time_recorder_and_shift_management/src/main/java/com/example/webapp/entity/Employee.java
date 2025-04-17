@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Employee {
 
 //	従業員id
 	private String id;
+//	従業員パスワード
+	private String password;
 //	従業員名
 	private String name;
 //	電話番号

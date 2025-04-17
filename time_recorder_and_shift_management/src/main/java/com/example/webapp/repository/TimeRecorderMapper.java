@@ -3,19 +3,15 @@ package com.example.webapp.repository;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.TimeStamp;
+import com.example.webapp.entity.Shift;
 
 @Mapper
 public interface TimeRecorderMapper {
 
-	List<Employee> selectTodaysEmployees();
+	List<Shift> selectTodaysEmployees();
 	
-	TimeStamp selectWorkTimeById(@Param("employee_id") String employee_id);
+	void start(Shift shift);
 	
-	void start(@Param("employee_id") String employee_id);
-	
-	void end(@Param("employee_id") String employee_id);
+	void end(Shift shift);
 }
