@@ -14,9 +14,6 @@ public class TimeStamp {
 	private Integer id;
 //	//従業員id
 //	private String employee_id;
-//	シフトID
-//	private Integer shift_id;
-	
 //	打刻時刻とシフトとの1対1の関係
 	private Shift shift;
 	//出勤時刻

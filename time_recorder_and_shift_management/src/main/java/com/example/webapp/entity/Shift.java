@@ -14,6 +14,7 @@ public class Shift {
 	private Integer id;
 	//出勤日
 	private LocalDate date;
-	//従業員id
-	private String employee_id;
+	//従業員
+	private Employee employee;
+	
 }

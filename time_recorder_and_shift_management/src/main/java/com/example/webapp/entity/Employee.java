@@ -17,6 +17,5 @@ public class Employee {
 	private String tel;
 //	住所
 	private String address;
-//	従業員とシフトとの1対1の関係
-	private Shift shift;
+
 }

@@ -24,8 +24,8 @@ CREATE TABLE test_timestamp2504
 (id INT PRIMARY KEY AUTO_INCREMENT,
 //employee_id char(8) not null,
 shift_id INT NOT NULL,
-start datetime,
-end datetime,
+start time,
+end time,
 //FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
 FOREIGN KEY(shift_id) REFERENCES test_shift_table2504(id)
 );
