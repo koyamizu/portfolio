@@ -1,10 +1,12 @@
 package com.example.webapp;
 
+import java.time.LocalDate;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.webapp.entity.Shift;
-import com.example.webapp.repository.TimeRecorderMapper;
+import com.example.webapp.entity.ShiftAndTimestamp;
+import com.example.webapp.service.TimeRecorderService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,11 +19,19 @@ public class TimeRecorderAndShiftManagementApplication {
 		.getBean(TimeRecorderAndShiftManagementApplication.class).exe();
 	}
 
-	private final TimeRecorderMapper mapper;
-	
+	private final TimeRecorderService service;
 	public void exe() {
 		System.out.println("本日の出勤者");
-		for(Shift row:mapper.selectTodaysEmployees()) {
+		for(ShiftAndTimestamp row:service.selectEmployeesByDate(LocalDate.now())) {
+			System.out.println(row);
+		}
+		
+		System.out.println("出勤");
+		ShiftAndTimestamp togo=service.selectShiftAndTimestampByEmployeeIdAndDate("093001", LocalDate.now());
+		service.start(togo);
+		
+		System.out.println("確認");
+		for(ShiftAndTimestamp row:service.selectEmployeesByDate(LocalDate.now())) {
 			System.out.println(row);
 		}
 	}

@@ -3,8 +3,8 @@
 <mapper
 	namespace="com.example.webapp.repository.TimeRecorderMapper">
 
-	<resultMap id="ShiftWithEmployeeResult"
-		type="com.example.webapp.entity.Shift">
+	<resultMap id="ShiftAndTimestampWithEmployeeResult"
+		type="com.example.webapp.entity.ShiftAndTimestamp">
 		<id property="id" column="id" />
 		<result property="date" column="date" />
 		<result property="start" column="start" />
@@ -17,25 +17,36 @@
 	</resultMap>
 
 	<!--当日出勤者選択 -->
-	<select id="selectTodaysEmployees"
-		resultMap="ShiftWithEmployeeResult">
+	<select id="selectEmployeesByDate"
+		resultMap="ShiftAndTimestampWithEmployeeResult">
 		SELECT e.name,s.start,s.end
 		FROM test_employees_list e
-		INNER JOIN test_shift_and_timestamp2504 s
+		INNER
+		JOIN test_shift_and_timestamp2504 s
 		ON e.id=s.employee_id
 		WHERE
-		s.date=CURRENT_DATE;
+		s.date=#{date};
+	</select>
+	<!-- シフトデータの抽出 -->
+	<!-- 下のstartやendでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
+	<select id="selectShiftAndTimestampByEmployeeIdAndDate"
+		resultMap="ShiftAndTimestampWithEmployeeResult">
+		SELECT id
+		FROM test_shift_and_timestamp2504
+		WHERE
+		employee_id=#{employee_id} and date=#{date};
 	</select>
 	<!-- 出勤の打刻 -->
 	<insert id="start">
-		INSERT INTO test_shift_and_timestamp2504(start)
-		VALUES(CURRENT_TIME)
-		WHERE id=#{id};
+		UPDATE test_shift_and_timestamp2504
+		SET start=CURRENT_TIME
+		WHERE
+		id=#{id};
 	</insert>
 	<!-- 退勤の打刻 -->
 	<update id="end">
-		UPDATE test_shift_and_timestamp2504(end)
-		VALUES(CURRENT_TIME)
+		UPDATE test_shift_and_timestamp2504
+		SET end=CURRENT_TIME
 		WHERE id=#{id};
 	</update>
 </mapper>

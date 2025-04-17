@@ -11,7 +11,7 @@ CREATE TABLE test_employees_list(
 );
 
 --当日出勤者リストの作成
-CREATE test_shift_and_timestamp2504(
+CREATE TABLE test_shift_and_timestamp2504(
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	employee_id CHAR(8) NOT NULL,
 	date DATE NOT NULL,
