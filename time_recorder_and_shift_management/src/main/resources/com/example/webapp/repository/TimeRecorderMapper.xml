@@ -19,7 +19,7 @@
 	<!--当日出勤者選択 -->
 	<select id="selectEmployeesByDate"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-		SELECT e.name,s.start,s.end
+		SELECT e.name,s.date,s.start,s.end
 		FROM test_employees_list e
 		INNER
 		JOIN test_shift_and_timestamp2504 s

@@ -42,7 +42,7 @@ body {
 
 #clock {
     background-color: #ffffff;
-    max-width: 25%;
+    max-width: 23%;
     height: auto;
     border: 2px solid #000000;
     font-size: 5vw;
@@ -59,7 +59,7 @@ table {
     border: 2px solid #000000;
     border-collapse: collapse;
     margin: 0 auto 20px;
-    width: 60%;
+    width: 50%;
     background-color: white;
 }
 
@@ -87,7 +87,7 @@ td {
 .sub-h2{
     margin-block-end:5px;
     margin-block-start:5px;
-    font-size:100%;
+    font-size:120%;
 }
 .sub-button {
     width: 100px;
@@ -133,10 +133,18 @@ footer {
 
 @media(max-width:600px) {
     table {
-        font-size: 80%;
+        font-size: 90%;
     }
 
     .li-admin{
         position:static;
     }
+	
+	#clock{
+		font-size:6vw;
+		max-width:30%;
+	}
+	.sub-h2{
+		font-size:100%;
+	}
 }
