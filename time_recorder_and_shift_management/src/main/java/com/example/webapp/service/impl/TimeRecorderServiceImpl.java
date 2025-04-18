@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class TimeRecorderServiceImpl implements TimeRecorderService {
-	
+
 	private final TimeRecorderMapper timeRecorderMapper;
 
 	@Override
@@ -30,13 +30,18 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	}
 
 	@Override
-	public void start(ShiftAndTimestamp shift) {
-		timeRecorderMapper.start(shift);
+	public ShiftAndTimestamp selectShiftAndTimestampByShiftId(Integer shift_id) {
+		return timeRecorderMapper.selectShiftAndTimestampByShiftId(shift_id);
 	}
 
 	@Override
-	public void end(ShiftAndTimestamp shift) {
-		timeRecorderMapper.end(shift);
+	public void start(Integer shift_id) {
+		timeRecorderMapper.start(shift_id);
+	}
+
+	@Override
+	public void end(Integer shift_id) {
+		timeRecorderMapper.end(shift_id);
 	}
 
 }

@@ -31,22 +31,32 @@
 	<!-- 下のstartやendでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
 	<select id="selectShiftAndTimestampByEmployeeIdAndDate"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-		SELECT id
-		FROM test_shift_and_timestamp2504
+<!--		SELECT *-->
+<!--		FROM test_shift_and_timestamp2504-->
+		SELECT s.id,e.name,s.date
+		FROM test_employees_list e
+		INNER
+		JOIN test_shift_and_timestamp2504 s
+		ON e.id=s.employee_id
 		WHERE
 		employee_id=#{employee_id} and date=#{date};
+	</select>
+	<select id="selecrShiftAndTimestampByShiftId">
+	SELECT id,start,end
+	FROM test_shift_and_timestamp2504
+	WHERE id=#{shift_id}
 	</select>
 	<!-- 出勤の打刻 -->
 	<insert id="start">
 		UPDATE test_shift_and_timestamp2504
 		SET start=CURRENT_TIME
 		WHERE
-		id=#{id};
+		id=#{shift_id};
 	</insert>
 	<!-- 退勤の打刻 -->
 	<update id="end">
 		UPDATE test_shift_and_timestamp2504
 		SET end=CURRENT_TIME
-		WHERE id=#{id};
+		WHERE id=#{shift_id};
 	</update>
 </mapper>

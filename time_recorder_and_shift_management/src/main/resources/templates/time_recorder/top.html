@@ -35,11 +35,13 @@
 			setInterval(updateClock, 1000);
 		</script>
 		<hr>
-<!--		一旦これでいいや。あとでまた認証が必要になったら作り変える。-->
-		<form action="@{/time_recorder/{id}(id=${employees[0].id})}" target="_self">
+		<!--		一旦これでいいや。あとでまた認証が必要になったら作り変える。-->
+		<!--		Spring Securityは使わずに、単純にデータベースから該当するシフトIDをプレースホルダにすればいい。-->
+		<!--		<form action="@{/time_recorder/{id}(id=${employees[0].id})}" method="post" target="_self">-->
+		<form th:action="@{/time_recorder/stamp}" method="post" target="_self">
 			<p>
-				<label for="employeeid">従業員ID
-					<input name="employeeid" type="password" placeholder="半角で入力してください" required class="form">
+				<label for="employee_id">従業員ID
+					<input name="employee_id" type="password" placeholder="半角で入力してください" required class="form">
 				</label>
 				<button type="submit">ログイン</button>
 			</p>
