@@ -55,7 +55,7 @@ public class TimeRecorderController {
 			}else {
 				//そのIDをもつ従業員は本日出勤予定ではありません、とかでもいいかも
 				attributes.addFlashAttribute("errorMessage","シフトデータが存在しません");
-				return "redirect:/top";
+				return "redirect:/time_recorder";
 			}
 		}
 		
@@ -68,24 +68,24 @@ public class TimeRecorderController {
 				return "time_recorder/execute";
 			}else {
 				attributes.addFlashAttribute("errorMessage", "すでに出勤済みです");
-				return "redirect:/top";
+				return "redirect:/time_recorder";
 			}
 		}
 		
-		@PostMapping("/stamp/end")
+		@PostMapping(value="/stamp/end",params="shift_id")
 		public String end(@RequestParam Integer shift_id,Model model,RedirectAttributes attributes) {
 			ShiftAndTimestamp shiftAndTimestamp=timeRecorderService.selectShiftAndTimestampByShiftId(shift_id);
 			if(shiftAndTimestamp.getStart()==null) {
 				attributes.addFlashAttribute("errorMessage", "「出勤」より先に「退勤」は押せません");
-				return "redirect:/top";
+				return "redirect:/time_recorder";
 			}
 			if(shiftAndTimestamp.getEnd()==null) {
 				timeRecorderService.end(shift_id);
 				model.addAttribute("message","退勤");
 				return "time_recorder/execute";
 			}else {
-				attributes.addFlashAttribute("errorMessage", "すでに出勤済みです");
-				return "redirect:/top";
+				attributes.addFlashAttribute("errorMessage", "すでに退勤済みです");
+				return "redirect:/time_recorder";
 			}
 		}
 }

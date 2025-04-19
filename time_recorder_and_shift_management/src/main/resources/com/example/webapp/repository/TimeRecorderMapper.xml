@@ -41,7 +41,7 @@
 		WHERE
 		employee_id=#{employee_id} and date=#{date};
 	</select>
-	<select id="selecrShiftAndTimestampByShiftId">
+	<select id="selectShiftAndTimestampByShiftId">
 	SELECT id,start,end
 	FROM test_shift_and_timestamp2504
 	WHERE id=#{shift_id}

@@ -1,150 +1,190 @@
 @charset "utf-8";
 
 
-ul{
-    list-style-type:none;
-	margin-top:0;
-	padding:0;
-    position: relative;
-}
-nav{
-    background-color:#006666;
-}
-nav a{
-    color:#ffffff;
-    text-decoration:none;
-    font-weight:bold;
-    padding:10px;
-}
-nav a:hover{
-    color:#000000;
-    background-color:#99ffcc;
-}
-nav ul{
-	padding:10px 0;
-}
-nav li{
-	display:inline;
-    text-align: center;
+ul {
+	list-style-type: none;
+	margin-top: 0;
+	padding: 0;
+	position: relative;
 }
 
-.li-admin{
-    position:absolute;
-    right:10px;
+nav {
+	background-color: #006666;
+}
+
+nav a {
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 10px;
+}
+
+nav a:hover {
+	color: #000000;
+	background-color: #99ffcc;
+}
+
+nav ul {
+	padding: 10px 0;
+}
+
+nav li {
+	display: inline;
+	text-align: center;
+}
+
+.li-admin {
+	position: absolute;
+	right: 10px;
 }
 
 
 body {
-    background-color: lightgrey;
-    text-align: center;
-    margin: 0 auto;
+	background-color: lightgrey;
+	text-align: center;
+	margin: 0 auto;
 }
 
 #clock {
-    background-color: #ffffff;
-    max-width: 23%;
-    height: auto;
-    border: 2px solid #000000;
-    font-size: 5vw;
-    margin: 10px auto 20px;
+	background-color: #ffffff;
+	width: 23vw;
+	height: auto;
+	border: 2px solid #000000;
+	font-size: 5vw;
+	margin: 10px auto 20px;
 }
 
-.form {
-    height: 25px;
-    margin:0 10px;
-    /* padding-top:5px; */
+.login {
+	height: 25px;
+	margin: 0 10px;
+	/* padding-top:5px; */
 }
 
 table {
-    border: 2px solid #000000;
-    border-collapse: collapse;
-    margin: 0 auto 20px;
-    width: 50%;
-    background-color: white;
+	border: 2px solid #000000;
+	border-collapse: collapse;
+	margin: 0 auto 20px;
+	width: 50%;
+	background-color: white;
 }
 
 caption {
-    font-weight: bold;
-    margin-bottom: 10px;
+	font-weight: bold;
+	margin-bottom: 10px;
 }
 
 th {
-    border: 2px solid #000000;
-    width: auto;
-    background-color: #006666;
-    color: white;
+	border: 2px solid #000000;
+	width: auto;
+	background-color: #006666;
+	color: white;
 }
 
 td {
-    border: 2px solid #000000;
+	border: 2px solid #000000;
 }
 
-.sub-h1{
-    margin-block-end:5px;
-    margin-block-start:5px;
+.stamp {
+	display: flex;
+	/*	gap:40px;*/
+	margin: 30px auto;
+	/*	margin-top: 30px;*/
+	width: 23vw;
+	justify-content: space-between;
 }
 
-.sub-h2{
-    margin-block-end:5px;
-    margin-block-start:5px;
-    font-size:120%;
+.sub-h1 {
+	margin-block-end: 5px;
+	margin-block-start: 5px;
 }
+
+.sub-h2 {
+	margin-block-end: 5px;
+	margin-block-start: 5px;
+	font-size: 120%;
+}
+
 .sub-button {
-    width: 100px;
-    height: 50px;
-    padding: 10px;
-    color: white;
-    font-size: large;
-    margin: 20px 25px;
+	width: 8vw;
+	height: 50px;
+	padding: 10px;
+	color: white;
+	font-size: large;
 }
 
 .sub-button:hover {
-    box-shadow: 5px 5px 0 0 #999999;
+	box-shadow: 5px 5px 0 0 #999999;
+}
+
+.sub-button.red {
+	background-color: #DE3143;
+}
+
+.sub-button.blue {
+	background-color: #147CBC;
 }
 
 .sub-button2 {
-    margin: 0 5px;
+	margin: 0 5px;
 }
 
 .sub-p {
-    text-align: right;
-    margin-right: 20%;
+	text-align: right;
+	margin-right: 20%;
 }
 
 footer {
-    border-top: 1px solid #000000
+	border-top: 1px solid #000000
 }
 
 .tel-num {
-    border-bottom: 1px solid #000000;
+	border-bottom: 1px solid #000000;
 }
 
 .new {
-    border: 1px solid #000000;
-    text-decoration: none;
-    padding: 2px 5px 2px;
-    background-color: #00A591;
-    color: #ffffff;
+	border: 1px solid #000000;
+	text-decoration: none;
+	padding: 2px 5px 2px;
+	background-color: #00A591;
+	color: #ffffff;
 }
 
 .new:hover {
-    box-shadow: 2px 2px 0 0 #999999;
+	box-shadow: 2px 2px 0 0 #999999;
+}
+
+@media(max-width:900px) {
+	.sub-button {
+		height: 40px;
+		padding: 0;
+	}
 }
 
 @media(max-width:600px) {
-    table {
-        font-size: 90%;
-    }
+	table {
+		font-size: 90%;
+	}
 
-    .li-admin{
-        position:static;
-    }
-	
-	#clock{
-		font-size:6vw;
-		max-width:30%;
+	.li-admin {
+		position: static;
 	}
-	.sub-h2{
-		font-size:100%;
+
+	.sub-h1 {
+		font-size: 120%;
 	}
+
+	.sub-h2 {
+		font-size: 100%;
+	}
+
+	.stamp {
+		display: block;
+	}
+
+	#clock {
+		font-size: 30px;
+		width: 138px;
+		max-width: none;
+	}
+
 }
