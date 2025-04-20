@@ -3,8 +3,14 @@ package com.example.webapp.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.webapp.form.EmployeeForm;
+import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.service.EmployeesManagementService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,5 +26,54 @@ public class EmployeesManagementController {
 	public String list(Model model) {
 		model.addAttribute("employees",service.selectAllEmployees());
 		return "employees/list";
+	}
+	
+	@GetMapping("/register")
+	public String register(@ModelAttribute EmployeeForm form) {
+		form.setIsNew(true);
+		return "employees/form";
+	}
+	
+	@PostMapping("/save")
+	public String save(EmployeeForm form,RedirectAttributes attributes) {
+		var employee=EmployeeHelper.convertEmployee(form);
+		service.insertEmployee(employee);
+		attributes.addFlashAttribute("message", "新規従業員が登録されました");
+		return "redirect:/employees";
+	}
+	
+	@GetMapping("/edit/{id}")
+	public String edit(@PathVariable String id,Model model,RedirectAttributes attributes) {
+		var target=service.selectEmployeeById(id);
+		if(target!=null) {
+			EmployeeForm form=EmployeeHelper.convertEmployeeForm(target);
+			model.addAttribute("employeeForm",form);
+			return "employees/form";
+		}else {
+			attributes.addFlashAttribute("errorMessage","そのIDをもつ従業員データは存在しません");
+			return "redirect:/employees";
+		}
+	}
+	
+	@PostMapping("/update")
+	public String update(EmployeeForm form,RedirectAttributes attributes) {
+		var employee=EmployeeHelper.convertEmployee(form);
+		service.updateEmployee(employee.getId());
+		attributes.addFlashAttribute("message", "従業員情報が更新されました");
+		return "redirect:/employees";
+	}
+	
+	@PostMapping("/delete/{id}")
+	public String delete(@PathVariable String id,RedirectAttributes attributes) {
+		var target=service.selectEmployeeById(id);
+		if(target!=null) {
+			service.deleteEmployee(id);
+			attributes.addFlashAttribute("message", 
+					"従業員ID:"+target.getId()+" "+target.getName()+" さんの従業員情報が削除されました");
+			return "redirect:/employees";
+		}else {
+			attributes.addFlashAttribute("errorMessage","そのIDをもつ従業員データは存在しません");
+			return "redirect:/employees";
+		}
 	}
 }

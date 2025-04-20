@@ -12,21 +12,25 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a href="">従業員登録</a></li>
-				<li class="li-admin"><a href="index.html">ホームへ戻る</a></li>
+				<li><a th:href="@{/employees/register}">新規従業員登録</a></li>
+				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
 			</ul>
 		</nav>
 	</header>
 	<article>
 		<h1>従業員一覧</h1>
-		<table>
+		<p th:if="${message}" th:text="${message}" style="color:blue">完了メッセージ</p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red">エラーメッセージ</p>
+		<table style="width:80%;">
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th>パスワード</th>
-					<th style="width:30%">名前</th>
+					<th style="width:20%">名前</th>
 					<th>電話番号</th>
 					<th>住所</th>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,6 +41,8 @@
 						<td　th:text="*{name}"></td>
 						<td th:text="*{tel}"></td>
 						<td th:text="*{address}"></td>
+						<td th:href="@{/edit/{id}(id=*{id})}">編集</td>
+						<td th:href="@{/delete/{id}(id=*{id})}">削除</tdth>
 					</th:block>
 				</tr>
 			</tbody>

@@ -12,4 +12,10 @@ public interface EmployeesManagementMapper {
 	Employee selectEmployeeById(@Param("employee_id") String id);
 	
 	List<Employee> selectAllEmployees();
+	
+	void insertEmployee(Employee employee);
+	
+	void updateEmployee(String id);
+	
+	void deleteEmployee(String id);
 }

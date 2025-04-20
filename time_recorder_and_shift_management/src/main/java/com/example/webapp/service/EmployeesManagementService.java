@@ -8,4 +8,10 @@ public interface EmployeesManagementService {
 	Employee selectEmployeeById(String Id);
 	
 	List<Employee> selectAllEmployees();
+	
+	void insertEmployee(Employee employee);
+	
+	void updateEmployee(String id);
+	
+	void deleteEmployee(String id);
 }

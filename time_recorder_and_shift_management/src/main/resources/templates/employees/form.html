@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>従業員フォーム</title>
+	<link th:rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewpoint" content="width=device-width">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a th:href="@{/emploees}">従業員一覧</a></li>
+				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
+			</ul>
+		</nav>
+	</header>
+	<h1 th:if="${employeeForm.isNew}">新規従業員登録</h1>
+	<h1 th:unless="${employeeForm.isNew}">従業員情報編集</h1>
+	<form th:action="${employeeForm.isNew}?@{/employees/save}:@{/employees/update}"
+	th:object="${employeeForm}" method="post">
+		<table>
+			<tr>
+				<th>ID</th>
+				<td>
+					<input type="text" th:field="*{id}">
+				</td>
+			</tr>
+			<tr>
+				<th>パスワード</th>
+				<td>
+					<input type="text" th:field="*{password}">
+				</td>
+			</tr>
+			<tr>
+				<th>名前</th>
+				<td>
+					<input type="text" th:field="*{name}">
+				</td>
+			</tr>
+			<tr>
+				<th>電話番号</th>
+				<td>
+					<input type="tel" th:field="*{tel}">
+				</td>
+			</tr>
+			<tr>
+				<th>住所</th>
+				<td>
+					<input type="text" th:field="*{address}">
+				</td>
+			</tr>
+		</table>
+		<input th:if="${employeeForm.isNew}" type="submit" value="登録">
+		<input th:unless="${employeeForm.isNew}" type="submit" value="更新">
+	</form>
+</body>
+
+</html>

@@ -16,14 +16,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmployeesManagementServiceImpl  implements EmployeesManagementService{
 	
-	private final EmployeesManagementMapper employeesManagementMapper;
+	private final EmployeesManagementMapper mapper;
 	@Override
 	public Employee selectEmployeeById(String employee_id) {
-		return employeesManagementMapper.selectEmployeeById(employee_id);
+		return mapper.selectEmployeeById(employee_id);
 	}
 
 	@Override
 	public List<Employee> selectAllEmployees(){
-		return employeesManagementMapper.selectAllEmployees();
+		return mapper.selectAllEmployees();
+	}
+	
+	@Override
+	public void insertEmployee(Employee employee) {
+		mapper.insertEmployee(employee);
+	}
+	
+	@Override
+	public void updateEmployee(String id) {
+		mapper.updateEmployee(id);
+	}
+	
+	@Override
+	public void deleteEmployee(String id) {
+		mapper.deleteEmployee(id);
 	}
 }
