@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8">
+	<title>従業員管理</title>
+	<link rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewpoint" content="width=device-width">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="">従業員登録</a></li>
+				<li class="li-admin"><a href="index.html">ホームへ戻る</a></li>
+			</ul>
+		</nav>
+	</header>
+	<article>
+		<h1>従業員一覧</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>パスワード</th>
+					<th style="width:30%">名前</th>
+					<th>電話番号</th>
+					<th>住所</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee:${employees}">
+					<th:block th:object="${employee}">
+						<td　th:text="*{id}"></td>
+						<td　th:text="*{password}"></td>
+						<td　th:text="*{name}"></td>
+						<td th:text="*{tel}"></td>
+						<td th:text="*{address}"></td>
+					</th:block>
+				</tr>
+			</tbody>
+		</table>
+	</article>
+</body>
+
+</html>

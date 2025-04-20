@@ -20,5 +20,4 @@ public interface TimeRecorderMapper {
 	void start(@Param("shift_id") Integer id);
 	
 	void end(@Param("shift_id") Integer id);
-	
 }

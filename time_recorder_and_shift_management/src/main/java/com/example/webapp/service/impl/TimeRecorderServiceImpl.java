@@ -43,5 +43,4 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	public void end(Integer shift_id) {
 		timeRecorderMapper.end(shift_id);
 	}
-
 }

@@ -20,19 +20,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TimeRecorderController {
 
-	private final TimeRecorderService timeRecorderService;
+	private final TimeRecorderService service;
 	LocalDate today = LocalDate.now();
 
 	@GetMapping
 	public String timeRecorder(Model model) {
-		model.addAttribute("todaysEmployees", timeRecorderService.selectEmployeesByDate(today));
+		model.addAttribute("todaysEmployees", service.selectEmployeesByDate(today));
 		return "time_recorder/top";
 	}
 
 	//	プレースホルダがシフトidになっているver.セキュリティ的にもこっちのほうがいいかも知れない
 //	@GetMapping("/time_recorder/{id}")
 //	public String start(@PathVariable Integer id,Model model,RedirectAttributes attributes) {
-//		List<ShiftAndTimestamp> todayEmployees=timeRecorderService.selectEmployeesByDate(today);
+//		List<ShiftAndTimestamp> todayEmployees=service.selectEmployeesByDate(today);
 //		var employee=todayEmployees.stream().filter(s->s.getId()==id).findFirst().orElse(null);
 //		if(employee!=null) {
 //			model.addAttribute("employee",employee);
@@ -46,7 +46,7 @@ public class TimeRecorderController {
 	//	GetMappingではなくPostMappingで、Viewから渡される従業員IDはbodyに格納する。その場合は、url名とかも変える。
 		@PostMapping("/stamp")
 		public String stamp(@RequestParam String employee_id,Model model,RedirectAttributes attributes) {
-			ShiftAndTimestamp shiftAndTimestamp=timeRecorderService.selectShiftAndTimestampByEmployeeIdAndDate(employee_id, today);
+			ShiftAndTimestamp shiftAndTimestamp=service.selectShiftAndTimestampByEmployeeIdAndDate(employee_id, today);
 			if(shiftAndTimestamp!=null) {
 				model.addAttribute("employee",shiftAndTimestamp.getEmployee());
 				model.addAttribute("today",shiftAndTimestamp.getDate());
@@ -61,9 +61,9 @@ public class TimeRecorderController {
 		
 		@PostMapping("/stamp/start")
 		public String start(@RequestParam Integer shift_id,Model model,RedirectAttributes attributes) {
-			ShiftAndTimestamp shiftAndTimestamp=timeRecorderService.selectShiftAndTimestampByShiftId(shift_id);
+			ShiftAndTimestamp shiftAndTimestamp=service.selectShiftAndTimestampByShiftId(shift_id);
 			if(shiftAndTimestamp.getStart()==null) {
-				timeRecorderService.start(shift_id);
+				service.start(shift_id);
 				model.addAttribute("message", "出勤");
 				return "time_recorder/execute";
 			}else {
@@ -72,16 +72,19 @@ public class TimeRecorderController {
 			}
 		}
 		
-		@PostMapping(value="/stamp/end",params="shift_id")
+		@PostMapping("/stamp/end")
 		public String end(@RequestParam Integer shift_id,Model model,RedirectAttributes attributes) {
-			ShiftAndTimestamp shiftAndTimestamp=timeRecorderService.selectShiftAndTimestampByShiftId(shift_id);
+			ShiftAndTimestamp shiftAndTimestamp=service.selectShiftAndTimestampByShiftId(shift_id);
 			if(shiftAndTimestamp.getStart()==null) {
 				attributes.addFlashAttribute("errorMessage", "「出勤」より先に「退勤」は押せません");
 				return "redirect:/time_recorder";
 			}
 			if(shiftAndTimestamp.getEnd()==null) {
-				timeRecorderService.end(shift_id);
+				service.end(shift_id);
 				model.addAttribute("message","退勤");
+				/*	
+				 * 次の出勤日を調べて知らせる機能			
+				 * String employeeId=shiftAndTimestamp.getEmployee().getId();*/
 				return "time_recorder/execute";
 			}else {
 				attributes.addFlashAttribute("errorMessage", "すでに退勤済みです");
