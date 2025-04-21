@@ -41,8 +41,8 @@
 						<td　th:text="*{name}"></td>
 						<td th:text="*{tel}"></td>
 						<td th:text="*{address}"></td>
-						<td th:href="@{/edit/{id}(id=*{id})}">編集</td>
-						<td th:href="@{/delete/{id}(id=*{id})}">削除</tdth>
+						<td><a th:href="@{/employees/edit/{id}(id=*{id})}">編集</a></td>
+						<td><a th:href="@{/employees/delete/{id}(id=*{id})}">削除</a></tdth>
 					</th:block>
 				</tr>
 			</tbody>
