@@ -52,6 +52,8 @@ body {
 	border: 2px solid #000000;
 	font-size: 5vw;
 	margin: 10px auto 20px;
+	padding-left:5px;
+	padding-right:5px;
 }
 
 .login {
@@ -153,7 +155,17 @@ footer {
 	box-shadow: 2px 2px 0 0 #999999;
 }
 
-@media(max-width:900px) {
+@media(min-width:1024px){
+	#clock{
+		width: 235.28px;
+		font-size:51.2px;
+	}
+	table{
+		width:512px;
+	}
+}
+
+@media(max-width:960px) {
 	.sub-button {
 		height: 40px;
 		padding: 0;

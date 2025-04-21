@@ -33,8 +33,8 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	}
 	
 	@Override
-	public void updateEmployee(String id) {
-		mapper.updateEmployee(id);
+	public void updateEmployee(Employee employee) {
+		mapper.updateEmployee(employee);
 	}
 	
 	@Override

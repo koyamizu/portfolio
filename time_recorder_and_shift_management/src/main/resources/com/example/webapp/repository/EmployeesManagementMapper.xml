@@ -17,7 +17,7 @@
 	VALUES(#{id},#{password},#{name},#{tel},#{address});
 	</insert>
 	<update id="updateEmployee">
-	UPDATE test_employee_list
+	UPDATE test_employees_list
 	SET password=#{password},name=#{name},tel=#{tel},address=#{address}
 	WHERE id=#{id};
 	</update>

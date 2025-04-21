@@ -58,7 +58,7 @@ public class EmployeesManagementController {
 	@PostMapping("/update")
 	public String update(EmployeeForm form,RedirectAttributes attributes) {
 		var employee=EmployeeHelper.convertEmployee(form);
-		service.updateEmployee(employee.getId());
+		service.updateEmployee(employee);
 		attributes.addFlashAttribute("message", "従業員情報が更新されました");
 		return "redirect:/employees";
 	}

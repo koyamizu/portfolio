@@ -1,3 +1,5 @@
+ALTER TABLE test_shift_and_timestamp2504 DROP FOREIGN KEY test_shift_and_timestamp2504_ibfk_1;
+ALTER TABLE test_shift_and_timestamp2504 drop employee_id;
 DROP TABLE IF EXISTS test_employees_list;
 DROP TABLE IF EXISTS test_shift_and_timestamp2504;
 
@@ -17,5 +19,5 @@ CREATE TABLE test_shift_and_timestamp2504(
 	date DATE NOT NULL,
 	start TIME,
 	end TIME,
-	FOREIGN KEY(employee_id) REFERENCES employees_list(id)
+	FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
 );
