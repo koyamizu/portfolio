@@ -21,58 +21,62 @@ import lombok.RequiredArgsConstructor;
 public class EmployeesManagementController {
 
 	private final EmployeesManagementService service;
-	
+
 	@GetMapping
 	public String list(Model model) {
-		model.addAttribute("employees",service.selectAllEmployees());
+		model.addAttribute("employees", service.selectAllEmployees());
 		return "employees/list";
 	}
-	
+
 	@GetMapping("/register")
 	public String register(@ModelAttribute EmployeeForm form) {
 		form.setIsNew(true);
 		return "employees/form";
 	}
-	
+
 	@PostMapping("/save")
-	public String save(EmployeeForm form,RedirectAttributes attributes) {
-		var employee=EmployeeHelper.convertEmployee(form);
+	public String save(EmployeeForm form, RedirectAttributes attributes) {
+		var employee = EmployeeHelper.convertEmployee(form);
 		service.insertEmployee(employee);
 		attributes.addFlashAttribute("message", "新規従業員が登録されました");
 		return "redirect:/employees";
 	}
-	
+
 	@GetMapping("/edit/{id}")
-	public String edit(@PathVariable String id,Model model,RedirectAttributes attributes) {
-		var target=service.selectEmployeeById(id);
-		if(target!=null) {
-			EmployeeForm form=EmployeeHelper.convertEmployeeForm(target);
-			model.addAttribute("employeeForm",form);
+	public String edit(@PathVariable String id, Model model, RedirectAttributes attributes) {
+		var target = service.selectEmployeeById(id);
+		if (target != null) {
+			EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
+			model.addAttribute("employeeForm", form);
 			return "employees/form";
-		}else {
-			attributes.addFlashAttribute("errorMessage","そのIDをもつ従業員データは存在しません");
+		} else {
+			attributes.addFlashAttribute("errorMessage", "そのIDをもつ従業員データは存在しません");
 			return "redirect:/employees";
 		}
 	}
-	
+
 	@PostMapping("/update")
-	public String update(EmployeeForm form,RedirectAttributes attributes) {
-		var employee=EmployeeHelper.convertEmployee(form);
+	public String update(EmployeeForm form, RedirectAttributes attributes) {
+		var employee = EmployeeHelper.convertEmployee(form);
 		service.updateEmployee(employee);
 		attributes.addFlashAttribute("message", "従業員情報が更新されました");
 		return "redirect:/employees";
 	}
-	
+
 	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable String id,RedirectAttributes attributes) {
-		var target=service.selectEmployeeById(id);
-		if(target!=null) {
-			service.deleteEmployee(id);
-			attributes.addFlashAttribute("message", 
-					"従業員ID:"+target.getId()+" "+target.getName()+" さんの従業員情報が削除されました");
+	public String delete(@PathVariable String id, RedirectAttributes attributes) {
+		var target = service.selectEmployeeById(id);
+		if (target != null) {
+			try {
+				service.deleteEmployee(id);
+				attributes.addFlashAttribute("message",
+						"従業員ID:" + target.getId() + " " + target.getName() + " さんの従業員情報が削除されました");
+			} catch (Exception e) {
+				attributes.addFlashAttribute("errorMessage", "そのIDをもつ従業員はシフトに登録されているので削除できません。");
+			}
 			return "redirect:/employees";
-		}else {
-			attributes.addFlashAttribute("errorMessage","そのIDをもつ従業員データは存在しません");
+		} else {
+			attributes.addFlashAttribute("errorMessage", "そのIDをもつ従業員データは存在しません");
 			return "redirect:/employees";
 		}
 	}
