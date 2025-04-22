@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `employees_list`
+-- Table structure for table `shift_and_timestamp_2025`
 --
 
-DROP TABLE IF EXISTS `employees_list`;
+DROP TABLE IF EXISTS `shift_and_timestamp_2025`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employees_list` (
+CREATE TABLE `shift_and_timestamp_2025` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `password` varchar(16) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `tel` varchar(13) NOT NULL,
-  `address` varchar(150) NOT NULL,
+  `employee_id` int NOT NULL,
+  `date` date NOT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employees_list`
+-- Dumping data for table `shift_and_timestamp_2025`
 --
 
-LOCK TABLES `employees_list` WRITE;
-/*!40000 ALTER TABLE `employees_list` DISABLE KEYS */;
-INSERT INTO `employees_list` VALUES (1001,'yoshizuka01','吉塚','080-1920-XXXX','福岡県福岡市博多区吉塚本町13-28'),(1002,'koga09','古賀','080-5438-XXXX','福岡県古賀市天神1-1-1'),(1003,'kurosaki21','黒崎','080-6703-XXXX','福岡県北九州市八幡西区黒崎3-15-1'),(1004,'togo13','東郷','080-4962-XXXX','福岡県宗像市田熊4-9-1'),(1005,'komorie30','小森江','080-9821-XXXX','福岡県北九州市門司区小森江3-11'),(9999,'hakozaki02','箱崎','080-7319-XXXX','福岡県福岡市東区筥松2-32');
-/*!40000 ALTER TABLE `employees_list` ENABLE KEYS */;
+LOCK TABLES `shift_and_timestamp_2025` WRITE;
+/*!40000 ALTER TABLE `shift_and_timestamp_2025` DISABLE KEYS */;
+INSERT INTO `shift_and_timestamp_2025` VALUES (1,1001,'2025-04-01',NULL,NULL),(2,1002,'2025-04-01',NULL,NULL),(3,1003,'2025-04-02',NULL,NULL),(4,1004,'2025-04-02',NULL,NULL),(5,1005,'2025-04-03',NULL,NULL),(6,1001,'2025-04-03',NULL,NULL),(7,1002,'2025-04-04',NULL,NULL),(8,1003,'2025-04-04',NULL,NULL),(9,1004,'2025-04-05',NULL,NULL),(10,1005,'2025-04-05',NULL,NULL),(11,1001,'2025-04-06',NULL,NULL),(12,1002,'2025-04-06',NULL,NULL),(13,1003,'2025-04-07',NULL,NULL),(14,1004,'2025-04-07',NULL,NULL),(15,1005,'2025-04-08',NULL,NULL),(16,1001,'2025-04-08',NULL,NULL),(17,1002,'2025-04-09',NULL,NULL),(18,1003,'2025-04-09',NULL,NULL),(19,1004,'2025-04-10',NULL,NULL),(20,1005,'2025-04-10',NULL,NULL);
+/*!40000 ALTER TABLE `shift_and_timestamp_2025` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-22  8:46:27
+-- Dump completed on 2025-04-22  8:46:28

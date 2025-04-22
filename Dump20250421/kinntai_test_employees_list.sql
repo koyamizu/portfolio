@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `kinntai` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `kinntai`;
 -- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: kinntai
@@ -25,13 +23,13 @@ DROP TABLE IF EXISTS `test_employees_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test_employees_list` (
-  `id` char(8) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `password` varchar(16) NOT NULL,
   `name` varchar(50) NOT NULL,
   `tel` varchar(13) NOT NULL,
   `address` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +38,6 @@ CREATE TABLE `test_employees_list` (
 
 LOCK TABLES `test_employees_list` WRITE;
 /*!40000 ALTER TABLE `test_employees_list` DISABLE KEYS */;
-INSERT INTO `test_employees_list` VALUES ('093002','yoshizuka','吉塚','080-XXXX-XXXX','福岡県福岡市博多区吉塚本町');
 /*!40000 ALTER TABLE `test_employees_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21 10:56:18
+-- Dump completed on 2025-04-22  8:46:30
