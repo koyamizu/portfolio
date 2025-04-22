@@ -25,7 +25,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	}
 
 	@Override
-	public ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(String id, LocalDate date) {
+	public ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(Integer id, LocalDate date) {
 		return timeRecorderMapper.selectShiftAndTimestampByEmployeeIdAndDate(id, date);
 	}
 

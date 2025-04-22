@@ -8,7 +8,7 @@ import com.example.webapp.entity.ShiftAndTimestamp;
 public interface TimeRecorderService {
 	List<ShiftAndTimestamp> selectEmployeesByDate(LocalDate date);
 
-	ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(String employee_id,
+	ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(Integer employee_id,
 			LocalDate date);
 
 	ShiftAndTimestamp selectShiftAndTimestampByShiftId(Integer shift_id);

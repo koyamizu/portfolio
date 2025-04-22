@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeForm {
 //	従業員id
-	private String id;
+	private Integer id;
 //	従業員パスワード
 	private String password;
 //	従業員名

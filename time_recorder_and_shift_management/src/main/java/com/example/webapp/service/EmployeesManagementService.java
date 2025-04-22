@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.webapp.entity.Employee;
 
 public interface EmployeesManagementService {
-	Employee selectEmployeeById(String Id);
+	Employee selectEmployeeById(Integer Id);
 	
 	List<Employee> selectAllEmployees();
 	
@@ -13,5 +13,5 @@ public interface EmployeesManagementService {
 	
 	void updateEmployee(Employee employee);
 	
-	void deleteEmployee(String id);
+	void deleteEmployee(Integer id);
 }

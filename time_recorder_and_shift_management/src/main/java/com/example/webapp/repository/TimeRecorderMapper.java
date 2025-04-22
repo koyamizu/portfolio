@@ -13,7 +13,7 @@ public interface TimeRecorderMapper {
 
 	List<ShiftAndTimestamp> selectEmployeesByDate(@Param("date") LocalDate date);
 	
-	ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(@Param("employee_id") String id,@Param("date") LocalDate date);
+	ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(@Param("employee_id") Integer id,@Param("date") LocalDate date);
 	
 	ShiftAndTimestamp selectShiftAndTimestampByShiftId(@Param("shift_id") Integer id);
 

@@ -43,7 +43,7 @@ public class EmployeesManagementController {
 	}
 
 	@GetMapping("/edit/{id}")
-	public String edit(@PathVariable String id, Model model, RedirectAttributes attributes) {
+	public String edit(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
 		var target = service.selectEmployeeById(id);
 		if (target != null) {
 			EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
@@ -64,7 +64,7 @@ public class EmployeesManagementController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable String id, RedirectAttributes attributes) {
+	public String delete(@PathVariable Integer id, RedirectAttributes attributes) {
 		var target = service.selectEmployeeById(id);
 		if (target != null) {
 			try {

@@ -9,7 +9,7 @@ import com.example.webapp.entity.Employee;
 
 @Mapper
 public interface EmployeesManagementMapper {
-	Employee selectEmployeeById(@Param("employee_id") String id);
+	Employee selectEmployeeById(@Param("employee_id") Integer id);
 	
 	List<Employee> selectAllEmployees();
 	
@@ -17,5 +17,5 @@ public interface EmployeesManagementMapper {
 	
 	void updateEmployee(Employee employee);
 	
-	void deleteEmployee(String id);
+	void deleteEmployee(Integer id);
 }

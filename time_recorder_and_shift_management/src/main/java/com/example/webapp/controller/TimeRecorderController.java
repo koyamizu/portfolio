@@ -45,7 +45,7 @@ public class TimeRecorderController {
 
 	//	GetMappingではなくPostMappingで、Viewから渡される従業員IDはbodyに格納する。その場合は、url名とかも変える。
 		@PostMapping("/stamp")
-		public String stamp(@RequestParam String employee_id,Model model,RedirectAttributes attributes) {
+		public String stamp(@RequestParam Integer employee_id,Model model,RedirectAttributes attributes) {
 			ShiftAndTimestamp shiftAndTimestamp=service.selectShiftAndTimestampByEmployeeIdAndDate(employee_id, today);
 			if(shiftAndTimestamp!=null) {
 				model.addAttribute("employee",shiftAndTimestamp.getEmployee());
@@ -84,7 +84,7 @@ public class TimeRecorderController {
 				model.addAttribute("message","退勤");
 				/*	
 				 * 次の出勤日を調べて知らせる機能			
-				 * String employeeId=shiftAndTimestamp.getEmployee().getId();*/
+				 * Integer employeeId=shiftAndTimestamp.getEmployee().getId();*/
 				return "time_recorder/execute";
 			}else {
 				attributes.addFlashAttribute("errorMessage", "すでに退勤済みです");

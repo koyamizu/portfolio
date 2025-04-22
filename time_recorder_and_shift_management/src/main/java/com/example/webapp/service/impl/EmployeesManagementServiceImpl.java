@@ -18,7 +18,7 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	
 	private final EmployeesManagementMapper mapper;
 	@Override
-	public Employee selectEmployeeById(String employee_id) {
+	public Employee selectEmployeeById(Integer employee_id) {
 		return mapper.selectEmployeeById(employee_id);
 	}
 
@@ -38,7 +38,7 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	}
 	
 	@Override
-	public void deleteEmployee(String id) {
+	public void deleteEmployee(Integer id) {
 		mapper.deleteEmployee(id);
 	}
 }
