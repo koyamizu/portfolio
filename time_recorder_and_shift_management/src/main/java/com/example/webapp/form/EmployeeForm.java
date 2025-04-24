@@ -1,4 +1,4 @@
-package com.example.webapp.entity;
+package com.example.webapp.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Employee {
-
+public class EmployeeForm {
 //	従業員id
 	private Integer id;
 //	従業員パスワード
@@ -19,5 +18,6 @@ public class Employee {
 	private String tel;
 //	住所
 	private String address;
-
+	
+	private Boolean isNew;
 }

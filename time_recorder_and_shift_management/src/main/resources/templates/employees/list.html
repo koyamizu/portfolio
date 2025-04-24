@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8">
+	<title>従業員管理</title>
+	<link rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewpoint" content="width=device-width">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a th:href="@{/employees/register}">新規従業員登録</a></li>
+				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
+			</ul>
+		</nav>
+	</header>
+	<article>
+		<h1>従業員一覧</h1>
+		<p th:if="${message}" th:text="${message}" style="color:blue">完了メッセージ</p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red">エラーメッセージ</p>
+		<table style="width:80%;">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>パスワード</th>
+					<th style="width:20%">名前</th>
+					<th>電話番号</th>
+					<th>住所</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee:${employees}">
+					<th:block th:object="${employee}">
+						<td　th:text="*{id}"></td>
+						<td　th:text="*{password}"></td>
+						<td　th:text="*{name}"></td>
+						<td th:text="*{tel}"></td>
+						<td th:text="*{address}"></td>
+						<td><a th:href="@{/employees/edit/{id}(id=*{id})}">編集</a></td>
+						<td><a th:href="@{/employees/delete/{id}(id=*{id})}">削除</a></tdth>
+					</th:block>
+				</tr>
+			</tbody>
+		</table>
+	</article>
+</body>
+
+</html>
