@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ログイン</title>
+</head>
+
+<body>
+	<h2>ログイン画面</h2>
+	<div th:if="${param.error}">
+		<p style="color:red;">従業員IDまたはパスワードが違います<br>
+		パスワードを忘れた場合は店長まで</p>
+	</div>
+	
+	<form th:action="@{authentication}" methed="post" th:object="${loginForm}">
+		<div>
+			<label for="employeeIdInput">従業員ID</label>
+			<input type="text" th:field="*{employeeIdInput}">
+		</div>
+		<div>
+			<label for="passwordInput">パスワード</label>
+			<input type="password" th:field="*{passwordInput}">
+		</div>
+		<div>
+			<input type="submit" value="ログイン">
+		</div>
+	</form>
+</body>
+
+</html>

@@ -41,7 +41,7 @@
 		<form th:action="@{/time_recorder/stamp}" method="post" target="_self">
 			<p>
 				<label for="employee_id">従業員ID
-					<input name="employee_id" type="password" placeholder="半角で入力してください" required class="login">
+					<input name="employee_id" type="text" autocomplete="off" placeholder="半角で入力してください" required class="login">
 				</label>
 				<button type="submit">ログイン</button>
 			</p>
