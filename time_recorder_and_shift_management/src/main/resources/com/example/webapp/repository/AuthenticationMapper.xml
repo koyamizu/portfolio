@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.AuthenticationMapper">
+
+	<select id="selectByEmployeeId"
+		resultType="com.example.webapp.entity.Authentication">
+		SELECT employee_id,password,authority,name
+		FROM test_employees_list
+		WHERE
+		employee_id=#{employeeId}
+	</select>
+
+</mapper>

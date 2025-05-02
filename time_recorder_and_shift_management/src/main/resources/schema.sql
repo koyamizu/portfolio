@@ -2,14 +2,24 @@ ALTER TABLE test_shift_and_timestamp2504 DROP FOREIGN KEY test_shift_and_timesta
 ALTER TABLE test_shift_and_timestamp2504 drop employee_id;
 DROP TABLE IF EXISTS test_employees_list;
 DROP TABLE IF EXISTS test_shift_and_timestamp2504;
+DROP table IF EXISTS requests;
 
+create table requests(
+    id int primary key auto_increment,
+    employee_id int not null,
+    date date not null,
+    start time,
+    end time
+--    FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
+    );
 --従業員リストテーブルの作成
 CREATE TABLE test_employees_list(
 	id INT not null primary key auto_increment,
 	password varchar(16) not null,
 	name varchar(50) not null,
 	tel varchar(13) not null,
-	address varchar(150) not null
+	address varchar(150) not null,
+	authority ENUM('ADMIN','USER') NOT NULL
 	)
 auto_increment=1001;
 

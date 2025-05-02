@@ -52,8 +52,8 @@ body {
 	border: 2px solid #000000;
 	font-size: 5vw;
 	margin: 10px auto 20px;
-	padding-left:5px;
-	padding-right:5px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .login {
@@ -155,13 +155,77 @@ footer {
 	box-shadow: 2px 2px 0 0 #999999;
 }
 
-@media(min-width:1024px){
-	#clock{
-		width: 235.28px;
-		font-size:51.2px;
+th.fc-day-sat,
+td.fc-day-sat {
+	color: #147CBC
+}
+
+th.fc-day-sun,
+td.fc-day-sun,
+.is_holiday {
+	color: red;
+}
+
+.fc-event-title {
+	color: black;
+}
+
+.fc-daygrid-event-dot {
+	border: none;
+}
+
+.is_holiday {
+	.fc-daygrid-day-events {
+		display: none;
 	}
-	table{
-		width:512px;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+	margin-bottom: 0;
+}
+
+/* ハイライト用 */
+.fc-event.highlight .fc-event-title {
+	color: red !important;
+	font-weight: bold;
+}
+
+.shift-request {
+	.fc-toolbar-chunk {
+
+		.fc-today-button,
+		.fc-button,
+		.fc-button-primary,
+		.fc-button-group {
+			display: none;
+		}
+	}
+
+	/* 選択セルの背景色 */
+	.selected {
+		background-color: #22e0a4 !important;
+
+		.fc-daygrid-day-number {
+			color: white;
+		}
+	}
+}
+
+/* ヘッダーセル内のチェックボックスを中央配置 */
+.fc-col-header-cell-cushion .col-checkbox {
+	display: block;
+	margin: 2px auto;
+}
+
+
+@media(min-width:1024px) {
+	#clock {
+		width: 235.28px;
+		font-size: 51.2px;
+	}
+
+	table {
+		width: 512px;
 	}
 }
 
@@ -188,19 +252,19 @@ footer {
 	.sub-h2 {
 		font-size: 100%;
 	}
-	
+
 	.sub-button {
 		width: 138px;
 		height: 30px;
 	}
-	
-	.sub-button.blue{
-		margin-top:15px;
+
+	.sub-button.blue {
+		margin-top: 15px;
 	}
 
 	.stamp {
 		display: block;
-		width:auto;
+		width: auto;
 	}
 
 	#clock {

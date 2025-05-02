@@ -22,12 +22,17 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(
 						authz -> authz.requestMatchers("/login").permitAll()
-								.anyRequest().authenticated())
+						.requestMatchers("/").permitAll()
+						.requestMatchers("/employees/**").hasAuthority("ADMIN")
+						.requestMatchers("/time_recorder").hasAuthority("ADMIN")
+						.requestMatchers("/shift/management").hasAuthority("ADMIN")
+						.requestMatchers("/shift/form").authenticated()
+						)
 				.formLogin(form -> form.loginPage("/login")
 						.loginProcessingUrl("/authentication")
 						.usernameParameter("employeeIdInput")
 						.passwordParameter("passwordInput")
-//						.defaultSuccessUrl("/")
+						.defaultSuccessUrl("/")
 						.failureUrl("/login?error"));
 		return http.build();
 	}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>シフト表</title>
+	<link rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewpoint" content="width=device-width">
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.6/index.global.min.js"></script>
+	<!--	<script th:src="@{webjars/jquery/3.7.1/jquery.min.js}"></script>-->
+	<script th:src="@{/js/shiftTable.js}"></script>
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="">シフト管理</a></li>
+				<li><a href="/shift/form">従業員シフト提出</a></li>
+				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
+			</ul>
+		</nav>
+	</header>
+	<article>
+		<div id='calendar' style="width:80%;margin:0 auto"></div>
+		<script type="text/javascript" th:inline="javascript">
+			document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shifts}]]*/)});
+		</script>
+		<!-- <script type="text/javascript" th:inline="javascript">
+			document.addEventListener('DOMContentLoaded', function () {
+				initializeCalendar(/*[[${shifts}]]*/);
+			});
+		</script> -->
+	</article>
+</body>
+
+</html>

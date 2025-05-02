@@ -12,8 +12,8 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a th:href="@{/employees/register}">新規従業員登録</a></li>
-				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
+				<li><a href="/employees/register">新規従業員登録</a></li>
+				<li class="li-admin"><a href="/">ホームへ戻る</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -36,11 +36,12 @@
 			<tbody>
 				<tr th:each="employee:${employees}">
 					<th:block th:object="${employee}">
-						<td　th:text="*{id}"></td>
-						<td　th:text="*{password}"></td>
-						<td　th:text="*{name}"></td>
+						<td th:text="*{id}"></td>
+						<td th:text="*{password}"></td>
+						<td th:text="*{name}"></td>
 						<td th:text="*{tel}"></td>
 						<td th:text="*{address}"></td>
+						<!--REST形式-->
 						<td><a th:href="@{/employees/edit/{id}(id=*{id})}">編集</a></td>
 						<td><a th:href="@{/employees/delete/{id}(id=*{id})}">削除</a></tdth>
 					</th:block>

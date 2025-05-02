@@ -34,6 +34,7 @@ public class EmployeesManagementController {
 		return "employees/form";
 	}
 
+	//saveとupdateはまとめてsaveとかにして、条件分岐で分けてもいいかもしれない。
 	@PostMapping("/save")
 	public String save(EmployeeForm form, RedirectAttributes attributes) {
 		var employee = EmployeeHelper.convertEmployee(form);

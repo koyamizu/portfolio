@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.ShiftManagementMapper">
+	<!-- id,start(date),title(employeeかemployee_nameか)というフィールドを持つ「shiftCalendar」エンティティを作成して、下記のプロパティがそれに対応するように作り変える。 -->
+	<resultMap id="EntityForFullCalendarResult"
+		type="com.example.webapp.entity.EntityForFullCalendar">
+		<id property="id" column="id" />
+		<result property="title" column="name" />
+		<result property="start" column="date" />
+	</resultMap>
+
+	<select id="selectAllShiftByYearMonth"
+		resultMap="EntityForFullCalendarResult">
+		SELECT x.id,name,date-INTERVAL 1 MONTH as date
+		FROM shifts x
+		INNER JOIN employees_list y
+		ON x.employee_id=y.id
+		WHERE
+		EXTRACT(YEAR_MONTH FROM date)
+		=EXTRACT(YEAR_MONTH FROM
+		#{targetMonthAnyDate});
+	</select>
+
+	<select id="selectEmployeeById">
+		SELECT id,name
+		FROM employees_list
+		WHERE id=#{employee_id};
+	</select>
+
+	<insert id="insertShiftRequests" parameterType="list">
+		INSERT INTO requests(employee_id, date) VALUES
+		<foreach collection="dates" item="d" separator=",">
+			(#{employee_id}, #{d})
+		</foreach>
+	</insert>
+
+</mapper>

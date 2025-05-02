@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>確認ページ</title>
+</head>
+
+<body>
+	<p>従業員<span th:text="${shiftRequestForm.employee_id}"></span></p>
+	<div th:each="shift:${shiftRequestForm.shifts}">
+		<p th:text="${shift}"></p>
+	</div>
+</body>
+
+</html>
