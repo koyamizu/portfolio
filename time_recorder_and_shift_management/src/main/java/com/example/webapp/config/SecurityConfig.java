@@ -17,23 +17,25 @@ public class SecurityConfig {
 
 	private final UserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests(
-						authz -> authz.requestMatchers("/login").permitAll()
-						.requestMatchers("/").permitAll()
-						.requestMatchers("/employees/**").hasAuthority("ADMIN")
-						.requestMatchers("/time_recorder").hasAuthority("ADMIN")
-						.requestMatchers("/shift/management").hasAuthority("ADMIN")
-						.requestMatchers("/shift/form").authenticated()
-						)
+						authz -> authz.requestMatchers("/css/**", "/js/**","/login","/","/shift","/api/event/all").permitAll()
+								.requestMatchers("/employees/**","/time_recorder","/shift/management").hasAuthority("ADMIN")
+								.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/login")
 						.loginProcessingUrl("/authentication")
 						.usernameParameter("employeeIdInput")
 						.passwordParameter("passwordInput")
 						.defaultSuccessUrl("/")
-						.failureUrl("/login?error"));
+						.failureUrl("/login?error"))
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/login?logout")
+						.invalidateHttpSession(true)
+						.deleteCookies("JSESSIONID"));
 		return http.build();
 	}
 }

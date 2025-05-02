@@ -6,10 +6,10 @@
 <!--このマッパーファイル自体不要説ある-->
 	<select id="selectByEmployeeId"
 		resultType="com.example.webapp.entity.Authentication">
-		SELECT employee_id,password,authority,name
+		SELECT id,password,authority,name
 		FROM test_employees_list
 		WHERE
-		employee_id=#{employeeId}
+		id=#{employeeId}
 	</select>
 
 </mapper>

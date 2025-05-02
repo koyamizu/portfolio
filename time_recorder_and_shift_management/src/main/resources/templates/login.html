@@ -10,10 +10,17 @@
 	<h2>ログイン画面</h2>
 	<div th:if="${param.error}">
 		<p style="color:red;">従業員IDまたはパスワードが違います<br>
-		パスワードを忘れた場合は店長まで</p>
+			パスワードを忘れた場合は店長まで</p>
 	</div>
+
+	<div th:if="${param.logout}">
+		<p style="color:blue;">ログアウトしました</p>
+	</div>
+
+<!--	↓「methed」になっていたせいで/authenticationにGET送信していた。デベロッパーツールで気づく-->
+<!--	<form th:action="@{/authentication}" methed="post" th:object="${loginForm}">-->
 	
-	<form th:action="@{authentication}" methed="post" th:object="${loginForm}">
+	<form th:action="@{/authentication}" method="post" th:object="${loginForm}">
 		<div>
 			<label for="employeeIdInput">従業員ID</label>
 			<input type="text" th:field="*{employeeIdInput}">
