@@ -3,6 +3,7 @@
 <mapper
 	namespace="com.example.webapp.repository.AuthenticationMapper">
 
+<!--このマッパーファイル自体不要説ある-->
 	<select id="selectByEmployeeId"
 		resultType="com.example.webapp.entity.Authentication">
 		SELECT employee_id,password,authority,name
