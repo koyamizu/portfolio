@@ -14,17 +14,14 @@
     </header>
     <article>
         <p>
-            <a th:href="@{/time_recorder}">タイムレコーダー</a>
+            <a href="/time_recorder">タイムレコーダー</a>
         </p>        
         <p>
             <a href="/shift">シフト表/シフト管理トップ</a>
         </p>
         <p>
-            <a th:href="@{/employees}">従業員管理トップ</a>
+            <a href="/employees">従業員管理トップ</a>
         </p>
-		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="ログアウト">
-		</form>
     </article>
 </body>
 

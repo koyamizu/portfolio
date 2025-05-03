@@ -13,14 +13,18 @@
 		<nav>
 			<ul>
 				<li><a href="/employees">従業員一覧</a></li>
-				<li class="li-admin"><a href="/">ホームへ戻る</a></li>
+				<li class="li-admin">
+					<form method="post" name="logout" th:action="@{/logout}">
+						<a href="javascript:logout.submit()">ホームへ戻る</a>
+					</form>
+				</li>
 			</ul>
 		</nav>
 	</header>
 	<h1 th:if="${employeeForm.isNew}">新規従業員登録</h1>
 	<h1 th:unless="${employeeForm.isNew}">従業員情報編集</h1>
-	<form th:action="${employeeForm.isNew}?@{/employees/save}:@{/employees/update}"
-	th:object="${employeeForm}" method="post">
+	<form th:action="${employeeForm.isNew}?@{/employees/save}:@{/employees/update}" th:object="${employeeForm}"
+		method="post">
 		<table>
 			<tr>
 				<th>ID</th>

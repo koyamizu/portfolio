@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xlmns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
 	<meta charset="utf-8" />
@@ -15,15 +15,20 @@
 		<nav>
 			<ul>
 				<li><a href="/shift">シフト表</a></li>
-				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
+				<li class="li-admin">
+					<form method="post" name="logout" th:action="@{/logout}">
+						<a href="javascript:logout.submit()">ホームへ戻る</a>
+					</form>
+				</li>
 			</ul>
 		</nav>
 	</header>
 	<article>
-		<p>現在&nbsp;<span th:text="${#authentication.principal.name}" style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
+		<p>現在&nbsp;<span th:text="${#authentication.principal.name}"
+				style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
 
 		<form id="shift-form" th:action="@{/shift/submit}" method="post">
-			<input type="hidden" name="employee_id" th:value="${employee.id}">
+			<input type="hidden" name="employee_id" th:value="${#authentication.principal.id}">
 			<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 			<input type="submit" value="提出">
 			<button id="clear-selection" type="button">すべての選択を解除</button>

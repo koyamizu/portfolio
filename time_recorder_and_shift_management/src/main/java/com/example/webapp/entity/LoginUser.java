@@ -11,12 +11,15 @@ public class LoginUser extends User{
 	private String name;
 
 	//プロパティは「username」じゃないとダメ系？
-	public LoginUser(String employeeId,String password,
+	public LoginUser(String id,String password,
 			Collection<? extends GrantedAuthority> authorities,String name) {
-		super(employeeId,password,authorities);
+		super(id,password,authorities);
 		this.name=name;
 	}
 	
+	public String getId() {
+		return getUsername();
+	}
 	public String getName() {
 		return name;
 	}

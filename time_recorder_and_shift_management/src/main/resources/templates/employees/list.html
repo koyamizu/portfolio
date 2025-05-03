@@ -13,7 +13,11 @@
 		<nav>
 			<ul>
 				<li><a href="/employees/register">新規従業員登録</a></li>
-				<li class="li-admin"><a href="/">ホームへ戻る</a></li>
+				<li class="li-admin">
+					<form method="post" name="logout" th:action="@{/logout}">
+						<a href="javascript:logout.submit()">ホームへ戻る</a>
+					</form>
+				</li>
 			</ul>
 		</nav>
 	</header>

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.webapp.entity.Employee;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,9 +34,9 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("form")
-	public String showForm(Model model) {
-		Employee employee = service.selectEmployeeById(1001);
-		model.addAttribute("employee", employee);
+	public String showForm(/*Model model*/) {
+//		Employee employee = service.selectEmployeeById(1001);
+//		model.addAttribute("employee", employee);
 		return "shift/form";
 	}
 

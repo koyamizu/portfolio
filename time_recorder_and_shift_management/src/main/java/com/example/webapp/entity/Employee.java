@@ -20,4 +20,5 @@ public class Employee {
 //	住所
 	private String address;
 
+	private Role authority;
 }

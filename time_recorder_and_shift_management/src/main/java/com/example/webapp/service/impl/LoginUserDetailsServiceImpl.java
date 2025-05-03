@@ -10,10 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp.entity.Authentication;
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.LoginUser;
 import com.example.webapp.entity.Role;
-import com.example.webapp.repository.AuthenticationMapper;
+import com.example.webapp.repository.EmployeesManagementMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,16 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoginUserDetailsServiceImpl implements UserDetailsService {
 
-	private final AuthenticationMapper mapper;
+	private final EmployeesManagementMapper mapper;
 	@Override
 	public UserDetails loadUserByUsername(String employeeIdStr) throws UsernameNotFoundException {
 		Integer employeeId=Integer.parseInt(employeeIdStr);
-		Authentication authentication=mapper.selectByEmployeeId(employeeId);
-		if(authentication!=null) {
-			return new LoginUser(String.valueOf(authentication.getId()),
-					authentication.getPassword(),
-					getAuthorityList(authentication.getAuthority()),
-					authentication.getName()
+		Employee employee=mapper.selectEmployeeById(employeeId);
+		if(employee!=null) {
+			return new LoginUser(String.valueOf(employee.getId()),
+					employee.getPassword(),
+					getAuthorityList(employee.getAuthority()),
+					employee.getName()
 					);
 		}
 		throw new UsernameNotFoundException(
