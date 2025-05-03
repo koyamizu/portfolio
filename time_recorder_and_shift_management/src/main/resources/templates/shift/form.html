@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xlmns:th="http://www.thymeleaf.org">
+<html xlmns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
 	<meta charset="utf-8" />
@@ -20,7 +20,7 @@
 		</nav>
 	</header>
 	<article>
-		<p>現在&nbsp;<span th:text="${employee.name}" style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
+		<p>現在&nbsp;<span th:text="${#authentication.principal.name}" style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
 
 		<form id="shift-form" th:action="@{/shift/submit}" method="post">
 			<input type="hidden" name="employee_id" th:value="${employee.id}">

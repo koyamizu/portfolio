@@ -15,7 +15,7 @@ create table requests(
 --従業員リストテーブルの作成
 CREATE TABLE test_employees_list(
 	id INT not null primary key auto_increment,
-	password varchar(16) not null,
+	password varchar(100) not null,
 	name varchar(50) not null,
 	tel varchar(13) not null,
 	address varchar(150) not null,

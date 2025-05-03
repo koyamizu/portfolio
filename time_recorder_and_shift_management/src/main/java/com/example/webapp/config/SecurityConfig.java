@@ -29,11 +29,10 @@ public class SecurityConfig {
 						.loginProcessingUrl("/authentication")
 						.usernameParameter("employeeIdInput")
 						.passwordParameter("passwordInput")
-						.defaultSuccessUrl("/")
 						.failureUrl("/login?error"))
 				.logout(logout -> logout
 						.logoutUrl("/logout")
-						.logoutSuccessUrl("/login?logout")
+						.logoutSuccessUrl("/")
 						.invalidateHttpSession(true)
 						.deleteCookies("JSESSIONID"));
 		return http.build();

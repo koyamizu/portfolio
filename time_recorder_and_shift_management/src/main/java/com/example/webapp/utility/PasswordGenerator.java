@@ -1,8 +1,12 @@
 package com.example.webapp.utility;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class PasswordGenerator {
 	public static void main(String[] args) {
-		/*	BCyptPasswordEncoder encoder=new BCryptPasswordEncoder();
-			String rawPassword*/
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String rawPassword = "chihaya";
+		String encodedPassword = encoder.encode(rawPassword);
+		System.out.println(encodedPassword);
 	}
 }
