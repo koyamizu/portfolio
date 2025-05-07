@@ -21,7 +21,7 @@
 	</select>
 	<insert id="insertEmployee">
 		INSERT INTO test_employees_list(name,birth,password,tel,address,authority,created_at,updated_at,password_updated_at)
-		VALUES(#{name},#{birth},#{password},#{tel},#{address},now(),now(),now());
+		VALUES(#{name},#{birth},#{password},#{tel},#{address},#{authority},now(),now(),now());
 	</insert>
 	<update id="updateEmployee">
 		UPDATE test_employees_list

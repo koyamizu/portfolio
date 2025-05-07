@@ -21,32 +21,29 @@
 			</ul>
 		</nav>
 	</header>
-	<h1 th:if="${employeeForm.isNew}">パスワード登録</h1>
-	<h1 th:unless="${employeeForm.isNew}">パスワード再登録</h1>
-	<form th:action="${employeeForm.isNew}?@{/employees/save}:@{/employees/update}" th:object="${employeeForm}"
-		method="post">
+	<h1 th:if="${passwordForm.isNew}">パスワード登録</h1>
+	<h1 th:unless="${passwordForm.isNew}">パスワード再設定</h1>
+	<form th:action="@{/password/execute}" th:object="${passwordForm}" method="post">
+		<p th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}" style="color:red">
+			パスワード不一致
+		</p>
+		<input type="hidden" value="${passwordForm.employeeId}" th:field="*{employeeId}">
 		<table>
 			<tr>
-				<th>名前</th>
+				<th>パスワード</th>
 				<td>
-					<input type="text" th:field="*{name}">
+					<input type="password" th:field="*{newRawPassword}">
 				</td>
 			</tr>
 			<tr>
-				<th>電話番号</th>
+				<th>パスワード（確認用）　</th>
 				<td>
-					<input type="tel" th:field="*{tel}">
-				</td>
-			</tr>
-			<tr>
-				<th>住所</th>
-				<td>
-					<input type="text" th:field="*{address}">
+					<input type="password" th:field="*{confirmPassword}">
 				</td>
 			</tr>
 		</table>
-		<input th:if="${employeeForm.isNew}" type="submit" value="登録">
-		<input th:unless="${employeeForm.isNew}" type="submit" value="パスワード登録">
+		<input th:if="${passwordForm.isNew}" type="submit" value="登録">
+		<input th:unless="${passwordForm.isNew}" type="submit" value="再設定">
 	</form>
 </body>
 

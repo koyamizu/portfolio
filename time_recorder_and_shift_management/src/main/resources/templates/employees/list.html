@@ -29,11 +29,8 @@
 			<thead>
 				<tr>
 					<th style="width:10%">ID</th>
-<!--					<th>パスワード</th>-->
 					<th style="width:30%">名前</th>
-<!--					<th>電話番号</th>-->
-<!--					<th>住所</th>-->
-					<th style="width:30%">パスワード再発行</th>
+					<th style="width:30%">パスワード再設定</th>
 					<th style="width:10%">詳細</th>
 					<th style="width:10%">編集</th>
 					<th style="width:10%">削除</th>
@@ -43,11 +40,8 @@
 				<tr th:each="employee:${employees}">
 					<th:block th:object="${employee}">
 						<td th:text="*{id}"></td>
-<!--						<td th:text="*{password}"></td>-->
 						<td th:text="*{name}"></td>
-<!--						<td th:text="*{tel}"></td>-->
-<!--						<td th:text="*{address}"></td>-->
-						<td><a th:href="@{/employees/reissue_password/{id}(id=*{id})}">パスワード再発行</td>
+						<td><a th:href="@{/password/reissue/{id}(id=*{id})}">パスワード再設定</td>
 						<!--REST形式-->
 						<td><a th:href="@{/employees/detail/{id}(id=*{id})}">詳細</a></td>
 						<td><a th:href="@{/employees/edit/{id}(id=*{id})}">編集</a></td>

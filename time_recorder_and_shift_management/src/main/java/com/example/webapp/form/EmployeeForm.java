@@ -1,6 +1,8 @@
 package com.example.webapp.form;
 
-import java.time.LocalDate;
+import jakarta.validation.constraints.Pattern;
+
+import com.example.webapp.entity.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +19,15 @@ public class EmployeeForm {
 //	従業員名
 	private String name;
 //	生年月日
-	private LocalDate birth;
+	@Pattern(regexp="^[0-9]{4}/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$")
+	private String birth;
 //	電話番号
+	@Pattern(regexp="^0[789]0-[0-9]{4}-[0-9]{4}$")
 	private String tel;
 //	住所
 	private String address;
+	
+	private Role authority;
 	
 	private Boolean isNew;
 }

@@ -2,8 +2,9 @@ package com.example.webapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,19 +31,17 @@ public class EmployeesManagementController {
 	}
 
 	@GetMapping("/register")
-	public String register(@ModelAttribute EmployeeForm form) {
+	public String register(EmployeeForm form) {
 		form.setIsNew(true);
 		return "employees/form";
 	}
 
 	//saveとupdateはまとめてsaveとかにして、条件分岐で分けてもいいかもしれない。
-	@PostMapping("/save")
-	public String save(EmployeeForm form, RedirectAttributes attributes) {
-		var employee = EmployeeHelper.convertEmployee(form);
-		service.insertEmployee(employee);
-		attributes.addFlashAttribute("message", "新規従業員が登録されました");
-		return "redirect:/employees";
-	}
+//	@PostMapping("/save")
+//	public String save(@Validated EmployeeForm form, BindingResult bindingResult,RedirectAttributes attributes) {
+//		attributes.addFlashAttribute("message", "新規従業員が登録されました");
+//		return "redirect:/employees";
+//	}
 
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
@@ -58,7 +57,10 @@ public class EmployeesManagementController {
 	}
 
 	@PostMapping("/update")
-	public String update(EmployeeForm form, RedirectAttributes attributes) {
+	public String update(@Validated EmployeeForm form, BindingResult bindingResult,RedirectAttributes attributes) {
+		if(bindingResult.hasErrors()) {
+			return "employees/form";
+		}
 		var employee = EmployeeHelper.convertEmployee(form);
 		service.updateEmployee(employee);
 		attributes.addFlashAttribute("message", "従業員情報が更新されました");
