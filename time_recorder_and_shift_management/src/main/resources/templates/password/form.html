@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>従業員フォーム</title>
+	<title>パスワードフォーム</title>
 	<link th:rel="stylesheet" href="/css/mystyle.css">
 	<meta name="viewpoint" content="width=device-width">
 </head>
@@ -21,8 +21,8 @@
 			</ul>
 		</nav>
 	</header>
-	<h1 th:if="${employeeForm.isNew}">新規従業員登録</h1>
-	<h1 th:unless="${employeeForm.isNew}">従業員情報編集</h1>
+	<h1 th:if="${employeeForm.isNew}">パスワード登録</h1>
+	<h1 th:unless="${employeeForm.isNew}">パスワード再登録</h1>
 	<form th:action="${employeeForm.isNew}?@{/employees/save}:@{/employees/update}" th:object="${employeeForm}"
 		method="post">
 		<table>
@@ -30,12 +30,6 @@
 				<th>名前</th>
 				<td>
 					<input type="text" th:field="*{name}">
-				</td>
-			</tr>
-			<tr>
-				<th>生年月日</th>
-				<td>
-					<input type="date" th:field="*{birth}">
 				</td>
 			</tr>
 			<tr>
@@ -51,7 +45,6 @@
 				</td>
 			</tr>
 		</table>
-		
 		<input th:if="${employeeForm.isNew}" type="submit" value="登録">
 		<input th:unless="${employeeForm.isNew}" type="submit" value="パスワード登録">
 	</form>

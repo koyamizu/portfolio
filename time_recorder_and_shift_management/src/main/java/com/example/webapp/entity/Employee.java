@@ -1,5 +1,6 @@
 package com.example.webapp.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ public class Employee {
 	private String password;
 //	従業員名
 	private String name;
+//	生年月日
+	private LocalDate birth;
 //	電話番号
 	private String tel;
 //	住所

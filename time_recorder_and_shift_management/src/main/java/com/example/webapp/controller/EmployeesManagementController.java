@@ -89,18 +89,4 @@ public class EmployeesManagementController {
 		model.addAttribute("employee",employee);
 		return "employees/detail";
 	}
-	
-	@GetMapping("reissue_password/{id}")
-	public String showPasswordReissueForm(@PathVariable Integer id,Model model) {
-		Employee employee=service.selectEmployeeById(id);
-		model.addAttribute("employee",employee);
-		return "password/form";
-	}
-	
-	@PostMapping("/create_password")
-	public String showPasswordCreationForm(EmployeeForm form, Model model) {
-		Employee employee = EmployeeHelper.convertEmployee(form);
-		model.addAttribute("employee",employee);
-		return "password/form";
-	}
 }

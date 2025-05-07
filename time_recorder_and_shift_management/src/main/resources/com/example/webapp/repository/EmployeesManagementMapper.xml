@@ -20,13 +20,13 @@
 		FROM test_employees_list;
 	</select>
 	<insert id="insertEmployee">
-		INSERT INTO test_employees_list
-		VALUES(#{id},#{password},#{name},#{tel},#{address});
+		INSERT INTO test_employees_list(name,birth,password,tel,address,authority,created_at,updated_at,password_updated_at)
+		VALUES(#{name},#{birth},#{password},#{tel},#{address},now(),now(),now());
 	</insert>
 	<update id="updateEmployee">
 		UPDATE test_employees_list
 		SET
-		password=#{password},name=#{name},tel=#{tel},address=#{address}
+		name=#{name},birth=#{birth},tel=#{tel},address=#{address},updated_at=now()
 		WHERE
 		id=#{id};
 	</update>

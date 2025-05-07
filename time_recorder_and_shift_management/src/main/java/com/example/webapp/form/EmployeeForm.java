@@ -1,5 +1,7 @@
 package com.example.webapp.form;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,8 @@ public class EmployeeForm {
 	private String password;
 //	従業員名
 	private String name;
+//	生年月日
+	private LocalDate birth;
 //	電話番号
 	private String tel;
 //	住所

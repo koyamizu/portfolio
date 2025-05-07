@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.ShiftManagementMapper">
-	<!-- id,start(date),title(employeeかemployee_nameか)というフィールドを持つ「shiftCalendar」エンティティを作成して、下記のプロパティがそれに対応するように作り変える。 -->
 	<resultMap id="EntityForFullCalendarResult"
 		type="com.example.webapp.entity.EntityForFullCalendar">
 		<id property="id" column="id" />
@@ -12,7 +11,6 @@
 
 	<select id="selectAllShifts"
 		resultMap="EntityForFullCalendarResult">
-<!--		SELECT x.id,name,date-INTERVAL 1 MONTH as date-->
 		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date
 		FROM temp_shifts_and_timestamps x
 		INNER JOIN test_employees_list y

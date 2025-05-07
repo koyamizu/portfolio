@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: kinntai
 -- ------------------------------------------------------
--- Server version	9.2.0
+-- Server version	8.4.5
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,6 +26,7 @@ CREATE TABLE `employees_list` (
   `id` int NOT NULL AUTO_INCREMENT,
   `password` char(60) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `birth` date NOT NULL,
   `tel` varchar(13) NOT NULL,
   `address` varchar(150) NOT NULL,
   `authority` enum('ADMIN','USER') NOT NULL,
@@ -42,7 +43,7 @@ CREATE TABLE `employees_list` (
 
 LOCK TABLES `employees_list` WRITE;
 /*!40000 ALTER TABLE `employees_list` DISABLE KEYS */;
-INSERT INTO `employees_list` VALUES (1001,'$2a$10$1bByysmSqkXL7c1fEeRgwemvFa0jJZfn3txG5foVXZUbr5cRYdyAS','吉塚','080-1920-XXXX','福岡県福岡市博多区吉塚本町13-28','ADMIN','2025-05-06 20:26:05','2025-05-06 20:27:04','2025-05-06 20:27:16'),(1002,'$2a$10$hdBltFRc7sOprzGrrCEQ.ufH0RmowXTxkc1R0cDjMMKD7dq7Vzzci','古賀','080-5438-XXXX','福岡県古賀市天神1-1-1','USER','2025-05-06 20:26:05','2025-05-06 20:27:04','2025-05-06 20:27:16'),(1003,'$2a$10$I8.L1/xgC7Uy4aFKm9hRhePclxVPh7jlpB0Wgh2IbEKeJHhjQKMKS','黒崎','080-6703-XXXX','福岡県北九州市八幡西区黒崎3-15-1','USER','2025-05-06 20:26:05','2025-05-06 20:27:04','2025-05-06 20:27:16'),(1004,'$2a$10$J2K81BhxHYY.UaSoUEAioe5xZuVMW6UZRKlW80sbl7QrmXkJrLUZ.','東郷','080-4962-XXXX','福岡県宗像市田熊4-9-1','USER','2025-05-06 20:26:05','2025-05-06 20:27:04','2025-05-06 20:27:16'),(1005,'$2a$10$bmWiA0eCB9R4FgpANmHEI.MSKrDz9/swjZZeq0DqSopvHJuofYPla','小森江','080-9821-XXXX','福岡県北九州市門司区小森江3-11','USER','2025-05-06 20:26:05','2025-05-06 20:27:04','2025-05-06 20:27:16'),(1006,'$2a$10$ITG55zMIqkWzJjd9uxxc4u6sxKSXQbq53UNOCrBaIECrlgfcwXZU6','箱崎','080-7319-XXXX','福岡県福岡市東区筥松2-32','USER','2025-05-06 20:26:05','2025-05-06 20:27:04','2025-05-06 20:27:16');
+INSERT INTO `employees_list` VALUES (1001,'$2a$10$1bByysmSqkXL7c1fEeRgwemvFa0jJZfn3txG5foVXZUbr5cRYdyAS','吉塚','1986-05-27','080-1920-XXXX','福岡県福岡市博多区吉塚本町13-28','ADMIN','2025-05-07 14:33:32','2025-05-07 14:33:32','2025-05-07 14:33:32'),(1002,'$2a$10$hdBltFRc7sOprzGrrCEQ.ufH0RmowXTxkc1R0cDjMMKD7dq7Vzzci','古賀','1972-01-06','080-5438-XXXX','福岡県古賀市天神1-1-1','USER','2025-05-07 14:33:32','2025-05-07 14:33:32','2025-05-07 14:33:32'),(1003,'$2a$10$I8.L1/xgC7Uy4aFKm9hRhePclxVPh7jlpB0Wgh2IbEKeJHhjQKMKS','黒崎','1980-07-12','080-6703-XXXX','福岡県北九州市八幡西区黒崎3-15-1','USER','2025-05-07 14:33:32','2025-05-07 14:33:32','2025-05-07 14:33:32'),(1004,'$2a$10$J2K81BhxHYY.UaSoUEAioe5xZuVMW6UZRKlW80sbl7QrmXkJrLUZ.','東郷','1992-10-11','080-4962-XXXX','福岡県宗像市田熊4-9-1','USER','2025-05-07 14:33:32','2025-05-07 14:33:32','2025-05-07 14:33:32'),(1005,'$2a$10$bmWiA0eCB9R4FgpANmHEI.MSKrDz9/swjZZeq0DqSopvHJuofYPla','小森江','1998-03-30','080-9821-XXXX','福岡県北九州市門司区小森江3-11','USER','2025-05-07 14:33:32','2025-05-07 14:33:32','2025-05-07 14:33:32'),(1006,'$2a$10$ITG55zMIqkWzJjd9uxxc4u6sxKSXQbq53UNOCrBaIECrlgfcwXZU6','箱崎','2005-04-01','080-7319-XXXX','福岡県福岡市東区筥松2-32','USER','2025-05-07 14:33:32','2025-05-07 14:33:32','2025-05-07 14:33:32');
 /*!40000 ALTER TABLE `employees_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-07 13:57:41
+-- Dump completed on 2025-05-07 15:53:40
