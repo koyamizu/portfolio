@@ -2,7 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.EmployeesManagementMapper">
-		<select id="selectEmployeeById">
+	<select id="selectLoginUserById"
+		resultType="com.example.webapp.entity.Authentication">
+		SELECT id,password,authority,name
+		FROM test_employees_list
+		WHERE
+		id=#{employeeId}
+	</select>
+	<select id="selectEmployeeById">
 		SELECT *
 		FROM test_employees_list
 		WHERE
@@ -13,16 +20,18 @@
 		FROM test_employees_list;
 	</select>
 	<insert id="insertEmployee">
-	INSERT INTO test_employees_list
-	VALUES(#{id},#{password},#{name},#{tel},#{address});
+		INSERT INTO test_employees_list
+		VALUES(#{id},#{password},#{name},#{tel},#{address});
 	</insert>
 	<update id="updateEmployee">
-	UPDATE test_employees_list
-	SET password=#{password},name=#{name},tel=#{tel},address=#{address}
-	WHERE id=#{id};
+		UPDATE test_employees_list
+		SET
+		password=#{password},name=#{name},tel=#{tel},address=#{address}
+		WHERE
+		id=#{id};
 	</update>
 	<delete id="deleteEmployee">
-	DELETE FROM test_employees_list
-	WHERE id=#{id};
+		DELETE FROM test_employees_list
+		WHERE id=#{id};
 	</delete>
 </mapper>

@@ -21,33 +21,43 @@
 			</ul>
 		</nav>
 	</header>
-	<h1 th:if="${employeeForm.isNew}">新規従業員登録</h1>
-	<h1 th:unless="${employeeForm.isNew}">従業員情報編集</h1>
-	<form th:action="${employeeForm.isNew}?@{/employees/save}:@{/employees/update}" th:object="${employeeForm}"
-		method="post">
-		<table>
+	<article>
+		<h1>従業員詳細</h1>
+		<table th:object="${employee}">
+			<tr>
+				<th>ID</th>
+				<td th:text="*{id}"></td>
+			</tr>
 			<tr>
 				<th>名前</th>
-				<td>
-					<input type="text" th:field="*{name}">
-				</td>
+				<td th:text="*{name}"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td>
-					<input type="tel" th:field="*{tel}">
-				</td>
+				<td th:text="*{tel}"></td>
 			</tr>
 			<tr>
 				<th>住所</th>
-				<td>
-					<input type="text" th:field="*{address}">
+				<td th:text="*{address}">
+				</td>
+			</tr>
+			<tr>
+				<th>登録日時</th>
+				<td th:text="*{#temporals.format(created_at,'yyyy-MM-dd HH:mm:ss')}">
+				</td>
+			</tr>
+			<tr>
+				<th>更新日時</th>
+				<td th:text="*{#temporals.format(updated_at,'yyyy-MM-dd HH:mm:ss')}">
+				</td>
+			</tr>
+			<tr>
+				<th>パスワード更新日時</th>
+				<td th:text="*{#temporals.format(password_updated_at,'yyyy-MM-dd HH:mm:ss')}">
 				</td>
 			</tr>
 		</table>
-		<input th:if="${employeeForm.isNew}" type="submit" value="登録">
-		<input th:unless="${employeeForm.isNew}" type="submit" value="パスワード登録">
-	</form>
+	</article>
 </body>
 
 </html>

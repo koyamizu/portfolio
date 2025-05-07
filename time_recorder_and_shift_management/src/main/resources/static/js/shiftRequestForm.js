@@ -4,7 +4,7 @@ function initializeCalendar() {
 	// 翌月の 1 日
 	const nextMonthFirst = new Date(today.getFullYear(), today.getMonth() + 1, 1);
 	// 翌月の末日
-	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
 	let selectedDates = [];
 	const calendarEl = document.getElementById('calendar');

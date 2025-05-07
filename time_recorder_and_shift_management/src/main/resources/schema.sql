@@ -1,7 +1,11 @@
-ALTER TABLE test_shift_and_timestamp2504 DROP FOREIGN KEY test_shift_and_timestamp2504_ibfk_1;
-ALTER TABLE test_shift_and_timestamp2504 drop employee_id;
+ALTER TABLE test_shifts_and_timestamps DROP FOREIGN KEY test_shifts_and_timestamps_ibfk_1
+--IF EXISTS test_shifts_and_timestamps
+;
+ALTER TABLE test_shifts_and_timestamps drop employee_id
+--IF EXISTS test_shifts_and_timestamps
+;
 DROP TABLE IF EXISTS test_employees_list;
-DROP TABLE IF EXISTS test_shift_and_timestamp2504;
+DROP TABLE IF EXISTS test_shifts_and_timestamps;
 DROP table IF EXISTS requests;
 
 create table requests(
@@ -13,22 +17,20 @@ create table requests(
 --    FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
     );
 --従業員リストテーブルの作成
-CREATE TABLE test_employees_list(
-	id INT not null primary key auto_increment,
-	password varchar(100) not null,
-	name varchar(50) not null,
-	tel varchar(13) not null,
-	address varchar(150) not null,
-	authority ENUM('ADMIN','USER') NOT NULL
-	)
-auto_increment=1001;
+CREATE TABLE test_employees_list
+LIKE employees_list;
+
+INSERT INTO test_employees_list
+SELECT * FROM employees_list;
+
+--パスワード
+--"yoshizuka01","koga09","kurosaki21","togo13","komorie30","hakozaki02"
 
 --当日出勤者リストの作成
-CREATE TABLE test_shift_and_timestamp2504(
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	employee_id int NOT NULL,
-	date DATE NOT NULL,
-	start TIME,
-	end TIME,
-	FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
-);
+CREATE TABLE test_shifts_and_timestamps
+LIKE shifts_and_timestamps;
+
+ALTER TABLE test_shifts_and_timestamps ADD FOREIGN KEY(employee_id) REFERENCES test_employees_list(id);
+
+INSERT INTO test_shifts_and_timestamps
+SELECT * FROM shifts_and_timestamps;

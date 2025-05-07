@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.service.EmployeesManagementService;
@@ -80,5 +81,26 @@ public class EmployeesManagementController {
 			attributes.addFlashAttribute("errorMessage", "そのIDをもつ従業員データは存在しません");
 			return "redirect:/employees";
 		}
+	}
+	
+	@GetMapping("/detail/{id}")
+	public String showDetail(@PathVariable Integer id,Model model) {
+		Employee employee=service.selectEmployeeById(id);
+		model.addAttribute("employee",employee);
+		return "employees/detail";
+	}
+	
+	@GetMapping("reissue_password/{id}")
+	public String showPasswordReissueForm(@PathVariable Integer id,Model model) {
+		Employee employee=service.selectEmployeeById(id);
+		model.addAttribute("employee",employee);
+		return "password/form";
+	}
+	
+	@PostMapping("/create_password")
+	public String showPasswordCreationForm(EmployeeForm form, Model model) {
+		Employee employee = EmployeeHelper.convertEmployee(form);
+		model.addAttribute("employee",employee);
+		return "password/form";
 	}
 }

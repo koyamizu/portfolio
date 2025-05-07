@@ -7,7 +7,7 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 
 public interface ShiftManagementService {
-	List<EntityForFullCalendar> selectAllShiftByYearMonth(LocalDate date);
+	List<EntityForFullCalendar> selectAllShifts();
 	
 	Employee selectEmployeeById(Integer id);
 	

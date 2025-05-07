@@ -21,8 +21,8 @@ public class ShiftManagementServiceImpl implements ShiftManagementService{
 	private final ShiftManagementMapper mapper;
 	
 	@Override
-	public List<EntityForFullCalendar> selectAllShiftByYearMonth(LocalDate date){
-		return mapper.selectAllShiftByYearMonth(date);
+	public List<EntityForFullCalendar> selectAllShifts(){
+		return mapper.selectAllShifts();
 	}
 	
 	@Override

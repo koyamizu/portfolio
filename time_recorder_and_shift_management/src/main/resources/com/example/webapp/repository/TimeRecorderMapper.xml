@@ -22,7 +22,7 @@
 		SELECT e.name,s.date,s.start,s.end
 		FROM test_employees_list e
 		INNER
-		JOIN test_shift_and_timestamp2504 s
+		JOIN test_shifts_and_timestamps s
 		ON e.id=s.employee_id
 		WHERE
 		s.date=#{date};
@@ -37,7 +37,7 @@
 		FROM test_employees_list e
 		INNER
 		JOIN
-		test_shift_and_timestamp2504 s
+		test_shifts_and_timestamps s
 		ON e.id=s.employee_id
 		WHERE
 		employee_id=#{employee_id} and date=#{date};
@@ -46,12 +46,12 @@
 		resultMap="ShiftAndTimestampWithEmployeeResult">
 		SELECT id,employee_id,start,end
 		FROM
-		test_shift_and_timestamp2504
+		test_shifts_and_timestamps
 		WHERE id=#{shift_id}
 	</select>
 	<!-- 出勤の打刻 -->
 	<insert id="start">
-		UPDATE test_shift_and_timestamp2504
+		UPDATE test_shifts_and_timestamps
 		SET
 		start=CURRENT_TIME
 		WHERE
@@ -59,7 +59,7 @@
 	</insert>
 	<!-- 退勤の打刻 -->
 	<update id="end">
-		UPDATE test_shift_and_timestamp2504
+		UPDATE test_shifts_and_timestamps
 		SET
 		end=CURRENT_TIME
 		WHERE id=#{shift_id};

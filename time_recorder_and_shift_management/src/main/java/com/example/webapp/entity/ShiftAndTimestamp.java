@@ -1,6 +1,7 @@
 package com.example.webapp.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
@@ -21,4 +22,8 @@ public class ShiftAndTimestamp {
 	private LocalTime start;
 	//退勤時刻
 	private LocalTime end;
+	
+	private LocalDateTime created_at;
+	
+	private LocalDateTime updated_at;
 }

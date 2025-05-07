@@ -170,13 +170,15 @@ td.fc-day-sun,
 	color: black;
 }
 
-.fc-daygrid-event-dot {
+.fc-daygrid-event {
 	border: none;
 }
 
 .is_holiday {
 	.fc-daygrid-day-events {
-		display: none;
+		.holiday {
+			display: none;
+		}
 	}
 }
 
@@ -188,6 +190,10 @@ td.fc-day-sun,
 .fc-event.highlight .fc-event-title {
 	color: red !important;
 	font-weight: bold;
+}
+
+.fc-event.lowlight .fc-event-title {
+	color: lightgray !important;
 }
 
 .shift-request {
@@ -215,6 +221,11 @@ td.fc-day-sun,
 .fc-col-header-cell-cushion .col-checkbox {
 	display: block;
 	margin: 2px auto;
+}
+
+:root {
+	--fc-event-bg-color: none;
+	--fc-event-border-color: none;
 }
 
 

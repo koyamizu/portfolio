@@ -4,7 +4,7 @@
 	namespace="com.example.webapp.repository.AuthenticationMapper">
 
 <!--このマッパーファイル自体不要説ある-->
-	<select id="selectByEmployeeId"
+	<select id="selectLoginUserById"
 		resultType="com.example.webapp.entity.Authentication">
 		SELECT id,password,authority,name
 		FROM test_employees_list

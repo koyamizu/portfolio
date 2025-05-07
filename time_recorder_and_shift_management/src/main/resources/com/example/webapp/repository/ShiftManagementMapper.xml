@@ -10,21 +10,18 @@
 		<result property="start" column="date" />
 	</resultMap>
 
-	<select id="selectAllShiftByYearMonth"
+	<select id="selectAllShifts"
 		resultMap="EntityForFullCalendarResult">
-		SELECT x.id,name,date-INTERVAL 1 MONTH as date
-		FROM shifts x
-		INNER JOIN employees_list y
-		ON x.employee_id=y.id
-		WHERE
-		EXTRACT(YEAR_MONTH FROM date)
-		=EXTRACT(YEAR_MONTH FROM
-		#{targetMonthAnyDate});
+<!--		SELECT x.id,name,date-INTERVAL 1 MONTH as date-->
+		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date
+		FROM temp_shifts_and_timestamps x
+		INNER JOIN test_employees_list y
+		ON x.employee_id=y.id;
 	</select>
 
 	<select id="selectEmployeeById">
 		SELECT id,name
-		FROM employees_list
+		FROM test_employees_list
 		WHERE id=#{employee_id};
 	</select>
 

@@ -25,27 +25,31 @@
 		<h1>従業員一覧</h1>
 		<p th:if="${message}" th:text="${message}" style="color:blue">完了メッセージ</p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red">エラーメッセージ</p>
-		<table style="width:80%;">
+		<table  style="width:40%">
 			<thead>
 				<tr>
-					<th>ID</th>
-					<th>パスワード</th>
-					<th style="width:20%">名前</th>
-					<th>電話番号</th>
-					<th>住所</th>
-					<th></th>
-					<th></th>
+					<th style="width:10%">ID</th>
+<!--					<th>パスワード</th>-->
+					<th style="width:30%">名前</th>
+<!--					<th>電話番号</th>-->
+<!--					<th>住所</th>-->
+					<th style="width:30%">パスワード再発行</th>
+					<th style="width:10%">詳細</th>
+					<th style="width:10%">編集</th>
+					<th style="width:10%">削除</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="emp-list">
 				<tr th:each="employee:${employees}">
 					<th:block th:object="${employee}">
 						<td th:text="*{id}"></td>
-						<td th:text="*{password}"></td>
+<!--						<td th:text="*{password}"></td>-->
 						<td th:text="*{name}"></td>
-						<td th:text="*{tel}"></td>
-						<td th:text="*{address}"></td>
+<!--						<td th:text="*{tel}"></td>-->
+<!--						<td th:text="*{address}"></td>-->
+						<td><a th:href="@{/employees/reissue_password/{id}(id=*{id})}">パスワード再発行</td>
 						<!--REST形式-->
+						<td><a th:href="@{/employees/detail/{id}(id=*{id})}">詳細</a></td>
 						<td><a th:href="@{/employees/edit/{id}(id=*{id})}">編集</a></td>
 						<td><a th:href="@{/employees/delete/{id}(id=*{id})}">削除</a></tdth>
 					</th:block>

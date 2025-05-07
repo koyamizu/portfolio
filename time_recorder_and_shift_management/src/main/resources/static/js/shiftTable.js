@@ -1,5 +1,5 @@
 
-function initializeCalendar(events) {
+function initializeCalendar() {
 	let calendarEl = document.getElementById('calendar');
 	let calendar = new FullCalendar.Calendar(calendarEl, {
 		googleCalendarApiKey: 'AIzaSyC5jAdnxhwc9qBhBNB-xT-p8tD-tn6LuQ0',
@@ -13,6 +13,7 @@ function initializeCalendar(events) {
 			className: 'holiday',
 		}],
 		displayEventTime: false,
+		businessHours: true,
 		locale: 'ja',
 		eventDidMount: function(e) {
 			let el = e.el;
@@ -23,23 +24,27 @@ function initializeCalendar(events) {
 			}
 		},
 		eventMouseEnter: function(info) {
-		      const title = info.event.title;
-		      document.querySelectorAll('.fc-event').forEach(evtEl => {
-		        const t = evtEl.querySelector('.fc-event-title');
-		        if (t && t.innerText === title) {
-		          evtEl.classList.add('highlight');
-		        }
-		      });
-		    },
-		    eventMouseLeave: function(info) {
-		      const title = info.event.title;
-		      document.querySelectorAll('.fc-event').forEach(evtEl => {
-		        const t = evtEl.querySelector('.fc-event-title');
-		        if (t && t.innerText === title) {
-		          evtEl.classList.remove('highlight');
-		        }
-		      });
-		    }
+			const title = info.event.title;
+			document.querySelectorAll('.fc-event').forEach(evtEl => {
+				const t = evtEl.querySelector('.fc-event-title');
+				if (t && t.innerText === title) {
+					evtEl.classList.add('highlight');
+				} else {
+					evtEl.classList.add('lowlight');
+				}
+			});
+		},
+		eventMouseLeave: function(info) {
+			const title = info.event.title;
+			document.querySelectorAll('.fc-event').forEach(evtEl => {
+				const t = evtEl.querySelector('.fc-event-title');
+				if (t && t.innerText === title) {
+					evtEl.classList.remove('highlight');
+				} else {
+					evtEl.classList.remove('lowlight');
+				}
+			});
+		}
 	});
 	calendar.render();
 }
