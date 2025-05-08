@@ -25,7 +25,8 @@
 		id=#{employee_id};
 	</select>
 
-	<select id="selectRequestsByEmployeeId" resultMap="EntityForFullCalendarResult">
+	<select id="selectRequestsByEmployeeId"
+		resultMap="EntityForFullCalendarResult">
 		SELECT id,date
 		FROM requests
 		WHERE employee_id=#{employeeId};
@@ -39,7 +40,28 @@
 	</insert>
 
 	<delete id="deleteRequestsByEmployeeId">
-	DELETE FROM requests
-	WHERE employee_id=#{employeeId}
+		DELETE FROM requests
+		WHERE employee_id=#{employeeId}
 	</delete>
+
+	<update id="createShiftRequestsTable">
+		CREATE TABLE test_shift_requests_${newMonth}
+		(id INT AUTO_INCREMENT PRIMARY KEY,
+		employee_id INT NOT NULL,
+		date date NOT NULL,
+		FOREIGN KEY (employee_id)
+		REFERENCES test_employees_list(id)
+		)
+	</update>
+
+	<update id="dropForeignKeyOfShiftRequestsTable">
+		ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY
+		test_shift_requests_${oldMonth}_ibfk_1
+	</update>
+
+	<delete id="deleteShiftRequestTable">
+		DROP TABLE test_shift_requests_${oldMonth};
+	</delete>
+
+
 </mapper>

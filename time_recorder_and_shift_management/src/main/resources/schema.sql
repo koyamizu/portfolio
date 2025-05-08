@@ -1,9 +1,5 @@
-ALTER TABLE test_shifts_and_timestamps DROP FOREIGN KEY test_shifts_and_timestamps_ibfk_1
---IF EXISTS test_shifts_and_timestamps
-;
-ALTER TABLE test_shifts_and_timestamps drop employee_id
---IF EXISTS test_shifts_and_timestamps
-;
+ALTER TABLE test_shifts_and_timestamps DROP FOREIGN KEY test_shifts_and_timestamps_ibfk_1;
+--ALTER TABLE test_shifts_and_timestamps drop employee_id;
 DROP TABLE IF EXISTS test_employees_list;
 DROP TABLE IF EXISTS test_shifts_and_timestamps;
 DROP table IF EXISTS requests;
