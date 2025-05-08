@@ -1,9 +1,8 @@
 package com.example.webapp.form;
 
-import jakarta.validation.constraints.Pattern;
-
 import com.example.webapp.entity.Role;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +18,12 @@ public class EmployeeForm {
 //	従業員名
 	private String name;
 //	生年月日
-	@Pattern(regexp="^[0-9]{4}/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$")
+	@Pattern(regexp="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
+			message="生年月日はハイフン区切りで入力してください")
 	private String birth;
 //	電話番号
-	@Pattern(regexp="^0[789]0-[0-9]{4}-[0-9]{4}$")
+	@Pattern(regexp="^0[789]0-[0-9]{4}-[0-9]{4}$",
+			message="電話番号はハイフン区切りで入力してください")
 	private String tel;
 //	住所
 	private String address;

@@ -19,8 +19,14 @@
 		SELECT *
 		FROM test_employees_list;
 	</select>
+	<select id="selectEmployeeIdByName">
+		SELECT id
+		FROM test_employees_list
+		WHERE name=#{name}
+	</select>
 	<insert id="insertEmployee">
-		INSERT INTO test_employees_list(name,birth,password,tel,address,authority,created_at,updated_at,password_updated_at)
+		INSERT INTO
+		test_employees_list(name,birth,password,tel,address,authority,created_at,updated_at,password_updated_at)
 		VALUES(#{name},#{birth},#{password},#{tel},#{address},#{authority},now(),now(),now());
 	</insert>
 	<update id="updateEmployee">

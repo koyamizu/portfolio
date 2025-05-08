@@ -4,7 +4,6 @@
 	namespace="com.example.webapp.repository.ShiftManagementMapper">
 	<resultMap id="EntityForFullCalendarResult"
 		type="com.example.webapp.entity.EntityForFullCalendar">
-		<id property="id" column="id" />
 		<result property="title" column="name" />
 		<result property="start" column="date" />
 	</resultMap>
@@ -12,15 +11,24 @@
 	<select id="selectAllShifts"
 		resultMap="EntityForFullCalendarResult">
 		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date
-		FROM temp_shifts_and_timestamps x
+		FROM
+		temp_shifts_and_timestamps x
 		INNER JOIN test_employees_list y
-		ON x.employee_id=y.id;
+		ON
+		x.employee_id=y.id;
 	</select>
 
 	<select id="selectEmployeeById">
 		SELECT id,name
 		FROM test_employees_list
-		WHERE id=#{employee_id};
+		WHERE
+		id=#{employee_id};
+	</select>
+
+	<select id="selectRequestsByEmployeeId" resultMap="EntityForFullCalendarResult">
+		SELECT id,date
+		FROM requests
+		WHERE employee_id=#{employeeId};
 	</select>
 
 	<insert id="insertShiftRequests" parameterType="list">

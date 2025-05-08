@@ -13,6 +13,8 @@ public interface EmployeesManagementMapper {
 	
 	List<Employee> selectAllEmployees();
 	
+	Integer selectEmployeeIdByName(@Param("name") String name);
+	
 	void insertEmployee(Employee employee);
 	
 	void updateEmployee(Employee employee);

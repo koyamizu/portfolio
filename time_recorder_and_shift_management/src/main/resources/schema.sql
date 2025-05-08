@@ -11,11 +11,12 @@ DROP table IF EXISTS requests;
 create table requests(
     id int primary key auto_increment,
     employee_id int not null,
-    date date not null,
-    start time,
-    end time
+    date date not null
 --    FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
     );
+
+INSERT INTO requests
+SELECT * FROM temp_requests;    
 --従業員リストテーブルの作成
 CREATE TABLE test_employees_list
 LIKE employees_list;

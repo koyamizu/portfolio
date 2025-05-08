@@ -9,6 +9,8 @@ public interface EmployeesManagementService {
 	
 	List<Employee> selectAllEmployees();
 	
+	Integer selectEmployeeIdByName(String name);
+	
 	void insertEmployee(Employee employee);
 	
 	void updateEmployee(Employee employee);

@@ -28,6 +28,11 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	}
 	
 	@Override
+	public Integer selectEmployeeIdByName(String name) {
+		return mapper.selectEmployeeIdByName(name);
+	}
+	
+	@Override
 	public void insertEmployee(Employee employee) {
 		mapper.insertEmployee(employee);
 	}

@@ -35,18 +35,23 @@ public class PasswordController {
 	}
 
 	@PostMapping("create")
-	public String showPasswordCreationForm(@ModelAttribute("employeeForm") EmployeeForm employeeForm,
-			@ModelAttribute("passwordForm") PasswordForm passwordForm,
-			BindingResult bindingResult) {
+	public String showPasswordCreationForm(@ModelAttribute @Validated EmployeeForm employeeForm,
+			BindingResult bindingResult,
+			@ModelAttribute PasswordForm passwordForm) {
+//		employees_listテーブルのpasswordカラムはnot nullなので、初期パスワードを設定。誕生日を使用。
 		employeeForm.setPassword(employeeForm.getBirth());
 		if (bindingResult.hasErrors()) {
+			employeeForm.setIsNew(true);
 			return "employees/form";
 		}
 		var employee = EmployeeHelper.convertEmployee(employeeForm);
 		employeeManagementService.insertEmployee(employee);
+		Integer employeeId=employeeManagementService.selectEmployeeIdByName(employee.getName());
+		passwordForm.setEmployeeId(employeeId);
 		passwordForm.setIsNew(true);
 		return "password/form";
 	}
+
 
 	@PostMapping("execute")
 	public String reissue(@Validated PasswordForm passwordForm, BindingResult bindingResult,

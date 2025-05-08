@@ -15,5 +15,7 @@ public interface ShiftManagementMapper {
 	
 	Employee selectEmployeeById(Integer id);
 	
+	List<EntityForFullCalendar> selectRequestsByEmployeeId(Integer employeeId);
+	
 	void insertShiftRequests(@Param("employee_id")Integer employeeId,List<LocalDate> dates);
 }

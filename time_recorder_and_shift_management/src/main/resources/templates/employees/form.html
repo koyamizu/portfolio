@@ -25,6 +25,10 @@
 	<h1 th:unless="${employeeForm.isNew}">従業員情報編集</h1>
 	<form th:action="${employeeForm.isNew}?@{/password/create}:@{/employees/update}" th:object="${employeeForm}"
 		method="post">
+		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
+		style="color:red">
+					エラーメッセージ
+				</p>
 		<table>
 			<tr>
 				<th>名前</th>
@@ -53,11 +57,11 @@
 			<tr>
 				<th>従業員区別</th>
 				<td>
-					<label for="admin" value="管理者">
+					<label for="admin">管理者
 						<input type="radio" th:field="*{authority}" value="ADMIN">
 					</label>
-					<label for="user" value="一般従業員">
-						<input type="radio" th:field="*{user}" value="ADMIN">
+					<label for="user">従業員
+						<input type="radio" th:field="*{authority}" value="USER">
 					</label>
 				</td>
 			</tr>

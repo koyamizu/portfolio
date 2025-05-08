@@ -17,6 +17,8 @@ import com.example.webapp.repository.EmployeesManagementMapper;
 
 import lombok.RequiredArgsConstructor;
 
+//SecurityConfigのどのタイミングで使われているのか？
+
 @Service
 @RequiredArgsConstructor
 public class LoginUserDetailsServiceImpl implements UserDetailsService {

@@ -11,5 +11,7 @@ public interface ShiftManagementService {
 	
 	Employee selectEmployeeById(Integer id);
 	
+	List<EntityForFullCalendar> selectRequestsByEmployeeId(Integer employeeId);
+	
 	void insertShiftRequests(Integer employeeId,List<LocalDate> dates);
 }

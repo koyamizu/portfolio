@@ -27,7 +27,8 @@
 		<p th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}" style="color:red">
 			パスワード不一致
 		</p>
-		<input type="hidden" value="${passwordForm.employeeId}" th:field="*{employeeId}">
+		<input type="hidden" value="${employeeForm.employeeId}" th:field="*{employeeId}">
+		<input type="hidden" value="${passwordForm.isNew}" th:field="*{isNew}">
 		<table>
 			<tr>
 				<th>パスワード</th>
