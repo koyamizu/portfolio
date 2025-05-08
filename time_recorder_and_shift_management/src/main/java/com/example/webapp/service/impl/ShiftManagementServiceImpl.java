@@ -39,4 +39,9 @@ public class ShiftManagementServiceImpl implements ShiftManagementService{
 	public void insertShiftRequests(Integer employeeId,List<LocalDate> dates) {
 		mapper.insertShiftRequests(employeeId,dates);
 	}
+	
+	@Override
+	public void deleteRequestsByEmployeeId(Integer employeeId) {
+		mapper.deleteRequestsByEmployeeId(employeeId);
+	}
 }

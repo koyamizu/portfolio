@@ -6,7 +6,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.17/index.global.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.6/index.global.min.js"></script>
 	<link rel="stylesheet" href="/css/mystyle.css">
-<!--	<script th:src="@{/js/shiftRequestForm.js}"></script>-->
+	<!--	<script th:src="@{/js/shiftRequestForm.js}"></script>-->
 	<title>シフト提出画面</title>
 </head>
 
@@ -43,18 +43,19 @@
 		</div>
 		<div th:unless="${shiftRequestForm.isNew}">
 			<p>今月の希望シフトは以下の日程で提出済みです</p>
-			<form>
-				<p>
-					<label for="check">変更はありますか？<br>
-						<button type="submit" class="sub-button2">ある</button>
-						<button type="submit" class="sub-button2">ない</button>
-					</label>
-				</p>
-			</form>
-			<div id="calendar" style="width:80%;margin:0 auto"></div>
+			<p>変更はありますか？</p>
+			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">
+				<form th:action="@{/shift/renew}" method="get">
+					<button type="submit" class="sub-button2">ある(再作成)</button>
+				</form>
+				<form th:action="@{/shift}" method="get">
+					<button type="submit" class="sub-button2">ない</button>
+				</form>
+			</div>
+			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			<script th:src="@{/js/shiftConfirm.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]]*/)});
+				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
 			</script>
 		</div>
 

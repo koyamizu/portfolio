@@ -19,17 +19,16 @@ function initializeCalendar(events) {
 				googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',
 				className: 'holiday',
 			},
-			{ events }
+			{
+				events,
+				className: 'requestList'
+			}
 		],
 		locale: 'ja',
 		eventDidMount: function(e) {
 			let el = e.el;
-			//普通のイベントとわけて考えるため、条件分岐。
-			if (el.classList.contains('holiday')) {
-				if (e.view.type == "dayGridMonth") { //カレンダー(月)表示の場合
-					//イベントが表示される場所の親をたどって各日の枠にたどり着いたらclassを授けよう
-					el.closest('.fc-daygrid-day').classList.add('is_holiday');
-				}
+			if (el.classList.contains('requestList')) {
+				el.closest('.fc-daygrid-day').classList.add('confirm');
 			}
 		},
 		// 1) 最初に開く日を翌月の１日に
@@ -46,4 +45,34 @@ function initializeCalendar(events) {
 	});
 
 	calendar.render();
+
+//	function toggleWeekdayColumn(wd, checked) {
+//		const cur = calendar.getDate();      // 表示中の年月を取得
+//		const year = cur.getFullYear();
+//		const month = cur.getMonth();
+//
+//		// その月の1日～最終日のループ
+//		const first = new Date(year, month, 2);
+//		const last = new Date(year, month + 1, 1);
+//		for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) {
+//			if (d.getDay() !== wd) continue;
+//			const ds = d.toISOString().slice(0, 10); // "YYYY-MM-DD"
+//			const cell = document.querySelector(`td[data-date="${ds}"]`);
+//			if (!cell) continue;
+//
+//			if (checked) {
+//				if (!selectedDates.includes(ds)) {
+//					selectedDates.push(ds);
+//					cell.classList.add('selected');
+//				}
+//			} else {
+//				const i = selectedDates.indexOf(ds);
+//				if (i > -1) {
+//					selectedDates.splice(i, 1);
+//					cell.classList.remove('selected');
+//				}
+//			}
+//		}
+//		console.log('After toggleWeekdayColumn:', selectedDates);
+//	}
 }

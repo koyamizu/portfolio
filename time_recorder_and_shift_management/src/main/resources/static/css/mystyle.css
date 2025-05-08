@@ -210,7 +210,18 @@ td.fc-day-sun,
 	/* 選択セルの背景色 */
 	.selected {
 		background-color: #22e0a4 !important;
+	}
 
+	.confirm {
+		background-color: #FB9D00;
+
+		.fc-event-title {
+			color: transparent;
+		}
+	}
+
+	.selected,
+	.confirm {
 		.fc-daygrid-day-number {
 			color: white;
 		}

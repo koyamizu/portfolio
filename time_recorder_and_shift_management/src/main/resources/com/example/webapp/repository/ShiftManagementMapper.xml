@@ -38,4 +38,8 @@
 		</foreach>
 	</insert>
 
+	<delete id="deleteRequestsByEmployeeId">
+	DELETE FROM requests
+	WHERE employee_id=#{employeeId}
+	</delete>
 </mapper>

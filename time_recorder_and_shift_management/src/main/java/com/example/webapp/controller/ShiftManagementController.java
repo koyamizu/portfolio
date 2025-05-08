@@ -32,17 +32,24 @@ public class ShiftManagementController {
 
 	@GetMapping
 	public String showShiftTables(Model model) {
-		return "shift/table";
+		return "shift/schedule";
 	}
 
 	@GetMapping("form")
-	public String showForm(ShiftRequestForm form,Authentication authentication,Model model) {
-		Integer employeeId=Integer.parseInt(authentication.getName());
+	public String showForm(ShiftRequestForm form, Authentication authentication, Model model) {
+		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
-		List<EntityForFullCalendar> requests=service.selectRequestsByEmployeeId(employeeId);
+		List<EntityForFullCalendar> requests = service.selectRequestsByEmployeeId(employeeId);
 		form.setRequests(requests);
 		form.setIsNew(CollectionUtils.isEmpty(requests));
-		return "shift/form";
+		return "shift/request_form";
+	}
+
+	@GetMapping("renew")
+	public String deleteRequests(Authentication authentication) {
+		Integer employeeId = Integer.parseInt(authentication.getName());
+		service.deleteRequestsByEmployeeId(employeeId);
+		return "forward:/shift/form";
 	}
 
 	@PostMapping("submit")
@@ -55,14 +62,14 @@ public class ShiftManagementController {
 		List<String> dateStrs = mapper.readValue(selectedDatesJson,
 				new TypeReference<List<String>>() {
 				});
-		
-		 List<LocalDate> dates = dateStrs.stream()
-			        .map(LocalDate::parse)
-			        .collect(Collectors.toList());
-		 
-		 service.insertShiftRequests(employeeId,dates);
-		 attributes.addFlashAttribute("message","シフト希望の提出が完了しました");
-		 //「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
+
+		List<LocalDate> dates = dateStrs.stream()
+				.map(LocalDate::parse)
+				.collect(Collectors.toList());
+
+		service.insertShiftRequests(employeeId, dates);
+		attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
+		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
 		return "redirect:/shift/form";
 	}
 }
