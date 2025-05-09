@@ -12,10 +12,11 @@
 		resultMap="EntityForFullCalendarResult">
 		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date
 		FROM
-		temp_shifts_and_timestamps x
+		test_shifts_and_timestamps x
 		INNER JOIN test_employees_list y
 		ON
-		x.employee_id=y.id;
+		x.employee_id=y.id
+		WHERE MONTH(date) BETWEEN #{thisMonth}-1 AND #{thisMonth}+1;
 	</select>
 
 	<select id="selectEmployeeById">

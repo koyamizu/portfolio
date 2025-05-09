@@ -11,7 +11,7 @@ import com.example.webapp.entity.EntityForFullCalendar;
 
 @Mapper
 public interface ShiftManagementMapper {
-	List<EntityForFullCalendar> selectAllShifts();
+	List<EntityForFullCalendar> selectAllShifts(Integer thisMonth);
 	
 	Employee selectEmployeeById(Integer id);
 	

@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: kinntai
 -- ------------------------------------------------------
--- Server version	9.2.0
+-- Server version	8.4.5
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,10 +26,8 @@ CREATE TABLE `requests` (
   `id` int NOT NULL AUTO_INCREMENT,
   `employee_id` int NOT NULL,
   `date` date NOT NULL,
-  `start` time DEFAULT NULL,
-  `end` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +36,7 @@ CREATE TABLE `requests` (
 
 LOCK TABLES `requests` WRITE;
 /*!40000 ALTER TABLE `requests` DISABLE KEYS */;
+INSERT INTO `requests` VALUES (1,1001,'2025-06-01'),(2,1001,'2025-06-02'),(3,1001,'2025-06-08'),(4,1001,'2025-06-09'),(5,1001,'2025-06-15'),(6,1001,'2025-06-16'),(7,1001,'2025-06-22'),(8,1001,'2025-06-23'),(9,1001,'2025-06-29'),(10,1001,'2025-06-30');
 /*!40000 ALTER TABLE `requests` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-07 13:57:40
+-- Dump completed on 2025-05-09 15:30:25

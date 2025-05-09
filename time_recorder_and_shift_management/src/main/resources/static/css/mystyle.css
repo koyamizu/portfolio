@@ -239,6 +239,10 @@ td.fc-day-sun,
 	--fc-event-border-color: none;
 }
 
+.history{
+	width:420px; 
+}
+
 
 @media(min-width:1024px) {
 	#clock {
@@ -294,5 +298,7 @@ td.fc-day-sun,
 		width: 138px;
 		max-width: none;
 	}
-
+	.history{
+		width:auto;
+	}
 }

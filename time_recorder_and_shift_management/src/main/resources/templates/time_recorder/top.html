@@ -67,7 +67,7 @@
 			<tbody>
 				<tr th:each="employee:${todaysEmployees}">
 					<th:block th:object="${employee}">
-						<td　th:text="*{employee.name}"></td>
+						<td th:text="*{employee.name}"></td>
 						<td th:text="*{start}!=null?*{start}:'--:--:--'"></td>
 						<td th:text="*{end}!=null?*{end}:'--:--:--'"></td>
 					</th:block>

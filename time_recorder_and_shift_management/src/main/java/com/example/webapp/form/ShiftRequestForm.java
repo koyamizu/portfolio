@@ -15,5 +15,4 @@ public class ShiftRequestForm {
 	
 	private List<EntityForFullCalendar> requests;
 	private Boolean isNew;
-	private Boolean isRenew;
 }

@@ -25,9 +25,9 @@ SELECT * FROM employees_list;
 
 --当日出勤者リストの作成
 CREATE TABLE test_shifts_and_timestamps
-LIKE temp_shifts_and_timestamps;
+LIKE shifts_and_timestamps;
 
 ALTER TABLE test_shifts_and_timestamps ADD FOREIGN KEY(employee_id) REFERENCES test_employees_list(id);
 
 INSERT INTO test_shifts_and_timestamps
-SELECT * FROM temp_shifts_and_timestamps;
+SELECT * FROM shifts_and_timestamps;

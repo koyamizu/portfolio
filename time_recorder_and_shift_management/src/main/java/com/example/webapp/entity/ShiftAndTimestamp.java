@@ -23,6 +23,8 @@ public class ShiftAndTimestamp {
 	//退勤時刻
 	private LocalTime end;
 	
+	private LocalTime workTime;
+	
 	private LocalDateTime created_at;
 	
 	private LocalDateTime updated_at;

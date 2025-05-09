@@ -9,6 +9,8 @@
 		<result property="date" column="date" />
 		<result property="start" column="start" />
 		<result property="end" column="end" />
+		<result property="created_at" column="created_at" />
+		<result property="updated_at" column="updated_at" />
 		<association property="employee"
 			javaType="com.example.webapp.entity.Employee">
 			<id property="id" column="employee_id" />

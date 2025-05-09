@@ -1,6 +1,7 @@
 package com.example.webapp.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class ShiftTableRestController {
 	public String getShifts() {
 		String jsonMsg = null;
 		try {
-			List<EntityForFullCalendar> shifts = service.selectAllShifts();
+			List<EntityForFullCalendar> shifts = service.selectAllShifts(LocalDate.now().getMonthValue());
 			// FullCalendarにエンコード済み文字列を渡す
 			ObjectMapper mapper = new ObjectMapper();
 			jsonMsg = mapper.registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter()
