@@ -16,12 +16,12 @@ public class AttendanceManagementServiceImpl implements AttendanceManagementServ
 
 	private final AttendanceManagementMapper mapper;
 	@Override
-	public List<ShiftAndTimestamp> selectAllHistoriesToDate(Integer targetMonth) {
-		return mapper.selectAllHistoriesToDate(targetMonth);
+	public List<ShiftAndTimestamp> selectAllHistoriesToDateByMonth(Integer targetMonth) {
+		return mapper.selectAllHistoriesToDateByMonth(targetMonth);
 	}
 	
 	@Override
-	public List<ShiftAndTimestamp> selectHistoryToDateByEmployeeId(Integer employeeId){
-		return mapper.selectHistoryToDateByEmployeeId(employeeId);
+	public List<ShiftAndTimestamp> selectHistoryToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
+		return mapper.selectHistoryToDateByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
 }

@@ -18,7 +18,7 @@
 		</association>
 	</resultMap>
 
-	<select id="selectAllHistoriesToDate"
+	<select id="selectAllHistoriesToDateByMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
 	<![CDATA[SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
 	x.created_at,x.updated_at,employee_id,name
@@ -30,14 +30,14 @@
 	]]>
 	</select>
 
-	<select id="selectHistoryToDateByEmployeeId"
+	<select id="selectHistoryToDateByEmployeeIdAndMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-	<![CDATA[SELECT id,date,start,end,SUBTIME(end,start) as work_time,
-	created_at,updated_at,employee_id,name 
+	<![CDATA[SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
+	x.created_at,x.updated_at,employee_id,name 
 	FROM test_shifts_and_timestamps x
 	INNER JOIN test_employees_list y
 	ON x.employee_id=y.id
-	WHERE date<=CURRENT_DATE
+	WHERE MONTH(date)=#{targetMonth}
 	and employee_id=#{employeeId}]]>
 	</select>
 </mapper>

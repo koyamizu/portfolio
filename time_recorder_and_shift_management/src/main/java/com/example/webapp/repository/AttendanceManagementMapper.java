@@ -8,6 +8,6 @@ import com.example.webapp.entity.ShiftAndTimestamp;
 
 @Mapper
 public interface AttendanceManagementMapper {
-	List<ShiftAndTimestamp> selectAllHistoriesToDate(Integer targetMonth);
-	List<ShiftAndTimestamp> selectHistoryToDateByEmployeeId(Integer employeeId);
+	List<ShiftAndTimestamp> selectAllHistoriesToDateByMonth(Integer targetMonth);
+	List<ShiftAndTimestamp> selectHistoryToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
 }
