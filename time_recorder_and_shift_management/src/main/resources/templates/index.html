@@ -20,7 +20,7 @@
 			<a th:href="@{/shift}">シフト表/シフト管理トップ</a>
 		</p>
 		<p th:with="today=${#temporals.createToday()}">
-			<a th:href="@{/attendance/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴トップ</a>
+			<a th:href="@{/attendance/{thisMonth}/0(thisMonth=${#temporals.month(today)})}">勤怠履歴トップ</a>
 		</p>
 		<p>
 			<a th:href="@{/employees}">従業員管理トップ</a>

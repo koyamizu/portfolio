@@ -1,5 +1,6 @@
 package com.example.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -24,20 +25,27 @@ public class AttendanceManagementController {
 
 	private final AttendanceManagementService service;
 
-	@GetMapping("/{targetMonth}")
-	public String showAttendanceHistory(@PathVariable Integer targetMonth,
-			Authentication auth,Model model) {
+	@GetMapping("/{targetMonth}/{employee_id}")
+	public String showAttendanceHistory(@PathVariable Integer targetMonth, @PathVariable Integer employee_id,
+			Authentication auth, Model model) {
 		List<ShiftAndTimestamp> histories;
-		List<Employee> employees;
+		List<Employee> employees = new ArrayList<Employee>();
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
 			histories = service.selectAllHistoriesToDateByMonth(targetMonth);
-			employees=histories.stream().map(ShiftAndTimestamp::getEmployee).distinct().toList();
-			model.addAttribute("employees",employees);
+			employees = histories.stream().map(ShiftAndTimestamp::getEmployee).distinct().toList();
+			model.addAttribute("employees", employees);
+			model.addAttribute("targetMonth", targetMonth);
+			if (employee_id != 0) {
+				List<ShiftAndTimestamp> personalHistories = histories.stream()
+						.filter(h -> h.getEmployee().getId().equals(employee_id)).toList();
+				model.addAttribute("histories",personalHistories);
+				return "attendance/history";
+			}
 		} else {
 			Integer employeeId = Integer.parseInt(auth.getName());
-			histories = service.selectHistoryToDateByEmployeeIdAndMonth(employeeId,targetMonth);
+			histories = service.selectHistoryToDateByEmployeeIdAndMonth(employeeId, targetMonth);
 		}
-		model.addAttribute("histories",histories);
+		model.addAttribute("histories", histories);
 		return "attendance/history";
 	}
 }
