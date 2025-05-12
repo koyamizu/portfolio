@@ -62,6 +62,7 @@
 					<th style="width:30%">名前</th>
 					<th>出勤時刻</th>
 					<th>退勤時刻</th>
+					<th>実働時間</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -70,6 +71,7 @@
 						<td th:text="*{employee.name}"></td>
 						<td th:text="*{start}!=null?*{start}:'--:--:--'"></td>
 						<td th:text="*{end}!=null?*{end}:'--:--:--'"></td>
+						<td th:text="*{workTime}!=null?*{workTime}:'--:--:--'"></td>
 					</th:block>
 				</tr>
 			</tbody>

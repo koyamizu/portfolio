@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftAndTimestamp;
 import com.example.webapp.repository.AttendanceManagementMapper;
 import com.example.webapp.service.AttendanceManagementService;
@@ -23,5 +24,10 @@ public class AttendanceManagementServiceImpl implements AttendanceManagementServ
 	@Override
 	public List<ShiftAndTimestamp> selectHistoryToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
 		return mapper.selectHistoryToDateByEmployeeIdAndMonth(employeeId,targetMonth);
+	}
+	
+	@Override
+	public List<Employee> selectWorkedMembersByMonth(Integer targerMonth){
+		return mapper.selectWorkedMembersByMonth(targerMonth);
 	}
 }

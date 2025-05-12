@@ -20,24 +20,31 @@
 
 	<select id="selectAllHistoriesToDateByMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-	<![CDATA[SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
+	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
 	x.created_at,x.updated_at,employee_id,name
 	FROM test_shifts_and_timestamps x
 	INNER JOIN test_employees_list y
 	ON x.employee_id=y.id
 	WHERE MONTH(date)=#{targetMonth}
 	ORDER BY date ASC;
-	]]>
 	</select>
 
 	<select id="selectHistoryToDateByEmployeeIdAndMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-	<![CDATA[SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
+	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
 	x.created_at,x.updated_at,employee_id,name 
 	FROM test_shifts_and_timestamps x
 	INNER JOIN test_employees_list y
 	ON x.employee_id=y.id
 	WHERE MONTH(date)=#{targetMonth}
-	and employee_id=#{employeeId}]]>
+	and employee_id=#{employeeId};
+	</select>
+	
+	<select id="selectWorkedMembersByMonth">
+	SELECT DISTINCT y.id,name
+	FROM test_shifts_and_timestamps x
+	INNER JOIN test_employees_list y
+	ON x.employee_id=y.id
+	WHERE MONTH(date)=#{targetMonth};
 	</select>
 </mapper>

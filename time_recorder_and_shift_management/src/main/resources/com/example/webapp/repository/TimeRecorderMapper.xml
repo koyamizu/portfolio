@@ -3,12 +3,13 @@
 <mapper
 	namespace="com.example.webapp.repository.TimeRecorderMapper">
 
-	<resultMap id="ShiftAndTimestampWithEmployeeResult"
+		<resultMap id="ShiftAndTimestampWithEmployeeResult"
 		type="com.example.webapp.entity.ShiftAndTimestamp">
 		<id property="id" column="id" />
 		<result property="date" column="date" />
 		<result property="start" column="start" />
 		<result property="end" column="end" />
+		<result property="workTime" column="work_time"/>
 		<result property="created_at" column="created_at" />
 		<result property="updated_at" column="updated_at" />
 		<association property="employee"
@@ -21,7 +22,7 @@
 	<!--当日出勤者選択 -->
 	<select id="selectEmployeesByDate"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-		SELECT e.name,s.date,s.start,s.end
+		SELECT e.name,s.date,s.start,s.end,SUBTIME(end,start) as work_time
 		FROM test_employees_list e
 		INNER
 		JOIN test_shifts_and_timestamps s

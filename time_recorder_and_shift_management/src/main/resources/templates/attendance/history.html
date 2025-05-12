@@ -13,7 +13,7 @@
 		<nav>
 			<ul th:with="thisMonth=${#dates.month(#dates.createNow())}">
 				<div th:each="month:${#numbers.sequence(1,thisMonth)}" style="display:inline">
-					<li><a th:href="@{/attendance/{month}/0(month=${month})}" th:text="|${month}月|"></a></li>
+					<li><a th:href="@{/attendance/{month}(month=${month})}" th:text="|${month}月|"></a></li>
 				</div>
 				<li class="li-admin">
 					<form method="post" name="logout" th:action="@{/logout}">
@@ -21,10 +21,10 @@
 					</form>
 				</li>
 			</ul>
-			<ul>
-				<li><a th:href="@{/attendance/{targetMonth}/0(targetMonth=${targetMonth})}">全員</a></li>
+			<ul sec:authorize="hasAuthority('ADMIN')">
+				<li><a th:href="@{/attendance/{targetMonth}(targetMonth=${targetMonth})}">全員</a></li>
 				<div th:each="employee : ${employees}" style="display:inline">
-					<li><a th:href="@{/attendance/{targetMonth}/{employee_id}(targetMonth=${targetMonth})(employee_id=${employee.id})}"
+					<li><a th:href="@{/attendance/{targetMonth}/{employee_id}(targetMonth=${targetMonth},employee_id=${employee.id})}"
 						th:text="${employee.name}"></a></li>
 				</div>
 			</ul>
@@ -39,14 +39,7 @@
 				<tr>
 					<th>日付</th>
 					<th>曜日</th>
-					<th>名前
-<!--						<select class="dropdown form-control">-->
-<!--							<option th:value="0" th:selected th:text="名前"></option>-->
-<!--							<option th:each="employee : ${employees}" th:value="${employee.id}"-->
-<!--								th:text="${employee.name}">-->
-<!--							</option>-->
-<!--						</select>-->
-					</th>
+					<th>名前</th>
 					<th>出勤時刻</th>
 					<th>退勤時刻</th>
 					<th>実働時間</th>
@@ -64,8 +57,8 @@
 						<td th:text="*{start}"></td>
 						<td th:text="*{end}"></td>
 						<td th:text="*{workTime}"></td>
-						<td th:text="*{#temporals.format(created_at,'yyyy-MM-dd hh:mm:ss')}"></td>
-						<td th:text="*{#temporals.format(updated_at,'yyyy-MM-dd hh:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(created_at,'yyyy-MM-dd hh:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(updated_at,'yyyy-MM-dd hh:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')" ><a th:href="@{/attendance/{id}(id=*{id})}">修正</a></td>
 					</th:block>
 				</tr>

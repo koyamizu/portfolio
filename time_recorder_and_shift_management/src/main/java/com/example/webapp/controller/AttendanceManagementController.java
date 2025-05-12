@@ -1,6 +1,5 @@
 package com.example.webapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -25,27 +24,34 @@ public class AttendanceManagementController {
 
 	private final AttendanceManagementService service;
 
-	@GetMapping("/{targetMonth}/{employee_id}")
-	public String showAttendanceHistory(@PathVariable Integer targetMonth, @PathVariable Integer employee_id,
+	@GetMapping("/{targetMonth}")
+	public String showAttendanceHistory(@PathVariable Integer targetMonth,
 			Authentication auth, Model model) {
 		List<ShiftAndTimestamp> histories;
-		List<Employee> employees = new ArrayList<Employee>();
+		List<Employee> employees;
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
 			histories = service.selectAllHistoriesToDateByMonth(targetMonth);
 			employees = histories.stream().map(ShiftAndTimestamp::getEmployee).distinct().toList();
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
-			if (employee_id != 0) {
-				List<ShiftAndTimestamp> personalHistories = histories.stream()
-						.filter(h -> h.getEmployee().getId().equals(employee_id)).toList();
-				model.addAttribute("histories",personalHistories);
-				return "attendance/history";
-			}
 		} else {
 			Integer employeeId = Integer.parseInt(auth.getName());
 			histories = service.selectHistoryToDateByEmployeeIdAndMonth(employeeId, targetMonth);
 		}
 		model.addAttribute("histories", histories);
+		return "attendance/history";
+	}
+
+	@GetMapping("/{targetMonth}/{employee_id}")
+	public String showPersonalAttendanceHistory(@PathVariable Integer targetMonth, @PathVariable Integer employee_id,
+			Authentication auth, Model model) {
+		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
+			List<ShiftAndTimestamp> personalHistories = service.selectHistoryToDateByEmployeeIdAndMonth(employee_id, targetMonth);
+			List<Employee> employees =service.selectWorkedMembersByMonth(targetMonth);
+			model.addAttribute("employees", employees);
+			model.addAttribute("targetMonth", targetMonth);
+			model.addAttribute("histories", personalHistories);
+		}
 		return "attendance/history";
 	}
 }
