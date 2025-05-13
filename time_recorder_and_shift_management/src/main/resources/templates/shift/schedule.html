@@ -16,12 +16,11 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a href="">シフト管理</a></li>
-				<li><a href="/shift/form">従業員シフト提出</a></li>
+				<li th:unless="${from_time_recorder}"><a href="">シフト管理</a></li>
+				<li th:unless="${from_time_recorder}"><a href="/shift/form">従業員シフト提出</a></li>
+				</li>
 				<li class="li-admin">
-					<form method="post" name="logout" th:action="@{/logout}">
-						<a href="javascript:logout.submit()">ホームへ戻る</a>
-					</form>
+					<a th:href="@{/time_recorder}">戻る</a>
 				</li>
 			</ul>
 		</nav>

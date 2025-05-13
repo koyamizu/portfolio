@@ -12,10 +12,16 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a href="/shift">シフト表</a></li>
+				<li>
+<!--					<form method="post" name="from_time_recorder" th:action="@{/shift/from_time_recorder}"-->
+<!--					 style="display:inline">-->
+<!--						<a href="javascript:from_time_recorder.submit()">シフト表</a>-->
+<!--					</form>-->
+				<a th:href="@{/shift/from_time_recorder}">シフト表</a>
+				</li>
 				<li class="li-admin">
 					<form method="post" name="logout" th:action="@{/logout}">
-						<a href="javascript:logout.submit()">ホームへ戻る</a>
+						<a href="javascript:logout.submit()">ホームに戻る</a>
 					</form>
 				</li>
 			</ul>

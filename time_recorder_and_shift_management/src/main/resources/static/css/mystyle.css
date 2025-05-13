@@ -10,6 +10,7 @@ ul {
 
 nav {
 	background-color: #006666;
+	height:44px;
 }
 
 nav a {
@@ -98,6 +99,7 @@ td {
 .sub-h1 {
 	margin-block-end: 5px;
 	margin-block-start: 5px;
+	padding-top: 10px;
 }
 
 .sub-h2 {

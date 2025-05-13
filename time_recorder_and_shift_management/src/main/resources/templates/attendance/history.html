@@ -10,8 +10,8 @@
 
 <body>
 	<header>
-		<nav>
-			<ul th:with="thisMonth=${#dates.month(#dates.createNow())}">
+		<nav style="height:auto">
+			<ul th:with="thisMonth=${#dates.month(#dates.createNow())}" style="margin:0;">
 				<div th:each="month:${#numbers.sequence(1,thisMonth)}" style="display:inline">
 					<li><a th:href="@{/attendance/{month}(month=${month})}" th:text="|${month}月|"></a></li>
 				</div>
@@ -21,7 +21,7 @@
 					</form>
 				</li>
 			</ul>
-			<ul sec:authorize="hasAuthority('ADMIN')">
+			<ul sec:authorize="hasAuthority('ADMIN')" style="margin:0;">
 				<li><a th:href="@{/attendance/{targetMonth}(targetMonth=${targetMonth})}">全員</a></li>
 				<div th:each="employee : ${employees}" style="display:inline">
 					<li><a th:href="@{/attendance/{targetMonth}/{employee_id}(targetMonth=${targetMonth},employee_id=${employee.id})}"
