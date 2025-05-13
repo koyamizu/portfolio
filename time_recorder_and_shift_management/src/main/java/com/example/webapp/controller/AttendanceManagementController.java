@@ -26,7 +26,7 @@ public class AttendanceManagementController {
 
 	@GetMapping("/{targetMonth}")
 	public String showAttendanceHistory(@PathVariable Integer targetMonth,
-			Authentication auth, Model model) {
+			Authentication auth, Model model/*,HttpServletRequest request*/) {
 		List<ShiftAndTimestamp> histories;
 		List<Employee> employees;
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
@@ -38,16 +38,20 @@ public class AttendanceManagementController {
 			Integer employeeId = Integer.parseInt(auth.getName());
 			histories = service.selectHistoryToDateByEmployeeIdAndMonth(employeeId, targetMonth);
 		}
+//		String referer = request.getHeader("Referer");
+//		model.addAttribute("referer",referer);
 		model.addAttribute("histories", histories);
 		return "attendance/history";
 	}
 
 	@GetMapping("/{targetMonth}/{employee_id}")
 	public String showPersonalAttendanceHistory(@PathVariable Integer targetMonth, @PathVariable Integer employee_id,
-			Authentication auth, Model model) {
+			Authentication auth, Model model/*,HttpServletRequest request*/) {
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
 			List<ShiftAndTimestamp> personalHistories = service.selectHistoryToDateByEmployeeIdAndMonth(employee_id, targetMonth);
 			List<Employee> employees =service.selectWorkedMembersByMonth(targetMonth);
+//			String referer = request.getHeader("Referer");
+//			model.addAttribute("referer",referer);
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			model.addAttribute("histories", personalHistories);

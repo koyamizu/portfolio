@@ -4,12 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,17 +32,23 @@ public class ShiftManagementController {
 
 	private final ShiftManagementService service;
 
+	//	@GetMapping
+	//	public String showShiftTables(Model model,
+	//			@ModelAttribute(value="from_time_recorder",binding=false) Boolean fromTimeRecorder) {
+	//		model.addAttribute("from_time_recorder", Boolean.TRUE.equals(fromTimeRecorder));
+	//		return "shift/schedule";
+	//	}
+	//	
+	//	@GetMapping("/from_time_recorder")
+	//	public String toShift(RedirectAttributes attrs) {
+	//		attrs.addFlashAttribute("from_time_recorder", true);
+	//		return "redirect:/shift";
+	//	}
 	@GetMapping
-	public String showShiftTables(Model model,
-			@ModelAttribute(value="from_time_recorder",binding=false) Boolean fromTimeRecorder) {
-		model.addAttribute("from_time_recorder", Boolean.TRUE.equals(fromTimeRecorder));
+	public String showShiftTables(Model model, HttpServletRequest request) {
+		String referer = request.getHeader("Referer");
+		model.addAttribute("referer",referer);
 		return "shift/schedule";
-	}
-	
-	@GetMapping("/from_time_recorder")
-	public String toShift(RedirectAttributes attrs) {
-		attrs.addFlashAttribute("from_time_recorder", true);
-		return "redirect:/shift";
 	}
 
 	@GetMapping("form")
