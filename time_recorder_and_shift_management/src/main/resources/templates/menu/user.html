@@ -9,15 +9,12 @@
 </head>
 
 <body>
-	<p>
-		<a th:href="@{/time_recorder}">タイムレコーダー</a>
-	</p>
-	<p>
-		<a th:href="@{/admin}">管理者ページ</a>
-	</p>
-	<p>
-		<a th:href="@{/user}">従業員ページ</a>
-	</p>
+		<p>
+			<a th:href="@{/shift}">シフト表/シフト提出</a>
+		</p>
+		<p th:with="today=${#temporals.createToday()}">
+			<a th:href="@{/attendance/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴</a>
+		</p>
 </body>
 
 </html>

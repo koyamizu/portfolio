@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>管理者ページ</title>
+	<link th:rel="stylesheet" href="css/mystyle.css">
+	<meta name="viewpoint" content="width=device-width">
+</head>
+
+<body>
+	<p>
+		<a th:href="@{/shift/management}">シフト作成/編集</a>
+	</p>
+	<p th:with="today=${#temporals.createToday()}">
+		<a th:href="@{/attendance/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴</a>
+	</p>
+	<p>
+		<a th:href="@{/employees}">従業員管理</a>
+	</p>
+</body>
+
+</html>

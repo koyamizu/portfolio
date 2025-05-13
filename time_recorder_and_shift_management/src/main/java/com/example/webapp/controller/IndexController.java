@@ -11,4 +11,14 @@ public class IndexController {
 	public String showIndex(){
 		return "index";
 	}
+	
+	@GetMapping("/admin")
+	public String showAdminMenu() {
+		return "menu/admin";
+	}
+	
+	@GetMapping("/user")
+	public String showUserMenu() {
+		return "menu/user";
+	}
 }
