@@ -15,6 +15,9 @@
 		<p th:with="today=${#temporals.createToday()}">
 			<a th:href="@{/attendance/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴</a>
 		</p>
+		<form method="post" name="logout" th:action="@{/logout}">
+			<a href="javascript:logout.submit()">ホームに戻る</a>
+		</form>
 </body>
 
 </html>

@@ -18,6 +18,9 @@
 	<p>
 		<a th:href="@{/employees}">従業員管理</a>
 	</p>
+	<form method="post" name="logout" th:action="@{/logout}">
+		<a href="javascript:logout.submit()">ホームに戻る</a>
+	</form>
 </body>
 
 </html>
