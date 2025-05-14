@@ -3,25 +3,20 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>勤怠システムホーム</title>
+	<title>業務システムホーム</title>
 	<link th:rel="stylesheet" href="css/mystyle.css">
 	<meta name="viewpoint" content="width=device-width">
 </head>
 
 <body>
 	<p>
-		<a th:href="@{/time_recorder}">タイムレコーダー</a>
+		<a th:href="@{/to_time_recorder}">タイムレコーダー</a>
 	</p>
 	<p>
 		<a th:href="@{/admin}">管理者ページ</a>
 	</p>
 	<p>
 		<a th:href="@{/user}">従業員ページ</a>
-	</p>
-	<p>
-		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="ログアウト">
-		</form>
 	</p>
 </body>
 

@@ -10,8 +10,11 @@
 
 <body>
     <p>[[${message}]]しました。
-        <span th:text="${message}=='出勤'?'おはようございます！':'おつかれさまでした！'"></span>
+        <span th:text="${message}=='出勤'?'おはようございます！':'おつかれさまでした！'
+		"></span>
+		<br><br>3秒後に自動で遷移します。
     </p>
+	<p><a th:href="@{/time_recorder}" th:text="タイムレコーダーに戻る"></a></p>
 </body>
 
 </html>

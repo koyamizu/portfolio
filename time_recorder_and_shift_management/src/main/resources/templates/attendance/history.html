@@ -16,10 +16,10 @@
 					<li><a th:href="@{/attendance/{month}(month=${month})}" th:text="|${month}月|"></a></li>
 				</div>
 				<li class="li-admin" >
-					<a th:href="${referer}=='http://localhost:8080/user'?@{/user}:@{/admin}">戻る</a>
+					<a th:href="${from}=='admin'?@{/admin}:@{/user}">戻る</a>
 				</li>
 			</ul>
-			<ul sec:authorize="hasAuthority('ADMIN')" style="margin:0;">
+			<ul th:if="${from}=='admin'" style="margin:0;">
 				<li><a th:href="@{/attendance/{targetMonth}(targetMonth=${targetMonth})}">全員</a></li>
 				<div th:each="employee : ${employees}" style="display:inline">
 					<li><a th:href="@{/attendance/{targetMonth}/{employee_id}(targetMonth=${targetMonth},employee_id=${employee.id})}"

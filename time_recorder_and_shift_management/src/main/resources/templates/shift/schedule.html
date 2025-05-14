@@ -8,16 +8,16 @@
 	<meta name="viewpoint" content="width=device-width">
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.6/index.global.min.js"></script>
-	<script th:src="@{/js/shiftTable.js}"></script>
+	<script th:src="@{/js/shift/view-schedule-calendar.js}"></script>
 </head>
 
 <body>
 	<header>
 		<nav>
 			<ul>
-				<li th:unless="${referer}=='http://localhost:8080/time_recorder'"><a th:href="@{/shift/form}">従業員シフト提出</a></li>
+				<li th:if="${from}=='user'"><a th:href="@{/shift/request/form}">従業員シフト提出</a></li>
 				<li class="li-admin">
-					<a th:href="${referer}=='http://localhost:8080/time_recorder'?@{/time_recorder}:@{/user}">戻る</a>
+					<a th:href="${from}=='time_recorder'?@{/time_recorder}:@{/user}">戻る</a>
 				</li>
 			</ul>
 		</nav>
