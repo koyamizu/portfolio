@@ -16,9 +16,9 @@ function initializeCalendar(events) {
 		googleCalendarApiKey: 'AIzaSyC5jAdnxhwc9qBhBNB-xT-p8tD-tn6LuQ0',
 		contentHeight: "auto",
 		initialView: 'dayGridMonth',
-		eventClick: function(info) {
-			info.jsEvent.preventDefault();
-		},
+//		eventClick: function(info) {
+//			info.jsEvent.preventDefault();
+//		},
 		eventSources: [{
 			events
 		},
@@ -68,12 +68,23 @@ function initializeCalendar(events) {
 				}
 			});
 		},
-		dateClick: info => {
-			toggleDate(info.dateStr, info.dayEl);
+		eventClick: info => {
+			toggleDate(info.dateStr, info.evtEl);
 		},
 	});
 	calendar.render();
 
+	function toggleDate(dateStr, eventEl) {
+		const idx = selectedDates.indexOf(dateStr);
+		if (idx > -1) {
+			selectedDates.splice(idx, 1);
+			eventEl.classList.remove('selected');
+		} else {
+			selectedDates.push(dateStr);
+			eventEl.classList.add('selected');
+		}
+		console.log('Selected dates:', selectedDates);
+	}
 	form.addEventListener('submit', function(e) {
 		selectedDates.sort();
 		// 例: ["2025-04-01","2025-04-08",…] の形
@@ -81,15 +92,4 @@ function initializeCalendar(events) {
 		// （特に e.preventDefault は不要。値セット後 自然送信。）
 	});
 
-	function toggleDate(dateStr, cellEl) {
-		const idx = selectedDates.indexOf(dateStr);
-		if (idx > -1) {
-			selectedDates.splice(idx, 1);
-			cellEl.classList.remove('selected');
-		} else {
-			selectedDates.push(dateStr);
-			cellEl.classList.add('selected');
-		}
-		console.log('Selected dates:', selectedDates);
-	}
 }

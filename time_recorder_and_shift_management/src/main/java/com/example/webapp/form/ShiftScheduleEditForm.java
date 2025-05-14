@@ -16,6 +16,6 @@ public class ShiftScheduleEditForm {
 	
 	private List<EntityForFullCalendar> requests;
 	private List<EntityForFullCalendar> shiftsOfNextMonth;
-	private List<Employee> notSubmit;
+	private List<Employee> notSubmits;
 	private Boolean isNew;
 }

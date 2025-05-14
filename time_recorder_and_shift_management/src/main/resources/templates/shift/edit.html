@@ -23,9 +23,8 @@
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
 		<div th:if="${shiftScheduleEditForm.isNew}">
 			<p>未提出者:
-				<div th:each="not-submit:${notSubmits}">
-					<span th:text="${not-submit.name}" style="color:red"></span>
-				</div>
+					<span th:each="employee : ${shiftScheduleEditForm.notSubmits}" 
+					th:text="|${employee.name}&nbsp;&nbsp;|" style="color:red"></span>
 			</p>
 			<form id="shift-form" th:action="@{/shift/edit/create}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">

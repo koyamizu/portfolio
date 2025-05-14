@@ -3,6 +3,8 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -90,7 +91,7 @@ public class ShiftManagementController {
 		form.setRequests(requests);
 		form.setShiftsOfNextMonth(shiftsOfNextMonth);
 		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));
-		form.setNotSubmit(notSubmits);
+		form.setNotSubmits(notSubmits);
 		return "shift/edit";
 	}
 
