@@ -33,12 +33,15 @@ public class ShiftManagementController {
 
 	@GetMapping
 	public String showShiftSchedule(HttpSession session,Model model) {
+		Integer thisMonth=LocalDate.now().getMonthValue();
+		List<EntityForFullCalendar> shifts = service.selectThreeMonthShiftsByTargetMonth(thisMonth);
 		String from=(String)session.getAttribute("from");
 		model.addAttribute("from",from);
+		model.addAttribute("shifts",shifts);
 		return "shift/schedule";
 	}
 
-	@GetMapping("request/form")
+	@GetMapping("request")
 	public String showRequestForm(ShiftRequestForm form, Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
@@ -52,7 +55,7 @@ public class ShiftManagementController {
 	public String deleteRequests(Authentication authentication) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		service.deleteRequestsByEmployeeId(employeeId);
-		return "forward:/shift/request/form";
+		return "forward:/shift/request";
 	}
 
 	@PostMapping("request/submit")
@@ -73,29 +76,29 @@ public class ShiftManagementController {
 		service.insertShiftRequests(employeeId, dates);
 		attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
 		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
-		return "redirect:/shift/request/form";
+		return "redirect:/shift/request";
 	}
 	
-	@GetMapping("management/edit")
+	@GetMapping("edit")
 	public String showeditPage(ShiftScheduleEditForm form,Model model) {
 		//id,start(date)のみの情報が返ってくる
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
-		List<EntityForFullCalendar> shiftsOfNextMonth=service.selectShiftScheduleByTargetMonth(nextMonth);
-//		List<EntityForFullCalendar> requests = service.selectAllRequests();
-//		form.setRequests(requests);
-		form.setShiftsOfNextMonth(shiftsOftNextMonth);
+		List<EntityForFullCalendar> shiftsOfNextMonth=service.selectOneMonthShiftsByTargetMonth(nextMonth);
+		List<EntityForFullCalendar> requests = service.selectAllRequests();
+		form.setRequests(requests);
+		form.setShiftsOfNextMonth(shiftsOfNextMonth);
 		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));
 		return "shift/edit";
 	}
 
-	@GetMapping("managemnet/renew")
+	@GetMapping("edit/renew")
 	public String deleteShift() {
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
 		service.deleteShiftScheduleByTargetMonth(nextMonth);
-		return "forward:/shift/management/edit";
+		return "forward:/shift/edit";
 	}
 
-	@PostMapping("management/execute")
+	@PostMapping("edit/create")
 	public String submitShifts(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes) throws JsonProcessingException {
 
@@ -112,6 +115,6 @@ public class ShiftManagementController {
 		service.insertShiftsOfNextMonth(dates);
 		attributes.addFlashAttribute("message", "シフトの作成が完了しました");
 		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
-		return "redirect:/shift/management/edit";
+		return "redirect:/shift/edit";
 	}
 }

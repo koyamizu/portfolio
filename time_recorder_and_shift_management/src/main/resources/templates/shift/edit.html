@@ -22,21 +22,21 @@
 	<article>
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
 		<div th:if="${shiftScheduleEditForm.isNew}">
-			<form id="shift-form" th:action="@{/shift/management/create}" method="post">
+			<form id="shift-form" th:action="@{/shift/edit/create}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="作成">
 				<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			</form>
-			<script th:src="@{/js/edit-calendar.js}"></script>
+			<script th:src="@{/js/shift/edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', initializeCalendar());
+				document.addEventListener('DOMContentLoaded', function(){initializeCalendar(/*[[${shiftScheduleEditForm.requests}]]*/)});
 			</script>
 		</div>
 		<div th:unless="${shiftScheduleEditForm.isNew}">
 			<p>来月のシフトは以下の日程で作成済みです</p>
 			<p>変更はありますか？</p>
 			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">
-				<form th:action="@{/shift/management/renew}" method="get">
+				<form th:action="@{/shift/edit/renew}" method="get">
 					<button type="submit" class="sub-button2">ある(再作成)</button>
 				</form>
 				<form th:action="@{/admin}" method="get">
@@ -44,7 +44,7 @@
 				</form>
 			</div>
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
-			<script th:src="@{/js/confirm-requests-calendar.js}"></script>
+			<script th:src="@{/js/shift/confirm-edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
 			</script>

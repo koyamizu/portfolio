@@ -8,7 +8,7 @@
 		<result property="start" column="date" />
 	</resultMap>
 
-	<select id="selectAllShifts"
+	<select id="selectThreeMonthShiftsByTargetMonth"
 		resultMap="EntityForFullCalendarResult">
 		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date
 		FROM
@@ -16,15 +16,16 @@
 		INNER JOIN test_employees_list y
 		ON
 		x.employee_id=y.id
-		WHERE MONTH(date) BETWEEN #{thisMonth}-1 AND #{thisMonth}+1;
+		WHERE MONTH(date) BETWEEN #{targetMonth}-1 AND
+		#{targetMonth}+1;
 	</select>
 
-	<select id="selectEmployeeById">
-		SELECT id,name
-		FROM test_employees_list
-		WHERE
-		id=#{employee_id};
-	</select>
+	<!-- <select id="selectEmployeeById"> -->
+	<!-- SELECT id,name -->
+	<!-- FROM test_employees_list -->
+	<!-- WHERE -->
+	<!-- id=#{employee_id}; -->
+	<!-- </select> -->
 
 	<select id="selectRequestsByEmployeeId"
 		resultMap="EntityForFullCalendarResult">
@@ -33,10 +34,43 @@
 		WHERE employee_id=#{employeeId};
 	</select>
 
+	<select id="selectOneMonthShiftsByTargetMonth"
+		resultMap="EntityForFullCalendarResult">
+		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date
+		FROM
+		test_shifts_and_timestamps x
+		INNER JOIN test_employees_list y
+		ON
+		x.employee_id=y.id
+		WHERE MONTH(date)=#{targetMonth};
+	</select>
+
+	<select id="selectAllRequests"
+		resultMap="EntityForFullCalendarResult">
+		SELECT x.id,name,date
+		FROM requests x
+		INNER JOIN
+		test_employees_list y
+		ON
+		x.employee_id=y.id;
+	</select>
+
+	<!-- 英語的にはEmployeesHaveNotSubmittedYetが正しいと思う -->
+	<select id="selectEmployeesNotSubmitRequests"
+		resultMap="EntityForFullCalendarResult">
+		SELECT id,name
+		FROM employees_ist
+		WHERE id NOT IN(
+		SELECT
+		employee_id
+		FROM requests
+		);
+	</select>
+
 	<insert id="insertShiftRequests" parameterType="list">
 		INSERT INTO requests(employee_id, date) VALUES
 		<foreach collection="dates" item="d" separator=",">
-			(#{employee_id}, #{d})
+			(#{employeeId}, #{d})
 		</foreach>
 	</insert>
 
@@ -45,24 +79,32 @@
 		WHERE employee_id=#{employeeId}
 	</delete>
 
-	<update id="createShiftRequestsTable">
-		CREATE TABLE test_shift_requests_${newMonth}
-		(id INT AUTO_INCREMENT PRIMARY KEY,
-		employee_id INT NOT NULL,
-		date date NOT NULL,
-		FOREIGN KEY (employee_id)
-		REFERENCES test_employees_list(id)
-		)
-	</update>
-
-	<update id="dropForeignKeyOfShiftRequestsTable">
-		ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY
-		test_shift_requests_${oldMonth}_ibfk_1
-	</update>
-
-	<delete id="deleteShiftRequestTable">
-		DROP TABLE test_shift_requests_${oldMonth};
+	<delete id="deleteShiftScheduleByTargetMonth">
+		DELETE FROM test_shifts_and_timestamps
+		WHERE
+		MONTH(date)=#{targetMonth}
 	</delete>
+
+
+	<!-- 以下はサックル提出分には含めない -->
+	<!-- <update id="createShiftRequestsTable"> -->
+	<!-- CREATE TABLE test_shift_requests_${newMonth} -->
+	<!-- (id INT AUTO_INCREMENT PRIMARY KEY, -->
+	<!-- employee_id INT NOT NULL, -->
+	<!-- date date NOT NULL, -->
+	<!-- FOREIGN KEY (employee_id) -->
+	<!-- REFERENCES test_employees_list(id) -->
+	<!-- ) -->
+	<!-- </update> -->
+
+	<!-- <update id="dropForeignKeyOfShiftRequestsTable"> -->
+	<!-- ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY -->
+	<!-- test_shift_requests_${oldMonth}_ibfk_1 -->
+	<!-- </update> -->
+
+	<!-- <delete id="deleteShiftRequestTable"> -->
+	<!-- DROP TABLE test_shift_requests_${oldMonth}; -->
+	<!-- </delete> -->
 
 
 </mapper>

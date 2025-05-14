@@ -27,13 +27,13 @@ function initializeCalendar() {
 		locale: 'ja',
 		eventDidMount: function(e) {
 			let el = e.el;
-			//普通のイベントとわけて考えるため、条件分岐。
 			if (el.classList.contains('holiday')) {
-				if (e.view.type == "dayGridMonth") { //カレンダー(月)表示の場合
-					//イベントが表示される場所の親をたどって各日の枠にたどり着いたらclassを授けよう
 					el.closest('.fc-daygrid-day').classList.add('is_holiday');
 				}
-			}
+//				if (e.view.type == "dayGridMonth") { //カレンダー(月)表示の場合
+//					//イベントが表示される場所の親をたどって各日の枠にたどり着いたらclassを授けよう
+//					el.closest('.fc-daygrid-day').classList.add('is_holiday');
+//				}
 		},
 		// 1) 最初に開く日を翌月の１日に
 		initialDate: nextMonthFirst,
@@ -49,7 +49,6 @@ function initializeCalendar() {
 		dateClick: info => {
 			toggleDate(info.dateStr, info.dayEl);
 		},
-
 		// 月が変わるたびにチェックボックス列を再構築
 		datesSet: injectColumnCheckboxes,
 
