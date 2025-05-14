@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 
 @Mapper
@@ -22,6 +23,8 @@ public interface ShiftManagementMapper {
 	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 
 	List<EntityForFullCalendar> selectAllRequests();
+	
+	List<Employee> selectEmployeesNotSubmitRequests();
 
 	void deleteShiftScheduleByTargetMonth(Integer targetMonth);
 

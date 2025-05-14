@@ -2,6 +2,7 @@ package com.example.webapp.form;
 
 import java.util.List;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 
 import lombok.AllArgsConstructor;
@@ -15,5 +16,6 @@ public class ShiftScheduleEditForm {
 	
 	private List<EntityForFullCalendar> requests;
 	private List<EntityForFullCalendar> shiftsOfNextMonth;
+	private List<Employee> notSubmit;
 	private Boolean isNew;
 }

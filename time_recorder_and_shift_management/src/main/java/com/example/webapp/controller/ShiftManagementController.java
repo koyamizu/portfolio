@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 import com.example.webapp.form.ShiftRequestForm;
 import com.example.webapp.form.ShiftScheduleEditForm;
@@ -85,9 +86,11 @@ public class ShiftManagementController {
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
 		List<EntityForFullCalendar> shiftsOfNextMonth=service.selectOneMonthShiftsByTargetMonth(nextMonth);
 		List<EntityForFullCalendar> requests = service.selectAllRequests();
+		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
 		form.setRequests(requests);
 		form.setShiftsOfNextMonth(shiftsOfNextMonth);
 		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));
+		form.setNotSubmit(notSubmits);
 		return "shift/edit";
 	}
 

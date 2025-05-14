@@ -56,10 +56,9 @@
 	</select>
 
 	<!-- 英語的にはEmployeesHaveNotSubmittedYetが正しいと思う -->
-	<select id="selectEmployeesNotSubmitRequests"
-		resultMap="EntityForFullCalendarResult">
+	<select id="selectEmployeesNotSubmitRequests">
 		SELECT id,name
-		FROM employees_ist
+		FROM employees_list
 		WHERE id NOT IN(
 		SELECT
 		employee_id

@@ -3,6 +3,7 @@ package com.example.webapp.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 
 public interface ShiftManagementService {
@@ -19,6 +20,8 @@ public interface ShiftManagementService {
 	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 
 	List<EntityForFullCalendar> selectAllRequests();
+	
+	List<Employee> selectEmployeesNotSubmitRequests();
 
 	void deleteShiftScheduleByTargetMonth(Integer targetMonth);
 
