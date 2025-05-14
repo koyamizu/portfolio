@@ -1,4 +1,4 @@
-
+//元ネタはshiftSchedule.js
 function initializeCalendar() {
 	let calendarEl = document.getElementById('calendar');
 	let calendar = new FullCalendar.Calendar(calendarEl, {
@@ -6,7 +6,7 @@ function initializeCalendar() {
 		contentHeight: "auto",
 		selectable: true,
 		eventSources: [{
-			url: '/api/event/all',
+			url: '/api/event/requests',
 		},
 		{
 			googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',

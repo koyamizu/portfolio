@@ -15,6 +15,7 @@ import com.example.webapp.entity.Role;
 import com.example.webapp.entity.ShiftAndTimestamp;
 import com.example.webapp.service.AttendanceManagementService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,10 +27,12 @@ public class AttendanceManagementController {
 
 	@GetMapping("/{targetMonth}")
 	public String showAttendanceHistory(@PathVariable Integer targetMonth,
-			Authentication auth, Model model) {
+			Authentication auth, Model model, HttpSession session) {
 		List<ShiftAndTimestamp> histories;
 		List<Employee> employees;
-		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
+		String from = (String) session.getAttribute("from");
+		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
+		if (isAdmin && from.equals("admin")) {
 			histories = service.selectAllHistoriesToDateByMonth(targetMonth);
 			employees = histories.stream().map(ShiftAndTimestamp::getEmployee).distinct().toList();
 			model.addAttribute("employees", employees);
@@ -39,15 +42,19 @@ public class AttendanceManagementController {
 			histories = service.selectHistoryToDateByEmployeeIdAndMonth(employeeId, targetMonth);
 		}
 		model.addAttribute("histories", histories);
+		model.addAttribute("from", from);
 		return "attendance/history";
 	}
 
 	@GetMapping("/{targetMonth}/{employee_id}")
 	public String showPersonalAttendanceHistory(@PathVariable Integer targetMonth, @PathVariable Integer employee_id,
-			Authentication auth, Model model) {
+			Authentication auth, Model model, HttpSession session) {
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
-			List<ShiftAndTimestamp> personalHistories = service.selectHistoryToDateByEmployeeIdAndMonth(employee_id, targetMonth);
-			List<Employee> employees =service.selectWorkedMembersByMonth(targetMonth);
+			List<ShiftAndTimestamp> personalHistories = service.selectHistoryToDateByEmployeeIdAndMonth(employee_id,
+					targetMonth);
+			List<Employee> employees = service.selectWorkedMembersByMonth(targetMonth);
+			String from = (String) session.getAttribute("from");
+			model.addAttribute("from", from);
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			model.addAttribute("histories", personalHistories);

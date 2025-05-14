@@ -1,67 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8" />
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.17/index.global.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.6/index.global.min.js"></script>
 	<link rel="stylesheet" href="/css/mystyle.css">
-	<!--	<script th:src="@{/js/shiftRequestForm.js}"></script>-->
-	<title>シフト提出画面</title>
+	<title>シフト作成画面</title>
 </head>
 
 <body>
 	<header>
 		<nav>
 			<ul>
-				<li><a href="/shift">シフト表</a></li>
 				<li class="li-admin">
-					<form method="post" name="logout" th:action="@{/logout}">
-						<a href="javascript:logout.submit()">ホームへ戻る</a>
-					</form>
+					<a th:href="@{/admin}">戻る</a>
 				</li>
 			</ul>
 		</nav>
 	</header>
 	<article>
-		<p>現在&nbsp;<span th:text="${#authentication.principal.name}"
-				style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
-		<div th:if="${shiftRequestForm.isNew}">
-			<form id="shift-form" th:action="@{/shift/submit}" method="post">
-				<input type="hidden" name="employee_id" th:value="${#authentication.principal.id}">
+		<div th:if="${shiftScheduleEditForm.isNew}">
+			<form id="shift-form" th:action="@{/shift/management/create}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
-				<input type="submit" value="提出">
-				<button id="clear-selection" type="button">すべての選択を解除</button>
+				<input type="submit" value="作成">
 				<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			</form>
-
-			<script th:src="@{/js/shiftRequestForm.js}"></script>
+			<script th:src="@{/js/edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', initializeCalendar());
 			</script>
 		</div>
-		<div th:unless="${shiftRequestForm.isNew}">
-			<p>今月の希望シフトは以下の日程で提出済みです</p>
+		<div th:unless="${shiftScheduleEditForm.isNew}">
+			<p>来月のシフトは以下の日程で作成済みです</p>
 			<p>変更はありますか？</p>
 			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">
-				<form th:action="@{/shift/renew}" method="get">
+				<form th:action="@{/shift/management/renew}" method="get">
 					<button type="submit" class="sub-button2">ある(再作成)</button>
 				</form>
-				<form th:action="@{/shift}" method="get">
+				<form th:action="@{/admin}" method="get">
 					<button type="submit" class="sub-button2">ない</button>
 				</form>
 			</div>
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
-			<script th:src="@{/js/shiftConfirm.js}"></script>
+			<script th:src="@{/js/confirm-requests-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
 			</script>
 		</div>
-
-		<!--	<script>-->
-		<!--		document.addEventListener('DOMContentLoaded', function () {-->
-		<!--	</script>-->
 	</article>
 </body>
 

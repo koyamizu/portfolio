@@ -5,17 +5,20 @@
 	<meta charset="utf-8">
 	<title>タイムレコーダー</title>
 	<link th:rel="stylesheet" href="/css/mystyle.css">
-	<meta name="viewpoint" content="width=device-width">
+	<meta name="viewport" content="width=device-width">
+
 </head>
 
 <body>
 	<header>
 		<nav>
 			<ul>
-				<li><a href="/shift">シフト表</a></li>
+				<li>
+					<a th:href="@{/shift}">シフト表</a>
+				</li>
 				<li class="li-admin">
 					<form method="post" name="logout" th:action="@{/logout}">
-						<a href="javascript:logout.submit()">ホームへ戻る</a>
+						<a href="javascript:logout.submit()">ホームに戻る</a>
 					</form>
 				</li>
 			</ul>
@@ -39,16 +42,13 @@
 			setInterval(updateClock, 1000);
 		</script>
 		<hr>
-		<!--		一旦これでいいや。あとでまた認証が必要になったら作り変える。-->
-		<!--		Spring Securityは使わずに、単純にデータベースから該当するシフトIDをプレースホルダにすればいい。-->
-		<!--		<form action="@{/time_recorder/{id}(id=${employees[0].id})}" method="post" target="_self">-->
 		<form th:action="@{/time_recorder/stamp}" method="post" target="_self">
 			<p>
 				<label for="employee_id">従業員ID
 					<input name="employee_id" type="text" autocomplete="off" placeholder="半角で入力してください" required
 						class="login">
 				</label>
-				<button type="submit">ログイン</button>
+				<button type="submit">打刻画面へ</button>
 			</p>
 		</form>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;font-weight: bold;">

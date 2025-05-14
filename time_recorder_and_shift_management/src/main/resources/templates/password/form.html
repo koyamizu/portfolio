@@ -12,11 +12,8 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a href="/employees">従業員一覧</a></li>
 				<li class="li-admin">
-					<form method="post" name="logout" th:action="@{/logout}">
-						<a href="javascript:logout.submit()">ホームへ戻る</a>
-					</form>
+					<a th:href="@{/employees}">戻る</a>>
 				</li>
 			</ul>
 		</nav>

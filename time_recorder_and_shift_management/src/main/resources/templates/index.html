@@ -3,29 +3,21 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>勤怠システムホーム</title>
+	<title>業務システムホーム</title>
 	<link th:rel="stylesheet" href="css/mystyle.css">
 	<meta name="viewpoint" content="width=device-width">
 </head>
 
 <body>
-	<header>
-
-	</header>
-	<article>
-		<p>
-			<a th:href="@{/time_recorder}">タイムレコーダー</a>
-		</p>
-		<p>
-			<a th:href="@{/shift}">シフト表/シフト管理トップ</a>
-		</p>
-		<p th:with="today=${#temporals.createToday()}">
-			<a th:href="@{/attendance/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴トップ</a>
-		</p>
-		<p>
-			<a th:href="@{/employees}">従業員管理トップ</a>
-		</p>
-	</article>
+	<p>
+		<a th:href="@{/to_time_recorder}">タイムレコーダー</a>
+	</p>
+	<p>
+		<a th:href="@{/admin}">管理者ページ</a>
+	</p>
+	<p>
+		<a th:href="@{/user}">従業員ページ</a>
+	</p>
 </body>
 
 </html>
