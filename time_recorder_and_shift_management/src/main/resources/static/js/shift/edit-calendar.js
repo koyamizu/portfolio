@@ -20,7 +20,8 @@ function initializeCalendar(events) {
 //			info.jsEvent.preventDefault();
 //		},
 		eventSources: [{
-			events
+			events,
+			className:'schedule-edit'
 		},
 		{
 			googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',

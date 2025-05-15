@@ -10,7 +10,7 @@ ul {
 
 nav {
 	background-color: #006666;
-	height:44px;
+	height: 44px;
 }
 
 nav a {
@@ -168,9 +168,9 @@ td.fc-day-sun,
 	color: red;
 }
 
-.fc-event-title {
-	color: black;
-}
+/*.fc-event-title {*/
+/*	color: black;*/
+/*}*/
 
 .fc-daygrid-event {
 	border: none;
@@ -236,13 +236,49 @@ td.fc-day-sun,
 	margin: 2px auto;
 }
 
-:root {
-	--fc-event-bg-color: none;
-	--fc-event-border-color: none;
+/*:root {*/
+/*	--fc-event-bg-color: none;*/
+/*	--fc-event-border-color: none;*/
+/*}*/
+/*.fc-event-title {*/
+/*	color: black;*/
+/*}*/
+
+.schedule-view {
+	:root {
+		--fc-event-bg-color: none;
+		--fc-event-border-color: none;
+	}
+
+	.fc-event-title {
+		color: black;
+	}
+
+}
+fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
+  background: rgba(49,159,141,0.1);
 }
 
-.history{
-	width:auto; 
+.schedule-edit {
+
+
+	.fc-event-title {
+		color: white;
+	}
+
+	.fc-toolbar-chunk {
+
+		.fc-today-button,
+		.fc-button,
+		.fc-button-primary,
+		.fc-button-group {
+			display: none;
+		}
+	}
+}
+
+.history {
+	width: auto;
 }
 
 
@@ -300,7 +336,8 @@ td.fc-day-sun,
 		width: 138px;
 		max-width: none;
 	}
-	.history{
-		width:auto;
+
+	.history {
+		width: auto;
 	}
 }

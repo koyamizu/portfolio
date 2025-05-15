@@ -29,7 +29,7 @@
 			<form id="shift-form" th:action="@{/shift/edit/create}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="作成">
-				<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
+				<div id="calendar" style="width:80%;margin:0 auto" class="shift-editor"></div>
 			</form>
 			<script th:src="@{/js/shift/edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
@@ -49,7 +49,7 @@
 			</div>
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			<script th:src="@{/js/shift/confirm-edit-calendar.js}"></script>
-			<script type="text/javascript" th:inline="javascript">
+			<script type="text/javascript" th:inline="javascript" >
 				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
 			</script>
 		</div>

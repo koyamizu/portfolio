@@ -6,7 +6,7 @@ function initializeCalendar(events) {
 		contentHeight: "auto",
 		selectable: true,
 		eventSources: [{
-			events
+			events,
 		},
 		{
 			googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',
