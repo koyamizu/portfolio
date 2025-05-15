@@ -230,6 +230,22 @@ td.fc-day-sun,
 	}
 }
 
+.selected-edit{
+	background-color:transparent;
+	border-color:transparent;
+}
+
+.fc-event .fc-event-title{
+	font-weight: bold;
+}
+.fc-event.highlight-edit .fc-event-title{
+	color:white;
+}
+
+.fc-event.lowlight-edit .fc-event-title{
+	color:#02e09a;	
+}
+
 /* ヘッダーセル内のチェックボックスを中央配置 */
 .fc-col-header-cell-cushion .col-checkbox {
 	display: block;
@@ -245,26 +261,23 @@ td.fc-day-sun,
 /*}*/
 
 .schedule-view {
-	:root {
-		--fc-event-bg-color: none;
-		--fc-event-border-color: none;
-	}
+/*	:root {*/
+/*		--fc-event-bg-color: none;*/
+/*		--fc-event-border-color: none;*/
+/*	}*/
 
-	.fc-event-title {
-		color: black;
-	}
+/*	.fc-event-title {*/
+/*		color: black;*/
+/*	}*/
 
-}
-fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
-  background: rgba(49,159,141,0.1);
 }
 
 .schedule-edit {
 
 
-	.fc-event-title {
-		color: white;
-	}
+/*	.fc-event-title {*/
+/*		color: white;*/
+/*	}*/
 
 	.fc-toolbar-chunk {
 

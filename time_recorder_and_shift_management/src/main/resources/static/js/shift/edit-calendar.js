@@ -7,7 +7,15 @@ function initializeCalendar(events) {
 	// 翌月の末日
 	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-	let selectedDates = [];
+	let selectedShifts = [];
+	for (let i = 0; i < events.length; i++) {
+		selectedShifts[i] = {
+			id: events[i].id,
+			title: events[i].title,
+			start: events[i].start
+		}
+	}
+
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
 	const hiddenInput = document.getElementById('selectedDatesInput');
@@ -16,12 +24,12 @@ function initializeCalendar(events) {
 		googleCalendarApiKey: 'AIzaSyC5jAdnxhwc9qBhBNB-xT-p8tD-tn6LuQ0',
 		contentHeight: "auto",
 		initialView: 'dayGridMonth',
-//		eventClick: function(info) {
-//			info.jsEvent.preventDefault();
-//		},
+		//		eventClick: function(info) {
+		//			info.jsEvent.preventDefault();
+		//		},
 		eventSources: [{
 			events,
-			className:'schedule-edit'
+			className: 'schedule-edit'
 		},
 		{
 			googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',
@@ -52,9 +60,9 @@ function initializeCalendar(events) {
 			document.querySelectorAll('.fc-event').forEach(evtEl => {
 				const t = evtEl.querySelector('.fc-event-title');
 				if (t && t.innerText === title) {
-					evtEl.classList.add('highlight');
+					evtEl.classList.add('highlight-edit');
 				} else {
-					evtEl.classList.add('lowlight');
+					evtEl.classList.add('lowlight-edit');
 				}
 			});
 		},
@@ -63,33 +71,40 @@ function initializeCalendar(events) {
 			document.querySelectorAll('.fc-event').forEach(evtEl => {
 				const t = evtEl.querySelector('.fc-event-title');
 				if (t && t.innerText === title) {
-					evtEl.classList.remove('highlight');
+					evtEl.classList.remove('highlight-edit');
 				} else {
-					evtEl.classList.remove('lowlight');
+					evtEl.classList.remove('lowlight-edit');
 				}
 			});
 		},
 		eventClick: info => {
-			toggleDate(info.dateStr, info.evtEl);
+			toggleDate(info.event._def, info.el);
 		},
 	});
 	calendar.render();
 
-	function toggleDate(dateStr, eventEl) {
-		const idx = selectedDates.indexOf(dateStr);
+	function toggleDate(request, evtEl) {
+		const idx = selectedShifts.findIndex(s => {
+			return s.id == request.publicId
+		});
+
 		if (idx > -1) {
-			selectedDates.splice(idx, 1);
-			eventEl.classList.remove('selected');
+			selectedShifts.splice(idx, 1);
+			evtEl.classList.add('selected-edit');
 		} else {
-			selectedDates.push(dateStr);
-			eventEl.classList.add('selected');
+			shift = events.find(e => {
+				return e.id = request.publicId
+			});
+			selectedShifts.push({ id: shift.id, title: shift.title, start: shift.start });
+			evtEl.classList.remove('selected-edit');
 		}
-		console.log('Selected dates:', selectedDates);
+		console.log('Selected dates:', selectedShifts);
 	}
+
 	form.addEventListener('submit', function(e) {
-		selectedDates.sort();
+		selectedShifts.sort();
 		// 例: ["2025-04-01","2025-04-08",…] の形
-		hiddenInput.value = JSON.stringify(selectedDates);
+		hiddenInput.value = JSON.stringify(selectedShifts);
 		// （特に e.preventDefault は不要。値セット後 自然送信。）
 	});
 

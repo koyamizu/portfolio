@@ -13,4 +13,10 @@ public class EntityForFullCalendar {
 	private String title;
 	//出勤日
 	private String start;
+	
+	private String backgroundColor;
+	
+	private String borderColor;
+	
+	private String textColor;
 }

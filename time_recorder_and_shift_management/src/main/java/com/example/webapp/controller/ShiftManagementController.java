@@ -3,8 +3,6 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +17,13 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 import com.example.webapp.form.ShiftRequestForm;
 import com.example.webapp.form.ShiftScheduleEditForm;
+import com.example.webapp.helper.EntityForFullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -37,6 +37,7 @@ public class ShiftManagementController {
 	public String showShiftSchedule(HttpSession session,Model model) {
 		Integer thisMonth=LocalDate.now().getMonthValue();
 		List<EntityForFullCalendar> shifts = service.selectThreeMonthShiftsByTargetMonth(thisMonth);
+		EntityForFullCalendarHelper.setColorProperties("transparent","black",shifts);
 		String from=(String)session.getAttribute("from");
 		model.addAttribute("from",from);
 		model.addAttribute("shifts",shifts);
@@ -48,6 +49,7 @@ public class ShiftManagementController {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
 		List<EntityForFullCalendar> requests = service.selectRequestsByEmployeeId(employeeId);
+		EntityForFullCalendarHelper.setColorProperties("transparent","transparent",requests);
 		form.setRequests(requests);
 		form.setIsNew(CollectionUtils.isEmpty(requests));
 		return "shift/request";
@@ -87,6 +89,7 @@ public class ShiftManagementController {
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
 		List<EntityForFullCalendar> shiftsOfNextMonth=service.selectOneMonthShiftsByTargetMonth(nextMonth);
 		List<EntityForFullCalendar> requests = service.selectAllRequests();
+		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",requests);
 		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
 		form.setRequests(requests);
 		form.setShiftsOfNextMonth(shiftsOfNextMonth);
