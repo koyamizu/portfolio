@@ -60,9 +60,9 @@ function initializeCalendar(events) {
 			document.querySelectorAll('.fc-event').forEach(evtEl => {
 				const t = evtEl.querySelector('.fc-event-title');
 				if (t && t.innerText === title) {
-					evtEl.classList.add('highlight-edit');
+					evtEl.classList.add('highlight');
 				} else {
-					evtEl.classList.add('lowlight-edit');
+					evtEl.classList.add('lowlight');
 				}
 			});
 		},
@@ -71,9 +71,9 @@ function initializeCalendar(events) {
 			document.querySelectorAll('.fc-event').forEach(evtEl => {
 				const t = evtEl.querySelector('.fc-event-title');
 				if (t && t.innerText === title) {
-					evtEl.classList.remove('highlight-edit');
+					evtEl.classList.remove('highlight');
 				} else {
-					evtEl.classList.remove('lowlight-edit');
+					evtEl.classList.remove('lowlight');
 				}
 			});
 		},
@@ -90,13 +90,18 @@ function initializeCalendar(events) {
 
 		if (idx > -1) {
 			selectedShifts.splice(idx, 1);
-			evtEl.classList.add('selected-edit');
+			//			evtEl.classList.add('un-selected');
+			evtEl.style.backgroundColor = 'rgb(178,183,181)';
+			evtEl.style.borderColor = 'rgb(178,183,181)';
+			evtEl.firstChild.style.color = 'rgb(92,92,92)';
 		} else {
 			shift = events.find(e => {
 				return e.id = request.publicId
 			});
 			selectedShifts.push({ id: shift.id, title: shift.title, start: shift.start });
-			evtEl.classList.remove('selected-edit');
+			evtEl.style.backgroundColor = '#02e09a';
+			evtEl.style.borderColor = '#02e09a';
+			evtEl.firstChild.style.color = '#006666';
 		}
 		console.log('Selected dates:', selectedShifts);
 	}

@@ -189,15 +189,17 @@ td.fc-day-sun,
 }
 
 /* ハイライト用 */
-.fc-event.highlight .fc-event-title {
-	color: red !important;
-	font-weight: bold;
-}
+/*.fc-event.highlight .fc-event-title {*/
+/*	color: red !important;*/
+/*	font-weight: bold;*/
+/*}*/
 
-.fc-event.lowlight .fc-event-title {
-	color: lightgray !important;
+/*.fc-event.lowlight .fc-event-title {*/
+/*	color: lightgray !important;*/
+/*}*/
+.fc .fc-daygrid-day.fc-day-today{
+	background-color:rgb(255 214 5)
 }
-
 .shift-request {
 	.fc-toolbar-chunk {
 
@@ -230,20 +232,28 @@ td.fc-day-sun,
 	}
 }
 
-.selected-edit{
-	background-color:transparent;
-	border-color:transparent;
-}
+/*.un-selected {*/
 
-.fc-event .fc-event-title{
+/*	.fc-h-event {*/
+/*		background-color: rgb(178, 183, 181);*/
+/*		border-color: rgb(178, 183, 181);*/
+/*	}*/
+
+/*	.fc-event .fc-event-title {*/
+/*		color: rgb(92, 92, 92);*/
+/*	}*/
+/*}*/
+
+.fc-event .fc-event-title {
 	font-weight: bold;
 }
-.fc-event.highlight-edit .fc-event-title{
-	color:white;
+
+.fc-event.highlight .fc-event-title {
+	color: white;
 }
 
-.fc-event.lowlight-edit .fc-event-title{
-	color:#02e09a;	
+.fc-event.lowlight .fc-event-title {
+	color: transparent;
 }
 
 /* ヘッダーセル内のチェックボックスを中央配置 */
@@ -261,23 +271,23 @@ td.fc-day-sun,
 /*}*/
 
 .schedule-view {
-/*	:root {*/
-/*		--fc-event-bg-color: none;*/
-/*		--fc-event-border-color: none;*/
-/*	}*/
+	/*	:root {*/
+	/*		--fc-event-bg-color: none;*/
+	/*		--fc-event-border-color: none;*/
+	/*	}*/
 
-/*	.fc-event-title {*/
-/*		color: black;*/
-/*	}*/
+	/*	.fc-event-title {*/
+	/*		color: black;*/
+	/*	}*/
 
 }
 
 .schedule-edit {
 
 
-/*	.fc-event-title {*/
-/*		color: white;*/
-/*	}*/
+	/*	.fc-event-title {*/
+	/*		color: white;*/
+	/*	}*/
 
 	.fc-toolbar-chunk {
 

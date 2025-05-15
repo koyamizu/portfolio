@@ -1,6 +1,7 @@
 
 function initializeCalendar(events) {
 	let calendarEl = document.getElementById('calendar');
+//	let elementToday=document.querySelector('td.fc-day-today');
 	let calendar = new FullCalendar.Calendar(calendarEl, {
 		googleCalendarApiKey: 'AIzaSyC5jAdnxhwc9qBhBNB-xT-p8tD-tn6LuQ0',
 		contentHeight: "auto",
@@ -44,7 +45,8 @@ function initializeCalendar(events) {
 					evtEl.classList.remove('lowlight');
 				}
 			});
-		}
+		},
+		
 	});
 	calendar.render();
 }

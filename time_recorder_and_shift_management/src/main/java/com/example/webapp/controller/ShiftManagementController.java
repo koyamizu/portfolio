@@ -3,6 +3,8 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -37,7 +38,7 @@ public class ShiftManagementController {
 	public String showShiftSchedule(HttpSession session,Model model) {
 		Integer thisMonth=LocalDate.now().getMonthValue();
 		List<EntityForFullCalendar> shifts = service.selectThreeMonthShiftsByTargetMonth(thisMonth);
-		EntityForFullCalendarHelper.setColorProperties("transparent","black",shifts);
+		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",shifts);
 		String from=(String)session.getAttribute("from");
 		model.addAttribute("from",from);
 		model.addAttribute("shifts",shifts);
