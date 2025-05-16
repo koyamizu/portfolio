@@ -75,7 +75,10 @@ function initializeCalendar() {
 			selectedDates.splice(idx, 1);
 			cellEl.classList.remove('selected');
 		} else {
-			selectedDates.push(dateStr);
+			selectedDates.push({
+				employee_id:/*[[${shiftRequestForm.employeeId}]]*/null,
+				date:dateStr
+			});
 			cellEl.classList.add('selected');
 		}
 		console.log('Selected dates:', selectedDates);

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
 import com.example.webapp.form.ShiftRequestForm;
 import com.example.webapp.form.ShiftScheduleEditForm;
@@ -51,9 +50,11 @@ public class ShiftManagementController {
 	public String showRequestForm(ShiftRequestForm form, Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
+		//↓これは別にエンティティでいい。表示用なので。
 		List<EntityForFullCalendar> requests = shiftManagementService.selectRequestsByEmployeeId(employeeId);
 		EntityForFullCalendarHelper.setColorProperties("transparent","transparent",requests);
-		form.setRequests(requests);
+		model.addAttribute("requests",requests);
+		form.setEmployeeId(employeeId);
 		form.setIsNew(CollectionUtils.isEmpty(requests));
 		return "shift/request";
 	}
@@ -92,10 +93,10 @@ public class ShiftManagementController {
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
 		List<EntityForFullCalendar> shiftsOfNextMonth=shiftManagementService.selectOneMonthShiftsByTargetMonth(nextMonth);
 		//↓これShiftAndTimestampで受けないとダメ
+//		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
 		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",requests);
 //		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
-		List<Employee> employees=employeesManagementService.selectAllEmployees().stream().map(Employee::get).toList();
 		form.setRequests(requests);
 		form.setShiftsOfNextMonth(shiftsOfNextMonth);
 		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));

@@ -51,7 +51,7 @@
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			<script th:src="@{/js/shift/confirm-requests-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
+				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]]*/)});
 			</script>
 		</div>
 	</article>
