@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>勤怠修正</title>
+	<link th:rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewpoint" content="width=device-width">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li class="li-admin">
+					<a th:href="@{/fromPage(fromPage=${fromPage})}">戻る</a>>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<h1>勤怠修正</h1>
+	<form th:action="@{/work-history/update}" th:object="${shiftAndTimestampForm}" method="post">
+		<table>
+			<input type="hidden" th:field="${history.id}">
+			<input type="hidden" th:field="${history.date}">
+			<tr>
+				<th>名前</th>
+				<td th:text="${history.employee.name}"></td>
+			</tr>
+			<tr>
+				<th>日付</th>
+				<td th:text="${history.date}">
+				</td>
+			</tr>
+			<tr>
+				<th>出勤時刻</th>
+				<td>
+					<span th:text="|現在:${history.start}&nbsp;&nbsp;修正:|"></span>
+					<input type="time" th:field="*{start}" required>
+				</td>
+			</tr>
+			<tr>
+				<th>退勤時刻</th>
+				<td>
+					<span th:text="|現在:${history.end}&nbsp;&nbsp;修正:|"></span>
+					<input type="time" th:field="*{end}" required>
+				</td>
+			</tr>
+		</table>
+
+		<input type="submit" value="更新">
+	</form>
+</body>
+
+</html>

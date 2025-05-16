@@ -23,17 +23,30 @@
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
 		<div th:if="${shiftScheduleEditForm.isNew}">
 			<p>未提出者:
-					<span th:each="employee : ${shiftScheduleEditForm.notSubmits}" 
-					th:text="|${employee.name}&nbsp;&nbsp;|" style="color:red"></span>
+<!--				<span th:each="employee : ${shiftScheduleEditForm.notSubmits}" th:text="|${employee.name}&nbsp;&nbsp;|"-->
+<!--					style="color:red"></span>-->
 			</p>
 			<form id="shift-form" th:action="@{/shift/edit/create}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="作成">
-				<div id="calendar" style="width:80%;margin:0 auto" class="shift-editor"></div>
+				<div style=" display:flex">
+					<div id="external-events">
+						<p>
+							<strong>従業員</strong>
+						</p>
+						<div class="fc-event fc-h-event fc-daygrid-event">
+							<div class="fc-event-main">うどん</div>
+						</div>
+						<div class="fc-event fc-h-event fc-daygrid-event">
+							<div class="fc-event-main">ラーメン</div>
+						</div>
+					</div>
+					<div id="calendar" style="width:80%;margin:0 auto" class="shift-editor"></div>
+				</div>
 			</form>
 			<script th:src="@{/js/shift/edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', function(){initializeCalendar(/*[[${shiftScheduleEditForm.requests}]]*/)});
+				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftScheduleEditForm.requests}]]*/)});
 			</script>
 		</div>
 		<div th:unless="${shiftScheduleEditForm.isNew}">
@@ -49,7 +62,7 @@
 			</div>
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			<script th:src="@{/js/shift/confirm-edit-calendar.js}"></script>
-			<script type="text/javascript" th:inline="javascript" >
+			<script type="text/javascript" th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
 			</script>
 		</div>

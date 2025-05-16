@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
-	namespace="com.example.webapp.repository.AttendanceManagementMapper">
+	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">
 	<resultMap id="ShiftAndTimestampWithEmployeeResult"
 		type="com.example.webapp.entity.ShiftAndTimestamp">
 		<id property="id" column="id" />
@@ -29,7 +29,7 @@
 	ORDER BY date ASC;
 	</select>
 
-	<select id="selectHistoryToDateByEmployeeIdAndMonth"
+	<select id="selectHistoriesToDateByEmployeeIdAndMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
 	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
 	x.created_at,x.updated_at,employee_id,name 
@@ -47,4 +47,20 @@
 	ON x.employee_id=y.id
 	WHERE MONTH(date)=#{targetMonth};
 	</select>
+	
+	<select id="selectHistoryByShiftId" resultMap="ShiftAndTimestampWithEmployeeResult">
+	SELECT x.id,date,start,end,x.created_at,x.updated_at,employee_id,name
+	FROM test_shifts_and_timestamps x
+	INNER JOIN test_employees_list y
+	ON x.employee_id=y.id
+	WHERE x.id=#{shiftId};
+	</select>
+	
+<!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
+	<update id="updateHistory">
+	UPDATE test_shifts_and_timestamps
+	SET start=#{start},end=#{end},updated_at=NOW()
+	WHERE id=#{id}
+	</update>
+	
 </mapper>

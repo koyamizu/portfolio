@@ -3,8 +3,6 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +18,13 @@ import com.example.webapp.entity.EntityForFullCalendar;
 import com.example.webapp.form.ShiftRequestForm;
 import com.example.webapp.form.ShiftScheduleEditForm;
 import com.example.webapp.helper.EntityForFullCalendarHelper;
+import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -32,12 +32,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/shift")
 public class ShiftManagementController {
 
-	private final ShiftManagementService service;
+//	private final ShiftManagementService service;
+	private final ShiftManagementService shiftManagementService;
+	private final EmployeesManagementService employeesManagementService;
 
 	@GetMapping
 	public String showShiftSchedule(HttpSession session,Model model) {
 		Integer thisMonth=LocalDate.now().getMonthValue();
-		List<EntityForFullCalendar> shifts = service.selectThreeMonthShiftsByTargetMonth(thisMonth);
+		List<EntityForFullCalendar> shifts = shiftManagementService.selectThreeMonthShiftsByTargetMonth(thisMonth);
 		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",shifts);
 		String from=(String)session.getAttribute("from");
 		model.addAttribute("from",from);
@@ -49,7 +51,7 @@ public class ShiftManagementController {
 	public String showRequestForm(ShiftRequestForm form, Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
-		List<EntityForFullCalendar> requests = service.selectRequestsByEmployeeId(employeeId);
+		List<EntityForFullCalendar> requests = shiftManagementService.selectRequestsByEmployeeId(employeeId);
 		EntityForFullCalendarHelper.setColorProperties("transparent","transparent",requests);
 		form.setRequests(requests);
 		form.setIsNew(CollectionUtils.isEmpty(requests));
@@ -59,7 +61,7 @@ public class ShiftManagementController {
 	@GetMapping("request/renew")
 	public String deleteRequests(Authentication authentication) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		service.deleteRequestsByEmployeeId(employeeId);
+		shiftManagementService.deleteRequestsByEmployeeId(employeeId);
 		return "forward:/shift/request";
 	}
 
@@ -78,31 +80,33 @@ public class ShiftManagementController {
 				.map(LocalDate::parse)
 				.toList();
 
-		service.insertShiftRequests(employeeId, dates);
+		shiftManagementService.insertShiftRequests(employeeId, dates);
 		attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
 		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
 		return "redirect:/shift/request";
 	}
 	
 	@GetMapping("edit")
-	public String showeditPage(ShiftScheduleEditForm form,Model model) {
+	public String showEditPage(ShiftScheduleEditForm form,Model model) {
 		//id,start(date)のみの情報が返ってくる
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
-		List<EntityForFullCalendar> shiftsOfNextMonth=service.selectOneMonthShiftsByTargetMonth(nextMonth);
-		List<EntityForFullCalendar> requests = service.selectAllRequests();
+		List<EntityForFullCalendar> shiftsOfNextMonth=shiftManagementService.selectOneMonthShiftsByTargetMonth(nextMonth);
+		//↓これShiftAndTimestampで受けないとダメ
+		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",requests);
-		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
+//		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
+		List<Employee> employees=employeesManagementService.selectAllEmployees().stream().map(Employee::get).toList();
 		form.setRequests(requests);
 		form.setShiftsOfNextMonth(shiftsOfNextMonth);
 		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));
-		form.setNotSubmits(notSubmits);
+//		form.setNotSubmits(notSubmits);
 		return "shift/edit";
 	}
 
 	@GetMapping("edit/renew")
 	public String deleteShift() {
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
-		service.deleteShiftScheduleByTargetMonth(nextMonth);
+		shiftManagementService.deleteShiftScheduleByTargetMonth(nextMonth);
 		return "forward:/shift/edit";
 	}
 
@@ -120,7 +124,7 @@ public class ShiftManagementController {
 				.map(LocalDate::parse)
 				.toList();
 
-		service.insertShiftsOfNextMonth(dates);
+		shiftManagementService.insertShiftsOfNextMonth(dates);
 		attributes.addFlashAttribute("message", "シフトの作成が完了しました");
 		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
 		return "redirect:/shift/edit";

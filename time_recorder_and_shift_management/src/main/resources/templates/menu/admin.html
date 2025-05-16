@@ -13,7 +13,7 @@
 		<a th:href="@{/shift/edit}">シフト管理</a>
 	</p>
 	<p th:with="today=${#temporals.createToday()}">
-		<a th:href="@{/attendance/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴</a>
+		<a th:href="@{/work-history/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴</a>
 	</p>
 	<p>
 		<a th:href="@{/employees}">従業員管理</a>

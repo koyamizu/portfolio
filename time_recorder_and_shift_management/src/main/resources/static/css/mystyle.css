@@ -69,6 +69,10 @@ table {
 	margin: 0 auto 20px;
 	width: 50%;
 	background-color: white;
+	
+	.fc-col-header {
+			border-color: transparent;
+	}
 }
 
 caption {
@@ -197,9 +201,10 @@ td.fc-day-sun,
 /*.fc-event.lowlight .fc-event-title {*/
 /*	color: lightgray !important;*/
 /*}*/
-.fc .fc-daygrid-day.fc-day-today{
-	background-color:rgb(255 214 5)
+.fc .fc-daygrid-day.fc-day-today {
+	background-color: rgb(255 214 5)
 }
+
 .shift-request {
 	.fc-toolbar-chunk {
 
@@ -231,6 +236,12 @@ td.fc-day-sun,
 		}
 	}
 }
+
+/*.fc-col-header {*/
+/*	table {*/
+/*		border-color: none;*/
+/*	}*/
+/*}*/
 
 /*.un-selected {*/
 

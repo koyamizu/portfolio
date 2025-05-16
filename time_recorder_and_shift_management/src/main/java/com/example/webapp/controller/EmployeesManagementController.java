@@ -30,7 +30,7 @@ public class EmployeesManagementController {
 		return "employees/list";
 	}
 
-	@GetMapping("/register")
+	@GetMapping("register")
 	public String register(EmployeeForm form) {
 		form.setIsNew(true);
 		return "employees/form";
@@ -43,7 +43,7 @@ public class EmployeesManagementController {
 //		return "redirect:/employees";
 //	}
 
-	@GetMapping("/edit/{id}")
+	@GetMapping("edit/{id}")
 	public String edit(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
 		var target = service.selectEmployeeById(id);
 		if (target != null) {
@@ -56,7 +56,7 @@ public class EmployeesManagementController {
 		}
 	}
 
-	@PostMapping("/update")
+	@PostMapping("update")
 	public String update(@Validated EmployeeForm form, BindingResult bindingResult,RedirectAttributes attributes) {
 		if(bindingResult.hasErrors()) {
 			return "employees/form";
@@ -67,7 +67,7 @@ public class EmployeesManagementController {
 		return "redirect:/employees";
 	}
 
-	@GetMapping("/delete/{id}")
+	@GetMapping("delete/{id}")
 	public String delete(@PathVariable Integer id, RedirectAttributes attributes) {
 		var target = service.selectEmployeeById(id);
 		if (target != null) {
@@ -85,7 +85,7 @@ public class EmployeesManagementController {
 		}
 	}
 	
-	@GetMapping("/detail/{id}")
+	@GetMapping("detail/{id}")
 	public String showDetail(@PathVariable Integer id,Model model) {
 		Employee employee=service.selectEmployeeById(id);
 		model.addAttribute("employee",employee);

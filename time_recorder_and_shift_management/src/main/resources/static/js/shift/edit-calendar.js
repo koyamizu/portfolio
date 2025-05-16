@@ -19,6 +19,17 @@ function initializeCalendar(events) {
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
 	const hiddenInput = document.getElementById('selectedDatesInput');
+	
+//	let containerEl = document.getElementById('external-events');
+//
+//	new FullCalendar.Draggable(containerEl, {
+//		itemSelector: '.fc-event',
+//		eventData: function(eventEl) {
+//			return {
+//				title: eventEl.innerText
+//			};
+//		},
+//	});
 
 	let calendar = new FullCalendar.Calendar(calendarEl, {
 		googleCalendarApiKey: 'AIzaSyC5jAdnxhwc9qBhBNB-xT-p8tD-tn6LuQ0',

@@ -13,16 +13,16 @@
 		<nav style="height:auto">
 			<ul th:with="thisMonth=${#dates.month(#dates.createNow())}" style="margin:0;">
 				<div th:each="month:${#numbers.sequence(1,thisMonth)}" style="display:inline">
-					<li><a th:href="@{/attendance/{month}(month=${month})}" th:text="|${month}月|"></a></li>
+					<li><a th:href="@{/work-history/{month}(month=${month})}" th:text="|${month}月|"></a></li>
 				</div>
 				<li class="li-admin" >
 					<a th:href="${from}=='admin'?@{/admin}:@{/user}">戻る</a>
 				</li>
 			</ul>
 			<ul th:if="${from}=='admin'" style="margin:0;">
-				<li><a th:href="@{/attendance/{targetMonth}(targetMonth=${targetMonth})}">全員</a></li>
+				<li><a th:href="@{/work-history/{targetMonth}(targetMonth=${targetMonth})}">全員</a></li>
 				<div th:each="employee : ${employees}" style="display:inline">
-					<li><a th:href="@{/attendance/{targetMonth}/{employee_id}(targetMonth=${targetMonth},employee_id=${employee.id})}"
+					<li><a th:href="@{/work-history/{targetMonth}/{employee_id}(targetMonth=${targetMonth},employee_id=${employee.id})}"
 						th:text="${employee.name}"></a></li>
 				</div>
 			</ul>
@@ -57,7 +57,7 @@
 						<td th:text="*{workTime}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(created_at,'yyyy-MM-dd hh:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(updated_at,'yyyy-MM-dd hh:mm:ss')}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')" ><a th:href="@{/attendance/{id}(id=*{id})}">修正</a></td>
+						<td sec:authorize="hasAuthority('ADMIN')" ><a th:href="@{/work-history/edit/{id}(id=*{id})}">修正</a></td>
 					</th:block>
 				</tr>
 			</tbody>
