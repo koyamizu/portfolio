@@ -45,9 +45,18 @@
 		WHERE MONTH(date)=#{targetMonth};
 	</select>
 
-	<select id="selectAllRequests"
-		resultMap="EntityForFullCalendarResult">
-		SELECT x.id,name,date
+<!--	<select id="selectAllRequests"-->
+<!--		resultMap="EntityForFullCalendarResult">-->
+<!--		SELECT x.id,name,date-->
+<!--		FROM requests x-->
+<!--		INNER JOIN-->
+<!--		test_employees_list y-->
+<!--		ON-->
+<!--		x.employee_id=y.id;-->
+<!--	</select>-->
+
+	<select id="selectAllRequests">
+		SELECT x.id,y.id as employee_id,name,date
 		FROM requests x
 		INNER JOIN
 		test_employees_list y
