@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.entity.ShiftAndTimestamp;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
 
@@ -57,7 +56,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public List<ShiftAndTimestamp> selectAllRequests() {
+	public List<EntityForFullCalendar> selectAllRequests() {
 		return mapper.selectAllRequests();
 	}
 

@@ -2,6 +2,7 @@ package com.example.webapp.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -15,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.entity.ShiftAndTimestamp;
-import com.example.webapp.form.ShiftRequestForm;
-import com.example.webapp.form.ShiftScheduleEditForm;
 import com.example.webapp.helper.EntityForFullCalendarHelper;
+import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -34,7 +34,7 @@ public class ShiftManagementController {
 
 //	private final ShiftManagementService service;
 	private final ShiftManagementService shiftManagementService;
-//	private final EmployeesManagementService employeesManagementService;
+	private final EmployeesManagementService employeesManagementService;
 
 	@GetMapping
 	public String showShiftSchedule(HttpSession session,Model model) {
@@ -48,7 +48,7 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("request")
-	public String showRequestForm(ShiftRequestForm form, Authentication authentication, Model model) {
+	public String showRequestForm(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
 		//↓これは別にエンティティでいい。表示用なので。
@@ -87,18 +87,29 @@ public class ShiftManagementController {
 	}
 	
 	@GetMapping("edit")
-	public String showEditPage(ShiftScheduleEditForm form,Model model) {
+	public String showEditPage(/*ShiftScheduleEditForm form,*/Model model) {
 		//id,start(date)のみの情報が返ってくる
 		Integer nextMonth=LocalDate.now().getMonthValue()+1;
 		List<EntityForFullCalendar> shiftsOfNextMonth=shiftManagementService.selectOneMonthShiftsByTargetMonth(nextMonth);
-		//↓これShiftAndTimestampで受けないとダメ
-//		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
-		List<ShiftAndTimestamp> requests = shiftManagementService.selectAllRequests();
+		//↓これShiftRequestFormで受けないとダメ
+		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
+//		List<ShiftAndTimestamp> requests = shiftManagementService.selectAllRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",requests);
 //		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
-		form.setRequests(requests);
-		form.setShiftsOfNextMonth(shiftsOfNextMonth);
-		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));
+		List<Integer> submittedEmployeeIds=requests.stream().map(r->r.getEmployeeId()).distinct().toList();
+		List<Employee> allEmployees=employeesManagementService.selectAllEmployees();
+//		List<Employee> notSubmits=allEmployees.stream().map(e->e.getId()).forEach(ei->submittedEmployeeIds.contains(id)).toList();
+		List<Employee> notSubmits=allEmployees.stream().filter(e->!submittedEmployeeIds.contains(e.getId())).toList();
+		model.addAllAttributes(Map.of(
+				"requests",requests,
+				"shiftsOfNextMonth",shiftsOfNextMonth,
+				"isNew",CollectionUtils.isEmpty(shiftsOfNextMonth),
+				"allEmployees",allEmployees,
+				"notSubmits",notSubmits
+				));		
+//		form.setRequests(requests);
+//		form.setShiftsOfNextMonth(shiftsOfNextMonth);
+//		form.setIsNew(CollectionUtils.isEmpty(shiftsOfNextMonth));
 //		form.setNotSubmits(notSubmits);
 		return "shift/edit";
 	}

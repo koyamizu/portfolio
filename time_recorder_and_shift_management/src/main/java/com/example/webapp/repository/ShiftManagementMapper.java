@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.entity.ShiftAndTimestamp;
 
 @Mapper
 public interface ShiftManagementMapper {
@@ -23,7 +22,7 @@ public interface ShiftManagementMapper {
 
 	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 
-	List<ShiftAndTimestamp> selectAllRequests();
+	List<EntityForFullCalendar> selectAllRequests();
 	
 	List<Employee> selectEmployeesNotSubmitRequests();
 

@@ -7,29 +7,32 @@ function initializeCalendar(events) {
 	// 翌月の末日
 	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-	let selectedShifts = [];
-	for (let i = 0; i < events.length; i++) {
-		selectedShifts[i] = {
-			id: events[i].id,
-			title: events[i].title,
-			start: events[i].start
+	let selectedShifts = events.map(e => {
+		return {
+			id: e.id,
+			start: e.start,
+			employeeId: e.employeeId,
+			title: e.title
 		}
-	}
+	})
 
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
 	const hiddenInput = document.getElementById('selectedDatesInput');
-	
-//	let containerEl = document.getElementById('external-events');
-//
-//	new FullCalendar.Draggable(containerEl, {
-//		itemSelector: '.fc-event',
-//		eventData: function(eventEl) {
-//			return {
-//				title: eventEl.innerText
-//			};
-//		},
-//	});
+
+	let containerEl = document.getElementById('external-events');
+
+	new FullCalendar.Draggable(containerEl, {
+		itemSelector: '.fc-event-main',
+		eventData: function(eventEl) {
+			return {
+				id: null,
+				employeeId: eventEl.id,
+				title: eventEl.innerText,
+				editable: true
+			};
+		},
+	});
 
 	let calendar = new FullCalendar.Calendar(calendarEl, {
 		googleCalendarApiKey: 'AIzaSyC5jAdnxhwc9qBhBNB-xT-p8tD-tn6LuQ0',
@@ -50,6 +53,8 @@ function initializeCalendar(events) {
 		businessHours: true,
 		locale: 'ja',
 		selectable: true,
+		droppable: true,
+		//		editable:true,
 		contentHeight: 'auto',
 		eventDidMount: function(e) {
 			let el = e.el;
@@ -89,7 +94,11 @@ function initializeCalendar(events) {
 			});
 		},
 		eventClick: info => {
-			toggleDate(info.event._def, info.el);
+			if (info.event._def.publicId == 'null') {
+				info.event.remove();
+			} else {
+				toggleDate(info.event._def, info.el);
+			}
 		},
 	});
 	calendar.render();
@@ -101,7 +110,6 @@ function initializeCalendar(events) {
 
 		if (idx > -1) {
 			selectedShifts.splice(idx, 1);
-			//			evtEl.classList.add('un-selected');
 			evtEl.style.backgroundColor = 'rgb(178,183,181)';
 			evtEl.style.borderColor = 'rgb(178,183,181)';
 			evtEl.firstChild.style.color = 'rgb(92,92,92)';
@@ -109,7 +117,14 @@ function initializeCalendar(events) {
 			shift = events.find(e => {
 				return e.id = request.publicId
 			});
-			selectedShifts.push({ id: shift.id, title: shift.title, start: shift.start });
+			selectedShifts.push({
+				id: parseInt(shift.id, 10),
+				start: shift.start,
+				extendedProps: {
+					employeeId: shift.employeeId
+				},
+				title: shift.title
+			});
 			evtEl.style.backgroundColor = '#02e09a';
 			evtEl.style.borderColor = '#02e09a';
 			evtEl.firstChild.style.color = '#006666';

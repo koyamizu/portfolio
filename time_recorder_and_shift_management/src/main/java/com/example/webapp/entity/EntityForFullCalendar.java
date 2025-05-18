@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 public class EntityForFullCalendar {
 	//シフトid
 	private Integer id;
+	
+	private Integer employeeId;
 	//従業員名
 	private String title;
 	//出勤日

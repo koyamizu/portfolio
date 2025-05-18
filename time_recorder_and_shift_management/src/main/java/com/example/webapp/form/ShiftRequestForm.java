@@ -1,5 +1,9 @@
 package com.example.webapp.form;
 
+import java.util.List;
+
+import com.example.webapp.entity.EntityForFullCalendar;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShiftRequestForm {
 	
-	//シフトid
-	private Integer id;
 //	従業員Id
 	private Integer employeeId;
-	//従業員名
-	private String title;
-	//出勤日
-	private String start;
+	
+	private List<EntityForFullCalendar> requests;
 	
 	private Boolean isNew;
 }

@@ -55,8 +55,8 @@
 <!--		x.employee_id=y.id;-->
 <!--	</select>-->
 
-	<select id="selectAllRequests">
-		SELECT x.id,y.id as employee_id,name,date
+	<select id="selectAllRequests" resultMap="EntityForFullCalendarResult">
+		SELECT x.id,y.id as employeeId,name,DATE_FORMAT(date,'%Y-%m-%d') as date
 		FROM requests x
 		INNER JOIN
 		test_employees_list y
