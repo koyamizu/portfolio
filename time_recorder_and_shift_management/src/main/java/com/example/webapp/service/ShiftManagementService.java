@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.entity.ShiftAndTimestamp;
 
 public interface ShiftManagementService {
 	List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
@@ -19,7 +20,7 @@ public interface ShiftManagementService {
 	
 	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 
-	List<EntityForFullCalendar> selectAllRequests();
+	List<ShiftAndTimestamp> selectAllRequests();
 	
 	List<Employee> selectEmployeesNotSubmitRequests();
 

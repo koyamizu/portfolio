@@ -28,12 +28,12 @@ function initializeCalendar() {
 		eventDidMount: function(e) {
 			let el = e.el;
 			if (el.classList.contains('holiday')) {
-					el.closest('.fc-daygrid-day').classList.add('is_holiday');
-				}
-//				if (e.view.type == "dayGridMonth") { //カレンダー(月)表示の場合
-//					//イベントが表示される場所の親をたどって各日の枠にたどり着いたらclassを授けよう
-//					el.closest('.fc-daygrid-day').classList.add('is_holiday');
-//				}
+				el.closest('.fc-daygrid-day').classList.add('is_holiday');
+			}
+			//				if (e.view.type == "dayGridMonth") { //カレンダー(月)表示の場合
+			//					//イベントが表示される場所の親をたどって各日の枠にたどり着いたらclassを授けよう
+			//					el.closest('.fc-daygrid-day').classList.add('is_holiday');
+			//				}
 		},
 		// 1) 最初に開く日を翌月の１日に
 		initialDate: nextMonthFirst,
@@ -75,10 +75,7 @@ function initializeCalendar() {
 			selectedDates.splice(idx, 1);
 			cellEl.classList.remove('selected');
 		} else {
-			selectedDates.push({
-				employee_id:/*[[${shiftRequestForm.employeeId}]]*/null,
-				date:dateStr
-			});
+			selectedDates.push(dateStr);
 			cellEl.classList.add('selected');
 		}
 		console.log('Selected dates:', selectedDates);

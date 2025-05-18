@@ -23,9 +23,9 @@
 		<p>現在&nbsp;<span th:text="${#authentication.principal.name}"
 				style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
-		<div th:if="${shiftRequestForm.isNew}">
+		<div th:if="${isNew}">
 			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
-				<input type="hidden" name="employee_id" th:value="${#authentication.principal.id}">
+				<input type="hidden" name="employeeId" th:value="${#authentication.principal.id}">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="提出">
 				<button id="clear-selection" type="button">すべての選択を解除</button>
@@ -33,11 +33,11 @@
 			</form>
 
 			<script th:src="@{/js/shift/request-calendar.js}"></script>
-			<script type="text/javascript" th:inline="javascript">
+			<script th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', initializeCalendar());
 			</script>
 		</div>
-		<div th:unless="${shiftRequestForm.isNew}">
+		<div th:unless="${isNew}">
 			<p>来月の希望シフトは以下の日程で提出済みです</p>
 			<p>変更はありますか？</p>
 			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">

@@ -3,6 +3,8 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.entity.ShiftAndTimestamp;
 import com.example.webapp.form.ShiftRequestForm;
 import com.example.webapp.form.ShiftScheduleEditForm;
 import com.example.webapp.helper.EntityForFullCalendarHelper;
-import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -33,7 +34,7 @@ public class ShiftManagementController {
 
 //	private final ShiftManagementService service;
 	private final ShiftManagementService shiftManagementService;
-	private final EmployeesManagementService employeesManagementService;
+//	private final EmployeesManagementService employeesManagementService;
 
 	@GetMapping
 	public String showShiftSchedule(HttpSession session,Model model) {
@@ -54,8 +55,7 @@ public class ShiftManagementController {
 		List<EntityForFullCalendar> requests = shiftManagementService.selectRequestsByEmployeeId(employeeId);
 		EntityForFullCalendarHelper.setColorProperties("transparent","transparent",requests);
 		model.addAttribute("requests",requests);
-		form.setEmployeeId(employeeId);
-		form.setIsNew(CollectionUtils.isEmpty(requests));
+		model.addAttribute("isNew",CollectionUtils.isEmpty(requests));
 		return "shift/request";
 	}
 
@@ -67,8 +67,7 @@ public class ShiftManagementController {
 	}
 
 	@PostMapping("request/submit")
-	public String submitRequests(@RequestParam("employee_id") Integer employeeId,
-			@RequestParam String selectedDatesJson,
+	public String submitRequests(Integer employeeId,@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes) throws JsonProcessingException {
 
 		// JSON文字列を List<String> に変換
@@ -81,7 +80,7 @@ public class ShiftManagementController {
 				.map(LocalDate::parse)
 				.toList();
 
-		shiftManagementService.insertShiftRequests(employeeId, dates);
+		shiftManagementService.insertShiftRequests(employeeId,dates);
 		attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
 		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
 		return "redirect:/shift/request";
@@ -94,7 +93,7 @@ public class ShiftManagementController {
 		List<EntityForFullCalendar> shiftsOfNextMonth=shiftManagementService.selectOneMonthShiftsByTargetMonth(nextMonth);
 		//↓これShiftAndTimestampで受けないとダメ
 //		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
-		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
+		List<ShiftAndTimestamp> requests = shiftManagementService.selectAllRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a","#006666",requests);
 //		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
 		form.setRequests(requests);
