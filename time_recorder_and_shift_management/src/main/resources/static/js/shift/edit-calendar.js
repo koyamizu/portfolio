@@ -15,7 +15,7 @@ function initializeCalendar(events) {
 			title: e.title
 		}
 	})
-	let nextShiftId=selectedShifts[selectedShifts.length-1].id+1;
+	let nextShiftId = selectedShifts[selectedShifts.length - 1].id + 1;
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
 	const hiddenInput = document.getElementById('selectedDatesInput');
@@ -94,20 +94,36 @@ function initializeCalendar(events) {
 			});
 		},
 		eventClick: info => {
-			if (info.event._def.publicId == 'null') {
+			if (info.el.classList.contains('fc-event-draggable')) {
 				info.event.remove();
+				const idx = selectedShifts.findIndex(s => {
+					return s.id == info.event._def.publicId
+				});
+				selectedShifts.splice(idx, 1);
 			} else {
 				toggleDate(info.event._def, info.el);
 			}
 		},
 		eventReceive: info => {
-			
-			selectedShifts.push({
-				id:parseInt(info.event._def.publicId,10),
-				start: info.event.startStr,
-				employeeId: parseInt(info.event.extendedProps.employeeId,10),
-				title: info.event.title
-			})
+			const cell = document.querySelector(`td[data-date="${info.event.startStr}"]`);
+			const members = cell.getElementsByClassName('fc-event-title fc-sticky');
+			let duplicate=0;
+			for(i=0;i<members.length;i++){
+				if(members[i].innerText==info.event.title){
+					duplicate++;
+				}
+			}
+			if (duplicate>1) {
+				info.event.remove();
+			} else {
+				selectedShifts.push({
+					id: parseInt(info.event._def.publicId, 10),
+					start: info.event.startStr,
+					employeeId: parseInt(info.event.extendedProps.employeeId, 10),
+//					title: info.event.title
+				})
+				console.log('Selected dates:', selectedShifts);
+			}
 		}
 	});
 	calendar.render();
@@ -130,7 +146,7 @@ function initializeCalendar(events) {
 				id: parseInt(shift.id, 10),
 				start: shift.start,
 				employeeId: shift.employeeId,
-				title: shift.title
+//				title: shift.title
 			});
 			evtEl.style.backgroundColor = '#02e09a';
 			evtEl.style.borderColor = '#02e09a';

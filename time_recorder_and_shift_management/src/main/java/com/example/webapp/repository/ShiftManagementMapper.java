@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.form.ShiftScheduleEditForm;
 
 @Mapper
 public interface ShiftManagementMapper {
@@ -28,5 +29,5 @@ public interface ShiftManagementMapper {
 
 	void deleteShiftScheduleByTargetMonth(Integer targetMonth);
 
-	void insertShiftsOfNextMonth(List<LocalDate> dates);
+	void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts);
 }

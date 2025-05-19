@@ -1,21 +1,23 @@
-//package com.example.webapp.form;
-//
-//import java.util.List;
-//
-//import com.example.webapp.entity.Employee;
-//import com.example.webapp.entity.EntityForFullCalendar;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//public class ShiftScheduleEditForm {
-//	
-//	private List<EntityForFullCalendar> requests;
-//	private List<EntityForFullCalendar> shiftsOfNextMonth;
-//	private List<Employee> notSubmits;
-//	private Boolean isNew;
-//}
+package com.example.webapp.form;
+
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ShiftScheduleEditForm {
+	
+	private Integer employeeId;
+	//出勤日
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate start;
+}

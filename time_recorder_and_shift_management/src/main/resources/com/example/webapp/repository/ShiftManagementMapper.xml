@@ -45,18 +45,20 @@
 		WHERE MONTH(date)=#{targetMonth};
 	</select>
 
-<!--	<select id="selectAllRequests"-->
-<!--		resultMap="EntityForFullCalendarResult">-->
-<!--		SELECT x.id,name,date-->
-<!--		FROM requests x-->
-<!--		INNER JOIN-->
-<!--		test_employees_list y-->
-<!--		ON-->
-<!--		x.employee_id=y.id;-->
-<!--	</select>-->
+	<!-- <select id="selectAllRequests" -->
+	<!-- resultMap="EntityForFullCalendarResult"> -->
+	<!-- SELECT x.id,name,date -->
+	<!-- FROM requests x -->
+	<!-- INNER JOIN -->
+	<!-- test_employees_list y -->
+	<!-- ON -->
+	<!-- x.employee_id=y.id; -->
+	<!-- </select> -->
 
-	<select id="selectAllRequests" resultMap="EntityForFullCalendarResult">
-		SELECT x.id,y.id as employeeId,name,DATE_FORMAT(date,'%Y-%m-%d') as date
+	<select id="selectAllRequests"
+		resultMap="EntityForFullCalendarResult">
+		SELECT x.id,y.id as
+		employeeId,name,DATE_FORMAT(date,'%Y-%m-%d') as date
 		FROM requests x
 		INNER JOIN
 		test_employees_list y
@@ -79,6 +81,15 @@
 		INSERT INTO requests(employee_id, date) VALUES
 		<foreach collection="dates" item="d" separator=",">
 			(#{employeeId}, #{d})
+		</foreach>
+	</insert>
+
+	<insert id="insertNextMonthShifts">
+		INSERT INTO
+		test_shifts_and_timestamps(employee_id,date,created_at,updated_at)
+		VALUES
+		<foreach collection="newShifts" item="s" separator=",">
+			(#{employeeId},#{start},now(),now());
 		</foreach>
 	</insert>
 

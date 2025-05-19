@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.form.ShiftScheduleEditForm;
 
 public interface ShiftManagementService {
 	List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
@@ -25,5 +26,5 @@ public interface ShiftManagementService {
 
 	void deleteShiftScheduleByTargetMonth(Integer targetMonth);
 
-	void insertShiftsOfNextMonth(List<LocalDate> dates);
+	void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts);
 }

@@ -30,12 +30,12 @@
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="作成">
 				<div style=" display:flex">
-					<div id="external-events">
+					<div id="external-events" style="background-color: #e5e5e5;">
 						<p>
 							<strong>従業員</strong>
 						</p>
 						<div class="fc-event fc-h-event fc-daygrid-event" th:each="employee:${allEmployees}">
-							<div class="fc-event-main" th:id="${employee.id}">
+							<div class="fc-event-main" th:id="${employee.id}" style="width:100px">
 								<span th:text="${employee.name}"></span>
 							</div>
 						</div>

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.form.ShiftScheduleEditForm;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
 
@@ -66,7 +67,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public void insertShiftsOfNextMonth(List<LocalDate> dates) {
-		mapper.insertShiftsOfNextMonth(dates);
+	public void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts) {
+		mapper.insertNextMonthShifts(newShifts);
 	}
 }
