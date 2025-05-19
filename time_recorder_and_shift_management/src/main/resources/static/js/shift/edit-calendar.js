@@ -15,7 +15,7 @@ function initializeCalendar(events) {
 			title: e.title
 		}
 	})
-
+	let nextShiftId=selectedShifts[selectedShifts.length-1].id+1;
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
 	const hiddenInput = document.getElementById('selectedDatesInput');
@@ -26,7 +26,7 @@ function initializeCalendar(events) {
 		itemSelector: '.fc-event-main',
 		eventData: function(eventEl) {
 			return {
-				id: null,
+				id: nextShiftId++,
 				employeeId: eventEl.id,
 				title: eventEl.innerText,
 				editable: true
@@ -100,6 +100,15 @@ function initializeCalendar(events) {
 				toggleDate(info.event._def, info.el);
 			}
 		},
+		eventReceive: info => {
+			
+			selectedShifts.push({
+				id:parseInt(info.event._def.publicId,10),
+				start: info.event.startStr,
+				employeeId: parseInt(info.event.extendedProps.employeeId,10),
+				title: info.event.title
+			})
+		}
 	});
 	calendar.render();
 
@@ -120,9 +129,7 @@ function initializeCalendar(events) {
 			selectedShifts.push({
 				id: parseInt(shift.id, 10),
 				start: shift.start,
-				extendedProps: {
-					employeeId: shift.employeeId
-				},
+				employeeId: shift.employeeId,
 				title: shift.title
 			});
 			evtEl.style.backgroundColor = '#02e09a';
