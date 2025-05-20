@@ -107,20 +107,20 @@ function initializeCalendar(events) {
 		eventReceive: info => {
 			const cell = document.querySelector(`td[data-date="${info.event.startStr}"]`);
 			const members = cell.getElementsByClassName('fc-event-title fc-sticky');
-			let duplicate=0;
-			for(i=0;i<members.length;i++){
-				if(members[i].innerText==info.event.title){
+			let duplicate = 0;
+			for (i = 0; i < members.length; i++) {
+				if (members[i].innerText == info.event.title) {
 					duplicate++;
 				}
 			}
-			if (duplicate>1) {
+			if (duplicate > 1) {
 				info.event.remove();
 			} else {
 				selectedShifts.push({
 					id: parseInt(info.event._def.publicId, 10),
 					start: info.event.startStr,
 					employeeId: parseInt(info.event.extendedProps.employeeId, 10),
-//					title: info.event.title
+					//					title: info.event.title
 				})
 				console.log('Selected dates:', selectedShifts);
 			}
@@ -146,7 +146,7 @@ function initializeCalendar(events) {
 				id: parseInt(shift.id, 10),
 				start: shift.start,
 				employeeId: shift.employeeId,
-//				title: shift.title
+				//				title: shift.title
 			});
 			evtEl.style.backgroundColor = '#02e09a';
 			evtEl.style.borderColor = '#02e09a';
@@ -156,7 +156,10 @@ function initializeCalendar(events) {
 	}
 
 	form.addEventListener('submit', function(e) {
-		selectedShifts.sort();
+		selectedShifts.sort((a, b) => {
+			//-1はそのまま　0が変更
+			return (a.start < b.start) ? -1 : 0
+		});
 		// 例: ["2025-04-01","2025-04-08",…] の形
 		hiddenInput.value = JSON.stringify(selectedShifts);
 		// （特に e.preventDefault は不要。値セット後 自然送信。）

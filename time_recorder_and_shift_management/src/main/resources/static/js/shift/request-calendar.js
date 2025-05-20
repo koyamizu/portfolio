@@ -60,14 +60,17 @@ function initializeCalendar(employeeId) {
 
 	// フォーム送信時に selectedDates を JSON 文字列化して隠しフィールドにセット
 	form.addEventListener('submit', function(e) {
-		selectedDates.filter(s=>s.start).sort();
+		selectedDates.sort((a, b) => {
+			//-1はそのまま　0が変更
+			return (a.start < b.start)?-1:0
+		});
+		console.log('Selected dates:', selectedDates);
 		// 例: ["2025-04-01","2025-04-08",…] の形
 		hiddenInput.value = JSON.stringify(selectedDates);
 		// （特に e.preventDefault は不要。値セット後 自然送信。）
 	});
 
 	// --- 関数定義 ---
-
 	// 個別日付トグル
 	function toggleDate(dateStr, cellEl) {
 		//		let dates = selectedDates.map(s => s.start);
@@ -147,13 +150,13 @@ function initializeCalendar(employeeId) {
 					selectedDates.splice(idx, 1);
 					cell.classList.remove('selected');
 				}
-//				else {
-//					selectedDates.push({
-//						employeeId: employeeId,
-//						start: ds
-//					});
-//					cell.classList.add('selected');
-//				}
+				//				else {
+				//					selectedDates.push({
+				//						employeeId: employeeId,
+				//						start: ds
+				//					});
+				//					cell.classList.add('selected');
+				//				}
 			}
 
 		} console.log('After toggleWeekdayColumn:', selectedDates);

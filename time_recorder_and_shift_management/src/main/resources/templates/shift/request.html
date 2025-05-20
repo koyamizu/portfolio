@@ -23,7 +23,9 @@
 		<p>現在&nbsp;<span th:text="${#authentication.principal.name}"
 				style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
-		<div th:if="${shiftRequestForm.isNew}">
+		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+<!--		<div th:if="${shiftRequestForm.isNew}">-->
+		<div th:if="${isNew}">
 			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
 <!--				<input type="hidden" name="employeeId" th:value="${shiftRequestForm.employeeId}">-->
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
@@ -34,10 +36,11 @@
 
 			<script th:src="@{/js/shift/request-calendar.js}"></script>
 			<script th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', initializeCalendar(/*[[${shiftRequestForm.employeeId}]]*/));
+				document.addEventListener('DOMContentLoaded', initializeCalendar(/*[[${#authentication.principal.username}]]*/));
 			</script>
 		</div>
-		<div th:unless="${shiftRequestForm.isNew}">
+<!--		<div th:unless="${shiftRequestForm.isNew}">-->
+		<div th:unless="${isNew}">
 			<p>来月の希望シフトは以下の日程で提出済みです</p>
 			<p>変更はありますか？</p>
 			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">
@@ -51,7 +54,7 @@
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
 			<script th:src="@{/js/shift/confirm-requests-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftRequestForm.requests}]]*/)});
+				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]]*/)});
 			</script>
 		</div>
 	</article>

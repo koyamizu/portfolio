@@ -1,6 +1,5 @@
 package com.example.webapp.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -36,9 +35,13 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		return mapper.selectRequestsByEmployeeId(employeeId);
 	}
 
+//	@Override
+//	public void insertShiftRequests(Integer employeeId, List<LocalDate> dates) {
+//		mapper.insertShiftRequests(employeeId, dates);
+//	}
 	@Override
-	public void insertShiftRequests(Integer employeeId, List<LocalDate> dates) {
-		mapper.insertShiftRequests(employeeId, dates);
+	public void insertShiftRequests(List<ShiftScheduleEditForm> newShifts) {
+		mapper.insertShiftRequests(newShifts);
 	}
 
 	@Override

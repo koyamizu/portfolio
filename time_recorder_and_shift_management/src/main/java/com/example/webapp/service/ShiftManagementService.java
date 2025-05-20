@@ -1,6 +1,5 @@
 package com.example.webapp.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.example.webapp.entity.Employee;
@@ -14,7 +13,8 @@ public interface ShiftManagementService {
 	
 	List<EntityForFullCalendar> selectRequestsByEmployeeId(Integer employeeId);
 	
-	void insertShiftRequests(Integer employeeId,List<LocalDate> dates);
+//	void insertShiftRequests(Integer employeeId,List<LocalDate> dates);
+	void insertShiftRequests(List<ShiftScheduleEditForm> newShifts);
 	
 	void deleteRequestsByEmployeeId(Integer employeeId);
 	

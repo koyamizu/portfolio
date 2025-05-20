@@ -77,10 +77,16 @@
 		);
 	</select>
 
-	<insert id="insertShiftRequests" parameterType="list">
+<!--	<insert id="insertShiftRequests" parameterType="list">-->
+<!--		INSERT INTO requests(employee_id, date) VALUES-->
+<!--		<foreach collection="dates" item="d" separator=",">-->
+<!--			(#{employeeId}, #{d})-->
+<!--		</foreach>-->
+<!--	</insert>-->
+	<insert id="insertShiftRequests">
 		INSERT INTO requests(employee_id, date) VALUES
-		<foreach collection="dates" item="d" separator=",">
-			(#{employeeId}, #{d})
+		<foreach collection="newShifts" item="r" separator=",">
+			(#{r.employeeId}, #{r.start})
 		</foreach>
 	</insert>
 
