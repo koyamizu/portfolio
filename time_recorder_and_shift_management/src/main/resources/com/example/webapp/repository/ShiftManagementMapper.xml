@@ -89,8 +89,9 @@
 		test_shifts_and_timestamps(employee_id,date,created_at,updated_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
-			(#{employeeId},#{start},now(),now());
+			(#{s.employeeId},#{s.start},now(),now())
 		</foreach>
+		;
 	</insert>
 
 	<delete id="deleteRequestsByEmployeeId">

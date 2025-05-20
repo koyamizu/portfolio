@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.form.ShiftRequestForm;
 import com.example.webapp.form.ShiftScheduleEditForm;
 import com.example.webapp.helper.EntityForFullCalendarHelper;
 import com.example.webapp.service.EmployeesManagementService;
@@ -24,7 +27,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -48,14 +50,17 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("request")
-	public String showRequestForm(Authentication authentication, Model model) {
+	public String showRequestForm(ShiftRequestForm form,Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
 		//↓これは別にエンティティでいい。表示用なので。
 		List<EntityForFullCalendar> requests = shiftManagementService.selectRequestsByEmployeeId(employeeId);
 		EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
-		model.addAttribute("requests", requests);
-		model.addAttribute("isNew", CollectionUtils.isEmpty(requests));
+		form.setEmployeeId(employeeId);
+		form.setRequests(requests);
+		form.setIsNew(CollectionUtils.isEmpty(requests));
+//		model.addAttribute("requests", requests);
+//		model.addAttribute("isNew", CollectionUtils.isEmpty(requests));
 		return "shift/request";
 	}
 

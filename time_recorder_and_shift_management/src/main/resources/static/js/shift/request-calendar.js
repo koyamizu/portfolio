@@ -1,4 +1,4 @@
-function initializeCalendar() {
+function initializeCalendar(employeeId) {
 	const today = new Date();
 
 	// 翌月の 1 日
@@ -60,7 +60,7 @@ function initializeCalendar() {
 
 	// フォーム送信時に selectedDates を JSON 文字列化して隠しフィールドにセット
 	form.addEventListener('submit', function(e) {
-		selectedDates.sort();
+		selectedDates.filter(s=>s.start).sort();
 		// 例: ["2025-04-01","2025-04-08",…] の形
 		hiddenInput.value = JSON.stringify(selectedDates);
 		// （特に e.preventDefault は不要。値セット後 自然送信。）
@@ -70,12 +70,21 @@ function initializeCalendar() {
 
 	// 個別日付トグル
 	function toggleDate(dateStr, cellEl) {
-		const idx = selectedDates.indexOf(dateStr);
+		//		let dates = selectedDates.map(s => s.start);
+		const idx = selectedDates.map(s => s.start).indexOf(dateStr);
+		//		const idx = dates.indexOf(dateStr);
+		//		indexOf({
+		//			employeeId: employeeId,
+		//			start: dateStr
+		//		});
 		if (idx > -1) {
 			selectedDates.splice(idx, 1);
 			cellEl.classList.remove('selected');
 		} else {
-			selectedDates.push(dateStr);
+			selectedDates.push({
+				employeeId: employeeId,
+				start: dateStr
+			});
 			cellEl.classList.add('selected');
 		}
 		console.log('Selected dates:', selectedDates);
@@ -118,20 +127,36 @@ function initializeCalendar() {
 			const cell = document.querySelector(`td[data-date="${ds}"]`);
 			if (!cell) continue;
 
+			const idx = selectedDates.map(s => s.start).indexOf(ds);
+
+			//			const target = {
+			//				employeeId: employeeId,
+			//				start: ds
+			//			};
 			if (checked) {
-				if (!selectedDates.includes(ds)) {
-					selectedDates.push(ds);
+
+				if (idx < 0) {
+					selectedDates.push({
+						employeeId: employeeId,
+						start: ds
+					})
 					cell.classList.add('selected');
 				}
 			} else {
-				const i = selectedDates.indexOf(ds);
-				if (i > -1) {
-					selectedDates.splice(i, 1);
+				if (idx > -1) {
+					selectedDates.splice(idx, 1);
 					cell.classList.remove('selected');
 				}
+//				else {
+//					selectedDates.push({
+//						employeeId: employeeId,
+//						start: ds
+//					});
+//					cell.classList.add('selected');
+//				}
 			}
-		}
-		console.log('After toggleWeekdayColumn:', selectedDates);
+
+		} console.log('After toggleWeekdayColumn:', selectedDates);
 	}
 
 	function clearAllSelections() {
