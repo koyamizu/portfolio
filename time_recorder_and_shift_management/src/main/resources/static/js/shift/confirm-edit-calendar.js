@@ -23,14 +23,13 @@ function initializeCalendar(events) {
 			},
 			{
 				events,
-				className: 'requestList'
 			}
 		],
 		locale: 'ja',
 		eventDidMount: function(e) {
 			let el = e.el;
-			if (el.classList.contains('requestList')) {
-				el.closest('.fc-daygrid-day').classList.add('confirm');
+			if (el.classList.contains('holiday')) {
+				el.closest('.fc-daygrid-day').classList.add('is_holiday');
 			}
 		},
 		// 1) 最初に開く日を翌月の１日に

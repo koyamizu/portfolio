@@ -101,6 +101,7 @@ public class ShiftManagementController {
 		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		List<EntityForFullCalendar> shiftsOfNextMonth = shiftManagementService
 				.selectOneMonthShiftsByTargetMonth(nextMonth);
+		EntityForFullCalendarHelper.setColorProperties("#FB9D00", "white", shiftsOfNextMonth);
 		//↓これShiftRequestFormで受けないとダメ
 		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
 		//		List<ShiftAndTimestamp> requests = shiftManagementService.selectAllRequests();
