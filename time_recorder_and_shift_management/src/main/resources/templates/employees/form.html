@@ -25,6 +25,7 @@
 		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}" style="color:red">
 			エラーメッセージ
 		</p>
+		<input th:unless="${employeeForm.isNew}" type="hidden" th:field="${employeeForm.id}">
 		<table>
 			<tr>
 				<th>名前</th>
