@@ -51,12 +51,8 @@ public class ShiftManagementController {
 	public String showRequestForm(/*ShiftRequestForm form,*/Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
-		//↓これは別にエンティティでいい。表示用なので。
 		List<EntityForFullCalendar> requests = shiftManagementService.selectRequestsByEmployeeId(employeeId);
 		EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
-		//		form.setEmployeeId(employeeId);
-		//		form.setRequests(requests);
-		//		form.setIsNew(CollectionUtils.isEmpty(requests));
 		model.addAttribute("requests", requests);
 		model.addAttribute("isNew", CollectionUtils.isEmpty(requests));
 		return "shift/request";
@@ -77,17 +73,11 @@ public class ShiftManagementController {
 			attributes.addFlashAttribute("errorMessage", "日付を選択してください");
 		} else {
 
-			// JSON文字列を List<String> に変換
 			ObjectMapper mapper = new ObjectMapper();
 			List<ShiftScheduleEditForm> requests = mapper.readValue(selectedDatesJson,
 					new TypeReference<List<ShiftScheduleEditForm>>() {
 					});
 
-			//		List<LocalDate> dates = dateStrs.stream()
-			//				.map(LocalDate::parse)
-			//				.toList();
-
-			//		shiftManagementService.insertShiftRequests(employeeId, dates);
 			shiftManagementService.insertShiftRequests(requests);
 			attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
 		}
@@ -137,10 +127,6 @@ public class ShiftManagementController {
 		List<ShiftScheduleEditForm> newShifts = mapper.readValue(selectedDatesJson,
 				new TypeReference<List<ShiftScheduleEditForm>>() {
 				});
-
-		//		List<LocalDate> dates = newShifts.stream()
-		//				.map(LocalDate::parse)
-		//				.toList();
 
 		shiftManagementService.insertNextMonthShifts(newShifts);
 		attributes.addFlashAttribute("message", "シフトの作成が完了しました");

@@ -1,10 +1,10 @@
 package com.example.webapp.controller;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
@@ -15,10 +15,10 @@ public class IndexController {
 		return "index";
 	}
 	
-	@GetMapping("to_time_recorder")
+	@GetMapping("to-time-recorder")
 	public String showTimeRecorder(HttpSession session) {
-		session.setAttribute("from", "time_recorder");
-		return "redirect:/time_recorder";
+		session.setAttribute("from", "timeRecorder");
+		return "redirect:/time-recorder";
 	}
 
 	@GetMapping("admin")
@@ -37,8 +37,9 @@ public class IndexController {
 		return "menu/user";
 	}
 	
+	//デベロッパーツールを開いた状態でログインすると、エラーになるのでエラーページを準備した。
 	@GetMapping(".well-known/appspecific/com.chrome.devtools.json")
-	public String showOpedDevtoolError() {
+	public String showOpenDevtoolError() {
 		return "error/devtool";
 	}
 }

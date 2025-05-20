@@ -34,7 +34,7 @@ nav li {
 	text-align: center;
 }
 
-.li-admin {
+.li-index {
 	position: absolute;
 	right: 10px;
 }
@@ -339,7 +339,7 @@ td.fc-day-sun,
 		font-size: 90%;
 	}
 
-	.li-admin {
+	.li-index {
 		position: static;
 	}
 

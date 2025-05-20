@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlsn="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -13,7 +13,7 @@
 		<nav>
 			<ul>
 				<li><a href="/employees/register">新規従業員登録</a></li>
-				<li class="li-admin">
+				<li class="li-index">
 					<a th:href="@{/admin}">戻る</a>
 				</li>
 			</ul>
@@ -39,7 +39,7 @@
 					<th:block th:object="${employee}">
 						<td th:text="*{id}"></td>
 						<td th:text="*{name}"></td>
-						<td><a th:href="@{/password/reissue/{id}(id=*{id})}">パスワード再設定</td>
+						<td><a th:href="@{/password/reset/{id}(id=*{id})}">パスワード再設定</td>
 						<!--REST形式-->
 						<td><a th:href="@{/employees/detail/{id}(id=*{id})}">詳細</a></td>
 						<td><a th:href="@{/employees/edit/{id}(id=*{id})}">編集</a></td>

@@ -12,8 +12,8 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a th:href="@{/time_recorder}">タイムレコーダー</a></li>
-				<li class="li-admin"><a th:href="@{/}">ホームへ戻る</a></li>
+				<li><a th:href="@{/time-recorder}">タイムレコーダー</a></li>
+				<li class="li-index"><a th:href="@{/}">ホームへ戻る</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -35,13 +35,12 @@
 			setInterval(updateClock, 1000);
 		</script>
 		<div class="stamp">
-<!--			送信先のURLは/executeで統一でいいと思う-->
-			<form th:action="@{/time_recorder/stamp/start}" method="post">
-				<input type="hidden" name="shift_id" th:value=${shift_id}>
+			<form th:action="@{/time-recorder/stamp/start}" method="post">
+				<input type="hidden" name="shiftId" th:value=${shiftId}>
 				<input type="submit" value="出勤" class="sub-button red">
 			</form>
-			<form th:action="@{/time_recorder/stamp/end}" method="post">
-				<input type="hidden" name="shift_id" th:value=${shift_id}>
+			<form th:action="@{/time-recorder/stamp/end}" method="post">
+				<input type="hidden" name="shiftId" th:value=${shiftId}>
 				<input type="submit" value="退勤" class="sub-button blue">
 			</form>
 		</div>

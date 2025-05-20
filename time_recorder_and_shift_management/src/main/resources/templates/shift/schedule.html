@@ -16,8 +16,8 @@
 		<nav>
 			<ul>
 				<li th:if="${from}=='user'"><a th:href="@{/shift/request}">従業員シフト提出</a></li>
-				<li class="li-admin">
-					<a th:href="${from}=='time_recorder'?@{/time_recorder}:@{/user}">戻る</a>
+				<li class="li-index">
+					<a th:href="${from}=='timeRecorder'?@{/time-recorder}:@{/user}">戻る</a>
 				</li>
 			</ul>
 		</nav>

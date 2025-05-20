@@ -28,8 +28,8 @@ public class WorkHistoryManagementController {
 
 	private final WorkHistoryManagementService service;
 
-	@GetMapping("{targetMonth}")
-	public String showWorkHistoryHistory(@PathVariable Integer targetMonth,
+	@GetMapping("{target-month}")
+	public String showWorkHistoryHistory(@PathVariable("target-month") Integer targetMonth,
 			Authentication auth, Model model, HttpSession session) {
 		List<ShiftAndTimestamp> histories;
 		List<Employee> employees;
@@ -50,8 +50,8 @@ public class WorkHistoryManagementController {
 		return "work-history/history";
 	}
 
-	@GetMapping("{targetMonth}/{employee_id}")
-	public String showPersonalWorkHistoryHistory(@PathVariable Integer targetMonth, @PathVariable("employee_id") Integer employeeId,
+	@GetMapping("{target-month}/{employee-id}")
+	public String showPersonalWorkHistoryHistory(@PathVariable("target-month") Integer targetMonth, @PathVariable("employee-id") Integer employeeId,
 			Authentication auth, Model model, HttpSession session) {
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
 			List<ShiftAndTimestamp> personalHistories = service.selectHistoriesToDateByEmployeeIdAndMonth(employeeId,
@@ -67,11 +67,14 @@ public class WorkHistoryManagementController {
 		return "work-history/history";
 	}
 
-	@GetMapping("edit/{shift_id}")
-	public String showPersonalWorkHistoryHistory(@PathVariable("shift_id") Integer shiftId,Authentication auth, Model model, ShiftAndTimestampForm form) {
+	@GetMapping("edit/{shift-id}")
+	public String showPersonalWorkHistoryHistory(@PathVariable("shift-id") Integer shiftId,Authentication auth, Model model, ShiftAndTimestampForm form,HttpSession session) {
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
+			var sessionName=session.getAttribute("fromPage");
+			String fromPage=(sessionName instanceof Integer)? sessionName.toString():(String)sessionName;
 			ShiftAndTimestamp targetHistoriy = service.selectHistoryByHistoryId(shiftId);
 			model.addAttribute("history", targetHistoriy);
+			model.addAttribute("fromPage",fromPage);
 		}
 		return "work-history/edit";
 	}
@@ -82,7 +85,6 @@ public class WorkHistoryManagementController {
 		var sessionName=session.getAttribute("fromPage");
 		String fromPage=(sessionName instanceof Integer)? sessionName.toString():(String)sessionName;
 		attribute.addFlashAttribute("message","更新しました");
-//		Integer targetMonth=updatedHistory.getDate().getMonthValue();
 		return "redirect:/work-history/"+fromPage;
 	}
 }

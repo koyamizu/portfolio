@@ -12,7 +12,7 @@
 	<header>
 		<nav>
 			<ul>
-				<li class="li-admin">
+				<li class="li-index">
 					<a th:href="@{/employees}">戻る</a>>
 				</li>
 			</ul>
@@ -20,7 +20,7 @@
 	</header>
 	<h1 th:if="${passwordForm.isNew}">パスワード登録</h1>
 	<h1 th:unless="${passwordForm.isNew}">パスワード再設定</h1>
-	<form th:action="@{/password/execute}" th:object="${passwordForm}" method="post">
+	<form th:action="@{/password/update}" th:object="${passwordForm}" method="post">
 		<p th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}" style="color:red">
 			パスワード不一致
 		</p>

@@ -16,7 +16,7 @@ import com.example.webapp.service.TimeRecorderService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/time_recorder")
+@RequestMapping("/time-recorder")
 @RequiredArgsConstructor
 public class TimeRecorderController {
 
@@ -25,23 +25,22 @@ public class TimeRecorderController {
 
 	@GetMapping
 	public String timeRecorder(Model model) {
-		model.addAttribute("todaysEmployees", service.selectEmployeesByDate(today));
-		return "time_recorder/top";
+		model.addAttribute("todaysMembers", service.selectEmployeesByDate(today));
+		return "time-recorder/top";
 	}
 
-	//	GetMappingではなくPostMappingで、Viewから渡される従業員IDはbodyに格納する。その場合は、url名とかも変える。
 	@PostMapping("/stamp")
 	public String stamp(@RequestParam Integer employee_id, Model model, RedirectAttributes attributes) {
 		ShiftAndTimestamp shiftAndTimestamp = service.selectShiftAndTimestampByEmployeeIdAndDate(employee_id, today);
 		if (shiftAndTimestamp != null) {
 			model.addAttribute("employee", shiftAndTimestamp.getEmployee());
 			model.addAttribute("today", shiftAndTimestamp.getDate());
-			model.addAttribute("shift_id", shiftAndTimestamp.getId());
-			return "time_recorder/stamp";
+			model.addAttribute("shiftId", shiftAndTimestamp.getId());
+			return "time-recorder/stamp";
 		} else {
 			//そのIDをもつ従業員は本日出勤予定ではありません、とかでもいいかも
 			attributes.addFlashAttribute("errorMessage", "シフトデータが存在しません");
-			return "redirect:/time_recorder";
+			return "redirect:/time-recorder";
 		}
 	}
 
@@ -51,10 +50,10 @@ public class TimeRecorderController {
 		if (shiftAndTimestamp.getStart() == null) {
 			service.start(shift_id);
 			model.addAttribute("message", "出勤");
-			return "time_recorder/execute";
+			return "time-recorder/execute";
 		} else {
 			attributes.addFlashAttribute("errorMessage", "すでに出勤済みです");
-			return "redirect:/time_recorder";
+			return "redirect:/time-recorder";
 		}
 	}
 
@@ -63,18 +62,16 @@ public class TimeRecorderController {
 		ShiftAndTimestamp shiftAndTimestamp = service.selectShiftAndTimestampByShiftId(shift_id);
 		if (shiftAndTimestamp.getStart() == null) {
 			attributes.addFlashAttribute("errorMessage", "「出勤」より先に「退勤」は押せません");
-			return "redirect:/time_recorder";
+			return "redirect:/time-recorder";
 		}
 		if (shiftAndTimestamp.getEnd() == null) {
 			service.end(shift_id);
 			model.addAttribute("message", "退勤");
-			/*	
-			 * 次の出勤日を調べて知らせる機能			
-			 * Integer employeeId=shiftAndTimestamp.getEmployee().getId();*/
-			return "time_recorder/execute";
-		} else {
-			attributes.addFlashAttribute("errorMessage", "すでに退勤済みです");
-			return "redirect:/time_recorder";
+			return "time-recorder/execute";
 		}
+		
+		attributes.addFlashAttribute("errorMessage", "すでに退勤済みです");
+		return "redirect:/time-recorder";
+
 	}
 }

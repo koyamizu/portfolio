@@ -22,7 +22,7 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(
 						authz -> authz.requestMatchers("/css/**", "/js/**","/","/login","/","/api/event/all").permitAll()
-								.requestMatchers("/employees/**","/time_recorder","/shift/management","/admin").hasAuthority("ADMIN")
+								.requestMatchers("/employees/**","/time-recorder","/shift/management","/admin").hasAuthority("ADMIN")
 								.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/login")
 						.loginProcessingUrl("/authentication")

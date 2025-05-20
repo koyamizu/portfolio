@@ -1,5 +1,6 @@
 package com.example.webapp.form;
 
+//データの受け渡しをしているだけなので、entityにするかもしれない
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

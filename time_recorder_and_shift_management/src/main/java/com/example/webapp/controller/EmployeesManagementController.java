@@ -25,27 +25,20 @@ public class EmployeesManagementController {
 	private final EmployeesManagementService service;
 
 	@GetMapping
-	public String list(Model model) {
+	public String showEmployeesList(Model model) {
 		model.addAttribute("employees", service.selectAllEmployees());
 		return "employees/list";
 	}
 
 	@GetMapping("register")
-	public String register(EmployeeForm form) {
+	public String registerNewEmployee(EmployeeForm form) {
 		form.setIsNew(true);
 		return "employees/form";
 	}
 
-	//saveとupdateはまとめてsaveとかにして、条件分岐で分けてもいいかもしれない。
-//	@PostMapping("/save")
-//	public String save(@Validated EmployeeForm form, BindingResult bindingResult,RedirectAttributes attributes) {
-//		attributes.addFlashAttribute("message", "新規従業員が登録されました");
-//		return "redirect:/employees";
-//	}
-
 	@GetMapping("edit/{id}")
-	public String edit(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
-		var target = service.selectEmployeeById(id);
+	public String editEmployee(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
+		Employee target = service.selectEmployeeById(id);
 		if (target != null) {
 			EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
 			model.addAttribute("employeeForm", form);
@@ -57,18 +50,18 @@ public class EmployeesManagementController {
 	}
 
 	@PostMapping("update")
-	public String update(@Validated EmployeeForm form, BindingResult bindingResult,RedirectAttributes attributes) {
+	public String updateEmployee(@Validated EmployeeForm form, BindingResult bindingResult,RedirectAttributes attributes) {
 		if(bindingResult.hasErrors()) {
 			return "employees/form";
 		}
-		var employee = EmployeeHelper.convertEmployee(form);
+		Employee employee = EmployeeHelper.convertEmployee(form);
 		service.updateEmployee(employee);
 		attributes.addFlashAttribute("message", "従業員情報が更新されました");
 		return "redirect:/employees";
 	}
 
 	@GetMapping("delete/{id}")
-	public String delete(@PathVariable Integer id, RedirectAttributes attributes) {
+	public String deleteEmployee(@PathVariable Integer id, RedirectAttributes attributes) {
 		var target = service.selectEmployeeById(id);
 		if (target != null) {
 			try {
@@ -86,7 +79,7 @@ public class EmployeesManagementController {
 	}
 	
 	@GetMapping("detail/{id}")
-	public String showDetail(@PathVariable Integer id,Model model) {
+	public String showEmployeeDetail(@PathVariable Integer id,Model model) {
 		Employee employee=service.selectEmployeeById(id);
 		model.addAttribute("employee",employee);
 		return "employees/detail";
