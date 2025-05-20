@@ -45,10 +45,10 @@ public class TimeRecorderController {
 	}
 
 	@PostMapping("/stamp/start")
-	public String start(@RequestParam Integer shift_id, Model model, RedirectAttributes attributes) {
-		ShiftAndTimestamp shiftAndTimestamp = service.selectShiftAndTimestampByShiftId(shift_id);
+	public String start(@RequestParam("shift-id") Integer shiftId, Model model, RedirectAttributes attributes) {
+		ShiftAndTimestamp shiftAndTimestamp = service.selectShiftAndTimestampByShiftId(shiftId);
 		if (shiftAndTimestamp.getStart() == null) {
-			service.start(shift_id);
+			service.start(shiftId);
 			model.addAttribute("message", "出勤");
 			return "time-recorder/execute";
 		} else {

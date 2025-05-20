@@ -36,11 +36,11 @@
 		</script>
 		<div class="stamp">
 			<form th:action="@{/time-recorder/stamp/start}" method="post">
-				<input type="hidden" name="shiftId" th:value=${shiftId}>
+				<input type="hidden" name="shift-id" th:value=${shiftId}>
 				<input type="submit" value="出勤" class="sub-button red">
 			</form>
 			<form th:action="@{/time-recorder/stamp/end}" method="post">
-				<input type="hidden" name="shiftId" th:value=${shiftId}>
+				<input type="hidden" name="shift-id" th:value=${shiftId}>
 				<input type="submit" value="退勤" class="sub-button blue">
 			</form>
 		</div>

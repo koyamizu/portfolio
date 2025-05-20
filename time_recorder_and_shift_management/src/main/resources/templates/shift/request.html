@@ -31,7 +31,7 @@
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="提出">
 				<button id="clear-selection" type="button">すべての選択を解除</button>
-				<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
+				<div id="calendar" style="width:80%;margin:0 auto" class="shift-edit"></div>
 			</form>
 
 			<script th:src="@{/js/shift/request-calendar.js}"></script>
@@ -51,7 +51,7 @@
 					<button type="submit" class="sub-button2">ない</button>
 				</form>
 			</div>
-			<div id="calendar" style="width:80%;margin:0 auto" class="shift-request"></div>
+			<div id="calendar" style="width:80%;margin:0 auto" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-requests-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]]*/)});

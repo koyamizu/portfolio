@@ -1,13 +1,5 @@
 @charset "utf-8";
 
-
-ul {
-	list-style-type: none;
-	margin-top: 0;
-	padding: 0;
-	position: relative;
-}
-
 nav {
 	background-color: #006666;
 	height: 44px;
@@ -27,6 +19,9 @@ nav a:hover {
 
 nav ul {
 	padding: 10px 0;
+	list-style-type: none;
+	margin-top: 0;
+	position: relative;
 }
 
 nav li {
@@ -69,12 +64,14 @@ table {
 	margin: 0 auto 20px;
 	width: 50%;
 	background-color: white;
-	
-	.fc-col-header {
-			border-color: transparent;
-	}
 }
 
+/* シフト提出ページの曜日の表の線 */
+table .fc-col-header {
+	border-color: transparent;
+}
+
+/* タイムレコーダーの「本日の勤務予定者」 */
 caption {
 	font-weight: bold;
 	margin-bottom: 10px;
@@ -91,6 +88,7 @@ td {
 	border: 2px solid #000000;
 }
 
+/* 出退勤のフォーム */
 .stamp {
 	display: flex;
 	/*	gap:40px;*/
@@ -100,18 +98,21 @@ td {
 	justify-content: space-between;
 }
 
+/* 「タイムレコーダー」「現在●●さんでログインしています」 */
 .sub-h1 {
 	margin-block-end: 5px;
 	margin-block-start: 5px;
 	padding-top: 10px;
 }
 
+/* タイムレコーダーの日付 */
 .sub-h2 {
 	margin-block-end: 5px;
 	margin-block-start: 5px;
 	font-size: 120%;
 }
 
+/* 出退勤ボタン */
 .sub-button {
 	width: 8vw;
 	height: 50px;
@@ -132,23 +133,23 @@ td {
 	background-color: #147CBC;
 }
 
+/* シフト確認ページの「はい」「いいえ」ボタン */
 .sub-button2 {
 	margin: 0 5px;
 }
 
+/* 使用されていない？*/
 .sub-p {
 	text-align: right;
 	margin-right: 20%;
 }
 
-footer {
-	border-top: 1px solid #000000
-}
-
+/* 使用されていない？*/
 .tel-num {
 	border-bottom: 1px solid #000000;
 }
 
+/* 使用されていない？ */
 .new {
 	border: 1px solid #000000;
 	text-decoration: none;
@@ -157,112 +158,87 @@ footer {
 	color: #ffffff;
 }
 
+/* 使用されていない？ */
 .new:hover {
 	box-shadow: 2px 2px 0 0 #999999;
 }
 
+/* 土曜日の数字と「土」という文字の色 */
 th.fc-day-sat,
 td.fc-day-sat {
 	color: #147CBC
 }
 
+/* 日曜日、祝祭日の数字と「日」という文字の色 */
 th.fc-day-sun,
 td.fc-day-sun,
 .is_holiday {
 	color: red;
 }
 
-/*.fc-event-title {*/
-/*	color: black;*/
-/*}*/
-
+/* シフトの名前の境界線 */
 .fc-daygrid-event {
 	border: none;
 }
 
-.is_holiday {
-	.fc-daygrid-day-events {
-		.holiday {
-			display: none;
-		}
-	}
+/* Googleカレンダーから取り入れた祝祭日*/
+.is_holiday .fc-daygrid-day-events .holiday {
+	display: none;
 }
 
+
+/* カレンダーの上の「2025年〇月」を含むバー */
 .fc .fc-toolbar.fc-header-toolbar {
 	margin-bottom: 0;
 }
 
-/* ハイライト用 */
-/*.fc-event.highlight .fc-event-title {*/
-/*	color: red !important;*/
-/*	font-weight: bold;*/
-/*}*/
-
-/*.fc-event.lowlight .fc-event-title {*/
-/*	color: lightgray !important;*/
-/*}*/
+/* カレンダー上の今日のシフト */
 .fc .fc-daygrid-day.fc-day-today {
 	background-color: rgb(255 214 5)
 }
 
-.shift-request {
-	.fc-toolbar-chunk {
-
-		.fc-today-button,
-		.fc-button,
-		.fc-button-primary,
-		.fc-button-group {
-			display: none;
-		}
-	}
-
-	/* 選択セルの背景色 */
-	.selected {
-		background-color: #22e0a4 !important;
-	}
-
-	.confirm {
-		background-color: #FB9D00;
-
-		.fc-event-title {
-			color: transparent;
-		}
-	}
-
-	.selected,
-	.confirm {
-		.fc-daygrid-day-number {
-			color: white;
-		}
-	}
+/* シフト提出と編集にて使用 */
+.shift-edit .fc-toolbar-chunk .fc-today-button,
+.shift-edit .fc-toolbar-chunk .fc-button,
+.shift-edit .fc-toolbar-chunk .fc-button-primary,
+.shift-edit .fc-toolbar-chunk .fc-button-group {
+  display: none;
 }
 
-/*.fc-col-header {*/
-/*	table {*/
-/*		border-color: none;*/
-/*	}*/
-/*}*/
+/* 選択セルの背景色 シフト希望提出のページで使用 */
+.selected {
+  background-color: #22e0a4 !important;
+}
 
-/*.un-selected {*/
+/* シフト希望確認のページで使用 */
+.confirm {
+  background-color: #FB9D00;
+}
 
-/*	.fc-h-event {*/
-/*		background-color: rgb(178, 183, 181);*/
-/*		border-color: rgb(178, 183, 181);*/
-/*	}*/
+/* おそらく使用しない
+.shift-request .confirm .fc-event-title {
+  color: transparent;
+} */
 
-/*	.fc-event .fc-event-title {*/
-/*		color: rgb(92, 92, 92);*/
-/*	}*/
-/*}*/
+/* 日付の色変更（背景色変更に伴う視認性確保） */
+.selected .fc-daygrid-day-number,
+.confirm .fc-daygrid-day-number {
+  color: white;
+}
 
+
+/* シフトカレンダーの従業員名を太くする */
 .fc-event .fc-event-title {
 	font-weight: bold;
 }
 
+/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、カレンダー上にあるその従業員名が白くなる */
 .fc-event.highlight .fc-event-title {
 	color: white;
 }
 
+/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、
+カレンダー上にあるその従業員以外の人の名前が透明になる */
 .fc-event.lowlight .fc-event-title {
 	color: transparent;
 }
@@ -273,44 +249,7 @@ td.fc-day-sun,
 	margin: 2px auto;
 }
 
-/*:root {*/
-/*	--fc-event-bg-color: none;*/
-/*	--fc-event-border-color: none;*/
-/*}*/
-/*.fc-event-title {*/
-/*	color: black;*/
-/*}*/
-
-.schedule-view {
-	/*	:root {*/
-	/*		--fc-event-bg-color: none;*/
-	/*		--fc-event-border-color: none;*/
-	/*	}*/
-
-	/*	.fc-event-title {*/
-	/*		color: black;*/
-	/*	}*/
-
-}
-
-.schedule-edit {
-
-
-	/*	.fc-event-title {*/
-	/*		color: white;*/
-	/*	}*/
-
-	.fc-toolbar-chunk {
-
-		.fc-today-button,
-		.fc-button,
-		.fc-button-primary,
-		.fc-button-group {
-			display: none;
-		}
-	}
-}
-
+/* 勤怠履歴のtableで使用 なにかもっと大きなクラスに統合してもいいかもしれない */
 .history {
 	width: auto;
 }
@@ -369,9 +308,5 @@ td.fc-day-sun,
 		font-size: 30px;
 		width: 138px;
 		max-width: none;
-	}
-
-	.history {
-		width: auto;
 	}
 }
