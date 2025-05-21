@@ -6,6 +6,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.17/index.global.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.6/index.global.min.js"></script>
 	<link rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewport" content="width=device-width">
 	<title>シフト提出画面</title>
 </head>
 
@@ -21,9 +22,9 @@
 	</header>
 	<article>
 		<p>現在&nbsp;<span th:text="${#authentication.principal.name}"
-				style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
-		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
-		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+				class="shift-request-employee"></span>&nbsp;さんでログインしています</p>
+		<p th:if="${message}" th:text="${message}" class="message"></p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
 		<!--		<div th:if="${shiftRequestForm.isNew}">-->
 		<div th:if="${isNew}">
 			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
@@ -31,7 +32,7 @@
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="提出">
 				<button id="clear-selection" type="button">すべての選択を解除</button>
-				<div id="calendar" style="width:80%;margin:0 auto" class="shift-edit"></div>
+				<div id="calendar" class="shift-edit"></div>
 			</form>
 
 			<script th:src="@{/js/shift/request-calendar.js}"></script>
@@ -53,7 +54,7 @@
 				<a th:href="@{/shift/request/renew}">ある(再作成)</a>
 				<a th:href="@{/shift}">ない</a>
 			</div>
-			<div id="calendar" style="width:80%;margin:0 auto" class="shift-edit"></div>
+			<div id="calendar" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-requests-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
 				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]]*/)});

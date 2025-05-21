@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>パスワードフォーム</title>
 	<link th:rel="stylesheet" href="/css/mystyle.css">
-	<meta name="viewpoint" content="width=device-width">
+	<meta name="viewport" content="width=device-width">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 	<h1 th:if="${passwordForm.isNew}">パスワード登録</h1>
 	<h1 th:unless="${passwordForm.isNew}">パスワード再設定</h1>
 	<form th:action="@{/password/update}" th:object="${passwordForm}" method="post">
-		<p th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}" style="color:red">
+		<p th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}"class="error-message">
 			パスワード不一致
 		</p>
 		<input type="hidden" value="${employeeForm.employeeId}" th:field="*{employeeId}">

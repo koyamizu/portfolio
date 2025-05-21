@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>従業員管理</title>
 	<link rel="stylesheet" href="/css/mystyle.css">
-	<meta name="viewpoint" content="width=device-width">
+	<meta name="viewport" content="width=device-width">
 </head>
 
 <body>
@@ -21,17 +21,17 @@
 	</header>
 	<article>
 		<h1>従業員一覧</h1>
-		<p th:if="${message}" th:text="${message}" style="color:blue">完了メッセージ</p>
-		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red">エラーメッセージ</p>
-		<table  style="width:40%">
+		<p th:if="${message}" th:text="${message}" class="message">完了メッセージ</p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message">エラーメッセージ</p>
+		<table class="employee-list">
 			<thead>
 				<tr>
-					<th style="width:10%">ID</th>
-					<th style="width:30%">名前</th>
-					<th style="width:30%">パスワード再設定</th>
-					<th style="width:10%">詳細</th>
-					<th style="width:10%">編集</th>
-					<th style="width:10%">削除</th>
+					<th class="w10">ID</th>
+					<th class="w30">名前</th>
+					<th class="w30">パスワード再設定</th>
+					<th class="w10">詳細</th>
+					<th class="w10">編集</th>
+					<th class="w10">削除</th>
 				</tr>
 			</thead>
 			<tbody class="emp-list">

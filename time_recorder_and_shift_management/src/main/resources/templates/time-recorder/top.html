@@ -51,7 +51,7 @@
 				<button type="submit">打刻画面へ</button>
 			</p>
 		</form>
-		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;font-weight: bold;">
+		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message">
 			エラーメッセージ
 		</p>
 		<hr>
@@ -59,7 +59,7 @@
 			<caption>本日の勤務予定者</caption>
 			<thead>
 				<tr>
-					<th style="width:30%">名前</th>
+					<th class="name">名前</th>
 					<th>出勤時刻</th>
 					<th>退勤時刻</th>
 					<th>実働時間</th>

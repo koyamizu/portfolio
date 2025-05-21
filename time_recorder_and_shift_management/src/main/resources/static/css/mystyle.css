@@ -20,8 +20,12 @@ nav a:hover {
 nav ul {
 	padding: 10px 0;
 	list-style-type: none;
-	margin-top: 0;
+	margin: 0;
 	position: relative;
+}
+
+.display-inline{
+	display:inline;
 }
 
 /*ナビゲーションメニュー中のそれぞれのリンクは中央に配置する*/
@@ -75,6 +79,11 @@ body {
 	justify-content: space-between;
 	width: 200px;
 	margin: 5px auto;
+}
+
+.shift-request-employee{
+	font-weight: bold;
+	font-size:120%
 }
 
 table {
@@ -140,15 +149,20 @@ time-recorder/stamp.htmlの「現在●●さんでログインしています�
 	padding-top: 10px;
 }
 
-.sub-h1.stamp {
+.stamp-title{
 	font-size: 120%;
+	margin-bottom:10px;
+}
+
+.nav-history-admin{
+	height:auto;
 }
 
 /* タイムレコーダー画面の「xxxx年xx月xx日(x)」という日付のフォント */
 .sub-h2 {
 	margin-block-end: 5px;
 	margin-block-start: 5px;
-	font-size: 120%;
+	font-size: 130%;
 }
 
 /* 出退勤ボタンのレイアウト */
@@ -278,7 +292,7 @@ td.fc-day-sun,
 }
 
 #external-events {
-	width: 100px;
+	width: 10%;
 	text-align: center;
 	padding: 5px 10px;
 	background-color: #e5e5e5;
@@ -321,8 +335,25 @@ td.fc-day-sun,
 
 /* 勤怠履歴のtableで使用 なにかもっと大きなクラスに統合してもいいかもしれない */
 .history {
-	width: auto;
+	width: 50%;
 }
+
+.employee-list{
+	width:40%;
+}
+
+table .w10{
+	width:10%;
+}
+
+table .w30{
+	width:30%;
+}
+
+.shift-edit-draggable{
+	display:flex;
+}
+
 
 
 @media(min-width:1024px) {
@@ -378,5 +409,18 @@ td.fc-day-sun,
 		font-size: 30px;
 		width: 138px;
 		max-width: none;
+	}
+	
+	#calendar{
+		width:auto;
+		margin:5px 5px;
+	}
+	
+	table .fc-col-header {
+		width:auto;
+	}
+	
+	.fc .fc-toolbar-title{
+		font-size:1.5em;
 	}
 }

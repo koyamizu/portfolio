@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>従業員フォーム</title>
 	<link th:rel="stylesheet" href="/css/mystyle.css">
-	<meta name="viewpoint" content="width=device-width">
+	<meta name="viewport" content="width=device-width">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
 	<h1 th:unless="${employeeForm.isNew}">従業員情報編集</h1>
 	<form th:action="${employeeForm.isNew}?@{/password/create}:@{/employees/update}" th:object="${employeeForm}"
 		method="post">
-		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}" style="color:red">
+		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}" class="error-message">
 			エラーメッセージ
 		</p>
 		<input th:unless="${employeeForm.isNew}" type="hidden" th:field="${employeeForm.id}">
