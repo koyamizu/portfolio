@@ -30,12 +30,12 @@
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="作成">
 				<div style=" display:flex">
-					<div id="external-events" style="background-color: #e5e5e5;">
+					<div id="external-events">
 						<p>
 							<strong>従業員</strong>
 						</p>
 						<div class="fc-event fc-h-event fc-daygrid-event" th:each="employee:${allEmployees}">
-							<div class="fc-event-main" th:id="${employee.id}" style="width:100px">
+							<div class="fc-event-main" th:id="${employee.id}">
 								<span th:text="${employee.name}"></span>
 							</div>
 						</div>
@@ -51,13 +51,15 @@
 		<div th:unless="${isNew}">
 			<p>来月のシフトは以下の日程で作成済みです</p>
 			<p>変更はありますか？</p>
-			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">
-				<form th:action="@{/shift/edit/renew}" method="get">
-					<button type="submit" class="sub-button2">ある(再作成)</button>
-				</form>
-				<form th:action="@{/admin}" method="get">
-					<button type="submit" class="sub-button2">ない</button>
-				</form>
+			<div class="shift-confirm">
+				<!--				<form th:action="@{/shift/edit/renew}" method="get">-->
+				<!--					<button type="submit" class="sub-button2">ある(再作成)</button>-->
+				<!--				</form>-->
+				<!--				<form th:action="@{/admin}" method="get">-->
+				<!--					<button type="submit" class="sub-button2">ない</button>-->
+				<!--				</form>-->
+				<a th:href="@{/shift/edit/renew}">ある(再作成)</a>
+				<a th:href="@{/admin}">ない</a>
 			</div>
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-edit-calendar.js}"></script>

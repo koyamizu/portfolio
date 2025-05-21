@@ -46,7 +46,7 @@ function initializeCalendar(events) {
 				}
 			});
 		},
-		
+		dayCellContent:e=>e.dayNumberText=e.dayNumberText.replace('日','')
 	});
 	calendar.render();
 }

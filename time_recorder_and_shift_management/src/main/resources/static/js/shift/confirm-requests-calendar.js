@@ -24,6 +24,7 @@ function initializeCalendar(events) {
 				className: 'requestList'
 			}
 		],
+		dayCellContent:e=>e.dayNumberText=e.dayNumberText.replace('日',''),
 		locale: 'ja',
 		eventDidMount: function(e) {
 			let el = e.el;

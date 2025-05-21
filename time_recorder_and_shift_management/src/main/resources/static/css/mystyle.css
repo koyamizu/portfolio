@@ -24,16 +24,17 @@ nav ul {
 	position: relative;
 }
 
+/*ナビゲーションメニュー中のそれぞれのリンクは中央に配置する*/
 nav li {
 	display: inline;
 	text-align: center;
 }
 
+/*ひとつ前の画面やホームへのリンクを右端に配置する*/
 .li-index {
 	position: absolute;
 	right: 10px;
 }
-
 
 body {
 	background-color: lightgrey;
@@ -41,6 +42,7 @@ body {
 	margin: 0 auto;
 }
 
+/*タイムレコーダーのデジタル時計のレイアウト*/
 #clock {
 	background-color: #ffffff;
 	width: 23vw;
@@ -52,10 +54,27 @@ body {
 	padding-right: 5px;
 }
 
-.login {
+#calendar {
+	width: 80%;
+	margin: 0 auto;
+}
+
+/*タイムレコーダーにて、従業員IDを入力するフィールドのレイアウト*/
+.login-field {
 	height: 25px;
 	margin: 0 10px;
 	/* padding-top:5px; */
+}
+
+.login-employee-name {
+	font-size: 150%;
+}
+
+.login-button-align{
+	display: flex;
+	justify-content: space-between;
+	width: 200px;
+	margin: 5px auto;
 }
 
 table {
@@ -66,12 +85,12 @@ table {
 	background-color: white;
 }
 
-/* シフト提出ページの曜日の表の線 */
+/* カレンダーの曜日部分のボーダーラインの色変更 */
 table .fc-col-header {
 	border-color: transparent;
 }
 
-/* タイムレコーダーの「本日の勤務予定者」 */
+/* タイムレコーダーの「本日の勤務予定者」という文字のレイアウト*/
 caption {
 	font-weight: bold;
 	margin-bottom: 10px;
@@ -84,11 +103,15 @@ th {
 	color: white;
 }
 
+th .name {
+	width: 30%;
+}
+
 td {
 	border: 2px solid #000000;
 }
 
-/* 出退勤のフォーム */
+/* 打刻画面の出退勤フォーム */
 .stamp {
 	display: flex;
 	/*	gap:40px;*/
@@ -98,21 +121,37 @@ td {
 	justify-content: space-between;
 }
 
-/* 「タイムレコーダー」「現在●●さんでログインしています」 */
+.message {
+	color: red;
+	font-weight: bold;
+}
+
+.error-message {
+	color: blue;
+	font-weight: bold;
+}
+
+/* time-recorder/top.htmlの「タイムレコーダー」
+time-recorder/stamp.htmlの「現在●●さんでログインしています」
+という文字のレイアウト */
 .sub-h1 {
 	margin-block-end: 5px;
 	margin-block-start: 5px;
 	padding-top: 10px;
 }
 
-/* タイムレコーダーの日付 */
+.sub-h1.stamp {
+	font-size: 120%;
+}
+
+/* タイムレコーダー画面の「xxxx年xx月xx日(x)」という日付のフォント */
 .sub-h2 {
 	margin-block-end: 5px;
 	margin-block-start: 5px;
 	font-size: 120%;
 }
 
-/* 出退勤ボタン */
+/* 出退勤ボタンのレイアウト */
 .sub-button {
 	width: 8vw;
 	height: 50px;
@@ -133,43 +172,43 @@ td {
 	background-color: #147CBC;
 }
 
-/* シフト確認ページの「はい」「いいえ」ボタン */
+/* shift/edit.htmlおよびshift/reqest.htmlの「はい」「いいえ」ボタン */
 .sub-button2 {
 	margin: 0 5px;
 }
 
-/* 使用されていない？*/
-.sub-p {
-	text-align: right;
-	margin-right: 20%;
-}
+/*  使用されていない？
+ .sub-p {
+ 	text-align: right;
+ 	margin-right: 20%;
+ }
+ 
+ 使用されていない？
+ .tel-num {
+ 	border-bottom: 1px solid #000000;
+ }
+ 
+ 使用されていない？ 
+ .new {
+ 	border: 1px solid #000000;
+ 	text-decoration: none;
+ 	padding: 2px 5px 2px;
+ 	background-color: #00A591;
+ 	color: #ffffff;
+ }
+ 
+ 使用されていない？ 
+ .new:hover {
+ 	box-shadow: 2px 2px 0 0 #999999;
+ } */
 
-/* 使用されていない？*/
-.tel-num {
-	border-bottom: 1px solid #000000;
-}
-
-/* 使用されていない？ */
-.new {
-	border: 1px solid #000000;
-	text-decoration: none;
-	padding: 2px 5px 2px;
-	background-color: #00A591;
-	color: #ffffff;
-}
-
-/* 使用されていない？ */
-.new:hover {
-	box-shadow: 2px 2px 0 0 #999999;
-}
-
-/* 土曜日の数字と「土」という文字の色 */
+/* カレンダー上の土曜日の数字と「土」という文字の色 */
 th.fc-day-sat,
 td.fc-day-sat {
 	color: #147CBC
 }
 
-/* 日曜日、祝祭日の数字と「日」という文字の色 */
+/* カレンダー上の日曜日、祝祭日の数字と「日」という文字の色 */
 th.fc-day-sun,
 td.fc-day-sun,
 .is_holiday {
@@ -192,27 +231,57 @@ td.fc-day-sun,
 	margin-bottom: 0;
 }
 
-/* カレンダー上の今日のシフト */
+/* カレンダー上の今日のセルの背景色 */
 .fc .fc-daygrid-day.fc-day-today {
 	background-color: rgb(255 214 5)
 }
 
-/* シフト提出と編集にて使用 */
+/* シフト提出と編集にて使用。カレンダーの上にある月の切り替えボタンを消す */
 .shift-edit .fc-toolbar-chunk .fc-today-button,
 .shift-edit .fc-toolbar-chunk .fc-button,
 .shift-edit .fc-toolbar-chunk .fc-button-primary,
 .shift-edit .fc-toolbar-chunk .fc-button-group {
-  display: none;
+	display: none;
 }
 
 /* 選択セルの背景色 シフト希望提出のページで使用 */
 .selected {
-  background-color: #22e0a4 !important;
+	background-color: #22e0a4 !important;
 }
 
-/* シフト希望確認のページで使用 */
+/* シフト希望確認のページにて、登録済みの日付の背景色を変えるために使用 */
 .confirm {
-  background-color: #FB9D00;
+	background-color: #FB9D00;
+}
+
+.fc-direction-ltr {
+	text-align: center;
+}
+
+.shift-confirm {
+	display: flex;
+	justify-content: space-between;
+	width: 300px;
+	margin: 0 auto;
+}
+
+.shift-confirm a{
+	text-decoration: none;
+	border:solid 1px #000000;
+	color:black;
+	background-color: #ffffff;
+	width:100px;
+}
+
+.shift-confirm a:hover {
+	box-shadow: 5px 5px 0 0 #999999;
+}
+
+#external-events {
+	width: 100px;
+	text-align: center;
+	padding: 5px 10px;
+	background-color: #e5e5e5;
 }
 
 /* おそらく使用しない
@@ -223,7 +292,7 @@ td.fc-day-sun,
 /* 日付の色変更（背景色変更に伴う視認性確保） */
 .selected .fc-daygrid-day-number,
 .confirm .fc-daygrid-day-number {
-  color: white;
+	color: white;
 }
 
 
@@ -232,7 +301,8 @@ td.fc-day-sun,
 	font-weight: bold;
 }
 
-/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、カレンダー上にあるその従業員名が白くなる */
+/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、
+カレンダー上にあるその従業員名が白くなる */
 .fc-event.highlight .fc-event-title {
 	color: white;
 }
@@ -243,7 +313,7 @@ td.fc-day-sun,
 	color: transparent;
 }
 
-/* ヘッダーセル内のチェックボックスを中央配置 */
+/* カレンダーの上にあるチェックボックスを中央配置 */
 .fc-col-header-cell-cushion .col-checkbox {
 	display: block;
 	margin: 2px auto;

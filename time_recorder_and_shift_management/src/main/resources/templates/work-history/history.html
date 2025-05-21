@@ -16,7 +16,7 @@
 					<li><a th:href="@{/work-history/{month}(month=${month})}" th:text="|${month}月|"></a></li>
 				</div>
 				<li class="li-index" >
-					<a th:href="${from}=='admin'?@{/admin}:@{/user}">戻る</a>
+					<a th:href="@{#}" onclick="history.back()">戻る</a>
 				</li>
 			</ul>
 			<ul th:if="${from}=='admin'" style="margin:0;">

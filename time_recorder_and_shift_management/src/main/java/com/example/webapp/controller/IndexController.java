@@ -17,7 +17,7 @@ public class IndexController {
 	
 	@GetMapping("to-time-recorder")
 	public String showTimeRecorder(HttpSession session) {
-		session.setAttribute("from", "timeRecorder");
+//		session.setAttribute("from", "timeRecorder");
 		return "redirect:/time-recorder";
 	}
 

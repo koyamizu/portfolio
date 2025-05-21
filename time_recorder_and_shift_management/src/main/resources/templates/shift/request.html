@@ -24,10 +24,10 @@
 				style="font-weight: bold;"></span>&nbsp;さんでログインしています</p>
 		<p th:if="${message}" th:text="${message}" style="color:blue"></p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
-<!--		<div th:if="${shiftRequestForm.isNew}">-->
+		<!--		<div th:if="${shiftRequestForm.isNew}">-->
 		<div th:if="${isNew}">
 			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
-<!--				<input type="hidden" name="employeeId" th:value="${shiftRequestForm.employeeId}">-->
+				<!--				<input type="hidden" name="employeeId" th:value="${shiftRequestForm.employeeId}">-->
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="submit" value="提出">
 				<button id="clear-selection" type="button">すべての選択を解除</button>
@@ -39,17 +39,19 @@
 				document.addEventListener('DOMContentLoaded', initializeCalendar(/*[[${#authentication.principal.username}]]*/));
 			</script>
 		</div>
-<!--		<div th:unless="${shiftRequestForm.isNew}">-->
+		<!--		<div th:unless="${shiftRequestForm.isNew}">-->
 		<div th:unless="${isNew}">
 			<p>来月の希望シフトは以下の日程で提出済みです</p>
 			<p>変更はありますか？</p>
-			<div style="display:flex;justify-content: space-between;width:120px;margin:0 auto;">
-				<form th:action="@{/shift/request/renew}" method="get">
-					<button type="submit" class="sub-button2">ある(再作成)</button>
-				</form>
-				<form th:action="@{/shift}" method="get">
-					<button type="submit" class="sub-button2">ない</button>
-				</form>
+			<div class="shift-confirm">
+				<!--				<form th:action="@{/shift/request/renew}" method="get">-->
+				<!--					<button type="submit" class="sub-button2">ある(再作成)</button>-->
+				<!--				</form>-->
+				<!--				<form th:action="@{/shift}" method="get">-->
+				<!--					<button type="submit" class="sub-button2">ない</button>-->
+				<!--				</form>-->
+				<a th:href="@{/shift/request/renew}">ある(再作成)</a>
+				<a th:href="@{/shift}">ない</a>
 			</div>
 			<div id="calendar" style="width:80%;margin:0 auto" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-requests-calendar.js}"></script>

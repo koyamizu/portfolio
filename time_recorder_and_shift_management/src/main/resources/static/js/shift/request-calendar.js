@@ -35,6 +35,7 @@ function initializeCalendar(employeeId) {
 			//					el.closest('.fc-daygrid-day').classList.add('is_holiday');
 			//				}
 		},
+		dayCellContent:e=>e.dayNumberText=e.dayNumberText.replace('日',''),
 		// 1) 最初に開く日を翌月の１日に
 		initialDate: nextMonthFirst,
 

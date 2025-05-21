@@ -14,23 +14,23 @@
 		<p style="color:red;">従業員IDまたはパスワードが違います<br>
 			パスワードを忘れた場合は店長まで</p>
 	</div>
-<!--	↓「methed」になっていたせいで/authenticationにGET送信していた。デベロッパーツールで気づく-->
-<!--	<form th:action="@{/authentication}" methed="post" th:object="${loginForm}">-->
-	
+	<!--	↓「methed」になっていたせいで/authenticationにGET送信していた。デベロッパーツールで気づく-->
+	<!--	<form th:action="@{/authentication}" methed="post" th:object="${loginForm}">-->
+
 	<form th:action="@{/authentication}" method="post" th:object="${loginForm}">
 		<div>
-			<label for="employeeIdInput">従業員ID</label>
+			<label for="employeeIdInput">従業員ID&nbsp;&nbsp;</label>
 			<input type="text" th:field="*{employeeIdInput}">
 		</div>
 		<div>
 			<label for="passwordInput">パスワード</label>
 			<input type="password" th:field="*{passwordInput}">
 		</div>
-		<div>
+		<div class="login-button-align">
 			<input type="submit" value="ログイン">
+			<button type="button" onclick="history.back()">前のページへ戻る</button>
 		</div>
 	</form>
-	<button type="button" onclick="history.back()">前のページへ戻る</button>
 </body>
 
 </html>

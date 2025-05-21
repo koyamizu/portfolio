@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -17,7 +17,7 @@
 			<ul>
 				<li th:if="${from}=='user'"><a th:href="@{/shift/request}">従業員シフト提出</a></li>
 				<li class="li-index">
-					<a th:href="${from}=='timeRecorder'?@{/time-recorder}:@{/user}">戻る</a>
+					<a th:href="@{#}" onclick="history.back()">戻る</a>
 				</li>
 			</ul>
 		</nav>

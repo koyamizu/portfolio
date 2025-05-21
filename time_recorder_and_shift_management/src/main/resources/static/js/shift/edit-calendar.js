@@ -124,7 +124,8 @@ function initializeCalendar(events) {
 				})
 				console.log('Selected dates:', selectedShifts);
 			}
-		}
+		},
+		dayCellContent: e => e.dayNumberText = e.dayNumberText.replace('日', '')
 	});
 	calendar.render();
 
