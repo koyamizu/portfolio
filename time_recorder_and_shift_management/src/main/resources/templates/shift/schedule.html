@@ -17,7 +17,7 @@
 			<ul>
 				<li th:if="${from}=='user'"><a th:href="@{/shift/request}">従業員シフト提出</a></li>
 				<li class="li-index">
-					<a th:href="@{#}" onclick="history.back()">戻る</a>
+					<a th:href="${from}=='user'?@{/user}:@{/time-recorder}">戻る</a>
 				</li>
 			</ul>
 		</nav>
