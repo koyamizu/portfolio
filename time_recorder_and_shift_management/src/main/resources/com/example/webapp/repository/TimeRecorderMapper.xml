@@ -20,51 +20,67 @@
 	</resultMap>
 
 	<!--当日出勤者選択 -->
-	<select id="selectEmployeesByDate"
+	<select id="selectTodayMembersByDate"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-		SELECT e.name,s.date,s.start,s.end,SUBTIME(end,start) as work_time
-		FROM test_employees_list e
-		INNER
-		JOIN test_shifts_and_timestamps s
-		ON e.id=s.employee_id
+		SELECT
+		  e.name
+		  ,s.date
+		  ,s.start
+		  ,s.end
+		  ,SUBTIME(end,start) AS work_time
+		FROM
+		  test_employees_list AS e
+		    INNER JOIN test_shifts_and_timestamps AS s
+		      ON e.id = s.employee_id
 		WHERE
-		s.date=#{date};
+		  s.date = #{date}
+		;
 	</select>
 	<!-- シフトデータの抽出 -->
 	<!-- 下のstartやendでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
-	<select id="selectShiftAndTimestampByEmployeeIdAndDate"
+	<select id="selectShiftByEmployeeIdAndDate"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
 		<!-- SELECT * -->
 		<!-- FROM test_shift_and_timestamp2504 -->
-		SELECT s.id,e.name,s.date
-		FROM test_employees_list e
-		INNER
-		JOIN
-		test_shifts_and_timestamps s
-		ON e.id=s.employee_id
-		WHERE
-		employee_id=#{employee_id} and date=#{date};
-	</select>
-	<select id="selectShiftAndTimestampByShiftId"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
-		SELECT id,employee_id,start,end
+		SELECT
+		  s.id
+		  ,e.name
+		  ,s.date
 		FROM
-		test_shifts_and_timestamps
-		WHERE id=#{shift_id}
+		  test_employees_list AS e
+		    INNER JOIN test_shifts_and_timestamps AS s
+		      ON e.id = s.employee_id
+		WHERE
+		  employee_id = #{employee_id}
+		  AND date = #{date}
+		;
+	</select>
+	<select id="selectTimestampByShiftId"
+		resultMap="ShiftAndTimestampWithEmployeeResult">
+		SELECT
+		  id
+		  ,employee_id
+		  ,start
+		  ,end
+		FROM
+		  test_shifts_and_timestamps
+		WHERE
+		  id = #{shiftId}
+		;
 	</select>
 	<!-- 出勤の打刻 -->
-	<insert id="start">
+	<update id="setStartByShiftId">
 		UPDATE test_shifts_and_timestamps
 		SET
 		start=CURRENT_TIME
 		WHERE
-		id=#{shift_id};
-	</insert>
+		id=#{shiftId};
+	</update>
 	<!-- 退勤の打刻 -->
-	<update id="end">
+	<update id="setEndByShiftId">
 		UPDATE test_shifts_and_timestamps
 		SET
 		end=CURRENT_TIME
-		WHERE id=#{shift_id};
+		WHERE id=#{shiftId};
 	</update>
 </mapper>

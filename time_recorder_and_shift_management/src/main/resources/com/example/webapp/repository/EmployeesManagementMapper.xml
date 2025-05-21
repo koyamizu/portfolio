@@ -2,42 +2,82 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.EmployeesManagementMapper">
+	
 	<select id="selectLoginUserById"
 		resultType="com.example.webapp.entity.Authentication">
-		SELECT id,password,authority,name
-		FROM test_employees_list
+		SELECT
+		  id
+		  ,password
+		  ,authority
+		  ,name
+		FROM
+		  test_employees_list
 		WHERE
-		id=#{employeeId}
+		  id = #{employeeId}
+		;
 	</select>
+	
 	<select id="selectEmployeeById">
-		SELECT *
-		FROM test_employees_list
+		SELECT
+		  *
+		FROM
+		  test_employees_list
 		WHERE
-		id=#{employee_id};
+		  id = #{id}
+		;
 	</select>
+	
 	<select id="selectAllEmployees">
-		SELECT *
-		FROM test_employees_list;
+		SELECT
+		  *
+		FROM
+		  test_employees_list
+		;
 	</select>
+	
 	<select id="selectEmployeeIdByName">
-		SELECT id
-		FROM test_employees_list
-		WHERE name=#{name}
+		SELECT
+		  id
+		FROM
+		  test_employees_list
+		WHERE
+		  name = #{name}
+		;
 	</select>
+	
 	<insert id="insertEmployee">
 		INSERT INTO
-		test_employees_list(name,birth,password,tel,address,authority,created_at,updated_at,password_updated_at)
-		VALUES(#{name},#{birth},#{password},#{tel},#{address},#{authority},now(),now(),now());
+		  test_employees_list (
+		    name ,birth ,password ,tel ,address 
+		    ,authority ,created_at ,updated_at ,password_updated_at
+		  )
+		VALUES (
+		  #{name} ,#{birth} ,#{password} ,#{tel} ,#{address}
+		  ,#{authority} ,now() ,now() ,now()
+		)
+		;
 	</insert>
+	
 	<update id="updateEmployee">
-		UPDATE test_employees_list
+		UPDATE
+		  test_employees_list
 		SET
-		name=#{name},birth=#{birth},tel=#{tel},address=#{address},updated_at=now()
+		  name = #{name}
+		  ,birth = #{birth}
+		  ,tel = #{tel}
+		  ,address = #{address}
+		  ,updated_at = now()
 		WHERE
-		id=#{id};
+		  id = #{id}
+		;
 	</update>
-	<delete id="deleteEmployee">
-		DELETE FROM test_employees_list
-		WHERE id=#{id};
+	
+	<delete id="deleteEmployeeById">
+		DELETE FROM
+		  test_employees_list
+		WHERE
+		  id = #{id}
+		;
 	</delete>
+	
 </mapper>

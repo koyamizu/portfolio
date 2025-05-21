@@ -3,21 +3,20 @@ package com.example.webapp.repository;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.example.webapp.entity.Employee;
 
 @Mapper
 public interface EmployeesManagementMapper {
-	Employee selectEmployeeById(@Param("employee_id") Integer id);
+	Employee selectEmployeeById(Integer id);
 	
 	List<Employee> selectAllEmployees();
 	
-	Integer selectEmployeeIdByName(@Param("name") String name);
+	Integer selectEmployeeIdByName(String name);
 	
 	void insertEmployee(Employee employee);
 	
 	void updateEmployee(Employee employee);
 	
-	void deleteEmployee(Integer id);
+	void deleteEmployeeById(Integer id);
 }

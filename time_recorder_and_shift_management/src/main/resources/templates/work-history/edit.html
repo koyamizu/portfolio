@@ -13,7 +13,8 @@
 		<nav>
 			<ul>
 				<li class="li-index">
-					<a th:href="@{/work-history/{from-page}(from-page=${fromPage})}">戻る</a>
+					<!--					<a th:href="@{/work-history/{from-page}(from-page=${fromPage})}">戻る</a>-->
+					<a th:href="@{#}" onclick="history.back()">戻る</a>
 				</li>
 			</ul>
 		</nav>

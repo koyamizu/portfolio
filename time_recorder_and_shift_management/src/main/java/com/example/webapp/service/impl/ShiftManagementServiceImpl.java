@@ -65,7 +65,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public void deleteShiftScheduleByTargetMonth(Integer targetMonth) {
+	public void deleteShiftsByTargetMonth(Integer targetMonth) {
 		mapper.deleteShiftScheduleByTargetMonth(targetMonth);
 	}
 

@@ -1,5 +1,7 @@
 package com.example.webapp.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +28,8 @@ public class EmployeesManagementController {
 
 	@GetMapping
 	public String showEmployeesList(Model model) {
-		model.addAttribute("employees", service.selectAllEmployees());
+		List<Employee> employees=service.selectAllEmployees();
+		model.addAttribute("employees", employees);
 		return "employees/list";
 	}
 
@@ -65,7 +68,7 @@ public class EmployeesManagementController {
 		var target = service.selectEmployeeById(id);
 		if (target != null) {
 			try {
-				service.deleteEmployee(id);
+				service.deleteEmployeeById(id);
 				attributes.addFlashAttribute("message",
 						"従業員ID:" + target.getId() + " " + target.getName() + " さんの従業員情報が削除されました");
 			} catch (Exception e) {

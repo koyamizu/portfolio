@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -47,7 +48,7 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("request")
-	public String showRequestForm(/*ShiftRequestForm form,*/Authentication authentication, Model model) {
+	public String showRequestPage(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
 		List<EntityForFullCalendar> requests = shiftManagementService.selectRequestsByEmployeeId(employeeId);
@@ -65,7 +66,7 @@ public class ShiftManagementController {
 	}
 
 	@PostMapping("request/submit")
-	public String submitRequests(/*Integer employeeId,*/@RequestParam String selectedDatesJson,
+	public String submitRequests(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes) throws JsonProcessingException {
 
 		if (selectedDatesJson.equals("[]")) {
@@ -106,9 +107,9 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("edit/renew")
-	public String deleteShift() {
+	public String deleteShifts() {
 		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
-		shiftManagementService.deleteShiftScheduleByTargetMonth(nextMonth);
+		shiftManagementService.deleteShiftsByTargetMonth(nextMonth);
 		return "forward:/shift/edit";
 	}
 

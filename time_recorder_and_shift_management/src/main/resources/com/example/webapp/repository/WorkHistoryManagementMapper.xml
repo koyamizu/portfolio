@@ -18,49 +18,90 @@
 		</association>
 	</resultMap>
 
-	<select id="selectAllHistoriesToDateByMonth"
+	<select id="selectAllWorkHistoriesToDateByMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
-	x.created_at,x.updated_at,employee_id,name
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE MONTH(date)=#{targetMonth}
-	ORDER BY date ASC;
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.start
+	  ,s.end
+	  ,SUBTIME(s.end,s.start) AS work_time
+	  ,s.created_at
+	  ,s.updated_at
+	  ,s.employee_id
+	  ,e.name
+	FROM
+	  test_shifts_and_timestamps AS s
+	    INNER JOIN test_employees_list AS e
+ 	      ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	ORDER BY s.date ASC
+	;
 	</select>
 
-	<select id="selectHistoriesToDateByEmployeeIdAndMonth"
+	<select id="selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth"
 		resultMap="ShiftAndTimestampWithEmployeeResult">
-	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
-	x.created_at,x.updated_at,employee_id,name 
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE MONTH(date)=#{targetMonth}
-	and employee_id=#{employeeId};
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.start
+	  ,s.end
+	  ,SUBTIME(s.end,s.start) AS work_time
+	  ,s.created_at
+	  ,s.updated_at
+	  ,s.employee_id
+	  ,e.name 
+	FROM
+	  test_shifts_and_timestamps AS s
+	    INNER JOIN test_employees_list e
+	      ON s.employee_id=e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	  AND s.employee_id = #{employeeId}
+	;
 	</select>
 	
-	<select id="selectWorkedMembersByMonth">
-	SELECT DISTINCT y.id,name
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE MONTH(date)=#{targetMonth};
+	<select id="selectWorkedEmployeesByMonth">
+	SELECT
+	  DISTINCT s.employee_id
+	  ,e.name
+	FROM
+	  test_shifts_and_timestamps s
+	    INNER JOIN test_employees_list e
+	      ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	;
 	</select>
 	
-	<select id="selectHistoryByShiftId" resultMap="ShiftAndTimestampWithEmployeeResult">
-	SELECT x.id,date,start,end,x.created_at,x.updated_at,employee_id,name
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE x.id=#{shiftId};
+	<select id="selecWorktHistoryByShiftId" resultMap="ShiftAndTimestampWithEmployeeResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.start
+	  ,s.end
+	  ,e.name
+	FROM
+	  test_shifts_and_timestamps AS s
+	    INNER JOIN test_employees_list AS e
+ 	      ON s.employee_id = e.id
+	WHERE
+	  s.id = #{shiftId}
+	;
 	</select>
 	
 <!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
 	<update id="updateHistory">
-	UPDATE test_shifts_and_timestamps
-	SET start=#{start},end=#{end},updated_at=NOW()
-	WHERE id=#{id}
+	UPDATE
+	  test_shifts_and_timestamps
+	SET
+	  start = #{start}
+	  ,end=#{end}
+	  ,updated_at=NOW()
+	WHERE
+	  id=#{id}
+	;
 	</update>
 	
 </mapper>

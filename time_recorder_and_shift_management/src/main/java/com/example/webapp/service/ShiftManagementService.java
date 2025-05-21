@@ -21,7 +21,7 @@ public interface ShiftManagementService {
 	
 	List<Employee> selectEmployeesNotSubmitRequests();
 
-	void deleteShiftScheduleByTargetMonth(Integer targetMonth);
+	void deleteShiftsByTargetMonth(Integer targetMonth);
 
 	void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts);
 }

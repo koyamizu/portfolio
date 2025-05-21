@@ -25,22 +25,22 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	}
 
 	@Override
-	public ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(Integer id, LocalDate date) {
-		return timeRecorderMapper.selectShiftAndTimestampByEmployeeIdAndDate(id, date);
+	public ShiftAndTimestamp selectShiftByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
+		return timeRecorderMapper.selectShiftByEmployeeIdAndDate(employeeId, date);
 	}
 
 	@Override
-	public ShiftAndTimestamp selectShiftAndTimestampByShiftId(Integer shift_id) {
-		return timeRecorderMapper.selectShiftAndTimestampByShiftId(shift_id);
+	public ShiftAndTimestamp selectTimestampByShiftId(Integer shiftId) {
+		return timeRecorderMapper.selectTimestampByShiftId(shiftId);
 	}
 
 	@Override
-	public void start(Integer shift_id) {
-		timeRecorderMapper.start(shift_id);
+	public void updateStartTimeByShiftId(Integer shiftId) {
+		timeRecorderMapper.updateStartTimeByShiftId(shiftId);
 	}
 
 	@Override
-	public void end(Integer shift_id) {
-		timeRecorderMapper.end(shift_id);
+	public void updateEndTimeByShiftId(Integer shiftId) {
+		timeRecorderMapper.updateEndTimeByShiftId(shiftId);
 	}
 }
