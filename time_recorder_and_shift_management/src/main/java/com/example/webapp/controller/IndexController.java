@@ -15,11 +15,11 @@ public class IndexController {
 		return "index";
 	}
 	
-	@GetMapping("to-time-recorder")
-	public String showTimeRecorder(HttpSession session) {
-//		session.setAttribute("from", "timeRecorder");
-		return "redirect:/time-recorder";
-	}
+//	@GetMapping("to-time-recorder")
+//	public String showTimeRecorder(HttpSession session) {
+////		session.setAttribute("from", "timeRecorder");
+//		return "redirect:/time-recorder";
+//	}
 
 	@GetMapping("admin")
 	public String showAdminMenu(HttpSession session) {

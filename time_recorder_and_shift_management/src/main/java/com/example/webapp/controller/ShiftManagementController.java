@@ -32,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/shift")
 public class ShiftManagementController {
 
-	//	private final ShiftManagementService service;
 	private final ShiftManagementService shiftManagementService;
 	private final EmployeesManagementService employeesManagementService;
 
@@ -81,25 +80,20 @@ public class ShiftManagementController {
 			shiftManagementService.insertShiftRequests(requests);
 			attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
 		}
-		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
 		return "redirect:/shift/request";
 	}
 
 	@GetMapping("edit")
-	public String showEditPage(/*ShiftScheduleEditForm form,*/Model model) {
+	public String showEditPage(Model model) {
 		//id,start(date)のみの情報が返ってくる
 		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		List<EntityForFullCalendar> shiftsOfNextMonth = shiftManagementService
 				.selectOneMonthShiftsByTargetMonth(nextMonth);
 		EntityForFullCalendarHelper.setColorProperties("#FB9D00", "white", shiftsOfNextMonth);
-		//↓これShiftRequestFormで受けないとダメ
 		List<EntityForFullCalendar> requests = shiftManagementService.selectAllRequests();
-		//		List<ShiftAndTimestamp> requests = shiftManagementService.selectAllRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", requests);
-		//		List<Employee> notSubmits=service.selectEmployeesNotSubmitRequests();
 		List<Integer> submittedEmployeeIds = requests.stream().map(r -> r.getEmployeeId()).distinct().toList();
 		List<Employee> allEmployees = employeesManagementService.selectAllEmployees();
-		//		List<Employee> notSubmits=allEmployees.stream().map(e->e.getId()).forEach(ei->submittedEmployeeIds.contains(id)).toList();
 		List<Employee> notSubmits = allEmployees.stream().filter(e -> !submittedEmployeeIds.contains(e.getId()))
 				.toList();
 		model.addAllAttributes(Map.of(
@@ -122,7 +116,6 @@ public class ShiftManagementController {
 	public String submitShifts(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes) throws JsonProcessingException {
 
-		// JSON文字列を List<String> に変換
 		ObjectMapper mapper = new ObjectMapper();
 		List<ShiftScheduleEditForm> newShifts = mapper.readValue(selectedDatesJson,
 				new TypeReference<List<ShiftScheduleEditForm>>() {
@@ -130,7 +123,6 @@ public class ShiftManagementController {
 
 		shiftManagementService.insertNextMonthShifts(newShifts);
 		attributes.addFlashAttribute("message", "シフトの作成が完了しました");
-		//「送信しました」みたいなメッセージを表示して、「登録済み」に切り替え
 		return "redirect:/shift/edit";
 	}
 }

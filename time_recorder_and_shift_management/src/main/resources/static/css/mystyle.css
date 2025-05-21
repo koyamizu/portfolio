@@ -191,31 +191,6 @@ time-recorder/stamp.htmlの「現在●●さんでログインしています�
 	margin: 0 5px;
 }
 
-/*  使用されていない？
- .sub-p {
- 	text-align: right;
- 	margin-right: 20%;
- }
- 
- 使用されていない？
- .tel-num {
- 	border-bottom: 1px solid #000000;
- }
- 
- 使用されていない？ 
- .new {
- 	border: 1px solid #000000;
- 	text-decoration: none;
- 	padding: 2px 5px 2px;
- 	background-color: #00A591;
- 	color: #ffffff;
- }
- 
- 使用されていない？ 
- .new:hover {
- 	box-shadow: 2px 2px 0 0 #999999;
- } */
-
 /* カレンダー上の土曜日の数字と「土」という文字の色 */
 th.fc-day-sat,
 td.fc-day-sat {
@@ -298,10 +273,6 @@ td.fc-day-sun,
 	background-color: #e5e5e5;
 }
 
-/* おそらく使用しない
-.shift-request .confirm .fc-event-title {
-  color: transparent;
-} */
 
 /* 日付の色変更（背景色変更に伴う視認性確保） */
 .selected .fc-daygrid-day-number,
