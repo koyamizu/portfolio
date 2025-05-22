@@ -13,15 +13,16 @@
 		<nav>
 			<ul>
 				<li class="li-index">
-					<a th:href="@{/work-history/{from-page}(from-page=${fromPage})}">戻る</a>
+					<!--					<a th:href="@{/work-history/{from-page}(from-page=${fromPage})}">戻る</a>-->
+					<a th:href="@{#}" onclick="history.back()">戻る</a>
 				</li>
 			</ul>
 		</nav>
 	</header>
 	<h1>勤怠修正</h1>
-	<form th:action="@{/work-history/update}" th:object="${shiftAndTimestampForm}" method="post">
+	<form th:action="@{/work-history/update}" th:object="${shiftAndTimeRecordForm}" method="post">
 		<table>
-			<input type="hidden" th:field="${history.id}">
+			<input type="hidden" th:field="${history.shiftId}">
 			<input type="hidden" th:field="${history.date}">
 			<tr>
 				<th>名前</th>

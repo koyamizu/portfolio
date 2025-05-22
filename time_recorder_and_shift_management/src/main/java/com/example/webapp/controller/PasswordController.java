@@ -27,9 +27,9 @@ public class PasswordController {
 	private final PasswordService passwordService;
 	private final EmployeesManagementService employeesManagementService;
 
-	@GetMapping("reset/{id}")
-	public String showPasswordResetForm(@PathVariable Integer id, PasswordForm passwordForm) {
-		passwordForm.setEmployeeId(id);
+	@GetMapping("reset/{employee-id}")
+	public String showPasswordResetForm(@PathVariable("employee-id") Integer employeeId, PasswordForm passwordForm) {
+		passwordForm.setEmployeeId(employeeId);
 		passwordForm.setIsNew(false);
 		return "password/form";
 	}
@@ -37,7 +37,7 @@ public class PasswordController {
 	@PostMapping("create")
 	public String showPasswordCreationForm(@Validated EmployeeForm employeeForm,
 			BindingResult bindingResult,PasswordForm passwordForm) {
-//		employees_listテーブルのpasswordカラムはnot nullなので、初期パスワードを設定。誕生日を使用。
+//		employeesテーブルのpasswordカラムはnot nullなので、初期パスワードを設定。誕生日を使用。
 		employeeForm.setPassword(employeeForm.getBirth());
 		if (bindingResult.hasErrors()) {
 			employeeForm.setIsNew(true);

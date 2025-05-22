@@ -5,14 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.ShiftAndTimestamp;
-import com.example.webapp.form.ShiftAndTimestampForm;
+import com.example.webapp.entity.ShiftAndTimeRecord;
+import com.example.webapp.form.ShiftAndTimeRecordForm;
 
 @Mapper
 public interface WorkHistoryManagementMapper {
-	List<ShiftAndTimestamp> selectAllHistoriesToDateByMonth(Integer targetMonth);
-	List<ShiftAndTimestamp> selectHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
-	List<Employee> selectWorkedMembersByMonth(Integer targerMonth);
-	ShiftAndTimestamp selectHistoryByShiftId(Integer shiftId);
-	void updateHistory(ShiftAndTimestampForm updatedHistory);
+	List<ShiftAndTimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth);
+	List<ShiftAndTimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
+	List<Employee> selectWorkedEmployeesByMonth(Integer targerMonth);
+	ShiftAndTimeRecord selectWorkHistoryByShiftId(Integer shiftId);
+	void updateWorkHistory(ShiftAndTimeRecordForm updatedHistory);
 }

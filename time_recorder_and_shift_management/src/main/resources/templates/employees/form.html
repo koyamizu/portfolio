@@ -25,7 +25,7 @@
 		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}" class="error-message">
 			エラーメッセージ
 		</p>
-		<input th:unless="${employeeForm.isNew}" type="hidden" th:field="${employeeForm.id}">
+		<input th:unless="${employeeForm.isNew}" type="hidden" th:field="${employeeForm.employeeId}">
 		<table>
 			<tr>
 				<th>名前</th>
@@ -42,7 +42,7 @@
 			<tr>
 				<th>電話番号</th>
 				<td>
-					<input type="text" th:field="*{tel}" required placeholder="例：090-1234-5678">
+					<input type="text" th:field="*{tel}" required placeholder="例：030-1234-5678">
 				</td>
 			</tr>
 			<tr>

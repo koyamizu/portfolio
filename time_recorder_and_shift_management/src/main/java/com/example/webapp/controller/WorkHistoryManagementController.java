@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.Role;
-import com.example.webapp.entity.ShiftAndTimestamp;
-import com.example.webapp.form.ShiftAndTimestampForm;
+import com.example.webapp.entity.ShiftAndTimeRecord;
+import com.example.webapp.form.ShiftAndTimeRecordForm;
 import com.example.webapp.service.WorkHistoryManagementService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,22 +28,24 @@ public class WorkHistoryManagementController {
 
 	private final WorkHistoryManagementService service;
 
+	//このメソッドだけadminページから来たverとuserページから来たverで分けるかもしれない
 	@GetMapping("{target-month}")
-	public String showWorkHistoryHistory(@PathVariable("target-month") Integer targetMonth,
+	public String showWorkHistories(@PathVariable("target-month") Integer targetMonth,
 			Authentication auth, Model model, HttpSession session) {
-		List<ShiftAndTimestamp> histories;
+		List<ShiftAndTimeRecord> histories;
 		List<Employee> employees;
 		String from = (String) session.getAttribute("from");
 		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
 		if (isAdmin && from.equals("admin")) {
-			histories = service.selectAllHistoriesToDateByMonth(targetMonth);
-			employees = histories.stream().map(ShiftAndTimestamp::getEmployee).distinct().toList();
+			histories = service.selectAllWorkHistoriesToDateByMonth(targetMonth);
+			//従業員IDと名前だけを返すマッパーメソッドを作る？　シフト編集ページのドラッグ＆ドロップ部分にも使えそう
+			employees = histories.stream().map(ShiftAndTimeRecord::getEmployee).distinct().toList();
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			session.setAttribute("fromPage",targetMonth);
 		} else {
 			Integer employeeId = Integer.parseInt(auth.getName());
-			histories = service.selectHistoriesToDateByEmployeeIdAndMonth(employeeId, targetMonth);
+			histories = service.selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId, targetMonth);
 		}
 		model.addAttribute("histories", histories);
 		model.addAttribute("from", from);
@@ -51,12 +53,12 @@ public class WorkHistoryManagementController {
 	}
 
 	@GetMapping("{target-month}/{employee-id}")
-	public String showPersonalWorkHistoryHistory(@PathVariable("target-month") Integer targetMonth, @PathVariable("employee-id") Integer employeeId,
+	public String showPersonalWorkHistories(@PathVariable("target-month") Integer targetMonth, @PathVariable("employee-id") Integer employeeId,
 			Authentication auth, Model model, HttpSession session) {
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
-			List<ShiftAndTimestamp> personalHistories = service.selectHistoriesToDateByEmployeeIdAndMonth(employeeId,
+			List<ShiftAndTimeRecord> personalHistories = service.selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,
 					targetMonth);
-			List<Employee> employees = service.selectWorkedMembersByMonth(targetMonth);
+			List<Employee> employees = service.selectWorkedEmployeesByMonth(targetMonth);
 			String from = (String) session.getAttribute("from");
 			model.addAttribute("from", from);
 			model.addAttribute("employees", employees);
@@ -68,20 +70,22 @@ public class WorkHistoryManagementController {
 	}
 
 	@GetMapping("edit/{shift-id}")
-	public String showPersonalWorkHistoryHistory(@PathVariable("shift-id") Integer shiftId,Authentication auth, Model model, ShiftAndTimestampForm form,HttpSession session) {
+	public String showPersonalWorkHistory(@PathVariable("shift-id") Integer shiftId,Authentication auth, Model model
+			,ShiftAndTimeRecordForm form/*,HttpSession session*/) {
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
-			var sessionName=session.getAttribute("fromPage");
-			String fromPage=(sessionName instanceof Integer)? sessionName.toString():(String)sessionName;
-			ShiftAndTimestamp targetHistoriy = service.selectHistoryByHistoryId(shiftId);
+//			var sessionName=session.getAttribute("fromPage");
+//			String fromPage=(sessionName instanceof Integer)? sessionName.toString():(String)sessionName;
+			ShiftAndTimeRecord targetHistoriy = service.selectWorkHistoryByShiftId(shiftId);
 			model.addAttribute("history", targetHistoriy);
-			model.addAttribute("fromPage",fromPage);
+//			model.addAttribute("fromPage",fromPage);
 		}
 		return "work-history/edit";
 	}
 	
 	@PostMapping("update")
-	public String updateHistory(ShiftAndTimestampForm updatedHistory,RedirectAttributes attribute,HttpSession session) {
-		service.updateHistory(updatedHistory);
+	public String updateWorkHistory(ShiftAndTimeRecordForm updatedHistory,RedirectAttributes attribute
+			,HttpSession session) {
+		service.updateWorkHistory(updatedHistory);
 		var sessionName=session.getAttribute("fromPage");
 		String fromPage=(sessionName instanceof Integer)? sessionName.toString():(String)sessionName;
 		attribute.addFlashAttribute("message","更新しました");

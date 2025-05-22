@@ -1,5 +1,7 @@
 package com.example.webapp.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +28,8 @@ public class EmployeesManagementController {
 
 	@GetMapping
 	public String showEmployeesList(Model model) {
-		model.addAttribute("employees", service.selectAllEmployees());
+		List<Employee> employees=service.selectAllEmployees();
+		model.addAttribute("employees", employees);
 		return "employees/list";
 	}
 
@@ -36,9 +39,9 @@ public class EmployeesManagementController {
 		return "employees/form";
 	}
 
-	@GetMapping("edit/{id}")
-	public String editEmployee(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
-		Employee target = service.selectEmployeeById(id);
+	@GetMapping("edit/{employee-id}")
+	public String editEmployee(@PathVariable("employee-id") Integer employeeId, Model model, RedirectAttributes attributes) {
+		Employee target = service.selectEmployeeById(employeeId);
 		if (target != null) {
 			EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
 			model.addAttribute("employeeForm", form);
@@ -60,14 +63,14 @@ public class EmployeesManagementController {
 		return "redirect:/employees";
 	}
 
-	@GetMapping("delete/{id}")
-	public String deleteEmployee(@PathVariable Integer id, RedirectAttributes attributes) {
-		var target = service.selectEmployeeById(id);
+	@GetMapping("delete/{employee-id}")
+	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes) {
+		var target = service.selectEmployeeById(employeeId);
 		if (target != null) {
 			try {
-				service.deleteEmployee(id);
+				service.deleteEmployeeById(employeeId);
 				attributes.addFlashAttribute("message",
-						"従業員ID:" + target.getId() + " " + target.getName() + " さんの従業員情報が削除されました");
+						"従業員ID:" + target.getEmployeeId() + " " + target.getName() + " さんの従業員情報が削除されました");
 			} catch (Exception e) {
 				attributes.addFlashAttribute("errorMessage", "そのIDをもつ従業員はシフトに登録されているので削除できません。");
 			}
@@ -78,9 +81,9 @@ public class EmployeesManagementController {
 		}
 	}
 	
-	@GetMapping("detail/{id}")
-	public String showEmployeeDetail(@PathVariable Integer id,Model model) {
-		Employee employee=service.selectEmployeeById(id);
+	@GetMapping("detail/{employee-id}")
+	public String showEmployeeDetail(@PathVariable("employee-id") Integer employeeId,Model model) {
+		Employee employee=service.selectEmployeeById(employeeId);
 		model.addAttribute("employee",employee);
 		return "employees/detail";
 	}

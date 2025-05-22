@@ -16,28 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `requests`
+-- Table structure for table `temp_shifts_and_time_records`
 --
 
-DROP TABLE IF EXISTS `requests`;
+DROP TABLE IF EXISTS `temp_shifts_and_time_records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `requests` (
+CREATE TABLE `temp_shifts_and_time_records` (
   `id` int NOT NULL AUTO_INCREMENT,
   `employee_id` int NOT NULL,
   `date` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `requests`
+-- Dumping data for table `temp_shifts_and_time_records`
 --
 
-LOCK TABLES `requests` WRITE;
-/*!40000 ALTER TABLE `requests` DISABLE KEYS */;
-INSERT INTO `requests` VALUES (1,1001,'2025-06-01'),(2,1001,'2025-06-02'),(3,1001,'2025-06-08'),(4,1001,'2025-06-09'),(5,1001,'2025-06-15'),(6,1001,'2025-06-16'),(7,1001,'2025-06-22'),(8,1001,'2025-06-23'),(9,1001,'2025-06-29'),(10,1001,'2025-06-30');
-/*!40000 ALTER TABLE `requests` ENABLE KEYS */;
+LOCK TABLES `temp_shifts_and_time_records` WRITE;
+/*!40000 ALTER TABLE `temp_shifts_and_time_records` DISABLE KEYS */;
+/*!40000 ALTER TABLE `temp_shifts_and_time_records` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-09 15:30:25
+-- Dump completed on 2025-05-22 15:58:10

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EntityForFullCalendar {
 	//シフトid
+	//Fullcalendarに表示する際に、「id」という名称である必要があるので、ここは「id」で固定
 	private Integer id;
 	
 	private Integer employeeId;

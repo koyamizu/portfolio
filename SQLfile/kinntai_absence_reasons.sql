@@ -16,28 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `temp_requests`
+-- Table structure for table `absence_reasons`
 --
 
-DROP TABLE IF EXISTS `temp_requests`;
+DROP TABLE IF EXISTS `absence_reasons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `temp_requests` (
+CREATE TABLE `absence_reasons` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_id` int NOT NULL,
-  `date` date NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `temp_requests`
+-- Dumping data for table `absence_reasons`
 --
 
-LOCK TABLES `temp_requests` WRITE;
-/*!40000 ALTER TABLE `temp_requests` DISABLE KEYS */;
-INSERT INTO `temp_requests` VALUES (1,1001,'2025-06-01'),(2,1001,'2025-06-02'),(3,1001,'2025-06-08'),(4,1001,'2025-06-09'),(5,1001,'2025-06-15'),(6,1001,'2025-06-16'),(7,1001,'2025-06-22'),(8,1001,'2025-06-23'),(9,1001,'2025-06-29'),(10,1001,'2025-06-30');
-/*!40000 ALTER TABLE `temp_requests` ENABLE KEYS */;
+LOCK TABLES `absence_reasons` WRITE;
+/*!40000 ALTER TABLE `absence_reasons` DISABLE KEYS */;
+INSERT INTO `absence_reasons` VALUES (1,'その他','2025-05-22 10:52:55'),(2,'体調不良','2025-05-22 10:52:55'),(3,'忌引き','2025-05-22 10:52:55'),(4,'有給','2025-05-22 10:52:55'),(5,'家族の介護','2025-05-22 10:52:55');
+/*!40000 ALTER TABLE `absence_reasons` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-09 15:30:25
+-- Dump completed on 2025-05-22 15:58:10

@@ -10,7 +10,7 @@ public class EmployeeHelper {
 	
 	public static Employee convertEmployee(EmployeeForm form) {
 		var employee=new Employee();
-		employee.setId(form.getId());
+		employee.setEmployeeId(form.getEmployeeId());
 		employee.setPassword(form.getPassword());
 		employee.setName(form.getName());
 		employee.setBirth(LocalDate.parse(form.getBirth(),DateTimeFormatter.ofPattern("yyyy-MM-dd")));;
@@ -22,7 +22,7 @@ public class EmployeeHelper {
 	
 	public static EmployeeForm convertEmployeeForm(Employee employee) {
 		var form=new EmployeeForm();
-		form.setId(employee.getId());
+		form.setEmployeeId(employee.getEmployeeId());
 		form.setPassword(employee.getPassword());
 		form.setName(employee.getName());
 		form.setBirth(employee.getBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));

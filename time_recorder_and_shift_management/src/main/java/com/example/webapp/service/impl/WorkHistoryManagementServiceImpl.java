@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.ShiftAndTimestamp;
-import com.example.webapp.form.ShiftAndTimestampForm;
+import com.example.webapp.entity.ShiftAndTimeRecord;
+import com.example.webapp.form.ShiftAndTimeRecordForm;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.WorkHistoryManagementService;
 
@@ -18,27 +18,27 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 
 	private final WorkHistoryManagementMapper mapper;
 	@Override
-	public List<ShiftAndTimestamp> selectAllHistoriesToDateByMonth(Integer targetMonth) {
-		return mapper.selectAllHistoriesToDateByMonth(targetMonth);
+	public List<ShiftAndTimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth) {
+		return mapper.selectAllWorkHistoriesToDateByMonth(targetMonth);
 	}
 	
 	@Override
-	public List<ShiftAndTimestamp> selectHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
-		return mapper.selectHistoriesToDateByEmployeeIdAndMonth(employeeId,targetMonth);
+	public List<ShiftAndTimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
+		return mapper.selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
 	
 	@Override
-	public List<Employee> selectWorkedMembersByMonth(Integer targerMonth){
-		return mapper.selectWorkedMembersByMonth(targerMonth);
+	public List<Employee> selectWorkedEmployeesByMonth(Integer targerMonth){
+		return mapper.selectWorkedEmployeesByMonth(targerMonth);
 	}
 	
 	@Override
-	public ShiftAndTimestamp selectHistoryByHistoryId(Integer historyId) {
-		return mapper.selectHistoryByShiftId(historyId);
+	public ShiftAndTimeRecord selectWorkHistoryByShiftId(Integer shiftId) {
+		return mapper.selectWorkHistoryByShiftId(shiftId);
 	}
 	
 	@Override
-	public void updateHistory(ShiftAndTimestampForm updatedHistory) {
-		mapper.updateHistory(updatedHistory);
+	public void updateWorkHistory(ShiftAndTimeRecordForm updatedHistory) {
+		mapper.updateWorkHistory(updatedHistory);
 	}
 }

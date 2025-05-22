@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">
-	<resultMap id="ShiftAndTimestampWithEmployeeResult"
-		type="com.example.webapp.entity.ShiftAndTimestamp">
-		<id property="id" column="id" />
+	<resultMap id="ShiftAndTimeRecordWithEmployeeResult"
+		type="com.example.webapp.entity.ShiftAndTimeRecord">
+		<id property="shiftId" column="id" />
 		<result property="date" column="date" />
 		<result property="start" column="start" />
 		<result property="end" column="end" />
@@ -13,54 +13,99 @@
 		<result property="updated_at" column="updated_at" />
 		<association property="employee"
 			javaType="com.example.webapp.entity.Employee">
-			<id property="id" column="employee_id" />
+			<id property="employeeId" column="employee_id" />
 			<result property="name" column="name" />
 		</association>
 	</resultMap>
+	
+	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">
+		<id property="employeeId" column="id"/>
+	</resultMap>
 
-	<select id="selectAllHistoriesToDateByMonth"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
-	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
-	x.created_at,x.updated_at,employee_id,name
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE MONTH(date)=#{targetMonth}
-	ORDER BY date ASC;
+	<select id="selectAllWorkHistoriesToDateByMonth"
+		resultMap="ShiftAndTimeRecordWithEmployeeResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.start
+	  ,s.end
+	  ,SUBTIME(s.end,s.start) AS work_time
+	  ,s.created_at
+	  ,s.updated_at
+	  ,s.employee_id
+	  ,e.name
+	FROM
+	  test_shifts_and_time_records AS s
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	ORDER BY s.date ASC
+	;
 	</select>
 
-	<select id="selectHistoriesToDateByEmployeeIdAndMonth"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
-	SELECT x.id,date,start,end,SUBTIME(end,start) as work_time,
-	x.created_at,x.updated_at,employee_id,name 
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE MONTH(date)=#{targetMonth}
-	and employee_id=#{employeeId};
+	<select id="selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth"
+		resultMap="ShiftAndTimeRecordWithEmployeeResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.start
+	  ,s.end
+	  ,SUBTIME(s.end,s.start) AS work_time
+	  ,s.created_at
+	  ,s.updated_at
+	  ,s.employee_id
+	  ,e.name 
+	FROM
+	  test_shifts_and_time_records AS s
+	  INNER JOIN test_employees e
+	  ON s.employee_id=e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	  AND s.employee_id = #{employeeId}
+	;
 	</select>
 	
-	<select id="selectWorkedMembersByMonth">
-	SELECT DISTINCT y.id,name
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE MONTH(date)=#{targetMonth};
+	<select id="selectWorkedEmployeesByMonth" resultMap="EmployeeMap">
+	SELECT
+	  DISTINCT e.id
+	  ,e.name
+	FROM
+	  test_shifts_and_time_records s
+	  INNER JOIN test_employees e
+	  ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	;
 	</select>
 	
-	<select id="selectHistoryByShiftId" resultMap="ShiftAndTimestampWithEmployeeResult">
-	SELECT x.id,date,start,end,x.created_at,x.updated_at,employee_id,name
-	FROM test_shifts_and_timestamps x
-	INNER JOIN test_employees_list y
-	ON x.employee_id=y.id
-	WHERE x.id=#{shiftId};
+	<select id="selectWorkHistoryByShiftId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.start
+	  ,s.end
+	  ,e.name
+	FROM
+	  test_shifts_and_time_records AS s
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
+	WHERE
+	  s.id = #{shiftId}
+	;
 	</select>
 	
 <!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
-	<update id="updateHistory">
-	UPDATE test_shifts_and_timestamps
-	SET start=#{start},end=#{end},updated_at=NOW()
-	WHERE id=#{id}
+	<update id="updateWorkHistory">
+	UPDATE
+	  test_shifts_and_time_records
+	SET
+	  start = #{start}
+	  ,end = #{end}
+	  ,updated_at = NOW()
+	WHERE
+	  id = #{shiftId}
+	;
 	</update>
 	
 </mapper>

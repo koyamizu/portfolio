@@ -1,33 +1,66 @@
-ALTER TABLE test_shifts_and_timestamps DROP FOREIGN KEY test_shifts_and_timestamps_ibfk_1;
---ALTER TABLE test_shifts_and_timestamps drop employee_id;
-DROP TABLE IF EXISTS test_employees_list;
-DROP TABLE IF EXISTS test_shifts_and_timestamps;
-DROP table IF EXISTS requests;
+ALTER TABLE test_shifts_and_time_records DROP FOREIGN KEY test_shifts_and_time_records_ibfk_1;
+--ALTER TABLE test_shifts_and_time_records DROP employee_id;
+DROP TABLE IF EXISTS test_employees;
+DROP TABLE IF EXISTS test_shifts_and_time_records;
+DROP TABLE IF EXISTS test_shift_requests;
 
-create table requests(
-    id int primary key auto_increment,
-    employee_id int not null,
-    date date not null
---    FOREIGN KEY(employee_id) REFERENCES test_employees_list(id)
-    );
+--CREATE TABLE test_shift_requests (
+--    id INT PRIMARY KEY AUTO_INCREMENT
+--    ,employee_id INT NOT NULL
+--    ,date DATE NOT NULL
+--    FOREIGN KEY(employee_id) REFERENCES test_employees(id)
+--    )
+--;
 
-INSERT INTO requests
-SELECT * FROM temp_requests;    
---従業員リストテーブルの作成
-CREATE TABLE test_employees_list
-LIKE employees_list;
+CREATE TABLE
+  test_shift_requests
+LIKE
+  shift_requests
+;
 
-INSERT INTO test_employees_list
-SELECT * FROM employees_list;
+INSERT INTO
+  test_shift_requests
+  SELECT
+    *
+  FROM
+    shift_requests
+;
+
+--従業員テーブルの作成
+CREATE TABLE
+  test_employees
+LIKE
+  employees
+;
+
+INSERT INTO
+  test_employees
+SELECT
+  *
+FROM
+  employees
+;
 
 --パスワード
 --"yoshizuka01","koga09","kurosaki21","togo13","komorie30","hakozaki02"
 
---当日出勤者リストの作成
-CREATE TABLE test_shifts_and_timestamps
-LIKE shifts_and_timestamps;
+--シフトテーブルの作成
+CREATE TABLE
+  test_shifts_and_time_records
+LIKE
+  shifts_and_time_records
+;
 
-ALTER TABLE test_shifts_and_timestamps ADD FOREIGN KEY(employee_id) REFERENCES test_employees_list(id);
+ALTER TABLE
+  test_shifts_and_time_records
+ADD FOREIGN KEY (employee_id)
+REFERENCES test_employees(id)
+;
 
-INSERT INTO test_shifts_and_timestamps
-SELECT * FROM shifts_and_timestamps;
+INSERT INTO
+  test_shifts_and_time_records
+SELECT
+  *
+FROM
+  shifts_and_time_records
+;

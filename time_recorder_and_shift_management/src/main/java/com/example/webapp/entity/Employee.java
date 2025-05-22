@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Employee {
 
 //	従業員id
-	private Integer id;
+	private Integer employeeId;
 //	従業員パスワード
 	private String password;
 //	従業員名

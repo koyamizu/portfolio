@@ -18,8 +18,8 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	
 	private final EmployeesManagementMapper mapper;
 	@Override
-	public Employee selectEmployeeById(Integer employee_id) {
-		return mapper.selectEmployeeById(employee_id);
+	public Employee selectEmployeeById(Integer employeeId) {
+		return mapper.selectEmployeeById(employeeId);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	}
 	
 	@Override
-	public void deleteEmployee(Integer id) {
-		mapper.deleteEmployee(id);
+	public void deleteEmployeeById(Integer employeeId) {
+		mapper.deleteEmployeeById(employeeId);
 	}
 }

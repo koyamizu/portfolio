@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.webapp.entity.ShiftAndTimestamp;
+import com.example.webapp.entity.ShiftAndTimeRecord;
 import com.example.webapp.repository.TimeRecorderMapper;
 import com.example.webapp.service.TimeRecorderService;
 
@@ -20,27 +20,27 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	private final TimeRecorderMapper timeRecorderMapper;
 
 	@Override
-	public List<ShiftAndTimestamp> selectEmployeesByDate(LocalDate date) {
+	public List<ShiftAndTimeRecord> selectEmployeesByDate(LocalDate date) {
 		return timeRecorderMapper.selectEmployeesByDate(date);
 	}
 
 	@Override
-	public ShiftAndTimestamp selectShiftAndTimestampByEmployeeIdAndDate(Integer id, LocalDate date) {
-		return timeRecorderMapper.selectShiftAndTimestampByEmployeeIdAndDate(id, date);
+	public ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
+		return timeRecorderMapper.selectShiftByEmployeeIdAndDate(employeeId, date);
 	}
 
 	@Override
-	public ShiftAndTimestamp selectShiftAndTimestampByShiftId(Integer shift_id) {
-		return timeRecorderMapper.selectShiftAndTimestampByShiftId(shift_id);
+	public ShiftAndTimeRecord selectTimeRecordByShiftId(Integer shiftId) {
+		return timeRecorderMapper.selectTimeRecordByShiftId(shiftId);
 	}
 
 	@Override
-	public void start(Integer shift_id) {
-		timeRecorderMapper.start(shift_id);
+	public void updateStartTimeByShiftId(Integer shiftId) {
+		timeRecorderMapper.updateStartTimeByShiftId(shiftId);
 	}
 
 	@Override
-	public void end(Integer shift_id) {
-		timeRecorderMapper.end(shift_id);
+	public void updateEndTimeByShiftId(Integer shiftId) {
+		timeRecorderMapper.updateEndTimeByShiftId(shiftId);
 	}
 }
