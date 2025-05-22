@@ -31,8 +31,8 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	//	}
 
 	@Override
-	public List<EntityForFullCalendar> selectRequestsByEmployeeId(Integer employeeId) {
-		return mapper.selectRequestsByEmployeeId(employeeId);
+	public List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId) {
+		return mapper.selectShiftRequestsByEmployeeId(employeeId);
 	}
 
 //	@Override
@@ -40,13 +40,13 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 //		mapper.insertShiftRequests(employeeId, dates);
 //	}
 	@Override
-	public void insertShiftRequests(List<ShiftScheduleEditForm> newShifts) {
-		mapper.insertShiftRequests(newShifts);
+	public void insertShiftRequests(List<ShiftScheduleEditForm> requests) {
+		mapper.insertShiftRequests(requests);
 	}
 
 	@Override
-	public void deleteRequestsByEmployeeId(Integer employeeId) {
-		mapper.deleteRequestsByEmployeeId(employeeId);
+	public void deleteShiftRequestsByEmployeeId(Integer employeeId) {
+		mapper.deleteShiftRequestsByEmployeeId(employeeId);
 	}
 	
 	@Override
@@ -60,13 +60,13 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public List<EntityForFullCalendar> selectAllRequests() {
-		return mapper.selectAllRequests();
+	public List<EntityForFullCalendar> selectAllShiftRequests() {
+		return mapper.selectAllShiftRequests();
 	}
 
 	@Override
 	public void deleteShiftsByTargetMonth(Integer targetMonth) {
-		mapper.deleteShiftScheduleByTargetMonth(targetMonth);
+		mapper.deleteShiftsByTargetMonth(targetMonth);
 	}
 
 	@Override

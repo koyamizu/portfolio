@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">
-	<resultMap id="ShiftAndTimestampWithEmployeeResult"
-		type="com.example.webapp.entity.ShiftAndTimestamp">
-		<id property="id" column="id" />
+	<resultMap id="ShiftAndTimeRecordWithEmployeeResult"
+		type="com.example.webapp.entity.ShiftAndTimeRecord">
+		<id property="shiftId" column="id" />
 		<result property="date" column="date" />
 		<result property="start" column="start" />
 		<result property="end" column="end" />
@@ -13,13 +13,17 @@
 		<result property="updated_at" column="updated_at" />
 		<association property="employee"
 			javaType="com.example.webapp.entity.Employee">
-			<id property="id" column="employee_id" />
+			<id property="employeeId" column="employee_id" />
 			<result property="name" column="name" />
 		</association>
 	</resultMap>
+	
+	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">
+		<id property="employeeId" column="id"/>
+	</resultMap>
 
 	<select id="selectAllWorkHistoriesToDateByMonth"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
+		resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
 	  ,s.date
@@ -31,9 +35,9 @@
 	  ,s.employee_id
 	  ,e.name
 	FROM
-	  test_shifts_and_timestamps AS s
-	    INNER JOIN test_employees_list AS e
- 	      ON s.employee_id = e.id
+	  test_shifts_and_time_records AS s
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
 	WHERE
 	  MONTH(s.date) = #{targetMonth}
 	ORDER BY s.date ASC
@@ -41,7 +45,7 @@
 	</select>
 
 	<select id="selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
+		resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
 	  ,s.date
@@ -53,29 +57,29 @@
 	  ,s.employee_id
 	  ,e.name 
 	FROM
-	  test_shifts_and_timestamps AS s
-	    INNER JOIN test_employees_list e
-	      ON s.employee_id=e.id
+	  test_shifts_and_time_records AS s
+	  INNER JOIN test_employees e
+	  ON s.employee_id=e.id
 	WHERE
 	  MONTH(s.date) = #{targetMonth}
 	  AND s.employee_id = #{employeeId}
 	;
 	</select>
 	
-	<select id="selectWorkedEmployeesByMonth">
+	<select id="selectWorkedEmployeesByMonth" resultMap="EmployeeMap">
 	SELECT
-	  DISTINCT s.employee_id
+	  DISTINCT e.id
 	  ,e.name
 	FROM
-	  test_shifts_and_timestamps s
-	    INNER JOIN test_employees_list e
-	      ON s.employee_id = e.id
+	  test_shifts_and_time_records s
+	  INNER JOIN test_employees e
+	  ON s.employee_id = e.id
 	WHERE
 	  MONTH(s.date) = #{targetMonth}
 	;
 	</select>
 	
-	<select id="selecWorktHistoryByShiftId" resultMap="ShiftAndTimestampWithEmployeeResult">
+	<select id="selectWorkHistoryByShiftId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
 	  ,s.date
@@ -83,24 +87,24 @@
 	  ,s.end
 	  ,e.name
 	FROM
-	  test_shifts_and_timestamps AS s
-	    INNER JOIN test_employees_list AS e
- 	      ON s.employee_id = e.id
+	  test_shifts_and_time_records AS s
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
 	WHERE
 	  s.id = #{shiftId}
 	;
 	</select>
 	
 <!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
-	<update id="updateHistory">
+	<update id="updateWorkHistory">
 	UPDATE
-	  test_shifts_and_timestamps
+	  test_shifts_and_time_records
 	SET
 	  start = #{start}
-	  ,end=#{end}
-	  ,updated_at=NOW()
+	  ,end = #{end}
+	  ,updated_at = NOW()
 	WHERE
-	  id=#{id}
+	  id = #{shiftId}
 	;
 	</update>
 	

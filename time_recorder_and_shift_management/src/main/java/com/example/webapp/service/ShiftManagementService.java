@@ -9,15 +9,15 @@ import com.example.webapp.form.ShiftScheduleEditForm;
 public interface ShiftManagementService {
 	List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
 		
-	List<EntityForFullCalendar> selectRequestsByEmployeeId(Integer employeeId);
+	List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId);
 	
-	void insertShiftRequests(List<ShiftScheduleEditForm> newShifts);
+	void insertShiftRequests(List<ShiftScheduleEditForm> requests);
 	
-	void deleteRequestsByEmployeeId(Integer employeeId);
+	void deleteShiftRequestsByEmployeeId(Integer employeeId);
 	
 	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 
-	List<EntityForFullCalendar> selectAllRequests();
+	List<EntityForFullCalendar> selectAllShiftRequests();
 	
 	List<Employee> selectEmployeesNotSubmitRequests();
 

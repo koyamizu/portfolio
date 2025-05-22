@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.webapp.entity.ShiftAndTimestamp;
+import com.example.webapp.entity.ShiftAndTimeRecord;
 import com.example.webapp.repository.TimeRecorderMapper;
 import com.example.webapp.service.TimeRecorderService;
 
@@ -20,18 +20,18 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	private final TimeRecorderMapper timeRecorderMapper;
 
 	@Override
-	public List<ShiftAndTimestamp> selectEmployeesByDate(LocalDate date) {
+	public List<ShiftAndTimeRecord> selectEmployeesByDate(LocalDate date) {
 		return timeRecorderMapper.selectEmployeesByDate(date);
 	}
 
 	@Override
-	public ShiftAndTimestamp selectShiftByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
+	public ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
 		return timeRecorderMapper.selectShiftByEmployeeIdAndDate(employeeId, date);
 	}
 
 	@Override
-	public ShiftAndTimestamp selectTimestampByShiftId(Integer shiftId) {
-		return timeRecorderMapper.selectTimestampByShiftId(shiftId);
+	public ShiftAndTimeRecord selectTimeRecordByShiftId(Integer shiftId) {
+		return timeRecorderMapper.selectTimeRecordByShiftId(shiftId);
 	}
 
 	@Override

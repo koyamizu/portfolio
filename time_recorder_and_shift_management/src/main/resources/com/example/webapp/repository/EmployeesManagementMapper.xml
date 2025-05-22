@@ -3,43 +3,48 @@
 <mapper
 	namespace="com.example.webapp.repository.EmployeesManagementMapper">
 	
-	<select id="selectLoginUserById"
-		resultType="com.example.webapp.entity.Authentication">
+<!--	使っていない-->
+<!--	<select id="selectLoginUserById"-->
+<!--		resultType="com.example.webapp.entity.Authentication">-->
+<!--		SELECT-->
+<!--		  id-->
+<!--		  ,password-->
+<!--		  ,authority-->
+<!--		  ,name-->
+<!--		FROM-->
+<!--		  test_employees-->
+<!--		WHERE-->
+<!--		  id = #{employeeId}-->
+<!--		;-->
+<!--	</select>-->
+
+	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">
+		<id property="employeeId" column="id"/>
+	</resultMap>
+	
+	<select id="selectEmployeeById" resultMap="EmployeeMap">
 		SELECT
-		  id
-		  ,password
-		  ,authority
-		  ,name
+		  *
 		FROM
-		  test_employees_list
+		  test_employees
 		WHERE
 		  id = #{employeeId}
 		;
 	</select>
 	
-	<select id="selectEmployeeById">
+	<select id="selectAllEmployees" resultMap="EmployeeMap">
 		SELECT
 		  *
 		FROM
-		  test_employees_list
-		WHERE
-		  id = #{id}
+		  test_employees
 		;
 	</select>
 	
-	<select id="selectAllEmployees">
-		SELECT
-		  *
-		FROM
-		  test_employees_list
-		;
-	</select>
-	
-	<select id="selectEmployeeIdByName">
+	<select id="selectEmployeeIdByName" resultMap="EmployeeMap">
 		SELECT
 		  id
 		FROM
-		  test_employees_list
+		  test_employees
 		WHERE
 		  name = #{name}
 		;
@@ -47,7 +52,7 @@
 	
 	<insert id="insertEmployee">
 		INSERT INTO
-		  test_employees_list (
+		  test_employees (
 		    name ,birth ,password ,tel ,address 
 		    ,authority ,created_at ,updated_at ,password_updated_at
 		  )
@@ -60,7 +65,7 @@
 	
 	<update id="updateEmployee">
 		UPDATE
-		  test_employees_list
+		  test_employees
 		SET
 		  name = #{name}
 		  ,birth = #{birth}
@@ -68,15 +73,15 @@
 		  ,address = #{address}
 		  ,updated_at = now()
 		WHERE
-		  id = #{id}
+		  id = #{employeeId}
 		;
 	</update>
 	
 	<delete id="deleteEmployeeById">
 		DELETE FROM
-		  test_employees_list
+		  test_employees
 		WHERE
-		  id = #{id}
+		  id = #{employeeId}
 		;
 	</delete>
 	

@@ -1,10 +1,8 @@
-package com.example.webapp.form;
+package com.example.webapp.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
-import com.example.webapp.entity.Employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftAndTimestampForm {
+public class ShiftAndTimeRecord {
 	//シフトid
-	private Integer id;
+	private Integer shiftId;
 	//従業員
 	private Employee employee;
 	//出勤日

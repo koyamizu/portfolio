@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Authentication {
 	//SQLの命名規則（スネークキャメルケース）に合わせる
-	private Integer id;
+	private Integer employeeId;
 	private String password;
 	private Role authority;
 	private String name;

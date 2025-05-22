@@ -36,7 +36,7 @@
 							<strong>従業員</strong>
 						</p>
 						<div class="fc-event fc-h-event fc-daygrid-event" th:each="employee:${allEmployees}">
-							<div class="fc-event-main" th:id="${employee.id}">
+							<div class="fc-event-main" th:id="${employee.employeeId}">
 								<span th:text="${employee.name}"></span>
 							</div>
 						</div>
@@ -59,7 +59,7 @@
 			<div id="calendar" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shiftsOfNextMonth}]]*/)});
+				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${nextMonthShifts}]]*/)});
 			</script>
 		</div>
 	</article>

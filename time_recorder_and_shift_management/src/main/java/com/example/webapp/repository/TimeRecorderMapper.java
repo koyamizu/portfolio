@@ -5,16 +5,16 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.webapp.entity.ShiftAndTimestamp;
+import com.example.webapp.entity.ShiftAndTimeRecord;
 
 @Mapper
 public interface TimeRecorderMapper {
 
-	List<ShiftAndTimestamp> selectEmployeesByDate(LocalDate date);
+	List<ShiftAndTimeRecord> selectEmployeesByDate(LocalDate date);
 	
-	ShiftAndTimestamp selectShiftByEmployeeIdAndDate(Integer employeeId,LocalDate date);
+	ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId,LocalDate date);
 	
-	ShiftAndTimestamp selectTimestampByShiftId(Integer ShiftId);
+	ShiftAndTimeRecord selectTimeRecordByShiftId(Integer ShiftId);
 
 	void updateStartTimeByShiftId(Integer shiftId);
 	

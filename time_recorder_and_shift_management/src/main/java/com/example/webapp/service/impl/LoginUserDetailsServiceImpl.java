@@ -29,7 +29,7 @@ public class LoginUserDetailsServiceImpl implements UserDetailsService {
 		Integer employeeId=Integer.parseInt(employeeIdStr);
 		Employee employee=mapper.selectEmployeeById(employeeId);
 		if(employee!=null) {
-			return new LoginUser(String.valueOf(employee.getId()),
+			return new LoginUser(String.valueOf(employee.getEmployeeId()),
 					employee.getPassword(),
 					getAuthorityList(employee.getAuthority()),
 					employee.getName()

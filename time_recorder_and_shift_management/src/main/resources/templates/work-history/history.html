@@ -22,7 +22,7 @@
 			<ul th:if="${from}=='admin'">
 				<li><a th:href="@{/work-history/{target-month}(target-month=${targetMonth})}">全員</a></li>
 				<div th:each="employee : ${employees}" class="display-inline">
-					<li><a th:href="@{/work-history/{target-month}/{employee-id}(target-month=${targetMonth},employee-id=${employee.id})}"
+					<li><a th:href="@{/work-history/{target-month}/{employee-id}(target-month=${targetMonth},employee-id=${employee.employeeId})}"
 						th:text="${employee.name}"></a></li>
 				</div>
 			</ul>
@@ -57,7 +57,7 @@
 						<td th:text="*{workTime}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(created_at,'yyyy-MM-dd hh:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(updated_at,'yyyy-MM-dd hh:mm:ss')}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')" ><a th:href="@{/work-history/edit/{id}(id=*{id})}">修正</a></td>
+						<td sec:authorize="hasAuthority('ADMIN')" ><a th:href="@{/work-history/edit/{shift-id}(shift-id=*{shiftId})}">修正</a></td>
 					</th:block>
 				</tr>
 			</tbody>

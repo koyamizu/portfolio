@@ -23,7 +23,7 @@
 		<table th:object="${employee}">
 			<tr>
 				<th>ID</th>
-				<td th:text="*{id}"></td>
+				<td th:text="*{employeeId}"></td>
 			</tr>
 			<tr>
 				<th>名前</th>
@@ -58,7 +58,7 @@
 				</td>
 			</tr>
 		</table>
-		<a th:href="@{/employees/edit/{id}(id=${employee.id})}">編集</a>
+		<a th:href="@{/employees/edit/{employee-id}(employee-id=${employee.employeeId})}">編集</a>
 	</article>
 </body>
 

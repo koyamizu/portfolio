@@ -3,9 +3,9 @@
 <mapper
 	namespace="com.example.webapp.repository.TimeRecorderMapper">
 
-		<resultMap id="ShiftAndTimestampWithEmployeeResult"
-		type="com.example.webapp.entity.ShiftAndTimestamp">
-		<id property="id" column="id" />
+	<resultMap id="ShiftAndTimeRecordWithEmployeeResult"
+		type="com.example.webapp.entity.ShiftAndTimeRecord">
+		<id property="shiftId" column="id" />
 		<result property="date" column="date" />
 		<result property="start" column="start" />
 		<result property="end" column="end" />
@@ -14,14 +14,18 @@
 		<result property="updated_at" column="updated_at" />
 		<association property="employee"
 			javaType="com.example.webapp.entity.Employee">
-			<id property="id" column="employee_id" />
+			<id property="employeeId" column="employee_id" />
 			<result property="name" column="name" />
 		</association>
 	</resultMap>
+	
+	<resultMap id="ShiftAntTimeRecordMap" type="com.example.webapp.entity.ShiftAndTimeRecord">
+		<id property="shiftId" column="id"/>
+	</resultMap>
 
 	<!--当日出勤者選択 -->
-	<select id="selectTodayMembersByDate"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
+	<select id="selectEmployeesByDate"
+		resultMap="ShiftAndTimeRecordWithEmployeeResult">
 		SELECT
 		  e.name
 		  ,s.date
@@ -29,9 +33,9 @@
 		  ,s.end
 		  ,SUBTIME(end,start) AS work_time
 		FROM
-		  test_employees_list AS e
-		    INNER JOIN test_shifts_and_timestamps AS s
-		      ON e.id = s.employee_id
+		  test_employees AS e
+		  INNER JOIN test_shifts_and_time_records AS s
+		  ON e.id = s.employee_id
 		WHERE
 		  s.date = #{date}
 		;
@@ -39,7 +43,7 @@
 	<!-- シフトデータの抽出 -->
 	<!-- 下のstartやendでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
 	<select id="selectShiftByEmployeeIdAndDate"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
+		resultMap="ShiftAndTimeRecordWithEmployeeResult">
 		<!-- SELECT * -->
 		<!-- FROM test_shift_and_timestamp2504 -->
 		SELECT
@@ -47,40 +51,45 @@
 		  ,e.name
 		  ,s.date
 		FROM
-		  test_employees_list AS e
-		    INNER JOIN test_shifts_and_timestamps AS s
-		      ON e.id = s.employee_id
+		  test_employees AS e
+		  INNER JOIN test_shifts_and_time_records AS s
+		  ON e.id = s.employee_id
 		WHERE
-		  employee_id = #{employee_id}
+		  employee_id = #{employeeId}
 		  AND date = #{date}
 		;
 	</select>
-	<select id="selectTimestampByShiftId"
-		resultMap="ShiftAndTimestampWithEmployeeResult">
+	<select id="selectTimeRecordByShiftId"
+		resultMap="ShiftAntTimeRecordMap">
 		SELECT
 		  id
 		  ,employee_id
 		  ,start
 		  ,end
 		FROM
-		  test_shifts_and_timestamps
+		  test_shifts_and_time_records
 		WHERE
 		  id = #{shiftId}
 		;
 	</select>
 	<!-- 出勤の打刻 -->
-	<update id="setStartByShiftId">
-		UPDATE test_shifts_and_timestamps
+	<update id="updateStartTimeByShiftId">
+		UPDATE
+		  test_shifts_and_time_records
 		SET
-		start=CURRENT_TIME
+		  start=CURRENT_TIME
 		WHERE
-		id=#{shiftId};
+		  id=#{shiftId}
+		 ;
 	</update>
 	<!-- 退勤の打刻 -->
-	<update id="setEndByShiftId">
-		UPDATE test_shifts_and_timestamps
+	<update id="updateEndTimeByShiftId">
+		UPDATE
+		  test_shifts_and_time_records
 		SET
-		end=CURRENT_TIME
-		WHERE id=#{shiftId};
+		  end=CURRENT_TIME
+		WHERE
+		  id=#{shiftId}
+		;
 	</update>
 </mapper>

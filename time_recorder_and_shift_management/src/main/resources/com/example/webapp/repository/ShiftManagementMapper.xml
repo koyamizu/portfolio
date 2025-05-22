@@ -19,21 +19,21 @@
 		  ,e.name
 		  ,s.date
 		FROM
-		  test_shifts_and_timestamps AS s
-		    INNER JOIN test_employees_list AS e
-		      ON s.employee_id = e.id
+		  test_shifts_and_time_records AS s
+		  INNER JOIN test_employees AS e
+		  ON s.employee_id = e.id
 		WHERE
 		  MONTH(date) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1
 		;
 	</select>
 
-	<select id="selectRequestsByEmployeeId"
+	<select id="selectShiftRequestsByEmployeeId"
 		resultMap="EntityForFullCalendarResult">
 		SELECT
 		  id
 		  ,date
 		FROM
-		  requests
+		  test_shift_requests
 		WHERE
 		  employee_id = #{employeeId}
 		;
@@ -47,15 +47,15 @@
 		  ,s.date
 <!--		  ,DATE_FORMAT(date,'%Y-%m-%d') as date-->
 		FROM
-		  test_shifts_and_timestamps AS s
-		    INNER JOIN test_employees_list AS e
-		      ON s.employee_id = e.id
+		  test_shifts_and_time_records AS s
+		  INNER JOIN test_employees AS e
+		  ON s.employee_id = e.id
 		WHERE
 		  MONTH(date) = #{targetMonth}
 		;
 	</select>
 
-	<select id="selectAllRequests"
+	<select id="selectAllShiftRequests"
 		resultMap="EntityForFullCalendarResult">
 		SELECT
 		  r.id
@@ -64,25 +64,24 @@
 		  ,r.date
 <!--		  ,DATE_FORMAT(date,'%Y-%m-%d') as date-->
 		FROM
-		  requests AS r
-		    INNER JOIN test_employees_list AS e
-		      ON r.employee_id = e.id
+		  test_shift_requests AS r
+		  INNER JOIN test_employees AS e
+		  ON r.employee_id = e.id
 		;
 	</select>
 
-	<!-- 英語的にはEmployeesHaveNotSubmittedYetが正しいと思う -->
 	<select id="selectEmployeesNotSubmitRequests">
 		SELECT
 		  id
 		  ,name
 		FROM
-		  employees_list
+		  employees
 		WHERE
 		  id NOT IN (
 		    SELECT
 		      employee_id
 		    FROM
-		      requests
+		      test_shift_requests
 		  )
 		;
 	</select>
@@ -91,7 +90,7 @@
 		INSERT INTO
 		  requests(employee_id, date)
 		VALUES 
-		<foreach collection="newShifts" item="r" separator=",">
+		<foreach collection="requests" item="r" separator=",">
 			(#{r.employeeId}, #{r.start})
 		</foreach>
 		;
@@ -99,7 +98,7 @@
 
 	<insert id="insertNextMonthShifts">
 		INSERT INTO
-		  test_shifts_and_timestamps(employee_id,date,created_at,updated_at)
+		  test_shifts_and_time_records(employee_id,date,created_at,updated_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
 			(#{s.employeeId},#{s.start},now(),now())
@@ -107,9 +106,9 @@
 		;
 	</insert>
 
-	<delete id="deleteRequestsByEmployeeId">
+	<delete id="deleteShiftRequestsByEmployeeId">
 		DELETE FROM
-		  requests
+		  test_shift_requests
 		WHERE
 		  employee_id = #{employeeId}
 		;
@@ -117,7 +116,7 @@
 
 	<delete id="deleteShiftsByTargetMonth">
 		DELETE FROM
-		  test_shifts_and_timestamps
+		  test_shifts_and_time_records
 		WHERE
 		  MONTH(date) = #{targetMonth}
 		;
@@ -131,7 +130,7 @@
 	<!-- employee_id INT NOT NULL, -->
 	<!-- date date NOT NULL, -->
 	<!-- FOREIGN KEY (employee_id) -->
-	<!-- REFERENCES test_employees_list(id) -->
+	<!-- REFERENCES test_employees(id) -->
 	<!-- ) -->
 	<!-- </update> -->
 

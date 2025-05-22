@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeForm {
 //	従業員id
-	private Integer id;
+	private Integer employeeId;
 //	従業員パスワード
 	private String password;
 //	従業員名
@@ -22,8 +22,9 @@ public class EmployeeForm {
 			message="生年月日はハイフン区切りで入力してください")
 	private String birth;
 //	電話番号
-	@Pattern(regexp="^0[789]0-[0-9]{4}-[0-9]{4}$",
-			message="電話番号はハイフン区切りで入力してください")
+//	念のため、現在携帯電話番号として使われていない030,040を指定
+	@Pattern(regexp="^0[34]0-[0-9]{4}-[0-9]{4}$",
+			message="電話番号は030または040から始まり、「3桁-4桁-4桁」の形式で入力してください")
 	private String tel;
 //	住所
 	private String address;

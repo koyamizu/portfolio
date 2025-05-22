@@ -43,7 +43,7 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	}
 	
 	@Override
-	public void deleteEmployeeById(Integer id) {
-		mapper.deleteEmployeeById(id);
+	public void deleteEmployeeById(Integer employeeId) {
+		mapper.deleteEmployeeById(employeeId);
 	}
 }

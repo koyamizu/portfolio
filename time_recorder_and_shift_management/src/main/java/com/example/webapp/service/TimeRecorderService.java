@@ -3,17 +3,17 @@ package com.example.webapp.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.webapp.entity.ShiftAndTimestamp;
+import com.example.webapp.entity.ShiftAndTimeRecord;
 
 public interface TimeRecorderService {
-	List<ShiftAndTimestamp> selectEmployeesByDate(LocalDate date);
+	List<ShiftAndTimeRecord> selectEmployeesByDate(LocalDate date);
 
-	ShiftAndTimestamp selectShiftByEmployeeIdAndDate(Integer employee_id,
+	ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId,
 			LocalDate date);
 
-	ShiftAndTimestamp selectTimestampByShiftId(Integer shift_id);
+	ShiftAndTimeRecord selectTimeRecordByShiftId(Integer shiftId);
 	
-	void updateStartTimeByShiftId(Integer shift_id);
+	void updateStartTimeByShiftId(Integer shiftId);
 
-	void updateEndTimeByShiftId(Integer shift_id);
+	void updateEndTimeByShiftId(Integer shiftId);
 }

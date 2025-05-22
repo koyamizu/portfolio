@@ -27,9 +27,9 @@ public class PasswordController {
 	private final PasswordService passwordService;
 	private final EmployeesManagementService employeesManagementService;
 
-	@GetMapping("reset/{id}")
-	public String showPasswordResetForm(@PathVariable Integer id, PasswordForm passwordForm) {
-		passwordForm.setEmployeeId(id);
+	@GetMapping("reset/{employee-id}")
+	public String showPasswordResetForm(@PathVariable("employee-id") Integer employeeId, PasswordForm passwordForm) {
+		passwordForm.setEmployeeId(employeeId);
 		passwordForm.setIsNew(false);
 		return "password/form";
 	}
@@ -37,7 +37,7 @@ public class PasswordController {
 	@PostMapping("create")
 	public String showPasswordCreationForm(@Validated EmployeeForm employeeForm,
 			BindingResult bindingResult,PasswordForm passwordForm) {
-//		employees_listテーブルのpasswordカラムはnot nullなので、初期パスワードを設定。誕生日を使用。
+//		employeesテーブルのpasswordカラムはnot nullなので、初期パスワードを設定。誕生日を使用。
 		employeeForm.setPassword(employeeForm.getBirth());
 		if (bindingResult.hasErrors()) {
 			employeeForm.setIsNew(true);
@@ -45,6 +45,8 @@ public class PasswordController {
 		}
 		Employee employee = EmployeeHelper.convertEmployee(employeeForm);
 		employeesManagementService.insertEmployee(employee);
+//		↓ここで例外放出（class com.example.webapp.entity.Employee cannot be cast to class java.lang.Integer (com.example.webapp.entity.Employee is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @398cf60d; java.lang.Integer is in module java.base of loader 'bootstrap')
+//		java.lang.ClassCastException: class com.example.webapp.entity.Employee cannot be cast to class java.lang.Integer (com.example.webapp.entity.Employee is in unnamed module of loader ）
 		Integer employeeId=employeesManagementService.selectEmployeeIdByName(employee.getName());
 		passwordForm.setEmployeeId(employeeId);
 		passwordForm.setIsNew(true);
