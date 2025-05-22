@@ -32,6 +32,14 @@
 		;
 	</select>
 	
+	<select id="selectAllIdAndName" resultMap="EmployeeMap">
+		SELECT
+		  id,name
+		FROM
+		  test_employees
+		;
+	</select>
+	
 	<select id="selectAllEmployees" resultMap="EmployeeMap">
 		SELECT
 		  *

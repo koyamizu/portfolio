@@ -12,6 +12,8 @@ public interface EmployeesManagementMapper {
 	
 	List<Employee> selectAllEmployees();
 	
+	List<Employee> selectAllIdAndName();
+	
 	Integer selectEmployeeIdByName(String name);
 	
 	void insertEmployee(Employee employee);

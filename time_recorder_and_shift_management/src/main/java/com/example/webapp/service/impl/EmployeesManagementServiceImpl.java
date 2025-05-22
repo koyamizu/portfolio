@@ -28,6 +28,11 @@ public class EmployeesManagementServiceImpl  implements EmployeesManagementServi
 	}
 	
 	@Override
+	public List<Employee> selectAllIdAndName(){
+		return mapper.selectAllIdAndName();
+	}
+	
+	@Override
 	public Integer selectEmployeeIdByName(String name) {
 		return mapper.selectEmployeeIdByName(name);
 	}
