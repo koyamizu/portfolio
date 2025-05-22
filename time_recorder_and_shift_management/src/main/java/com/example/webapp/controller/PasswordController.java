@@ -45,8 +45,6 @@ public class PasswordController {
 		}
 		Employee employee = EmployeeHelper.convertEmployee(employeeForm);
 		employeesManagementService.insertEmployee(employee);
-//		↓ここで例外放出（class com.example.webapp.entity.Employee cannot be cast to class java.lang.Integer (com.example.webapp.entity.Employee is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @398cf60d; java.lang.Integer is in module java.base of loader 'bootstrap')
-//		java.lang.ClassCastException: class com.example.webapp.entity.Employee cannot be cast to class java.lang.Integer (com.example.webapp.entity.Employee is in unnamed module of loader ）
 		Integer employeeId=employeesManagementService.selectEmployeeIdByName(employee.getName());
 		passwordForm.setEmployeeId(employeeId);
 		passwordForm.setIsNew(true);

@@ -88,7 +88,7 @@
 
 	<insert id="insertShiftRequests">
 		INSERT INTO
-		  requests(employee_id, date)
+		  test_shift_requests(employee_id, date)
 		VALUES 
 		<foreach collection="requests" item="r" separator=",">
 			(#{r.employeeId}, #{r.start})

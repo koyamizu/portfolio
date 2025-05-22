@@ -40,9 +40,9 @@
 		;
 	</select>
 	
-	<select id="selectEmployeeIdByName" resultMap="EmployeeMap">
+	<select id="selectEmployeeIdByName">
 		SELECT
-		  id
+		  id AS employeeId
 		FROM
 		  test_employees
 		WHERE

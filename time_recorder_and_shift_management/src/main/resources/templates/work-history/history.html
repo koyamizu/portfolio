@@ -15,15 +15,16 @@
 				<div th:each="month:${#numbers.sequence(1,thisMonth)}" class="display-inline">
 					<li><a th:href="@{/work-history/{month}(month=${month})}" th:text="|${month}月|"></a></li>
 				</div>
-				<li class="li-index" >
-					<a th:href="@{#}" onclick="history.back()">戻る</a>
+				<li class="li-index">
+					<!--					<a th:href="@{#}" onclick="history.back()">戻る</a>-->
+					<a th:href="@{/{from}(from=${from})}">戻る</a>
 				</li>
 			</ul>
 			<ul th:if="${from}=='admin'">
 				<li><a th:href="@{/work-history/{target-month}(target-month=${targetMonth})}">全員</a></li>
 				<div th:each="employee : ${employees}" class="display-inline">
 					<li><a th:href="@{/work-history/{target-month}/{employee-id}(target-month=${targetMonth},employee-id=${employee.employeeId})}"
-						th:text="${employee.name}"></a></li>
+							th:text="${employee.name}"></a></li>
 				</div>
 			</ul>
 		</nav>
@@ -55,9 +56,12 @@
 						<td th:text="*{start}"></td>
 						<td th:text="*{end}"></td>
 						<td th:text="*{workTime}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(created_at,'yyyy-MM-dd hh:mm:ss')}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')" th:text="*{#temporals.format(updated_at,'yyyy-MM-dd hh:mm:ss')}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')" ><a th:href="@{/work-history/edit/{shift-id}(shift-id=*{shiftId})}">修正</a></td>
+						<td sec:authorize="hasAuthority('ADMIN')"
+							th:text="*{#temporals.format(created_at,'yyyy-MM-dd hh:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')"
+							th:text="*{#temporals.format(updated_at,'yyyy-MM-dd hh:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')"><a
+								th:href="@{/work-history/edit/{shift-id}(shift-id=*{shiftId})}">修正</a></td>
 					</th:block>
 				</tr>
 			</tbody>
