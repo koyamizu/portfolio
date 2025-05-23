@@ -19,26 +19,26 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	private final WorkHistoryManagementMapper mapper;
 	@Override
 	public List<ShiftAndTimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth) {
-		return mapper.selectAllWorkHistoriesToDateByMonth(targetMonth);
+		return mapper.selectAllToDateByMonth(targetMonth);
 	}
 	
 	@Override
 	public List<ShiftAndTimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
-		return mapper.selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,targetMonth);
+		return mapper.selectToDateByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
 	
 	@Override
 	public List<Employee> selectWorkedEmployeesByMonth(Integer targerMonth){
-		return mapper.selectWorkedEmployeesByMonth(targerMonth);
+		return mapper.selectByMonth(targerMonth);
 	}
 	
 	@Override
 	public ShiftAndTimeRecord selectWorkHistoryByShiftId(Integer shiftId) {
-		return mapper.selectWorkHistoryByShiftId(shiftId);
+		return mapper.selectByShiftId(shiftId);
 	}
 	
 	@Override
 	public void updateWorkHistory(ShiftAndTimeRecordForm updatedHistory) {
-		mapper.updateWorkHistory(updatedHistory);
+		mapper.update(updatedHistory);
 	}
 }

@@ -22,7 +22,7 @@
 		<id property="employeeId" column="id"/>
 	</resultMap>
 
-	<select id="selectAllWorkHistoriesToDateByMonth"
+	<select id="selectAllToDateByMonth"
 		resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
@@ -44,7 +44,7 @@
 	;
 	</select>
 
-	<select id="selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth"
+	<select id="selectToDateByEmployeeIdAndMonth"
 		resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
@@ -66,7 +66,7 @@
 	;
 	</select>
 	
-	<select id="selectWorkedEmployeesByMonth" resultMap="EmployeeMap">
+	<select id="selectByMonth" resultMap="EmployeeMap">
 	SELECT
 	  DISTINCT e.id
 	  ,e.name
@@ -79,7 +79,7 @@
 	;
 	</select>
 	
-	<select id="selectWorkHistoryByShiftId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
+	<select id="selectByShiftId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
 	  ,s.date
@@ -97,7 +97,7 @@
 	</select>
 	
 <!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
-	<update id="updateWorkHistory">
+	<update id="update">
 	UPDATE
 	  test_shifts_and_time_records
 	SET

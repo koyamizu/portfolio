@@ -8,17 +8,17 @@ import com.example.webapp.entity.Employee;
 
 @Mapper
 public interface EmployeesManagementMapper {
-	Employee selectEmployeeById(Integer employeeId);
+	Employee selectById(Integer employeeId);
 	
-	List<Employee> selectAllEmployees();
+	List<Employee> selectAll();
 	
 	List<Employee> selectAllIdAndName();
 	
-	Integer selectEmployeeIdByName(String name);
+	Integer selectIdByName(String name);
 	
-	void insertEmployee(Employee employee);
+	void insert(Employee employee);
 	
-	void updateEmployee(Employee employee);
+	void update(Employee employee);
 	
-	void deleteEmployeeById(Integer employeeId);
+	void deleteById(Integer employeeId);
 }

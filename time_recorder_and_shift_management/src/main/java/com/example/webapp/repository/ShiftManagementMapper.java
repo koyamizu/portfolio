@@ -11,21 +11,22 @@ import com.example.webapp.form.ShiftScheduleEditForm;
 @Mapper
 public interface ShiftManagementMapper {
 	
-	List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
+	List<EntityForFullCalendar> selectThreeMonthByTargetMonth(Integer targetMonth);
 
-	List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId);
+	List<EntityForFullCalendar> selectByEmployeeId(Integer employeeId);
 
-	void insertShiftRequests(List<ShiftScheduleEditForm> requests);
-
-	void deleteShiftRequestsByEmployeeId(Integer employeeId);
-
-	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
-
-	List<EntityForFullCalendar> selectAllShiftRequests();
+	List<EntityForFullCalendar> selectOneMonthByTargetMonth(Integer targetMonth);
 	
+	List<EntityForFullCalendar> selectAll();
+
 	List<Employee> selectEmployeesNotSubmitRequests();
 
-	void deleteShiftsByTargetMonth(Integer targetMonth);
+	void insertRequest(List<ShiftScheduleEditForm> requests);
 
-	void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts);
+	void insertShift(List<ShiftScheduleEditForm> newShifts);
+
+	void deleteRequestByEmployeeId(Integer employeeId);
+	
+	void deleteShiftByTargetMonth(Integer targetMonth);
+
 }

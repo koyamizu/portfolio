@@ -22,7 +22,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
-		return mapper.selectThreeMonthShiftsByTargetMonth(thisMonth);
+		return mapper.selectThreeMonthByTargetMonth(thisMonth);
 	}
 
 	//	@Override
@@ -32,7 +32,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId) {
-		return mapper.selectShiftRequestsByEmployeeId(employeeId);
+		return mapper.selectByEmployeeId(employeeId);
 	}
 
 //	@Override
@@ -41,12 +41,12 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 //	}
 	@Override
 	public void insertShiftRequests(List<ShiftScheduleEditForm> requests) {
-		mapper.insertShiftRequests(requests);
+		mapper.insertRequest(requests);
 	}
 
 	@Override
 	public void deleteShiftRequestsByEmployeeId(Integer employeeId) {
-		mapper.deleteShiftRequestsByEmployeeId(employeeId);
+		mapper.deleteRequestByEmployeeId(employeeId);
 	}
 	
 	@Override
@@ -56,21 +56,21 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
-		return mapper.selectOneMonthShiftsByTargetMonth(targetMonth);
+		return mapper.selectOneMonthByTargetMonth(targetMonth);
 	}
 
 	@Override
 	public List<EntityForFullCalendar> selectAllShiftRequests() {
-		return mapper.selectAllShiftRequests();
+		return mapper.selectAll();
 	}
 
 	@Override
 	public void deleteShiftsByTargetMonth(Integer targetMonth) {
-		mapper.deleteShiftsByTargetMonth(targetMonth);
+		mapper.deleteShiftByTargetMonth(targetMonth);
 	}
 
 	@Override
 	public void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts) {
-		mapper.insertNextMonthShifts(newShifts);
+		mapper.insertShift(newShifts);
 	}
 }
