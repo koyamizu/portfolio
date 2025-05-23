@@ -10,7 +10,7 @@ import com.example.webapp.entity.ShiftAndTimeRecord;
 @Mapper
 public interface TimeRecorderMapper {
 
-	List<ShiftAndTimeRecord> selectEmployeesByDate(LocalDate date);
+	List<ShiftAndTimeRecord> selectEmployeeByDate(LocalDate date);
 	
 	ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId,LocalDate date);
 	

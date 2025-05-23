@@ -10,9 +10,14 @@ import com.example.webapp.form.ShiftAndTimeRecordForm;
 
 @Mapper
 public interface WorkHistoryManagementMapper {
-	List<ShiftAndTimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth);
-	List<ShiftAndTimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
-	List<Employee> selectWorkedEmployeesByMonth(Integer targerMonth);
-	ShiftAndTimeRecord selectWorkHistoryByShiftId(Integer shiftId);
-	void updateWorkHistory(ShiftAndTimeRecordForm updatedHistory);
+	
+	List<ShiftAndTimeRecord> selectAllToDateByMonth(Integer targetMonth);
+
+	List<ShiftAndTimeRecord> selectToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
+
+	List<Employee> selectByMonth(Integer targerMonth);
+
+	ShiftAndTimeRecord selectByShiftId(Integer shiftId);
+
+	void update(ShiftAndTimeRecordForm updatedHistory);
 }

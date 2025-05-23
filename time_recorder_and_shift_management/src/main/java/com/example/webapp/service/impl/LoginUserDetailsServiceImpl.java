@@ -27,7 +27,7 @@ public class LoginUserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String employeeIdStr) throws UsernameNotFoundException {
 		Integer employeeId=Integer.parseInt(employeeIdStr);
-		Employee employee=mapper.selectEmployeeById(employeeId);
+		Employee employee=mapper.selectById(employeeId);
 		if(employee!=null) {
 			return new LoginUser(String.valueOf(employee.getEmployeeId()),
 					employee.getPassword(),

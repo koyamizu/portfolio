@@ -11,9 +11,8 @@
 		<result property="start" column="date" />
 	</resultMap>
 
-	<select id="selectThreeMonthShiftsByTargetMonth"
+	<select id="selectThreeMonthByTargetMonth"
 		resultMap="EntityForFullCalendarResult">
-<!--		SELECT x.id,name,DATE_FORMAT(date,'%Y-%m-%d') as date-->
 		SELECT
 		  s.id
 		  ,e.name
@@ -27,7 +26,7 @@
 		;
 	</select>
 
-	<select id="selectShiftRequestsByEmployeeId"
+	<select id="selectByEmployeeId"
 		resultMap="EntityForFullCalendarResult">
 		SELECT
 		  id
@@ -39,13 +38,12 @@
 		;
 	</select>
 
-	<select id="selectOneMonthShiftsByTargetMonth"
+	<select id="selectOneMonthByTargetMonth"
 		resultMap="EntityForFullCalendarResult">
 		SELECT
 		  s.id
 		  ,e.name
 		  ,s.date
-<!--		  ,DATE_FORMAT(date,'%Y-%m-%d') as date-->
 		FROM
 		  test_shifts_and_time_records AS s
 		  INNER JOIN test_employees AS e
@@ -55,14 +53,13 @@
 		;
 	</select>
 
-	<select id="selectAllShiftRequests"
+	<select id="selectAll"
 		resultMap="EntityForFullCalendarResult">
 		SELECT
 		  r.id
 		  ,r.employee_id
 		  ,e.name
 		  ,r.date
-<!--		  ,DATE_FORMAT(date,'%Y-%m-%d') as date-->
 		FROM
 		  test_shift_requests AS r
 		  INNER JOIN test_employees AS e
@@ -70,23 +67,24 @@
 		;
 	</select>
 
-	<select id="selectEmployeesNotSubmitRequests">
-		SELECT
-		  id
-		  ,name
-		FROM
-		  employees
-		WHERE
-		  id NOT IN (
-		    SELECT
-		      employee_id
-		    FROM
-		      test_shift_requests
-		  )
-		;
-	</select>
+<!--現状使用していない-->
+<!--	<select id="selectEmployeesNotSubmitRequests">-->
+<!--		SELECT-->
+<!--		  id-->
+<!--		  ,name-->
+<!--		FROM-->
+<!--		  employees-->
+<!--		WHERE-->
+<!--		  id NOT IN (-->
+<!--		    SELECT-->
+<!--		      employee_id-->
+<!--		    FROM-->
+<!--		      test_shift_requests-->
+<!--		  )-->
+<!--		;-->
+<!--	</select>-->
 
-	<insert id="insertShiftRequests">
+	<insert id="insertRequest">
 		INSERT INTO
 		  test_shift_requests(employee_id, date)
 		VALUES 
@@ -96,7 +94,7 @@
 		;
 	</insert>
 
-	<insert id="insertNextMonthShifts">
+	<insert id="insertShift">
 		INSERT INTO
 		  test_shifts_and_time_records(employee_id,date,created_at,updated_at)
 		VALUES
@@ -106,7 +104,7 @@
 		;
 	</insert>
 
-	<delete id="deleteShiftRequestsByEmployeeId">
+	<delete id="deleteRequestByEmployeeId">
 		DELETE FROM
 		  test_shift_requests
 		WHERE
@@ -114,7 +112,7 @@
 		;
 	</delete>
 
-	<delete id="deleteShiftsByTargetMonth">
+	<delete id="deleteShiftByTargetMonth">
 		DELETE FROM
 		  test_shifts_and_time_records
 		WHERE
