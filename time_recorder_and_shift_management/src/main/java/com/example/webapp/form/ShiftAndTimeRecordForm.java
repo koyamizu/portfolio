@@ -27,7 +27,7 @@ public class ShiftAndTimeRecordForm {
 	
 	private LocalTime workTime;
 	
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 	
-	private LocalDateTime updated_at;
+	private LocalDateTime updatedAt;
 }

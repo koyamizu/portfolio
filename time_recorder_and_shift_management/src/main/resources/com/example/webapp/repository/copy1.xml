@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.ShiftManagementMapper">
+
+	<resultMap id="EntityForFullCalendarResult"
+		type="com.example.webapp.entity.EntityForFullCalendar">
+		<id property="id" column="id"/>
+		<result property="employeeId" column="employee_id"/>
+		<result property="title" column="name" />
+		<result property="start" column="date" />
+	</resultMap>
+
+<!--シフトの表示にしか使ってない-->
+	<select id="selectThreeMonthByTargetMonth"
+		resultMap="EntityForFullCalendarResult">
+		SELECT
+		  s.id
+		  ,e.name
+		  ,s.date
+		FROM
+		  test_shifts_and_time_records AS s
+		  INNER JOIN test_employees AS e
+		  ON s.employee_id = e.id
+		WHERE
+		  MONTH(date) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1
+		;
+	</select>
+
+	<select id="selectByEmployeeId"
+		resultMap="EntityForFullCalendarResult">
+		SELECT
+		  id
+		  ,date
+		FROM
+		  test_shift_requests
+		WHERE
+		  employee_id = #{employeeId}
+		;
+	</select>
+
+	<select id="selectOneMonthByTargetMonth"
+		resultMap="EntityForFullCalendarResult">
+		SELECT
+		  s.id
+		  ,e.name
+		  ,s.date
+		FROM
+		  test_shifts_and_time_records AS s
+		  INNER JOIN test_employees AS e
+		  ON s.employee_id = e.id
+		WHERE
+		  MONTH(date) = #{targetMonth}
+		;
+	</select>
+
+	<select id="selectAll"
+		resultMap="EntityForFullCalendarResult">
+		SELECT
+		  r.id
+		  ,r.employee_id
+		  ,e.name
+		  ,r.date
+		FROM
+		  test_shift_requests AS r
+		  INNER JOIN test_employees AS e
+		  ON r.employee_id = e.id
+		;
+	</select>
+
+<!--現状使用していない-->
+<!--	<select id="selectEmployeesNotSubmitRequests">-->
+<!--		SELECT-->
+<!--		  id-->
+<!--		  ,name-->
+<!--		FROM-->
+<!--		  employees-->
+<!--		WHERE-->
+<!--		  id NOT IN (-->
+<!--		    SELECT-->
+<!--		      employee_id-->
+<!--		    FROM-->
+<!--		      test_shift_requests-->
+<!--		  )-->
+<!--		;-->
+<!--	</select>-->
+
+	<insert id="insertRequest">
+		INSERT INTO
+		  test_shift_requests(employee_id, date)
+		VALUES 
+		<foreach collection="requests" item="r" separator=",">
+			(#{r.employeeId}, #{r.start})
+		</foreach>
+		;
+	</insert>
+
+	<insert id="insertShift">
+		INSERT INTO
+		  test_shifts_and_time_records(employee_id,date,created_at,updated_at)
+		VALUES
+		<foreach collection="newShifts" item="s" separator=",">
+			(#{s.employeeId},#{s.start},now(),now())
+		</foreach>
+		;
+	</insert>
+
+	<delete id="deleteRequestByEmployeeId">
+		DELETE FROM
+		  test_shift_requests
+		WHERE
+		  employee_id = #{employeeId}
+		;
+	</delete>
+
+	<delete id="deleteShiftByTargetMonth">
+		DELETE FROM
+		  test_shifts_and_time_records
+		WHERE
+		  MONTH(date) = #{targetMonth}
+		;
+	</delete>
+
+
+	<!-- 以下はサックル提出分には含めない -->
+	<!-- <update id="createShiftRequestsTable"> -->
+	<!-- CREATE TABLE test_shift_requests_${newMonth} -->
+	<!-- (id INT AUTO_INCREMENT PRIMARY KEY, -->
+	<!-- employee_id INT NOT NULL, -->
+	<!-- date date NOT NULL, -->
+	<!-- FOREIGN KEY (employee_id) -->
+	<!-- REFERENCES test_employees(id) -->
+	<!-- ) -->
+	<!-- </update> -->
+
+	<!-- <update id="dropForeignKeyOfShiftRequestsTable"> -->
+	<!-- ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY -->
+	<!-- test_shift_requests_${oldMonth}_ibfk_1 -->
+	<!-- </update> -->
+
+	<!-- <delete id="deleteShiftRequestTable"> -->
+	<!-- DROP TABLE test_shift_requests_${oldMonth}; -->
+	<!-- </delete> -->
+
+
+</mapper>

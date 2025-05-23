@@ -16,32 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `absence_requests`
+-- Table structure for table `passwords`
 --
 
-DROP TABLE IF EXISTS `absence_requests`;
+DROP TABLE IF EXISTS `passwords`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `absence_requests` (
+CREATE TABLE `passwords` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `shift_id` int NOT NULL,
-  `absence_reason_id` int NOT NULL,
-  `detail` text NOT NULL,
-  `is_permit` tinyint(1) DEFAULT NULL,
+  `employee_id` int NOT NULL,
+  `password` char(60) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `absence_requests`
+-- Dumping data for table `passwords`
 --
 
-LOCK TABLES `absence_requests` WRITE;
-/*!40000 ALTER TABLE `absence_requests` DISABLE KEYS */;
-INSERT INTO `absence_requests` VALUES (1,149,2,'昨夜から熱が39度あり、一晩明けても下がらなかったので。',NULL,'2025-05-22 10:53:38','2025-05-22 10:53:59');
-/*!40000 ALTER TABLE `absence_requests` ENABLE KEYS */;
+LOCK TABLES `passwords` WRITE;
+/*!40000 ALTER TABLE `passwords` DISABLE KEYS */;
+INSERT INTO `passwords` VALUES (1,1001,'$2a$10$1bByysmSqkXL7c1fEeRgwemvFa0jJZfn3txG5foVXZUbr5cRYdyAS','2025-05-23 09:13:42','2025-05-23 09:13:42'),(2,1002,'$2a$10$hdBltFRc7sOprzGrrCEQ.ufH0RmowXTxkc1R0cDjMMKD7dq7Vzzci','2025-05-23 09:13:42','2025-05-23 09:13:42'),(3,1003,'$2a$10$I8.L1/xgC7Uy4aFKm9hRhePclxVPh7jlpB0Wgh2IbEKeJHhjQKMKS','2025-05-23 09:13:42','2025-05-23 09:13:42'),(4,1004,'$2a$10$J2K81BhxHYY.UaSoUEAioe5xZuVMW6UZRKlW80sbl7QrmXkJrLUZ.','2025-05-23 09:13:42','2025-05-23 09:13:42'),(5,1005,'$2a$10$bmWiA0eCB9R4FgpANmHEI.MSKrDz9/swjZZeq0DqSopvHJuofYPla','2025-05-23 09:13:42','2025-05-23 09:13:42'),(6,1006,'$2a$10$ITG55zMIqkWzJjd9uxxc4u6sxKSXQbq53UNOCrBaIECrlgfcwXZU6','2025-05-23 09:13:42','2025-05-23 09:13:42');
+/*!40000 ALTER TABLE `passwords` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-23 15:27:22
+-- Dump completed on 2025-05-23 15:27:24
