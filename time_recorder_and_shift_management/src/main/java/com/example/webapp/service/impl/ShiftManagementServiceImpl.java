@@ -25,20 +25,11 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		return mapper.selectThreeMonthByTargetMonth(thisMonth);
 	}
 
-	//	@Override
-	//	public 	Employee selectEmployeeById(Integer id) {
-	//		return mapper.selectEmployeeById(id);
-	//	}
-
 	@Override
 	public List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId) {
 		return mapper.selectByEmployeeId(employeeId);
 	}
 
-//	@Override
-//	public void insertShiftRequests(Integer employeeId, List<LocalDate> dates) {
-//		mapper.insertShiftRequests(employeeId, dates);
-//	}
 	@Override
 	public void insertShiftRequests(List<ShiftScheduleEditForm> requests) {
 		mapper.insertRequest(requests);

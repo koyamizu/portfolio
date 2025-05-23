@@ -1,7 +1,6 @@
 package com.example.webapp.form;
 
-//データの受け渡しをしているだけなので、entityにするかもしれない
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -22,7 +21,9 @@ public class ShiftScheduleEditForm {
 	private Integer employeeId;
 	//json->javaのクラスの変換の際、LocalDate型のフィールドにはこのアノテーションをつける必要がある
 	@JsonDeserialize(using = LocalDateDeserializer.class)
-	private LocalDate start;
+	private LocalDateTime start;
+	
+	private LocalDateTime end;
 	
 //	時間も含めるのであれば、以下のフィールドを使う
 //	

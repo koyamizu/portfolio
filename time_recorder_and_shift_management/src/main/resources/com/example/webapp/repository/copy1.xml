@@ -19,7 +19,7 @@
 		  ,e.name
 		  ,s.date
 		FROM
-		  test_shifts_and_time_records AS s
+		  test_shift_schedules AS s
 		  INNER JOIN test_employees AS e
 		  ON s.employee_id = e.id
 		WHERE
