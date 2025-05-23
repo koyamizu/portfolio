@@ -85,6 +85,7 @@
 	  ,s.date
 	  ,s.start
 	  ,s.end
+	  ,s.employee_id
 	  ,e.name
 	FROM
 	  test_shifts_and_time_records AS s

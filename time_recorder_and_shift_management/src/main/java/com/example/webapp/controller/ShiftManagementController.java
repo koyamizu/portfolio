@@ -51,8 +51,10 @@ public class ShiftManagementController {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		//id,start(date)のみの情報が返ってくる
 		List<EntityForFullCalendar> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
-		EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
-		model.addAttribute("requests", requests);
+		if(!CollectionUtils.isEmpty(requests)) {
+			EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
+			model.addAttribute("requests", requests);			
+		}
 		model.addAttribute("isNew", CollectionUtils.isEmpty(requests));
 		return "shift/request";
 	}
@@ -89,27 +91,22 @@ public class ShiftManagementController {
 		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		List<EntityForFullCalendar> nextMonthShifts = shiftManagementService
 				.selectOneMonthShiftsByTargetMonth(nextMonth);
-		if(!CollectionUtils.isEmpty(nextMonthShifts)) {
+		if (!CollectionUtils.isEmpty(nextMonthShifts)) {
 			EntityForFullCalendarHelper.setColorProperties("#FB9D00", "white", nextMonthShifts);
-			model.addAllAttributes(Map.of(
-//					"requests", null,
-					"nextMonthShifts", nextMonthShifts,
-					"isNew", CollectionUtils.isEmpty(nextMonthShifts)
-//					,"allEmployees", null,
-//					"notSubmits", null
-					));
+			model.addAllAttributes(
+					Map.of(
+							"nextMonthShifts", nextMonthShifts,
+							"isNew", CollectionUtils.isEmpty(nextMonthShifts)));
 			return "shift/edit";
 		}
 		List<EntityForFullCalendar> requests = shiftManagementService.selectAllShiftRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", requests);
 		List<Integer> submittedEmployeeIds = requests.stream().map(r -> r.getEmployeeId()).distinct().toList();
-		//↓住所とかもselectされちゃってるので、employee_id,nameだけを取り出すマッパーメソッドを作る
-		List<Employee> allEmployees = employeesManagementService.selectAllEmployees();
+		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
 		List<Employee> notSubmits = allEmployees.stream().filter(e -> !submittedEmployeeIds.contains(e.getEmployeeId()))
 				.toList();
 		model.addAllAttributes(Map.of(
 				"requests", requests,
-//				"nextMonthShifts", nextMonthShifts,
 				"isNew", CollectionUtils.isEmpty(nextMonthShifts),
 				"allEmployees", allEmployees,
 				"notSubmits", notSubmits));

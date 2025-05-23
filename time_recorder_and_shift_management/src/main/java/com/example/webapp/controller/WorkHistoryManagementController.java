@@ -2,8 +2,6 @@ package com.example.webapp.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -21,6 +19,7 @@ import com.example.webapp.form.ShiftAndTimeRecordForm;
 import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.WorkHistoryManagementService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -61,7 +60,8 @@ public class WorkHistoryManagementController {
 			boolean isSame = auth.getName().equals(employeeId.toString());
 			if (!isSame) {
 				attributes.addFlashAttribute("errorMessage", "他人の勤務履歴は閲覧できません");
-				return "redirect:/" + targetMonth;
+				employeeId=Integer.parseInt(auth.getName());
+				return "redirect:/work-history/"+targetMonth+"/"+employeeId;
 			}
 		}
 		List<ShiftAndTimeRecord> personalHistories = workHistoryManagementService
@@ -74,13 +74,9 @@ public class WorkHistoryManagementController {
 	}
 
 	@GetMapping("edit/{shift-id}")
-	//SecurityConfigに/{taegetMont}/editとか設定できたらAuthenticationの引数はいらない
-	public String showPersonalWorkHistory(@PathVariable("shift-id") Integer shiftId, Authentication auth, Model model,
-			ShiftAndTimeRecordForm form) {
-		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
+	public String showPersonalWorkHistory(@PathVariable("shift-id") Integer shiftId,Model model,ShiftAndTimeRecordForm form) {
 			ShiftAndTimeRecord targetHistoriy = workHistoryManagementService.selectWorkHistoryByShiftId(shiftId);
 			model.addAttribute("history", targetHistoriy);
-		}
 		return "work-history/edit";
 	}
 
@@ -88,9 +84,9 @@ public class WorkHistoryManagementController {
 	public String updateWorkHistory(ShiftAndTimeRecordForm updatedHistory, RedirectAttributes attribute,
 			HttpSession session) {
 		workHistoryManagementService.updateWorkHistory(updatedHistory);
-//		var sessionName = session.getAttribute("fromPage");
-//		String fromPage = (sessionName instanceof Integer) ? sessionName.toString() : (String) sessionName;
 		attribute.addFlashAttribute("message", "更新しました");
-		return "redirect:/javascript:history.back(-1)";
+		Integer targetMonth=updatedHistory.getDate().getMonthValue();
+		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
+		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
 	}
 }

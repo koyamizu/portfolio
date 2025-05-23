@@ -13,7 +13,8 @@
 			<a th:href="@{/shift}">シフト表/シフト提出</a>
 		</p>
 		<p th:with="today=${#temporals.createToday()}">
-			<a th:href="@{/work-history/{thisMonth}(thisMonth=${#temporals.month(today)})}">勤怠履歴</a>
+			<a th:href="@{/work-history/{this-month}
+			/{employee-id}(this-month=${#temporals.month(today)},employee-id=${#authentication.principal.username})}">勤怠履歴</a>
 		</p>
 		<form method="post" name="logout" th:action="@{/logout}">
 			<a href="javascript:logout.submit()">ホームに戻る</a>
