@@ -30,7 +30,7 @@ public class TimeRecorderController {
 	public String showTimeRecorder(Model model) {
 		List<ShiftSchedule> todaysEmployees=service.selectEmployeesByDate(today);
 		model.addAttribute("today", today);
-		model.addAttribute("todaysShift", todaysEmployees);
+		model.addAttribute("todaysEmployees", todaysEmployees);
 		return "time-recorder/top";
 	}
 

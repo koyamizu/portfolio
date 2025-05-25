@@ -1,6 +1,7 @@
 package com.example.webapp.form;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,13 +22,9 @@ public class FullCalendarForm {
 	private Integer employeeId;
 	//json->javaのクラスの変換の際、LocalDate型のフィールドにはこのアノテーションをつける必要がある
 	@JsonDeserialize(using = LocalDateDeserializer.class)
-	private LocalDateTime start;
+	private LocalDate start;
 	
-	private LocalDateTime end;
+	private LocalTime scheduledStart;
 	
-//	時間も含めるのであれば、以下のフィールドを使う
-//	
-//	private LocalDateTime start;
-//	
-//	private LocalDateTime end;
+	private LocalTime scheduledEnd;	
 }

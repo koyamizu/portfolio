@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -49,7 +50,6 @@ public class ShiftManagementController {
 	@GetMapping("request")
 	public String showRequestPage(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		//id,start(date)のみの情報が返ってくる
 		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
 		if(!CollectionUtils.isEmpty(requests)) {
 			EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);

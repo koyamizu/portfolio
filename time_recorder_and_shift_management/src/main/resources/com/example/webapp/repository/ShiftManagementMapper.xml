@@ -8,8 +8,9 @@
 		<id property="id" column="id"/>
 		<result property="employeeId" column="employee_id"/>
 		<result property="title" column="name" />
-		<result property="start" column="start" />
-		<result property="end" column="end" />
+		<result property="start" column="date" />
+		<result property="scheduledStart" column="scheduled_start" />
+				<result property="scheduledEnd" column="scheduled_end" />
 	</resultMap>
 
 <!--シフトの表示にしか使ってない-->
@@ -18,14 +19,17 @@
 		SELECT
 		  s.id
 		  ,e.name
-		  ,CONCAT(s.date,' ',s.scheduled_start) AS start
-		  ,CONCAT(s.date,' ',s.scheduled_end) AS end
+<!--		  ,CONCAT(s.date,' ',TIME_FORMAT(s.scheduled_start,'%H:%i')) AS start-->
+<!--		  ,CONCAT(s.date,' ',TIME_FORMAT(s.scheduled_end,'%H:%i')) AS end-->
+		  ,s.date
+		  ,s.scheduled_start
+		  ,s.scheduled_end
 		FROM
 		  test_shift_schedules AS s
 		  INNER JOIN test_employees AS e
 		  ON s.employee_id = e.id
 		WHERE
-		  MONTH(start) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1
+		  MONTH(s.date) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1
 		;
 	</select>
 
@@ -33,8 +37,9 @@
 		resultMap="FullCalendarEntityResult">
 		SELECT
 		  id
-		  ,CONCAT(s.date,' ',s.scheduled_start) AS start
-		  ,CONCAT(s.date,' ',s.scheduled_end) AS end
+		  ,date
+		  ,scheduled_start
+		  ,scheduled_end
 		FROM
 		  test_shift_requests
 		WHERE
@@ -47,8 +52,9 @@
 		SELECT
 		  s.id
 		  ,e.name
-		  ,CONCAT(s.date,' ',s.scheduled_start) AS start
-		  ,CONCAT(s.date,' ',s.scheduled_end) AS end
+		  ,s.date
+		  ,s.scheduled_start
+		  ,s.scheduled_end
 		FROM
 		  test_shift_schedules AS s
 		  INNER JOIN test_employees AS e
@@ -64,8 +70,9 @@
 		  r.id
 		  ,r.employee_id
 		  ,e.name
-		  ,CONCAT(s.date,' ',s.scheduled_start) AS start
-		  ,CONCAT(s.date,' ',s.scheduled_end) AS end
+		  ,r.date
+		  ,r.scheduled_start
+		  ,r.scheduled_end
 		FROM
 		  test_shift_requests AS r
 		  INNER JOIN test_employees AS e

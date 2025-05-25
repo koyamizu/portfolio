@@ -17,7 +17,9 @@ public class FullCalendarEntity {
 	//出勤日と出勤予定時刻
 	private String start;
 //	出勤日と退勤予定時刻
-	private String end;
+	private String scheduledStart;
+	
+	private String scheduledEnd;
 	
 	private String backgroundColor;
 	
