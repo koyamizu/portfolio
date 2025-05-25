@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 //jsonにはシフト希望テーブルの主キー（shiftId）が含まれるが、jsonからShfitScheduleEditFormに変換する
 //際には不要になる。変換したくない値があるときは、↓このアノテーションをつける
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ShiftScheduleEditForm {
+public class FullCalendarForm {
 	
 	private Integer employeeId;
 	//json->javaのクラスの変換の際、LocalDate型のフィールドにはこのアノテーションをつける必要がある

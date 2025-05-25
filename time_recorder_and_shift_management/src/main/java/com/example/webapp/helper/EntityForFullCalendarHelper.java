@@ -2,11 +2,11 @@ package com.example.webapp.helper;
 
 import java.util.List;
 
-import com.example.webapp.entity.EntityForFullCalendar;
+import com.example.webapp.entity.FullCalendarEntity;
 
 public class EntityForFullCalendarHelper {
 
-	public static void setColorProperties(String eventColor,String textColor, List<EntityForFullCalendar> shifts) {
+	public static void setColorProperties(String eventColor,String textColor, List<FullCalendarEntity> shifts) {
 		shifts.stream().forEach(s->s.setBackgroundColor(eventColor));
 		shifts.stream().forEach(s->s.setBorderColor(eventColor));
 		shifts.stream().forEach(s->s.setTextColor(textColor));

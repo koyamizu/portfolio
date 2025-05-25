@@ -1,8 +1,10 @@
-package com.example.webapp.entity;
+package com.example.webapp.form;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import com.example.webapp.entity.Employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftSchedule {
+public class ShiftScheduleForm {
 
 //	シフトID
 	private Integer shiftId;
@@ -26,5 +28,5 @@ public class ShiftSchedule {
 //	従業員（外部キー（employeesのid））
 	private Employee employee;
 //	打刻時間ID（外部キー（timeRecordのid））
-	private TimeRecord timeRecord;
+	private TimeRecordForm timeRecord;
 }

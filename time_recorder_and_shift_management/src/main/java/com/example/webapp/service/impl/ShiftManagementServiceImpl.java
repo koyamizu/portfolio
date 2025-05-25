@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.form.ShiftScheduleEditForm;
+import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.form.FullCalendarForm;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
 
@@ -21,17 +21,17 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	private final ShiftManagementMapper mapper;
 
 	@Override
-	public List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
+	public List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
 		return mapper.selectThreeMonthByTargetMonth(thisMonth);
 	}
 
 	@Override
-	public List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId) {
+	public List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId) {
 		return mapper.selectByEmployeeId(employeeId);
 	}
 
 	@Override
-	public void insertShiftRequests(List<ShiftScheduleEditForm> requests) {
+	public void insertShiftRequests(List<FullCalendarForm> requests) {
 		mapper.insertRequest(requests);
 	}
 
@@ -46,12 +46,12 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
+	public List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
 		return mapper.selectOneMonthByTargetMonth(targetMonth);
 	}
 
 	@Override
-	public List<EntityForFullCalendar> selectAllShiftRequests() {
+	public List<FullCalendarEntity> selectAllShiftRequests() {
 		return mapper.selectAll();
 	}
 
@@ -61,7 +61,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts) {
+	public void insertNextMonthShifts(List<FullCalendarForm> newShifts) {
 		mapper.insertShift(newShifts);
 	}
 }

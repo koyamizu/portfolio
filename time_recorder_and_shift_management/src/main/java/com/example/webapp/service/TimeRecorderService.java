@@ -3,15 +3,14 @@ package com.example.webapp.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.webapp.entity.ShiftAndTimeRecord;
+import com.example.webapp.entity.ShiftSchedule;
 
 public interface TimeRecorderService {
-	List<ShiftAndTimeRecord> selectEmployeesByDate(LocalDate date);
+	List<ShiftSchedule> selectEmployeesByDate(LocalDate date);
 
-	ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId,
-			LocalDate date);
+	ShiftSchedule selectByEmployeeId(Integer employeeId);
 
-	ShiftAndTimeRecord selectTimeRecordByShiftId(Integer shiftId);
+	ShiftSchedule selectByShiftId(Integer shiftId);
 	
 	void updateStartTimeByShiftId(Integer shiftId);
 

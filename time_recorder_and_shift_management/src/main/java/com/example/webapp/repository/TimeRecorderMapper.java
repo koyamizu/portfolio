@@ -5,18 +5,19 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.webapp.entity.ShiftAndTimeRecord;
+import com.example.webapp.entity.ShiftSchedule;
 
 @Mapper
 public interface TimeRecorderMapper {
 
-	List<ShiftAndTimeRecord> selectEmployeeByDate(LocalDate date);
+	List<ShiftSchedule> selectEmployeeByDate(LocalDate date);
 	
-	ShiftAndTimeRecord selectShiftByEmployeeIdAndDate(Integer employeeId,LocalDate date);
+	//ShiftSchedule型
+	ShiftSchedule selectByEmployeeId(Integer employeeId);
 	
-	ShiftAndTimeRecord selectTimeRecordByShiftId(Integer ShiftId);
+	ShiftSchedule selectByShiftId(Integer shiftId);
 
-	void updateStartTimeByShiftId(Integer shiftId);
+	void insert(Integer shiftId);
 	
 	void updateEndTimeByShiftId(Integer shiftId);
 }

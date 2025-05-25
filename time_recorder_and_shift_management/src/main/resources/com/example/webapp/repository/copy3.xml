@@ -2,19 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">
-	<resultMap id="ShiftAndTimeRecordWithEmployeeResult"
-		type="com.example.webapp.entity.ShiftAndTimeRecord">
+	
+	<resultMap id="ShiftWithEmployeeAndTimeRecordResult"
+		type="com.example.webapp.entity.ShiftSchedule">
 		<id property="shiftId" column="id" />
 		<result property="date" column="date" />
-		<result property="start" column="start" />
-		<result property="end" column="end" />
-		<result property="workTime" column="work_time"/>
-		<result property="createdAt" column="created_at" />
-		<result property="updatedAt" column="updated_at" />
 		<association property="employee"
 			javaType="com.example.webapp.entity.Employee">
 			<id property="employeeId" column="employee_id" />
 			<result property="name" column="name" />
+		</association>
+		<association property="timeRecord"
+			javaType="com.example.webapp.entity.TimeRecord">
+			<id property="timeRecordId" column="time_record_id"/>
+			<result property="clockIn" column="clock_in"/>
+			<result property="clockOut" column="clock_out"/>
+			<result property="workTime" column="work_time"/>
+			<result property="createdAt" column="created_at" />
+			<result property="updatedAt" column="updated_at" />			
 		</association>
 	</resultMap>
 	
@@ -23,19 +28,21 @@
 	</resultMap>
 
 	<select id="selectAllToDateByMonth"
-		resultMap="ShiftAndTimeRecordWithEmployeeResult">
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 	SELECT
 	  s.id
 	  ,s.date
-	  ,s.start
-	  ,s.end
-	  ,SUBTIME(s.end,s.start) AS work_time
-	  ,s.created_at
-	  ,s.updated_at
 	  ,s.employee_id
 	  ,e.name
+	  ,t.clock_in
+	  ,t.clock_out
+	  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+	  ,t.created_at
+	  ,t.updated_at
 	FROM
-	  test_shifts_and_time_records AS s
+	  test_shift_schedules AS s
+	  LEFT JOIN test_time_records AS t
+	  ON s.id = t.shift_id
 	  INNER JOIN test_employees AS e
  	  ON s.employee_id = e.id
 	WHERE
@@ -45,21 +52,23 @@
 	</select>
 
 	<select id="selectToDateByEmployeeIdAndMonth"
-		resultMap="ShiftAndTimeRecordWithEmployeeResult">
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 	SELECT
 	  s.id
 	  ,s.date
-	  ,s.start
-	  ,s.end
-	  ,SUBTIME(s.end,s.start) AS work_time
-	  ,s.created_at
-	  ,s.updated_at
 	  ,s.employee_id
-	  ,e.name 
+	  ,e.name
+	  ,t.clock_in
+	  ,t.clock_out
+	  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+	  ,t.created_at
+	  ,t.updated_at
 	FROM
-	  test_shifts_and_time_records AS s
-	  INNER JOIN test_employees e
-	  ON s.employee_id=e.id
+	  test_shift_schedules AS s
+	  LEFT JOIN test_time_records AS t
+	  ON s.id = t.shift_id
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
 	WHERE
 	  MONTH(s.date) = #{targetMonth}
 	  AND s.employee_id = #{employeeId}
@@ -71,7 +80,7 @@
 	  DISTINCT e.id
 	  ,e.name
 	FROM
-	  test_shifts_and_time_records s
+	  test_shift_schedules s
 	  INNER JOIN test_employees e
 	  ON s.employee_id = e.id
 	WHERE
@@ -79,16 +88,19 @@
 	;
 	</select>
 	
-	<select id="selectByShiftId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
+<!--	履歴編集で使用-->
+	<select id="selectByShiftId" resultMap="ShiftWithEmployeeAndTimeRecordResult">
 	SELECT
 	  s.id
 	  ,s.date
-	  ,s.start
-	  ,s.end
+	  ,t.clock_in
+	  ,t.clock_out
 	  ,s.employee_id
 	  ,e.name
 	FROM
-	  test_shifts_and_time_records AS s
+	  test_shift_schedules AS s
+	  LEFT JOIN test_time_records AS t
+	  ON s.id = t.shift_id
 	  INNER JOIN test_employees AS e
  	  ON s.employee_id = e.id
 	WHERE
@@ -96,13 +108,12 @@
 	;
 	</select>
 	
-<!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
 	<update id="update">
 	UPDATE
-	  test_shifts_and_time_records
+	  test_shift_schedules
 	SET
-	  start = #{start}
-	  ,end = #{end}
+	  clock_in = #{clockIn}
+	  ,clock_out = #{clockOut}
 	  ,updated_at = NOW()
 	WHERE
 	  id = #{shiftId}
