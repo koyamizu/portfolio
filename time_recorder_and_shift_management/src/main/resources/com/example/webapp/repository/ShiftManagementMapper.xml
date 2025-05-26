@@ -104,7 +104,7 @@
 		<foreach collection="requests" item="r" separator=",">
 <!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える。-->
 <!--		date,scheduled_start,scheduled_endを持っているクラス(ShiftSchedule)で受ける-->
-			(#{r.employeeId}, #{r.date}, #{r.scheduledStart}, #{r.scheduledEnd})
+			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd})
 		</foreach>
 		;
 	</insert>

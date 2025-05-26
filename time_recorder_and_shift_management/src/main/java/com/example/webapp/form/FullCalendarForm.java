@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +24,8 @@ public class FullCalendarForm {
 	//json->javaのクラスの変換の際、LocalDate型のフィールドにはこのアノテーションをつける必要がある
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate start;
-	
+	@JsonDeserialize(using = LocalTimeDeserializer.class)
 	private LocalTime scheduledStart;
-	
+	@JsonDeserialize(using = LocalTimeDeserializer.class)
 	private LocalTime scheduledEnd;	
 }

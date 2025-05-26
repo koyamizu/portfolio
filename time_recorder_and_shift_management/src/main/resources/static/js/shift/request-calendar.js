@@ -19,6 +19,7 @@ function initializeCalendar(employeeId) {
 		initialView: 'dayGridMonth',
 		eventClick: function(info) {
 			info.jsEvent.preventDefault();
+			showRegistrationModal;
 		},
 		events: {
 			googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',
@@ -87,7 +88,9 @@ function initializeCalendar(employeeId) {
 		} else {
 			selectedDates.push({
 				employeeId: employeeId,
-				start: dateStr
+				start: dateStr,
+				scheduledStart:'06:00',
+				scheduledEnd:'09:00'
 			});
 			cellEl.classList.add('selected');
 		}
@@ -142,7 +145,9 @@ function initializeCalendar(employeeId) {
 				if (idx < 0) {
 					selectedDates.push({
 						employeeId: employeeId,
-						start: ds
+						start: ds,
+						scheduledStart:'06:00',
+						scheduledEnd:'09:00'
 					})
 					cell.classList.add('selected');
 				}
@@ -162,7 +167,20 @@ function initializeCalendar(employeeId) {
 
 		} console.log('After toggleWeekdayColumn:', selectedDates);
 	}
+	
+	function showRegistrationModal() {
+		let modal = document.getElementById("modal");
+		if (modal) {
+			modal.style.display = 'flex';
+		}
+	}
 
+	function closeRegistrationModal() {
+		let modal = document.getElementById('modal');
+		if (modal) {
+			modal.style.display = 'none';
+		}
+	}
 	function clearAllSelections() {
 		selectedDates.length = 0;
 		document.querySelectorAll('td.selected').forEach(cell => cell.classList.remove('selected'));

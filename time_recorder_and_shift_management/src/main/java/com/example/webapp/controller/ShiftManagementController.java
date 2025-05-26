@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.entity.State;
 import com.example.webapp.form.FullCalendarForm;
 import com.example.webapp.helper.EntityForFullCalendarHelper;
 import com.example.webapp.service.EmployeesManagementService;
@@ -53,17 +54,23 @@ public class ShiftManagementController {
 		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
 		if(!CollectionUtils.isEmpty(requests)) {
 			EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
-			model.addAttribute("requests", requests);			
-		}
-		model.addAttribute("isNew", CollectionUtils.isEmpty(requests));
+			model.addAttribute("requests", requests);	
+//			model.addAttribute("currentRequests",new List<FullCalendarEntity> currentRequests;
+			}
+		State state=(CollectionUtils.isEmpty(requests))?State.NEW:State.CONFIRM;
+		model.addAttribute("state",state.toString());
 		return "shift/request";
 	}
 
-	@GetMapping("request/renew")
-	public String deleteRequests(Authentication authentication) {
-		Integer employeeId = Integer.parseInt(authentication.getName());
-		shiftManagementService.deleteShiftRequestsByEmployeeId(employeeId);
-		return "forward:/shift/request";
+//	@GetMapping("request/renew")
+	@PostMapping("request/edit")
+	public String editRequests(Authentication authentication
+			,@RequestParam("requests") List<FullCalendarEntity> currentRequests,Model model) {
+//		Integer employeeId = Integer.parseInt(authentication.getName());
+//		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
+		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", currentRequests);
+		model.addAttribute("state",State.EDIT.toString());
+		return "shift/request";
 	}
 
 	@PostMapping("request/submit")

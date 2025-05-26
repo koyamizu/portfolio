@@ -37,7 +37,8 @@
 
 			<script th:src="@{/js/shift/request-calendar.js}"></script>
 			<script th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', initializeCalendar(/*[[${#authentication.principal.username}]]*/));
+				document.addEventListener('DOMContentLoaded'
+				, initializeCalendar(/*[[${#authentication.principal.username}]],[[${requests}]]*/));
 			</script>
 		</div>
 		<!--		<div th:unless="${shiftRequestForm.isNew}">-->
@@ -51,7 +52,13 @@
 				<!--				<form th:action="@{/shift}" method="get">-->
 				<!--					<button type="submit" class="sub-button2">ない</button>-->
 				<!--				</form>-->
-				<a th:href="@{/shift/request/renew}">ある(再作成)</a>
+<!--				<a th:href="@{/shift/request/edit}">ある(再作成)</a>-->
+				<form th:action="@{/shift/request/edit}" method="post">
+					<div th:each="r,stat:${requests}">
+					<input type="hidden" th:name="currentRequests[__${stat.index}__]" th:value="${r}">						
+					</div>
+					<button type="submit" class="sub-button2">ある</button>
+				</form>
 				<a th:href="@{/shift}">ない</a>
 			</div>
 			<div id="calendar" class="shift-edit"></div>
