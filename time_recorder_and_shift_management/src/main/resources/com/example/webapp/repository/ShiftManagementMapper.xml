@@ -37,6 +37,7 @@
 		resultMap="FullCalendarEntityResult">
 		SELECT
 		  id
+		  ,employee_id
 		  ,date
 		  ,scheduled_start
 		  ,scheduled_end

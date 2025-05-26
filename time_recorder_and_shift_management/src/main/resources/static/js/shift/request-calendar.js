@@ -1,4 +1,4 @@
-function initializeCalendar(employeeId) {
+function initializeCalendar(employeeId, events) {
 	const today = new Date();
 
 	// 翌月の 1 日
@@ -6,7 +6,7 @@ function initializeCalendar(employeeId) {
 	// 翌月の末日
 	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-	let selectedDates = [];
+	let selectedDates = events;
 	const calendarEl = document.getElementById('calendar');
 	const clearBtn = document.getElementById('clear-selection');
 	const form = document.getElementById('shift-form');
@@ -19,24 +19,34 @@ function initializeCalendar(employeeId) {
 		initialView: 'dayGridMonth',
 		eventClick: function(info) {
 			info.jsEvent.preventDefault();
-			showRegistrationModal;
+			//			showRegistrationModal;
 		},
-		events: {
-			googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',
-			className: 'holiday',
-		},
+		eventSources: [
+			{
+				googleCalendarId: 'ja.japanese#holiday@group.v.calendar.google.com',
+				className: 'holiday'
+			},
+			//			{
+			//				//「events」という名前じゃないと認識されないっぽい
+			//				events,
+			//				className: 'request'
+			//			}
+		],
 		locale: 'ja',
 		eventDidMount: function(e) {
 			let el = e.el;
 			if (el.classList.contains('holiday')) {
 				el.closest('.fc-daygrid-day').classList.add('is_holiday');
 			}
+			if (el.classList.contains('request')) {
+				el.closest('.fc-daygrid-day').classList.add('selected');
+			}
 			//				if (e.view.type == "dayGridMonth") { //カレンダー(月)表示の場合
 			//					//イベントが表示される場所の親をたどって各日の枠にたどり着いたらclassを授けよう
 			//					el.closest('.fc-daygrid-day').classList.add('is_holiday');
 			//				}
 		},
-		dayCellContent:e=>e.dayNumberText=e.dayNumberText.replace('日',''),
+		dayCellContent: e => e.dayNumberText = e.dayNumberText.replace('日', ''),
 		// 1) 最初に開く日を翌月の１日に
 		initialDate: nextMonthFirst,
 
@@ -51,12 +61,16 @@ function initializeCalendar(employeeId) {
 		dateClick: info => {
 			toggleDate(info.dateStr, info.dayEl);
 		},
+		eventClick: info => {
+			toggleDate(info.event._def, info.el);
+		},
 		// 月が変わるたびにチェックボックス列を再構築
 		datesSet: injectColumnCheckboxes,
-
 	});
 
 	calendar.render();
+	
+	addClassSelected(selectedDates);
 
 	clearBtn.addEventListener('click', clearAllSelections);
 
@@ -64,7 +78,7 @@ function initializeCalendar(employeeId) {
 	form.addEventListener('submit', function(e) {
 		selectedDates.sort((a, b) => {
 			//-1はそのまま　0が変更
-			return (a.start < b.start)?-1:0
+			return (a.start < b.start) ? -1 : 0
 		});
 		console.log('Selected dates:', selectedDates);
 		// 例: ["2025-04-01","2025-04-08",…] の形
@@ -89,12 +103,30 @@ function initializeCalendar(employeeId) {
 			selectedDates.push({
 				employeeId: employeeId,
 				start: dateStr,
-				scheduledStart:'06:00',
-				scheduledEnd:'09:00'
+				scheduledStart: '06:00',
+				scheduledEnd: '09:00'
 			});
 			cellEl.classList.add('selected');
 		}
 		console.log('Selected dates:', selectedDates);
+	}
+
+	function addClassSelected(sd) {
+		const cur = calendar.getDate();      // 表示中の年月を取得
+		const year = cur.getFullYear();
+		const month = cur.getMonth();
+
+		// その月の1日～最終日のループ
+		const first = new Date(year, month, 2);
+		const last = new Date(year, month + 1, 1);
+		let cnt = 0;
+		for (let d = new Date(first); d <= last && cnt < sd.length; d.setDate(d.getDate() + 1)) {
+			const ds = d.toISOString().slice(0, 10); // "YYYY-MM-DD"
+			if (ds != sd[cnt].start) continue;
+			const cell = document.querySelector(`td[data-date="${ds}"]`);
+			cell.classList.add('selected');
+			cnt++;
+		}
 	}
 
 	// ヘッダーセルにチェックボックスを埋め込む
@@ -146,8 +178,8 @@ function initializeCalendar(employeeId) {
 					selectedDates.push({
 						employeeId: employeeId,
 						start: ds,
-						scheduledStart:'06:00',
-						scheduledEnd:'09:00'
+						scheduledStart: '06:00',
+						scheduledEnd: '09:00'
 					})
 					cell.classList.add('selected');
 				}
@@ -167,20 +199,20 @@ function initializeCalendar(employeeId) {
 
 		} console.log('After toggleWeekdayColumn:', selectedDates);
 	}
-	
-	function showRegistrationModal() {
-		let modal = document.getElementById("modal");
-		if (modal) {
-			modal.style.display = 'flex';
-		}
-	}
 
-	function closeRegistrationModal() {
-		let modal = document.getElementById('modal');
-		if (modal) {
-			modal.style.display = 'none';
-		}
-	}
+	//	function showRegistrationModal() {
+	//		let modal = document.getElementById("modal");
+	//		if (modal) {
+	//			modal.style.display = 'flex';
+	//		}
+	//	}
+	//
+	//	function closeRegistrationModal() {
+	//		let modal = document.getElementById('modal');
+	//		if (modal) {
+	//			modal.style.display = 'none';
+	//		}
+	//	}
 	function clearAllSelections() {
 		selectedDates.length = 0;
 		document.querySelectorAll('td.selected').forEach(cell => cell.classList.remove('selected'));

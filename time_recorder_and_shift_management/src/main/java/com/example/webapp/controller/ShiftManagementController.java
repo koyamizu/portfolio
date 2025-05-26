@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -52,24 +51,24 @@ public class ShiftManagementController {
 	public String showRequestPage(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
-		if(!CollectionUtils.isEmpty(requests)) {
-			EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
-			model.addAttribute("requests", requests);	
-//			model.addAttribute("currentRequests",new List<FullCalendarEntity> currentRequests;
-			}
-		State state=(CollectionUtils.isEmpty(requests))?State.NEW:State.CONFIRM;
-		model.addAttribute("state",state.toString());
+		//		if(!CollectionUtils.isEmpty(requests)) {
+		EntityForFullCalendarHelper.setColorProperties("transparent", "transparent", requests);
+		model.addAttribute("requests", requests);
+		//			model.addAttribute("currentRequests",new List<FullCalendarEntity> currentRequests;
+		//			}
+		State state = (CollectionUtils.isEmpty(requests)) ? State.NEW : State.CONFIRM;
+		model.addAttribute("state", state.toString());
 		return "shift/request";
 	}
 
-//	@GetMapping("request/renew")
-	@PostMapping("request/edit")
-	public String editRequests(Authentication authentication
-			,@RequestParam("requests") List<FullCalendarEntity> currentRequests,Model model) {
-//		Integer employeeId = Integer.parseInt(authentication.getName());
-//		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
-		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", currentRequests);
-		model.addAttribute("state",State.EDIT.toString());
+	//	@GetMapping("request/renew")
+	@GetMapping("request/edit")
+	public String editRequests(Authentication authentication, Model model) {
+		Integer employeeId = Integer.parseInt(authentication.getName());
+		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
+		EntityForFullCalendarHelper.setColorProperties("transparent", "transparent",requests);
+		model.addAttribute("requests", requests);
+		model.addAttribute("state", State.EDIT.toString());
 		return "shift/request";
 	}
 

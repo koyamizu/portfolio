@@ -26,4 +26,6 @@ public class FullCalendarEntity {
 	private String borderColor;
 	
 	private String textColor;
+	
+//	private String display;
 }
