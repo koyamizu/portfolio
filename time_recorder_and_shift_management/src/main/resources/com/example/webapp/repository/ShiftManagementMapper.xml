@@ -45,6 +45,7 @@
 		  test_shift_requests
 		WHERE
 		  employee_id = #{employeeId}
+		ORDER BY date ASC
 		;
 	</select>
 
@@ -109,6 +110,16 @@
 		</foreach>
 		;
 	</insert>
+	
+	<insert id="insertAdditionalRequest">
+		INSERT INTO
+		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end)
+		VALUES
+		<foreach collection="requests" item="r" separator=",">
+			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd})
+		</foreach>
+		;
+	</insert>
 
 	<insert id="insertShift">
 		INSERT INTO
@@ -122,14 +133,21 @@
 		;
 	</insert>
 
-	<delete id="deleteRequestByEmployeeId">
+<!--	リクエストの削除-->
+	<delete id="deleteByEmployeeId">
 		DELETE FROM
 		  test_shift_requests
 		WHERE
-		  employee_id = #{employeeId}
+		  date NOT IN (
+		  <foreach collection="requests" item="r" separator=",">
+			  #{r.start}
+		  </foreach>		  
+		  )
+		  AND employee_id=#{employeeId}
 		;
 	</delete>
 
+<!--シフトの削除-->
 	<delete id="deleteShiftByTargetMonth">
 		DELETE FROM
 		  test_shift_schedules

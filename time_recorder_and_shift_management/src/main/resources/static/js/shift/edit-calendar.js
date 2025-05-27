@@ -11,10 +11,13 @@ function initializeCalendar(events) {
 		return {
 			id: e.id,
 			start: e.start,
+			scheduledStart:e.scheduledStart,
+			scheduledEnd:e.scheduledEnd,
 			employeeId: e.employeeId,
 			title: e.title
 		}
 	})
+//	オートインクリメントの次の値を取得する？
 	let nextShiftId = selectedShifts[selectedShifts.length - 1].id + 1;
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
@@ -26,7 +29,7 @@ function initializeCalendar(events) {
 		itemSelector: '.fc-event-main',
 		eventData: function(eventEl) {
 			return {
-				id: nextShiftId++,
+//				id: nextShiftId++,
 				employeeId: eventEl.id,
 				title: eventEl.innerText,
 				editable: true
@@ -60,6 +63,9 @@ function initializeCalendar(events) {
 			let el = e.el;
 			if (el.classList.contains('holiday')) {
 				el.closest('.fc-daygrid-day').classList.add('is_holiday');
+			}
+			if (el.classList.contains('request')) {
+				el.closest('.fc-daygrid-day').classList.add('selected');
 			}
 		},
 		// 1) 最初に開く日を翌月の１日に
@@ -97,7 +103,9 @@ function initializeCalendar(events) {
 			if (info.el.classList.contains('fc-event-draggable')) {
 				info.event.remove();
 				const idx = selectedShifts.findIndex(s => {
-					return s.id == info.event._def.publicId
+					return s.employeeId==parseInt(info.event.extendedProps.employeeId, 10)
+					 && s.start==info.event.startStr
+//					return s.id == info.event._def.publicId
 				});
 				selectedShifts.splice(idx, 1);
 			} else {
@@ -146,8 +154,9 @@ function initializeCalendar(events) {
 			selectedShifts.push({
 				id: parseInt(shift.id, 10),
 				start: shift.start,
+				scheduledStart:'06:00',
+				scheduledEnd:'09:00',
 				employeeId: shift.employeeId,
-				//				title: shift.title
 			});
 			evtEl.style.backgroundColor = '#02e09a';
 			evtEl.style.borderColor = '#02e09a';

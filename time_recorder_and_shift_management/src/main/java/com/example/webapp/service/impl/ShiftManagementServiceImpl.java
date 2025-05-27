@@ -35,13 +35,13 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		mapper.insertRequest(requests);
 	}
 
+	//	@Override
+	//	public void deleteShiftRequestsByEmployeeId(Integer employeeId) {
+	//		mapper.deleteRequestByEmployeeId(employeeId);
+	//	}
+
 	@Override
-	public void deleteShiftRequestsByEmployeeId(Integer employeeId) {
-		mapper.deleteRequestByEmployeeId(employeeId);
-	}
-	
-	@Override
-	public List<Employee> selectEmployeesNotSubmitRequests(){
+	public List<Employee> selectEmployeesNotSubmitRequests() {
 		return mapper.selectEmployeesNotSubmitRequests();
 	}
 
@@ -63,5 +63,15 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	@Override
 	public void insertNextMonthShifts(List<FullCalendarForm> newShifts) {
 		mapper.insertShift(newShifts);
+	}
+
+	@Override
+	public void insertAdditionalRequest(List<FullCalendarForm> requests) {
+		mapper.insertAdditionalRequest(requests);
+	}
+
+	@Override
+	public void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId) {
+		mapper.deleteByEmployeeId(requests, employeeId);
 	}
 }

@@ -30,7 +30,8 @@
 			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
 				<!--				<input type="hidden" name="employeeId" th:value="${shiftRequestForm.employeeId}">-->
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
-				<input type="submit" value="提出">
+				<input type="hidden" name="state" th:value="${state}">
+				<input type="submit" th:value="${state}=='NEW'?'提出':'更新'">
 				<button id="clear-selection" type="button">すべての選択を解除</button>
 				<div id="calendar" class="shift-edit"></div>
 			</form>

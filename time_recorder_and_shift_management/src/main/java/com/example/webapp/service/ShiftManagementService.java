@@ -8,20 +8,24 @@ import com.example.webapp.form.FullCalendarForm;
 
 public interface ShiftManagementService {
 	List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
-		
+
 	List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId);
-	
+
 	void insertShiftRequests(List<FullCalendarForm> requests);
-	
-	void deleteShiftRequestsByEmployeeId(Integer employeeId);
-	
+
+	void insertNextMonthShifts(List<FullCalendarForm> newShifts);
+
+	//	void deleteShiftRequestsByEmployeeId(Integer employeeId);
+
 	List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 
 	List<FullCalendarEntity> selectAllShiftRequests();
-	
+
 	List<Employee> selectEmployeesNotSubmitRequests();
 
 	void deleteShiftsByTargetMonth(Integer targetMonth);
 
-	void insertNextMonthShifts(List<FullCalendarForm> newShifts);
+	void insertAdditionalRequest(List<FullCalendarForm> requests);
+
+	void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId);
 }

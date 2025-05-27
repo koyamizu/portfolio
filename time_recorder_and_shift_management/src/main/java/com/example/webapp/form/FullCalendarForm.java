@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FullCalendarForm {
 	
+	private Integer id;
+	
 	private Integer employeeId;
 	//json->javaのクラスの変換の際、LocalDate型のフィールドにはこのアノテーションをつける必要がある
 	@JsonDeserialize(using = LocalDateDeserializer.class)
