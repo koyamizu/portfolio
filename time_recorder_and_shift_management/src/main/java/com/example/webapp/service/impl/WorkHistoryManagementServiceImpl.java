@@ -34,7 +34,7 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	
 	@Override
 	public ShiftSchedule selectWorkHistoryByShiftId(Integer shiftId) {
-		return mapper.selectByShiftId(shiftId);
+		return mapper.selectByDateAndEmployeeId(shiftId);
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ public interface WorkHistoryManagementMapper {
 
 	List<Employee> selectByMonth(Integer targerMonth);
 
-	ShiftSchedule selectByShiftId(Integer shiftId);
+	ShiftSchedule selectByDateAndEmployeeId(Integer shiftId);
 
 	void update(ShiftScheduleForm updatedHistory);
 }

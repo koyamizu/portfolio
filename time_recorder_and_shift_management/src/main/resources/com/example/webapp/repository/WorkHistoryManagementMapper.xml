@@ -79,7 +79,7 @@
 	;
 	</select>
 	
-	<select id="selectByShiftId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
+	<select id="selectByDateAndEmployeeId" resultMap="ShiftAndTimeRecordWithEmployeeResult">
 	SELECT
 	  s.id
 	  ,s.date

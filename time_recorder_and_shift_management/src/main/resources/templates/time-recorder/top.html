@@ -26,9 +26,9 @@
 	</header>
 	<article>
 		<h1 class="sub-h1">タイムレコーダー</h1>
-		<!--		<div th:with="today=${today}">-->
-		<h2 class="sub-h2" th:text="${#temporals.format(today,'yyyy年MM月dd日(E)')}"></h2>
-		<!--		</div>-->
+		<div th:with="today=${#temporals.createToday()} ">
+			<h2 class="sub-h2" th:text="${#temporals.format(today,'yyyy年MM月dd日(E)')}"></h2>
+		</div>
 		<div id="clock">--:--:--</div>
 		<script>
 			function updateClock() {

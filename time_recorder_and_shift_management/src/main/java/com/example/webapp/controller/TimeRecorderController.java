@@ -29,7 +29,7 @@ public class TimeRecorderController {
 	@GetMapping
 	public String showTimeRecorder(Model model) {
 		List<ShiftSchedule> todaysEmployees=service.selectEmployeesByDate(today);
-		model.addAttribute("today", today);
+//		model.addAttribute("today", today);
 		model.addAttribute("todaysEmployees", todaysEmployees);
 		return "time-recorder/top";
 	}
@@ -39,12 +39,11 @@ public class TimeRecorderController {
 		ShiftSchedule targetShift = service.selectByEmployeeId(employeeId);
 		if (targetShift != null) {
 			model.addAttribute("employee", targetShift.getEmployee());
-//			↓これいらなくない？
-			model.addAttribute("today", today);
-			model.addAttribute("shiftId", targetShift.getShiftId());
+			//↓これもフロントエンドで生成すればいいかなとか思う
+//			model.addAttribute("today", today);
+//			model.addAttribute("shiftId", targetShift.getShiftId());
 			return "time-recorder/stamp";
 		} else {
-			//そのIDをもつ従業員は本日出勤予定ではありません、とかでもいいかも
 			attributes.addFlashAttribute("errorMessage", "シフトデータが存在しません");
 			return "redirect:/time-recorder";
 		}
@@ -53,10 +52,11 @@ public class TimeRecorderController {
 //	シフトデータが存在しなければ打刻ページには移れない。
 //	打刻ができたということはシフトが存在しているということなので、パラメーター引数はemployee-idでいいのではないかと思う
 	@PostMapping("/stamp/start")
-	public String start(@RequestParam("shift-id") Integer shiftId, Model model, RedirectAttributes attributes) {
-		ShiftSchedule targetShiftWithTimeRecord = service.selectByShiftId(shiftId);
-		if (Objects.equals(targetShiftWithTimeRecord.getTimeRecord(),null)) {
-			service.updateStartTimeByShiftId(shiftId);
+	public String start(@RequestParam("employee-id") Integer employeeId, Model model, RedirectAttributes attributes) {
+		//ここでしか使わないんだったらemployeeIdだけ渡して、date=CURRENT_DATEでいい気もする
+		TimeRecord timeRecord = service.selectByDateAndEmployeeId(employeeId, today);
+		if (Objects.equals(timeRecord,null)) {
+			service.updateStartTimeByEmployeIdAndDate(employeeId, today);
 			model.addAttribute("message", "出勤");
 			return "time-recorder/execute";
 		} else {
@@ -66,15 +66,14 @@ public class TimeRecorderController {
 	}
 
 	@PostMapping("/stamp/end")
-	public String end(@RequestParam("shift-id") Integer shiftId, Model model, RedirectAttributes attributes) {
-		ShiftSchedule targetShiftWithTimeRecord = service.selectByShiftId(shiftId);
-		TimeRecord timeRecord=targetShiftWithTimeRecord.getTimeRecord();
+	public String end(@RequestParam("employee-id") Integer employeeId, Model model, RedirectAttributes attributes) {
+		TimeRecord timeRecord = service.selectByDateAndEmployeeId(employeeId, today);
 		if (Objects.equals(timeRecord,null)) {
 			attributes.addFlashAttribute("errorMessage", "「出勤」より先に「退勤」は押せません");
 			return "redirect:/time-recorder";
 		}
 		if (Objects.equals(timeRecord.getClockOut(),null)) {
-			service.updateEndTimeByShiftId(shiftId);
+			service.updateEndTimeByEmployeeIdAndDate(employeeId, today);
 			model.addAttribute("message", "退勤");
 			return "time-recorder/execute";
 		}

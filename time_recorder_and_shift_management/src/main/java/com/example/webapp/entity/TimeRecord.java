@@ -1,5 +1,6 @@
 package com.example.webapp.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -13,9 +14,13 @@ import lombok.NoArgsConstructor;
 public class TimeRecord {
 
 //	打刻時刻ID
-	private Integer timeRecordId;
+//	private Integer timeRecordId;
 //	シフトID（外部キー（shift_schedulesのid））
-	private Integer shiftId;
+//	private Integer shiftId;
+	
+	private LocalDate date;
+	
+	private Integer employeeId;
 //	開始の打刻時間
 	private LocalTime clockIn;
 //	終了の打刻時間

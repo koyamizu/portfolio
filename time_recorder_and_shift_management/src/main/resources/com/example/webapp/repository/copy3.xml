@@ -89,7 +89,7 @@
 	</select>
 	
 <!--	履歴編集で使用-->
-	<select id="selectByShiftId" resultMap="ShiftWithEmployeeAndTimeRecordResult">
+	<select id="selectByDateAndEmployeeId" resultMap="ShiftWithEmployeeAndTimeRecordResult">
 	SELECT
 	  s.id
 	  ,s.date

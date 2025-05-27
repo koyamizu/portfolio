@@ -17,14 +17,19 @@
 			<id property="timeRecordId" column="time_record_id"/>
 			<result property="clockIn" column="clock_in"/>
 			<result property="clockOut" column="clock_out"/>
-			<result property="workTime" column="work_time"/>
-			<result property="createdAt" column="created_at" />
-			<result property="updatedAt" column="updated_at" />			
+			<result property="workTime" column="work_time"/>		
 		</association>
 	</resultMap>
 	
-	<resultMap id="ShiftScheduleMap" type="com.example.webapp.entity.ShiftSchedule">
-		<id property="shiftId" column="id"/>
+	<resultMap id="TimeRecordWithEmployeeResult"
+		type="com.example.webapp.entity.TimeRecord">
+		<id property="date" column="date" />
+		<id property="employeeId" column="employee_id" />
+		<result property="clockIn" column="clock_in"/>
+		<result property="clockOut" column="clock_out"/>
+		<result property="workTime" column="work_time"/>
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />		
 	</resultMap>
 
 	<!--当日出勤者選択 -->
@@ -38,7 +43,8 @@
 		FROM
 		  test_shift_schedules AS s
 		  LEFT JOIN test_time_records AS t
-		  ON s.id = t.shift_id
+		  ON s.date=t.date
+		     AND s.employee_id=t.employee_id
 		  INNER JOIN test_employees AS e
  		  ON s.employee_id = e.id		  
 		WHERE
@@ -52,7 +58,7 @@
 		<!-- SELECT * -->
 		<!-- FROM test_shift_and_timestamp2504 -->
 		SELECT
-		  s.id
+		  s.employee_id
 		  ,e.name
 		FROM
 		  test_employees AS e
@@ -66,37 +72,35 @@
 <!--	time_recordsのdateとemployee_idを複合主キーにして、
 		start(),end()のときはdateとemployeeIdを条件にselectする？
 		shift_schedulesのdateとemployee_idを外部キー制約にするとか-->
-	<select id="selectByShiftId"
-		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+	<select id="selectByDateAndEmployeeId"
+		resultMap="TimeRecordWithEmployeeResult">
 		SELECT
-		  s.id
-		  ,s.employee_id
-		  ,t.clock_in
-		  ,t.clock_out
+		  clock_in
+		  ,clock_out
 		FROM
-		  test_shift_schedules AS s
-		  LEFT JOIN test_time_records AS t
-		  ON s.id=t.shift_id
+		  test_time_records
 		WHERE
-		  s.id = #{shiftId}
+		  date=#{date}
+		  AND employee_id=#{employeeId}
 		;
 	</select>
 	<!-- 出勤の打刻 -->
 	<update id="insert">
 		INSERT INTO 
-		  test_time_records(shift_id, clock_in, created_at, updated_at)
+		  test_time_records(date, employee_id, clock_in, created_at, updated_at)
 		VALUE
-		  (#{shiftId},CURRENT_TIME, now(), now())
+		  (#{date} ,#{employeeId} ,CURRENT_TIME, now(), now())
 		 ;
 	</update>
 	<!-- 退勤の打刻 -->
-	<update id="updateEndTimeByShiftId">
+	<update id="update">
 		UPDATE
 		  test_time_records
 		SET
 		  clock_out=CURRENT_TIME
 		WHERE
-		  shift_id=#{shiftId}
+		  date=#{date}
+		  AND employee_id=#{employeeId}
 		;
 	</update>
 </mapper>
