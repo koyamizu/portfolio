@@ -63,6 +63,9 @@
 		  AND date = CURRENT_DATE
 		;
 	</select>
+<!--	time_recordsのdateとemployee_idを複合主キーにして、
+		start(),end()のときはdateとemployeeIdを条件にselectする？
+		shift_schedulesのdateとemployee_idを外部キー制約にするとか-->
 	<select id="selectByShiftId"
 		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 		SELECT
@@ -98,6 +101,7 @@
 	</update>
 </mapper>
 
+<!--↓分割前-->
 <!--<?xml version="1.0" encoding="UTF-8"?>-->
 <!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 <!--<mapper-->

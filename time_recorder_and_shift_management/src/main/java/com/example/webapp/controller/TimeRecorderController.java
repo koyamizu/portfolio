@@ -50,6 +50,8 @@ public class TimeRecorderController {
 		}
 	}
 
+//	シフトデータが存在しなければ打刻ページには移れない。
+//	打刻ができたということはシフトが存在しているということなので、パラメーター引数はemployee-idでいいのではないかと思う
 	@PostMapping("/stamp/start")
 	public String start(@RequestParam("shift-id") Integer shiftId, Model model, RedirectAttributes attributes) {
 		ShiftSchedule targetShiftWithTimeRecord = service.selectByShiftId(shiftId);

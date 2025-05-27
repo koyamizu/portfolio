@@ -63,6 +63,7 @@
 		  ON s.employee_id = e.id
 		WHERE
 		  MONTH(s.date) = #{targetMonth}
+		ORDER BY date ASC
 		;
 	</select>
 
@@ -101,37 +102,47 @@
 
 	<insert id="insertRequest">
 		INSERT INTO
-		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end)
+		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end, created_at)
 		VALUES
 		<foreach collection="requests" item="r" separator=",">
 <!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える。-->
 <!--		date,scheduled_start,scheduled_endを持っているクラス(ShiftSchedule)で受ける-->
-			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd})
+			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
 		</foreach>
 		;
 	</insert>
 	
 	<insert id="insertAdditionalRequest">
 		INSERT INTO
-		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end)
+		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end,created_at)
 		VALUES
 		<foreach collection="requests" item="r" separator=",">
-			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd})
+			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
 		</foreach>
 		;
 	</insert>
 
 	<insert id="insertShift">
 		INSERT INTO
-		  test_shift_schelues(employee_id,date,scheduled_start,scheduled_end,created_at,updated_at)
+		  test_shift_schedules(employee_id,date,scheduled_start,scheduled_end, created_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
 		<!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える-->
 		<!--		date,scheduled_start,scheduled_endを持っているクラスで受ける-->
-			(#{s.employeeId}, #{s.date}, #{s.scheduledStart}, #{s.scheduledEnd}, now(), now())
+			(#{s.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd}, now())
 		</foreach>
 		;
 	</insert>
+	
+	<insert id="insertAdditionalShift">
+		INSERT INTO
+		  test_shift_schedules(employee_id, date, scheduled_start, scheduled_end, created_at)
+		VALUES
+		<foreach collection="newShifts" item="s" separator=",">
+			(#{s.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd},now())
+		</foreach>
+		;
+	</insert>	
 
 <!--	リクエストの削除-->
 	<delete id="deleteByEmployeeId">
@@ -148,11 +159,16 @@
 	</delete>
 
 <!--シフトの削除-->
-	<delete id="deleteShiftByTargetMonth">
+	<delete id="deleteByMonth">
 		DELETE FROM
 		  test_shift_schedules
 		WHERE
-		  MONTH(date) = #{targetMonth}
+		  (date,employee_id) NOT IN (
+		  <foreach collection="newShifts" item="s" separator=",">
+			  (#{s.start},#{s.employeeId})
+		  </foreach>		  
+		  )
+		  AND MONTH(date)=#{targetMonth}
 		;
 	</delete>
 
@@ -286,7 +302,7 @@
 
 <!--	<insert id="insertShift">-->
 <!--		INSERT INTO-->
-<!--		  test_shift_schelues(employee_id,date,scheduled_start,scheduled_end,created_at,updated_at)-->
+<!--		  test_shift_schedules(employee_id,date,scheduled_start,scheduled_end,created_at,updated_at)-->
 <!--		VALUES-->
 <!--		<foreach collection="newShifts" item="s" separator=",">-->
 <!--				↓変換したJSONデータを受けるオブジェクトの型によって書き換える-->

@@ -27,10 +27,14 @@ public interface ShiftManagementMapper {
 
 	void insertShift(List<FullCalendarForm> newShifts);
 
+	void insertAdditionalShift(List<FullCalendarForm> newShifts);
+
 	//	void deleteRequestByEmployeeId(Integer employeeId);
 
+//	void deleteShiftsByTargetMonth(Integer targetMonth);
+	
 	void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId);
 
-	void deleteShiftByTargetMonth(Integer targetMonth);
+	void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth);
 
 }

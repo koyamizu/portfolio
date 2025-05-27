@@ -127,6 +127,8 @@ function initializeCalendar(events) {
 				selectedShifts.push({
 					id: parseInt(info.event._def.publicId, 10),
 					start: info.event.startStr,
+					scheduledStart:'06:00',
+					scheduledEnd:'09:00',
 					employeeId: parseInt(info.event.extendedProps.employeeId, 10),
 					//					title: info.event.title
 				})

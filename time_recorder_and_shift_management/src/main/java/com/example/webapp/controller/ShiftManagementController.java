@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -118,7 +117,7 @@ public class ShiftManagementController {
 			model.addAllAttributes(
 					Map.of(
 							"nextMonthShifts", nextMonthShifts,
-							"state", State.CONFIRM));
+							"state", State.CONFIRM.toString()));
 			return "shift/edit";
 		}
 		List<FullCalendarEntity> requests = shiftManagementService.selectAllShiftRequests();
@@ -130,7 +129,7 @@ public class ShiftManagementController {
 				.toList();
 		model.addAllAttributes(Map.of(
 				"requests", requests,
-				"state", State.NEW,
+				"state", State.NEW.toString(),
 				"allEmployees", allEmployees,
 				"notSubmits", notSubmits));
 		return "shift/edit";
@@ -141,9 +140,12 @@ public class ShiftManagementController {
 		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		List<FullCalendarEntity> nextMonthShifts = shiftManagementService
 				.selectOneMonthShiftsByTargetMonth(nextMonth);
+		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", nextMonthShifts);
+		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
 		//initializeCalendarの引数が「requests」なので、requestsとして格納
 		model.addAttribute("requests", nextMonthShifts);
-		model.addAttribute("state", State.EDIT);
+		model.addAttribute("state", State.EDIT.toString());
+		model.addAttribute("allEmployees",allEmployees);
 		return "shift/edit";
 	}
 
@@ -151,6 +153,7 @@ public class ShiftManagementController {
 	public String submitShifts(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes, @RequestParam State state) throws JsonProcessingException {
 
+		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		ObjectMapper mapper = new ObjectMapper();
 		List<FullCalendarForm> newShifts = mapper.readValue(selectedDatesJson,
 				new TypeReference<List<FullCalendarForm>>() {
@@ -169,8 +172,9 @@ public class ShiftManagementController {
 					.toList();
 			//変更なしで「更新」を押したときは迂回する。
 			if (!CollectionUtils.isEmpty(additionals)) {
-				shiftManagementService.insertAdditionalRequest(additionals);
-				shiftManagementService.deleteByEmployeeId(newShifts, newShifts.get(0).getEmployeeId());
+//				↓xmlファイルの編集
+				shiftManagementService.insertAdditionalShift(additionals);
+				shiftManagementService.deleteByMonth(newShifts,nextMonth);
 			}
 			attributes.addFlashAttribute("message", "シフトを更新しました");
 		}
