@@ -3,6 +3,8 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,10 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.Role;
 import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.form.TimeRecordForm;
+import com.example.webapp.helper.TimeRecordHelper;
 import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.WorkHistoryManagementService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -34,7 +36,7 @@ public class WorkHistoryManagementController {
 	//adminのみ
 	@GetMapping("{target-month}")
 	public String showWorkHistories(@PathVariable("target-month") Integer targetMonth,
-			Authentication auth, Model model) {
+			Authentication auth, Model model,HttpSession session) {
 		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
 		if (isAdmin) {
 			List<TimeRecord> histories = workHistoryManagementService
@@ -44,7 +46,8 @@ public class WorkHistoryManagementController {
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			model.addAttribute("histories", histories);
-		}
+			session.setAttribute("fromPage", targetMonth);
+			}
 		return "work-history/history";
 	}
 
@@ -52,8 +55,9 @@ public class WorkHistoryManagementController {
 	@GetMapping("{target-month}/{employee-id}")
 	public String showPersonalWorkHistories(@PathVariable("target-month") Integer targetMonth,
 			@PathVariable("employee-id") Integer employeeId,
-			Authentication auth, Model model, RedirectAttributes attributes) {
+			Authentication auth, Model model, RedirectAttributes attributes,HttpSession session) {
 		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
+		session.setAttribute("fromPage", targetMonth+"/"+employeeId);
 		if (isAdmin) {
 			//これ、従業員一覧を取得するマッパーメソッドあった気がするからそれでいいと思う
 //			List<Employee> employees = workHistoryManagementService.selectWorkedEmployeesByMonth(targetMonth);
@@ -72,6 +76,7 @@ public class WorkHistoryManagementController {
 						targetMonth);
 		model.addAttribute("targetMonth", targetMonth);
 		model.addAttribute("histories", personalHistories);
+		
 		return "work-history/history";
 
 	}
@@ -79,19 +84,23 @@ public class WorkHistoryManagementController {
 	@GetMapping("edit/{target-date}/{employee-id}")
 	public String showPersonalWorkHistory(@PathVariable("target-date") LocalDate targetDate
 			,@PathVariable("employee-id") Integer employeeId
-			,Model model,TimeRecordForm form) {
+			,Model model) {
 			TimeRecord targetHistoriy = workHistoryManagementService.selectWorkHistoryByEmployeeIdAndDate(employeeId, targetDate);
-			model.addAttribute("history", targetHistoriy);
+			TimeRecordForm form=TimeRecordHelper.convertTimeRecordForm(targetHistoriy);
+			model.addAttribute("form", form);
 		return "work-history/edit";
 	}
 
 	@PostMapping("update")
-	public String updateWorkHistory(TimeRecordForm updatedHistory, RedirectAttributes attribute,
+	public String updateWorkHistory(TimeRecordForm form, RedirectAttributes attribute,
 			HttpSession session) {
+		TimeRecord updatedHistory=TimeRecordHelper.convertTimeRecord(form);
 		workHistoryManagementService.updateWorkHistory(updatedHistory);
 		attribute.addFlashAttribute("message", "更新しました");
-		Integer targetMonth=updatedHistory.getDate().getMonthValue();
-		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
-		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
+//		Integer targetMonth=updatedHistory.getDate().getMonthValue();
+//		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
+//		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
+		var fromPage=session.getAttribute("fromPage");
+		return "redirect:/work-history/"+fromPage;
 	}
 }

@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
-import com.example.webapp.form.TimeRecordForm;
 
 @Mapper
 public interface WorkHistoryManagementMapper {
@@ -20,5 +19,5 @@ public interface WorkHistoryManagementMapper {
 
 	TimeRecord selectByEmployeeIdAndDate(Integer employeeId, LocalDate date);
 
-	void update(TimeRecordForm updatedHistory);
+	void update(TimeRecord updatedHistory);
 }

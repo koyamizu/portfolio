@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
-import com.example.webapp.form.TimeRecordForm;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.WorkHistoryManagementService;
 
@@ -39,7 +38,7 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	}
 	
 	@Override
-	public void updateWorkHistory(TimeRecordForm updatedHistory) {
+	public void updateWorkHistory(TimeRecord updatedHistory) {
 		mapper.update(updatedHistory);
 	}
 }

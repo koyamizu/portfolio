@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
-import com.example.webapp.form.TimeRecordForm;
 
 public interface WorkHistoryManagementService {
 	
@@ -17,5 +16,5 @@ public interface WorkHistoryManagementService {
 	
 	TimeRecord selectWorkHistoryByEmployeeIdAndDate(Integer employeeId, LocalDate date);
 	
-	void updateWorkHistory(TimeRecordForm updatedHistory);
+	void updateWorkHistory(TimeRecord updatedHistory);
 }
