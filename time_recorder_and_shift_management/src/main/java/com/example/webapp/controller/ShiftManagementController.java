@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +45,7 @@ public class ShiftManagementController {
 		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
 		String from = (String) session.getAttribute("from");
 		model.addAttribute("from", from);
+		model.addAttribute("thisMonth", thisMonth);
 		model.addAttribute("shifts", shifts);
 		return "shift/schedule";
 	}
@@ -96,8 +98,8 @@ public class ShiftManagementController {
 				//変更なしで「更新」を押したときは迂回する。
 				if (!CollectionUtils.isEmpty(additionals)) {
 					shiftManagementService.insertAdditionalRequest(additionals);
-					shiftManagementService.deleteByEmployeeId(requests, requests.get(0).getEmployeeId());
 				}
+				shiftManagementService.deleteByEmployeeId(requests, requests.get(0).getEmployeeId());
 				attributes.addFlashAttribute("message", "シフト希望を更新しました");
 			}
 		}
@@ -117,7 +119,8 @@ public class ShiftManagementController {
 			model.addAllAttributes(
 					Map.of(
 							"nextMonthShifts", nextMonthShifts,
-							"state", State.CONFIRM.toString()));
+							"state", State.CONFIRM.toString(),
+							"month", nextMonth));
 			return "shift/edit";
 		}
 		List<FullCalendarEntity> requests = shiftManagementService.selectAllShiftRequests();
@@ -131,29 +134,40 @@ public class ShiftManagementController {
 				"requests", requests,
 				"state", State.NEW.toString(),
 				"allEmployees", allEmployees,
-				"notSubmits", notSubmits));
+				"notSubmits", notSubmits,
+				"month", nextMonth));
 		return "shift/edit";
 	}
 
-	@GetMapping("edit/renew")
-	public String deleteShifts(Model model) {
-		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
-		List<FullCalendarEntity> nextMonthShifts = shiftManagementService
-				.selectOneMonthShiftsByTargetMonth(nextMonth);
-		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", nextMonthShifts);
+	@GetMapping("edit/renew/{month}")
+	public String deleteShifts(@PathVariable Integer month, Model model) {
+		List<FullCalendarEntity> shifts = shiftManagementService
+				.selectOneMonthShiftsByTargetMonth(month);
+		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
 		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
 		//initializeCalendarの引数が「requests」なので、requestsとして格納
-		model.addAttribute("requests", nextMonthShifts);
+		model.addAttribute("requests", shifts);
+		model.addAttribute("month", month);
 		model.addAttribute("state", State.EDIT.toString());
-		model.addAttribute("allEmployees",allEmployees);
+		model.addAttribute("allEmployees", allEmployees);
+		//		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
+		//		List<FullCalendarEntity> nextMonthShifts = shiftManagementService
+		//				.selectOneMonthShiftsByTargetMonth(nextMonth);
+		//		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", nextMonthShifts);
+		//		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
+		//		//initializeCalendarの引数が「requests」なので、requestsとして格納
+		//		model.addAttribute("requests", nextMonthShifts);
+		//		model.addAttribute("state", State.EDIT.toString());
+		//		model.addAttribute("allEmployees",allEmployees);
 		return "shift/edit";
 	}
 
 	@PostMapping("edit/create")
 	public String submitShifts(@RequestParam String selectedDatesJson,
-			RedirectAttributes attributes, @RequestParam State state) throws JsonProcessingException {
+			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month)
+			throws JsonProcessingException {
 
-		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
+		//		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		ObjectMapper mapper = new ObjectMapper();
 		List<FullCalendarForm> newShifts = mapper.readValue(selectedDatesJson,
 				new TypeReference<List<FullCalendarForm>>() {
@@ -172,12 +186,13 @@ public class ShiftManagementController {
 					.toList();
 			//変更なしで「更新」を押したときは迂回する。
 			if (!CollectionUtils.isEmpty(additionals)) {
-//				↓xmlファイルの編集
+				//				↓xmlファイルの編集
 				shiftManagementService.insertAdditionalShift(additionals);
-				shiftManagementService.deleteByMonth(newShifts,nextMonth);
 			}
+			shiftManagementService.deleteByMonth(newShifts, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
 		}
-		return "redirect:/shift/edit";
+		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/edit";
+		return "redirect:" + path;
 	}
 }

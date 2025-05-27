@@ -15,7 +15,7 @@
 		<nav>
 			<ul>
 				<li class="li-index">
-					<a th:href="@{/admin}">戻る</a>
+					<a th:href="@{/shift}">戻る</a>
 				</li>
 			</ul>
 		</nav>
@@ -30,6 +30,7 @@
 			<form id="shift-form" th:action="@{/shift/edit/create}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="hidden" name="state" th:value="${state}">
+				<input type="hidden" name="month" th:value="${month}">
 				<input type="submit" th:value="${state}=='NEW'?'作成':'更新'">
 				<div class="shift-edit-draggable">
 					<div id="external-events">
@@ -47,15 +48,15 @@
 			</form>
 			<script th:src="@{/js/shift/edit-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">
-				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]]*/)});
+				document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${requests}]],[[${month}]]*/)});
 			</script>
 		</div>
 		<div th:if="${state}=='CONFIRM'">
 			<p>来月のシフトは以下の日程で作成済みです</p>
 			<p>変更はありますか？</p>
 			<div class="shift-confirm">
-				<a th:href="@{/shift/edit/renew}">ある</a>
-				<a th:href="@{/admin}">ない</a>
+				<a th:href="@{/shift/edit/renew/{month}(month=${month})}">ある</a>
+				<a th:href="@{/shift}">ない</a>
 			</div>
 			<div id="calendar" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-edit-calendar.js}"></script>
