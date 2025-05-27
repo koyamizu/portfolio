@@ -6,7 +6,6 @@
 	<resultMap id="ShiftWithEmployeeAndTimeRecordResult"
 		type="com.example.webapp.entity.ShiftSchedule">
 		<id property="shiftId" column="id" />
-		<result property="date" column="date" />
 		<association property="employee"
 			javaType="com.example.webapp.entity.Employee">
 			<id property="employeeId" column="employee_id" />
@@ -14,7 +13,6 @@
 		</association>
 		<association property="timeRecord"
 			javaType="com.example.webapp.entity.TimeRecord">
-			<id property="timeRecordId" column="time_record_id"/>
 			<result property="clockIn" column="clock_in"/>
 			<result property="clockOut" column="clock_out"/>
 			<result property="workTime" column="work_time"/>		
@@ -24,12 +22,16 @@
 	<resultMap id="TimeRecordWithEmployeeResult"
 		type="com.example.webapp.entity.TimeRecord">
 		<id property="date" column="date" />
-		<id property="employeeId" column="employee_id" />
 		<result property="clockIn" column="clock_in"/>
 		<result property="clockOut" column="clock_out"/>
 		<result property="workTime" column="work_time"/>
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />		
+		<association property="employee"
+			javaType="com.example.webapp.entity.Employee">
+			<id property="employeeId" column="employee_id" />
+			<result property="name" column="name" />
+		</association>
 	</resultMap>
 
 	<!--当日出勤者選択 -->

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftSchedule {
+public class ShiftSchedule{
 
 //	シフトID
 	private Integer shiftId;

@@ -20,7 +20,7 @@ public class TimeRecord {
 	
 	private LocalDate date;
 	
-	private Integer employeeId;
+	private Employee employee;
 //	開始の打刻時間
 	private LocalTime clockIn;
 //	終了の打刻時間

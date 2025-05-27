@@ -20,9 +20,9 @@
 		</nav>
 	</header>
 	<h1>勤怠修正</h1>
-	<form th:action="@{/work-history/update}" th:object="${shiftAndTimeRecordForm}" method="post">
+	<form th:action="@{/work-history/update}" th:object="${TimeRecordForm}" method="post">
 		<table>
-			<input type="hidden" th:field="${history.shiftId}">
+<!--			<input type="hidden" th:field="${history.shiftId}">-->
 			<input type="hidden" th:field="${history.date}">
 			<input type="hidden" th:field="${history.employee.employeeId}">
 			<tr>
@@ -37,15 +37,15 @@
 			<tr>
 				<th>出勤時刻</th>
 				<td>
-					<span th:text="|現在:${history.timeRecord.clockIn}&nbsp;&nbsp;修正:|"></span>
-					<input type="time" th:field="*{timeRecord.clockIn}" required>
+					<span th:text="|現在:${history.clockIn}&nbsp;&nbsp;修正:|"></span>
+					<input type="time" th:field="*{clockIn}" required>
 				</td>
 			</tr>
 			<tr>
 				<th>退勤時刻</th>
 				<td>
-					<span th:text="|現在:${history.timeRecord.clockOut}&nbsp;&nbsp;修正:|"></span>
-					<input type="time" th:field="*{timeRecord.clockOut}" required>
+					<span th:text="|現在:${history.clockOut}&nbsp;&nbsp;修正:|"></span>
+					<input type="time" th:field="*{clockOut}" required>
 				</td>
 			</tr>
 		</table>
