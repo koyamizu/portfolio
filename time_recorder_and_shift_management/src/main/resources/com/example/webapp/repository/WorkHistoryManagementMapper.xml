@@ -20,9 +20,9 @@
 <!--		</association>-->
 	</resultMap>
 	
-	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">
-		<id property="employeeId" column="id"/>
-	</resultMap>
+<!--	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">-->
+<!--		<id property="employeeId" column="id"/>-->
+<!--	</resultMap>-->
 
 	<select id="selectAllToDateByMonth"
 		resultMap="TimeRecordWithEmployeeResult">
@@ -68,18 +68,19 @@
 	</select>
 	
 <!--	これは廃止するかも-->
-<!--	<select id="selectByMonth" resultMap="EmployeeMap">-->
-<!--	SELECT-->
-<!--	  DISTINCT e.id-->
-<!--	  ,e.name-->
-<!--	FROM-->
-<!--	  test_shift_schedules s-->
-<!--	  INNER JOIN test_employees e-->
-<!--	  ON s.employee_id = e.id-->
-<!--	WHERE-->
-<!--	  MONTH(s.date) = #{targetMonth}-->
-<!--	;-->
-<!--	</select>-->
+<!--→やっぱ使う-->
+	<select id="selectByMonth">
+	SELECT
+	  DISTINCT e.id AS employeeId
+	  ,e.name
+	FROM
+	  test_shift_schedules s
+	  INNER JOIN test_employees e
+	  ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	;
+	</select>
 	
 <!--	履歴編集で使用-->
 	<select id="selectByEmployeeIdAndDate" resultMap="TimeRecordWithEmployeeResult">

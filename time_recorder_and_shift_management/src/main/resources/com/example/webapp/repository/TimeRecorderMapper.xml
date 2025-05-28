@@ -19,20 +19,22 @@
 		</association>
 	</resultMap>
 	
-	<resultMap id="TimeRecordWithEmployeeResult"
-		type="com.example.webapp.entity.TimeRecord">
-		<id property="date" column="date" />
-		<result property="clockIn" column="clock_in"/>
-		<result property="clockOut" column="clock_out"/>
-		<result property="workTime" column="work_time"/>
-		<result property="createdAt" column="created_at" />
-		<result property="updatedAt" column="updated_at" />		
-		<association property="employee"
-			javaType="com.example.webapp.entity.Employee">
-			<id property="employeeId" column="employee_id" />
-			<result property="name" column="name" />
-		</association>
-	</resultMap>
+<!--	<resultMap id="TimeRecordWithEmployeeResult"-->
+<!--		type="com.example.webapp.entity.TimeRecord">-->
+<!--		<id property="date" column="date" />-->
+<!--		<id property="employeeId" column="employee_id" />-->
+<!--		<result property="employeeName" column="name" />-->
+<!--		<result property="clockIn" column="clock_in"/>-->
+<!--		<result property="clockOut" column="clock_out"/>-->
+<!--		<result property="workTime" column="work_time"/>-->
+<!--		<result property="createdAt" column="created_at" />-->
+<!--		<result property="updatedAt" column="updated_at" />		-->
+<!--		<association property="employee"-->
+<!--			javaType="com.example.webapp.entity.Employee">-->
+<!--			<id property="employeeId" column="employee_id" />-->
+<!--			<result property="name" column="name" />-->
+<!--		</association>-->
+<!--	</resultMap>-->
 
 	<!--当日出勤者選択 -->
 	<select id="selectEmployeeByDate"
@@ -61,7 +63,7 @@
 		<!-- FROM test_shift_and_timestamp2504 -->
 		SELECT
 		  s.employee_id
-		  ,e.name
+		  ,e.name 
 		FROM
 		  test_employees AS e
 		  INNER JOIN test_shift_schedules AS s
@@ -74,11 +76,11 @@
 <!--	time_recordsのdateとemployee_idを複合主キーにして、
 		start(),end()のときはdateとemployeeIdを条件にselectする？
 		shift_schedulesのdateとemployee_idを外部キー制約にするとか-->
-	<select id="selectByDateAndEmployeeId"
-		resultMap="TimeRecordWithEmployeeResult">
+	<select id="selectByDateAndEmployeeId">
+<!--		resultType="com.example.webapp.entity.TimeRecord">-->
 		SELECT
-		  clock_in
-		  ,clock_out
+		  clock_in AS clockIn
+		  ,clock_out AS clockOut
 		FROM
 		  test_time_records
 		WHERE
