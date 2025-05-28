@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>欠勤申請フォーム</title>
+	<link th:rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li class="li-index">
+					<a th:href="@{/user}">戻る</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<form th:action="@{/absence/submit}" th:object="${form}" method="post">
+		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
+			class="error-message">
+			エラーメッセージ
+		</p>
+		<table>
+			<tr>
+				<th>名前</th>
+				<td th:text="${name}" required></td>
+			</tr>
+			<tr>
+				<th>欠勤日</th>
+<!--				selectではshift.dateのほうを表示させる-->
+				<td> <select th:field="*{shift.shiftId}" required></select>
+				</td>
+			</tr>
+			<tr>
+				<th>欠勤理由</th>
+<!--				selectではabsence.nameのほうを表示させる-->
+				<td><select th:field="*{absence.absenceId}" required>
+				</td>
+			</tr>
+			<tr>
+				<th>詳細</th>
+				<td>
+					<textarea rxws="5" column="30" th:field="*{detail}" required>
+					</textarea>
+				</td>
+			</tr>
+			<button type="submit">送信</butt送信>
+		</table>
+	</form>
+</body>
+
+</html>

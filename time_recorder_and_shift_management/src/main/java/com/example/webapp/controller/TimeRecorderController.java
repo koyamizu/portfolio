@@ -28,6 +28,8 @@ public class TimeRecorderController {
 
 	@GetMapping
 	public String showTimeRecorder(Model model) {
+		
+		//可否にかかわらず、当日欠勤する従業員名とその理由のみ表示するメソッドを挿入
 		List<ShiftSchedule> todaysEmployees=service.selectEmployeesByDate(today);
 //		model.addAttribute("today", today);
 		model.addAttribute("todaysEmployees", todaysEmployees);

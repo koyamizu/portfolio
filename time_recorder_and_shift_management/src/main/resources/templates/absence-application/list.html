@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<title>欠勤申請一覧</title>
+	<link rel="stylesheet" href="/css/mystyle.css">
+	<meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a th:href="@{/absence-application/request}">新規申請</a></li>
+				<li class="li-index">
+					<a th:href="@{/admin}">戻る</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<article>
+		<h1>欠勤申請一覧</h1>
+		<p th:if="${message}" th:text="${message}" class="message">完了メッセージ</p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message">エラーメッセージ</p>
+		<table class="employee-list">
+			<thead>
+				<tr>
+					<th class="w10">申請ID</th>
+					<th class="w10">日付</th>
+					<th class="w30">従業員名</th>
+					<th class="w30">欠勤理由</th>
+					<th class="">詳細</th>
+					<th sec:authorize="!hasAuthority('ADMIN')" class="w30">申請結果</th>
+					<th sec:authorize="!hasAuthority('ADMIN')" class="w30">削除</th>
+					<div sec:authorize="hasAutority('ADMIN')">
+						<th class="w">申請日時</th>
+						<th class="w">決裁日時</th>
+						<th class="w10">許可</th>
+						<th>不許可</th>
+					</div>
+				</tr>
+			</thead>
+			<tbody class="employee-list">
+				<tr th:each="request:${requests}">
+					<th:block th:object="${request}">
+						<td th:text="*{Id}"></td>
+						<td th:text="*{shift.date}"></td>
+						<td th:text="*{employee.name}"></td>
+						<td th:text="*{absence.reason}"></td>
+						<td th:text="*{detail}"></td>
+						<div>
+							<td sec:authorize="!hasAuthority('ADMIN')" th:text="*{isApprove}=='true'?'許可':'不許可'"></td>
+							<td sec:authorize="!hasAuthority('ADMIN')"
+								a th:href="/absence/delete/{shift-id}(shift-id=${shift.id})">削除</td>
+						</div>
+						<div sec:authorize="hasAutority('ADMIN')">
+							<form th:action="@{/absence-application/decision" method="post">
+								<input type="hidden" th:value="${shift.id}">
+								<td><input type="submit" th:name="decision" value="true">許可</a></td>
+								<td><input type="submit" th:name="decision" value="false">不許可</a></td>
+							</form>
+						</div>
+					</th:block>
+				</tr>
+			</tbody>
+		</table>
+	</article>
+</body>
+
+</html>
