@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS test_employees;
 DROP TABLE IF EXISTS test_shift_requests;
 DROP TABLE IF EXISTS test_shift_schedules;
 DROP TABLE IF EXISTS test_time_records;
+DROP TABLE IF EXISTS test_absence_applications;
+DROP TABLE IF EXISTS test_absence_reasons;
 
 --CREATE TABLE test_shift_requests (
 --    id INT PRIMARY KEY AUTO_INCREMENT
@@ -101,4 +103,32 @@ FROM
   temp_time_records
 --WHERE
 --  clock_in IS NOT NULL
+;
+
+CREATE TABLE
+  test_absence_applications
+LIKE
+  absence_applications
+;
+
+INSERT INTO
+  test_absence_applications
+  SELECT
+    *
+  FROM
+    absence_applications
+;
+
+CREATE TABLE
+  test_absence_reasons
+LIKE
+  absence_reasons
+;
+
+INSERT INTO
+  test_absence_reasons
+  SELECT
+    *
+  FROM
+    absence_reasons
 ;

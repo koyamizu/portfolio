@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Absence {
 
-	private Integer absenceId;
+	private Integer reasonId;
 	
 	private String reason;
 }

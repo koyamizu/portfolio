@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.AbsenceApplicationMapper">
+
+	<resultMap
+		id="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult"
+		type="com.example.webapp.entity.AbsenceApplication">
+		<id property="id" column="id" />
+		<result property="isApprove" column="is_approve" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />
+		<association property="shiftSchedule"
+			javaType="com.example.webapp.entity.ShiftSchedule">
+			<id property="shiftId" column="shift_id" />
+ 			<result property="date" column="date"/>
+		</association>
+		<association property="employee" javaType="com.example.webapp.entity.Employee">
+			<id property="name" column="name"/>
+		</association>
+		<association property="absence" javaType="com.example.webapp.entity.Absence">
+			<id property="reason" column="reason"/>
+		</association>
+	</resultMap>
+
+	<select id="selectAll" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
+		SELECT
+		  aa.id
+		  ,aa.shift_id
+		  ,s.date
+		  ,e.name
+		  ,aa.created_at
+		  ,aa.updated_at
+		  ,aa.is_approve
+		  ,ar.reason
+		FROM
+		  test_absence_applications AS aa
+		  INNER JOIN test_shift_schedules AS s
+		  ON aa.shift_id=s.id
+		  INNER JOIN employees AS e
+		  ON s.employee_id=e.id
+		  INNER JOIN test_absence_reasons AS ar
+		  ON aa.reason_id=ar.id
+		WHERE
+		  s.date &gt;=CURRENT_DATE
+		;
+	</select>
+	
+	<select id="selectAllByEmployeeId" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
+		SELECT
+		  aa.id
+		  ,aa.shift_id
+		  ,s.date
+		  ,e.name
+		  ,aa.created_at
+		  ,aa.updated_at
+		  ,aa.is_approve
+		  ,ar.reason
+		FROM
+		  test_absence_applications AS aa
+		  INNER JOIN shift_schedules AS s
+		  ON aa.shift_id=s.id
+		  INNER JOIN employees AS e
+		  ON s.employee_id=e.id
+		  INNER JOIN test_absence_reasons AS ar
+		  ON aa.reason_id=ar.id
+		WHERE
+		  s.date>=CURRENT_DATE
+		  AND s.employee_id=#{employeeId}
+		;
+	</select>
+	
+	<select id="selectAllReasons">
+		SELECT
+		  id
+		  name
+		FROM
+		  test_absence_reasons
+		;
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO
+		  test_absence_applications(shift_id,reason_id,detail,created_at,updated_at)
+		VALUE
+		  #{shiftId},#{reasonId},#{detail},now(),now()
+		;
+	</insert>
+	
+	<update id="update">
+		UPDATE
+		  test_absence_applications
+		SET
+		  is_approve=#{dedicion}
+		WHERE
+		  shift_id=#{shiftid}
+		;
+	</update>
+	
+	<delete id="delete">
+		DELETE
+		FROM
+		  test_absence_applications
+		WHERE
+		  id=#{applicationId}
+		;
+	</delete>
+</mapper>

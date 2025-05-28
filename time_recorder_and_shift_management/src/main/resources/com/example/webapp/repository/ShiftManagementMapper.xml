@@ -10,7 +10,7 @@
 		<result property="title" column="name" />
 		<result property="start" column="date" />
 		<result property="scheduledStart" column="scheduled_start" />
-				<result property="scheduledEnd" column="scheduled_end" />
+		<result property="scheduledEnd" column="scheduled_end" />
 	</resultMap>
 
 <!--シフトの表示にしか使ってない-->
@@ -49,6 +49,20 @@
 		;
 	</select>
 
+	<select id="selectAllAfterTodayByEmployeeId"
+		resultType="com.example.webapp.entity.ShiftSchedule">
+		SELECT
+		  id AS shiftId
+		  ,date
+		FROM
+		  test_shift_schedules
+		WHERE
+		  employee_id = #{employeeId}
+		  AND date &gt; CURRENT_DATE
+		ORDER BY date ASC
+		;
+	</select>
+	
 	<select id="selectOneMonthByTargetMonth"
 		resultMap="FullCalendarEntityResult">
 		SELECT

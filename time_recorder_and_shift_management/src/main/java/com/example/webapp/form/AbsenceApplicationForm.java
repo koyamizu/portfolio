@@ -1,6 +1,8 @@
-package com.example.webapp.entity;
+package com.example.webapp.form;
 
-import java.time.LocalDateTime;
+import com.example.webapp.entity.Absence;
+import com.example.webapp.entity.Employee;
+import com.example.webapp.entity.ShiftSchedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AbsenceApplication {
+public class AbsenceApplicationForm {
 	
 	private Integer id;
 	
@@ -22,12 +24,4 @@ public class AbsenceApplication {
 	private String detail;
 	
 	private Boolean isApprove;
-	
-	private LocalDateTime createdAt;
-	
-	private LocalDateTime updatedAt;
-	
-	public ShiftSchedule getShiftSchedule() {
-		return shiftSchedule;
-	}
 }

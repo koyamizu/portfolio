@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.FullCalendarForm;
 
 public interface ShiftManagementService {
 	List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
 
 	List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId);
+	
+	List<ShiftSchedule> selectAllShiftsAfterTodayByEmployeeId(Integer employeeId);
 
 	List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
 	

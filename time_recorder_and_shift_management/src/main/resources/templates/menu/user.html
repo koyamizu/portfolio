@@ -16,6 +16,9 @@
 			<a th:href="@{/work-history/{this-month}
 			/{employee-id}(this-month=${#temporals.month(today)},employee-id=${#authentication.principal.username})}">勤怠履歴</a>
 		</p>
+		<p>
+			<a th:href="@{/absence-application}">欠勤申請</a>
+		</p>
 		<form method="post" name="logout" th:action="@{/logout}">
 			<a href="javascript:logout.submit()">ホームに戻る</a>
 		</form>

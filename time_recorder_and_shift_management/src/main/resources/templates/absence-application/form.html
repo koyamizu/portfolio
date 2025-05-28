@@ -13,7 +13,7 @@
 		<nav>
 			<ul>
 				<li class="li-index">
-					<a th:href="@{/user}">戻る</a>
+					<a th:href="@{/absence-application}">戻る</a>
 				</li>
 			</ul>
 		</nav>
@@ -30,14 +30,22 @@
 			</tr>
 			<tr>
 				<th>欠勤日</th>
-<!--				selectではshift.dateのほうを表示させる-->
-				<td> <select th:field="*{shift.shiftId}" required></select>
+				<td>
+				<!--				selectではshift.dateのほうを表示させる-->
+				<select th:field="*{shift.shiftId}" required>
+					<option th:each="shift : ${shifts}" th:value="${shift.shiftId}" th:text="${shift.date}"></option>
+				</select>
+				<!--				<td> <select th:field="*{shift.shiftId}" required></select>-->
 				</td>
 			</tr>
 			<tr>
 				<th>欠勤理由</th>
-<!--				selectではabsence.nameのほうを表示させる-->
-				<td><select th:field="*{absence.absenceId}" required>
+				<td>
+				<!--				selectではabsence.nameのほうを表示させる-->
+				<select th:field="*{absence.absenceId}" required>
+					<option th:each="reason: ${reasons}" th:value="${reason.absenceId}" th:text="${reason.reason}"></option>
+				</select>
+<!--				<td><select th:field="*{absence.absenceId}" required>-->
 				</td>
 			</tr>
 			<tr>

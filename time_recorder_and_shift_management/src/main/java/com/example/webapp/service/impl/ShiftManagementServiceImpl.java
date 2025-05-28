@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.FullCalendarForm;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
@@ -30,6 +31,11 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		return mapper.selectByEmployeeId(employeeId);
 	}
 
+	@Override
+	public List<ShiftSchedule> selectAllShiftsAfterTodayByEmployeeId(Integer employeeId) {
+		return mapper.selectAllAfterTodayByEmployeeId(employeeId);
+	}
+	
 	@Override
 	public void insertShiftRequests(List<FullCalendarForm> requests) {
 		mapper.insertRequest(requests);
@@ -86,4 +92,5 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		mapper.deleteByMonth(newShifts,targetMonth);
 		
 	}
+
 }
