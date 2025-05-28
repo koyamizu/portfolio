@@ -90,7 +90,7 @@ FROM
 CREATE TABLE
   test_time_records
 LIKE
-  time_records
+  temp_time_records
 ;
 
 INSERT INTO
@@ -98,7 +98,7 @@ INSERT INTO
 SELECT
   *
 FROM
-  time_records
-WHERE
-  clock_in IS NOT NULL
+  temp_time_records
+--WHERE
+--  clock_in IS NOT NULL
 ;

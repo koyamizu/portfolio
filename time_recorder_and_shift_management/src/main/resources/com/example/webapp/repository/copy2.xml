@@ -64,7 +64,7 @@
 		  AND date = CURRENT_DATE
 		;
 	</select>
-	<select id="selectByShiftId"
+	<select id="selectByDateAndEmployeeId"
 		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 		SELECT
 		  s.id

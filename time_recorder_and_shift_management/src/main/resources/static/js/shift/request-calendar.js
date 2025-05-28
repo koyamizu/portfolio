@@ -6,7 +6,7 @@ function initializeCalendar(employeeId, events) {
 	// 翌月の末日
 	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-	let selectedDates = events;
+	let selectedDates = (events==null)?[]:events;
 	const calendarEl = document.getElementById('calendar');
 	const clearBtn = document.getElementById('clear-selection');
 	const form = document.getElementById('shift-form');

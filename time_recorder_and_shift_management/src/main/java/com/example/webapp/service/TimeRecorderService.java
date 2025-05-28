@@ -4,15 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.example.webapp.entity.ShiftSchedule;
+import com.example.webapp.entity.TimeRecord;
 
 public interface TimeRecorderService {
 	List<ShiftSchedule> selectEmployeesByDate(LocalDate date);
 
 	ShiftSchedule selectByEmployeeId(Integer employeeId);
 
-	ShiftSchedule selectByShiftId(Integer shiftId);
+	TimeRecord selectByDateAndEmployeeId(Integer employeeId, LocalDate date);
 	
-	void updateStartTimeByShiftId(Integer shiftId);
+	void updateStartTimeByEmployeIdAndDate(Integer employeeId, LocalDate date);
 
-	void updateEndTimeByShiftId(Integer shiftId);
+	void updateEndTimeByEmployeeIdAndDate(Integer employeeId, LocalDate date);
 }

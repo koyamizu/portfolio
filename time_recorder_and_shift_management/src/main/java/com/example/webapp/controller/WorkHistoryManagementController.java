@@ -1,5 +1,6 @@
 package com.example.webapp.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
@@ -16,8 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.Role;
-import com.example.webapp.entity.ShiftSchedule;
-import com.example.webapp.form.ShiftScheduleForm;
+import com.example.webapp.entity.TimeRecord;
+import com.example.webapp.form.TimeRecordForm;
+import com.example.webapp.helper.TimeRecordHelper;
 import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.WorkHistoryManagementService;
 
@@ -34,17 +36,18 @@ public class WorkHistoryManagementController {
 	//adminのみ
 	@GetMapping("{target-month}")
 	public String showWorkHistories(@PathVariable("target-month") Integer targetMonth,
-			Authentication auth, Model model) {
+			Authentication auth, Model model,HttpSession session) {
 		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
 		if (isAdmin) {
-			List<ShiftSchedule> histories = workHistoryManagementService
+			List<TimeRecord> histories = workHistoryManagementService
 					.selectAllWorkHistoriesToDateByMonth(targetMonth);
 			//従業員IDと名前だけを返すマッパーメソッドを作る？　シフト編集ページのドラッグ＆ドロップ部分にも使えそう
 			List<Employee> employees = employeesManagementService.selectAllIdAndName();
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			model.addAttribute("histories", histories);
-		}
+			session.setAttribute("fromPage", targetMonth);
+			}
 		return "work-history/history";
 	}
 
@@ -52,10 +55,13 @@ public class WorkHistoryManagementController {
 	@GetMapping("{target-month}/{employee-id}")
 	public String showPersonalWorkHistories(@PathVariable("target-month") Integer targetMonth,
 			@PathVariable("employee-id") Integer employeeId,
-			Authentication auth, Model model, RedirectAttributes attributes) {
+			Authentication auth, Model model, RedirectAttributes attributes,HttpSession session) {
 		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
+		session.setAttribute("fromPage", targetMonth+"/"+employeeId);
 		if (isAdmin) {
-			List<Employee> employees = workHistoryManagementService.selectWorkedEmployeesByMonth(targetMonth);
+			//これ、従業員一覧を取得するマッパーメソッドあった気がするからそれでいいと思う
+//			List<Employee> employees = workHistoryManagementService.selectWorkedEmployeesByMonth(targetMonth);
+			List<Employee> employees = employeesManagementService.selectAllIdAndName();
 			model.addAttribute("employees", employees);
 		} else {
 			boolean isSame = auth.getName().equals(employeeId.toString());
@@ -65,29 +71,36 @@ public class WorkHistoryManagementController {
 				return "redirect:/work-history/"+targetMonth+"/"+employeeId;
 			}
 		}
-		List<ShiftSchedule> personalHistories = workHistoryManagementService
+		List<TimeRecord> personalHistories = workHistoryManagementService
 				.selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,
 						targetMonth);
 		model.addAttribute("targetMonth", targetMonth);
 		model.addAttribute("histories", personalHistories);
+		
 		return "work-history/history";
 
 	}
 
-	@GetMapping("edit/{shift-id}")
-	public String showPersonalWorkHistory(@PathVariable("shift-id") Integer shiftId,Model model,ShiftScheduleForm form) {
-			ShiftSchedule targetHistoriy = workHistoryManagementService.selectWorkHistoryByShiftId(shiftId);
-			model.addAttribute("history", targetHistoriy);
+	@GetMapping("edit/{target-date}/{employee-id}")
+	public String showPersonalWorkHistory(@PathVariable("target-date") LocalDate targetDate
+			,@PathVariable("employee-id") Integer employeeId
+			,Model model) {
+			TimeRecord targetHistoriy = workHistoryManagementService.selectWorkHistoryByEmployeeIdAndDate(employeeId, targetDate);
+			TimeRecordForm form=TimeRecordHelper.convertTimeRecordForm(targetHistoriy);
+			model.addAttribute("form", form);
 		return "work-history/edit";
 	}
 
 	@PostMapping("update")
-	public String updateWorkHistory(ShiftScheduleForm updatedHistory, RedirectAttributes attribute,
+	public String updateWorkHistory(TimeRecordForm form, RedirectAttributes attribute,
 			HttpSession session) {
+		TimeRecord updatedHistory=TimeRecordHelper.convertTimeRecord(form);
 		workHistoryManagementService.updateWorkHistory(updatedHistory);
 		attribute.addFlashAttribute("message", "更新しました");
-		Integer targetMonth=updatedHistory.getDate().getMonthValue();
-		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
-		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
+//		Integer targetMonth=updatedHistory.getDate().getMonthValue();
+//		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
+//		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
+		var fromPage=session.getAttribute("fromPage");
+		return "redirect:/work-history/"+fromPage;
 	}
 }

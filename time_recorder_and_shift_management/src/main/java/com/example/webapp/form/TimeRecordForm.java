@@ -1,5 +1,6 @@
 package com.example.webapp.form;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -12,10 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TimeRecordForm {
 
-//	打刻時刻ID
-	private Integer timeRecordId;
-//	シフトID（外部キー（shift_schedulesのid））
-	private Integer shiftId;
+	private LocalDate date;
+
+	private Integer employeeId;
+	
+	private String employeeName;
+	//	従業員
+//	private Employee employee;
 //	開始の打刻時間
 	private LocalTime clockIn;
 //	終了の打刻時間

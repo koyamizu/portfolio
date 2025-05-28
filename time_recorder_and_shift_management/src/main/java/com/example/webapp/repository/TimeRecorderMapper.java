@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.webapp.entity.ShiftSchedule;
+import com.example.webapp.entity.TimeRecord;
 
 @Mapper
 public interface TimeRecorderMapper {
@@ -15,9 +16,9 @@ public interface TimeRecorderMapper {
 	//ShiftSchedule型
 	ShiftSchedule selectByEmployeeId(Integer employeeId);
 	
-	ShiftSchedule selectByShiftId(Integer shiftId);
+	TimeRecord selectByDateAndEmployeeId(Integer employeeId, LocalDate date);
 
-	void insert(Integer shiftId);
+	void insert(Integer employeeId, LocalDate date);
 	
-	void updateEndTimeByShiftId(Integer shiftId);
+	void update(Integer employeeId, LocalDate date);
 }
