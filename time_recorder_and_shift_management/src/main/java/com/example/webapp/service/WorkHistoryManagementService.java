@@ -1,15 +1,20 @@
 package com.example.webapp.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.ShiftAndTimeRecord;
-import com.example.webapp.form.ShiftAndTimeRecordForm;
+import com.example.webapp.entity.TimeRecord;
 
 public interface WorkHistoryManagementService {
-	List<ShiftAndTimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth);
-	List<ShiftAndTimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
+	
+	List<TimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth);
+	
+	List<TimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
+	
 	List<Employee> selectWorkedEmployeesByMonth(Integer targerMonth);
-	ShiftAndTimeRecord selectWorkHistoryByShiftId(Integer shiftId);
-	void updateWorkHistory(ShiftAndTimeRecordForm updatedHistory);
+	
+	TimeRecord selectWorkHistoryByEmployeeIdAndDate(Integer employeeId, LocalDate date);
+	
+	void updateWorkHistory(TimeRecord updatedHistory);
 }

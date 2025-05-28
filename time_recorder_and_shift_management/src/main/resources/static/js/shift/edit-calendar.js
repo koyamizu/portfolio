@@ -1,20 +1,27 @@
 //元ネタはshiftSchedule.js
-function initializeCalendar(events) {
-	const today = new Date();
+function initializeCalendar(events, month) {
+		const today = new Date();
 
 	// 翌月の 1 日
-	const nextMonthFirst = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+	//	const monthFirst = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+	//	// 翌月の末日
+	//	const monthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+
+	const monthFirst = new Date(today.getFullYear(), month-1, 1);
 	// 翌月の末日
-	const nextMonthLast = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+	const monthLast = new Date(today.getFullYear(), month, 1);
 
 	let selectedShifts = events.map(e => {
 		return {
 			id: e.id,
 			start: e.start,
+			scheduledStart: e.scheduledStart,
+			scheduledEnd: e.scheduledEnd,
 			employeeId: e.employeeId,
 			title: e.title
 		}
 	})
+	//	オートインクリメントの次の値を取得する？
 	let nextShiftId = selectedShifts[selectedShifts.length - 1].id + 1;
 	let calendarEl = document.getElementById('calendar');
 	const form = document.getElementById('shift-form');
@@ -26,7 +33,7 @@ function initializeCalendar(events) {
 		itemSelector: '.fc-event-main',
 		eventData: function(eventEl) {
 			return {
-				id: nextShiftId++,
+				//				id: nextShiftId++,
 				employeeId: eventEl.id,
 				title: eventEl.innerText,
 				editable: true
@@ -61,14 +68,17 @@ function initializeCalendar(events) {
 			if (el.classList.contains('holiday')) {
 				el.closest('.fc-daygrid-day').classList.add('is_holiday');
 			}
+			if (el.classList.contains('request')) {
+				el.closest('.fc-daygrid-day').classList.add('selected');
+			}
 		},
 		// 1) 最初に開く日を翌月の１日に
-		initialDate: nextMonthFirst,
+		initialDate: monthFirst,
 
 		// 2) 表示範囲を翌月の 1 日 ～ 翌々月 1 日（排他＝翌月末）に
 		validRange: {
-			start: nextMonthFirst,
-			end: nextMonthLast
+			start: monthFirst,
+			end: monthLast
 		},
 
 		eventMouseEnter: function(info) {
@@ -97,7 +107,9 @@ function initializeCalendar(events) {
 			if (info.el.classList.contains('fc-event-draggable')) {
 				info.event.remove();
 				const idx = selectedShifts.findIndex(s => {
-					return s.id == info.event._def.publicId
+					return s.employeeId == parseInt(info.event.extendedProps.employeeId, 10)
+						&& s.start == info.event.startStr
+					//					return s.id == info.event._def.publicId
 				});
 				selectedShifts.splice(idx, 1);
 			} else {
@@ -119,6 +131,8 @@ function initializeCalendar(events) {
 				selectedShifts.push({
 					id: parseInt(info.event._def.publicId, 10),
 					start: info.event.startStr,
+					scheduledStart: '06:00',
+					scheduledEnd: '09:00',
 					employeeId: parseInt(info.event.extendedProps.employeeId, 10),
 					//					title: info.event.title
 				})
@@ -146,8 +160,9 @@ function initializeCalendar(events) {
 			selectedShifts.push({
 				id: parseInt(shift.id, 10),
 				start: shift.start,
+				scheduledStart: '06:00',
+				scheduledEnd: '09:00',
 				employeeId: shift.employeeId,
-				//				title: shift.title
 			});
 			evtEl.style.backgroundColor = '#02e09a';
 			evtEl.style.borderColor = '#02e09a';

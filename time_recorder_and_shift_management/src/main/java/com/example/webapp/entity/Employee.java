@@ -27,9 +27,9 @@ public class Employee {
 //	権限
 	private Role authority;
 //	作成日時
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 //	更新日時
-	private LocalDateTime updated_at;
+	private LocalDateTime updatedAt;
 //	パスワード更新日時
-	private LocalDateTime password_updated_at;
+	private LocalDateTime passwordUpdatedAt;
 }

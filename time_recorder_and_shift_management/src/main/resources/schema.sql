@@ -1,8 +1,10 @@
-ALTER TABLE test_shifts_and_time_records DROP FOREIGN KEY test_shifts_and_time_records_ibfk_1;
+--ALTER TABLE test_shifts_and_time_records DROP FOREIGN KEY test_shifts_and_time_records_ibfk_1;
 --ALTER TABLE test_shifts_and_time_records DROP employee_id;
 DROP TABLE IF EXISTS test_employees;
-DROP TABLE IF EXISTS test_shifts_and_time_records;
+--DROP TABLE IF EXISTS test_shifts_and_time_records;
 DROP TABLE IF EXISTS test_shift_requests;
+DROP TABLE IF EXISTS test_shift_schedules;
+DROP TABLE IF EXISTS test_time_records;
 
 --CREATE TABLE test_shift_requests (
 --    id INT PRIMARY KEY AUTO_INCREMENT
@@ -45,22 +47,58 @@ FROM
 --"yoshizuka01","koga09","kurosaki21","togo13","komorie30","hakozaki02"
 
 --シフトテーブルの作成
+--CREATE TABLE
+--  test_shifts_and_time_records
+--LIKE
+--  shifts_and_time_records
+--;
+--
+--ALTER TABLE
+--  test_shifts_and_time_records
+--ADD FOREIGN KEY (employee_id)
+--REFERENCES test_employees(id)
+--;
+--
+--INSERT INTO
+--  test_shifts_and_time_records
+--SELECT
+--  *
+--FROM
+--  shifts_and_time_records
+--;
+
 CREATE TABLE
-  test_shifts_and_time_records
+  test_shift_schedules
 LIKE
-  shifts_and_time_records
+  shift_schedules
 ;
 
-ALTER TABLE
-  test_shifts_and_time_records
-ADD FOREIGN KEY (employee_id)
-REFERENCES test_employees(id)
-;
+--ALTER TABLE
+--  test_shift_schedules
+--ADD FOREIGN KEY (employee_id)
+--REFERENCES test_employees(id)
+--;
 
 INSERT INTO
-  test_shifts_and_time_records
+  test_shift_schedules
 SELECT
   *
 FROM
-  shifts_and_time_records
+  shift_schedules
+;
+
+CREATE TABLE
+  test_time_records
+LIKE
+  temp_time_records
+;
+
+INSERT INTO
+  test_time_records
+SELECT
+  *
+FROM
+  temp_time_records
+--WHERE
+--  clock_in IS NOT NULL
 ;

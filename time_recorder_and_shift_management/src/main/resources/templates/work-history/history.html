@@ -57,16 +57,17 @@
 					<th:block th:object="${history}">
 						<td th:text="*{#temporals.format(date,'MM/dd')}"></td>
 						<td th:text="*{#temporals.dayOfWeekNameShort(date)}"></td>
-						<td th:text="*{employee.name}"></td>
-						<td th:text="*{#temporals.format(start,'HH:mm:ss')}"></td>
-						<td th:text="*{#temporals.format(end,'HH:mm:ss')}"></td>
+						<td th:text="*{employeeName}"></td>
+						<td th:text="*{#temporals.format(clockIn,'HH:mm:ss')}"></td>
+						<td th:text="*{#temporals.format(clockOut,'HH:mm:ss')}"></td>
 						<td th:text="*{#temporals.format(workTime,'HH:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')"
-							th:text="*{#temporals.format(created_at,'yyyy-MM-dd HH:mm:ss')}"></td>
+							th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')"
-							th:text="*{#temporals.format(updated_at,'yyyy-MM-dd HH:mm:ss')}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')"><a
-								th:href="@{/work-history/edit/{shift-id}(shift-id=*{shiftId})}">修正</a></td>
+							th:text="*{#temporals.format(updatedAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')">
+							<a th:href="@{/work-history/edit/{target-date}/{employee-id}
+							(target-date=*{date},employee-id=*{employeeId})}">修正</a></td>
 					</th:block>
 				</tr>
 			</tbody>

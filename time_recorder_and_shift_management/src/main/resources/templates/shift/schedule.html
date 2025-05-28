@@ -16,13 +16,21 @@
 		<nav>
 			<ul>
 				<li th:if="${from}=='user'"><a th:href="@{/shift/request}">従業員シフト提出</a></li>
+<!--				<div th:if="${from}=='admin'">-->
+					<li th:if="${from}=='admin'"><a th:href="@{/shift/edit/renew/{month}(month=${thisMonth})}">今月のシフト変更</a></li>
+					<li th:if="${from}=='admin'"><a th:href="@{/shift/edit}">来月のシフト作成</a></li>
+<!--				</div>-->
 				<li class="li-index">
-					<a th:href="${from}=='user'?@{/user}:@{/time-recorder}">戻る</a>
+					<a th:href="${from}?@{/{from}(from=${from})}:'javascript:history.back()'">戻る</a>
+					<!--					<div th:switch="${fr</div>om}">-->
+					<!--						<a th:case="user"  "@{/{from}(from=${from})}">戻る</a>-->
+					<!--					</div>-->
 				</li>
 			</ul>
 		</nav>
 	</header>
 	<article>
+		<p th:if="${message}" th:text="${message}" class="message"></p>
 		<div id='calendar'></div>
 		<script type="text/javascript" th:inline="javascript">
 			document.addEventListener('DOMContentLoaded', function () {initializeCalendar(/*[[${shifts}]]*/)});

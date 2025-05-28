@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">
+	
+	<resultMap id="ShiftWithEmployeeAndTimeRecordResult"
+		type="com.example.webapp.entity.ShiftSchedule">
+		<id property="shiftId" column="id" />
+		<result property="date" column="date" />
+		<association property="employee"
+			javaType="com.example.webapp.entity.Employee">
+			<id property="employeeId" column="employee_id" />
+			<result property="name" column="name" />
+		</association>
+		<association property="timeRecord"
+			javaType="com.example.webapp.entity.TimeRecord">
+			<id property="timeRecordId" column="time_record_id"/>
+			<result property="clockIn" column="clock_in"/>
+			<result property="clockOut" column="clock_out"/>
+			<result property="workTime" column="work_time"/>
+			<result property="createdAt" column="created_at" />
+			<result property="updatedAt" column="updated_at" />			
+		</association>
+	</resultMap>
+	
+	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">
+		<id property="employeeId" column="id"/>
+	</resultMap>
+
+	<select id="selectAllToDateByMonth"
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.employee_id
+	  ,e.name
+	  ,t.clock_in
+	  ,t.clock_out
+	  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+	  ,t.created_at
+	  ,t.updated_at
+	FROM
+	  test_shift_schedules AS s
+	  LEFT JOIN test_time_records AS t
+	  ON s.id = t.shift_id
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	ORDER BY s.date ASC
+	;
+	</select>
+
+	<select id="selectToDateByEmployeeIdAndMonth"
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,s.employee_id
+	  ,e.name
+	  ,t.clock_in
+	  ,t.clock_out
+	  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+	  ,t.created_at
+	  ,t.updated_at
+	FROM
+	  test_shift_schedules AS s
+	  LEFT JOIN test_time_records AS t
+	  ON s.id = t.shift_id
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	  AND s.employee_id = #{employeeId}
+	;
+	</select>
+	
+	<select id="selectByMonth" resultMap="EmployeeMap">
+	SELECT
+	  DISTINCT e.id
+	  ,e.name
+	FROM
+	  test_shift_schedules s
+	  INNER JOIN test_employees e
+	  ON s.employee_id = e.id
+	WHERE
+	  MONTH(s.date) = #{targetMonth}
+	;
+	</select>
+	
+<!--	履歴編集で使用-->
+	<select id="selectByDateAndEmployeeId" resultMap="ShiftWithEmployeeAndTimeRecordResult">
+	SELECT
+	  s.id
+	  ,s.date
+	  ,t.clock_in
+	  ,t.clock_out
+	  ,s.employee_id
+	  ,e.name
+	FROM
+	  test_shift_schedules AS s
+	  LEFT JOIN test_time_records AS t
+	  ON s.id = t.shift_id
+	  INNER JOIN test_employees AS e
+ 	  ON s.employee_id = e.id
+	WHERE
+	  s.id = #{shiftId}
+	;
+	</select>
+	
+	<update id="update">
+	UPDATE
+	  test_shift_schedules
+	SET
+	  clock_in = #{clockIn}
+	  ,clock_out = #{clockOut}
+	  ,updated_at = NOW()
+	WHERE
+	  id = #{shiftId}
+	;
+	</update>
+	
+</mapper>

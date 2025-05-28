@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.webapp.repository.TimeRecorderMapper">
+
+	<resultMap id="ShiftWithEmployeeAndTimeRecordResult"
+		type="com.example.webapp.entity.ShiftSchedule">
+		<id property="shiftId" column="id" />
+		<result property="date" column="date" />
+		<association property="employee"
+			javaType="com.example.webapp.entity.Employee">
+			<id property="employeeId" column="employee_id" />
+			<result property="name" column="name" />
+		</association>
+		<association property="timeRecord"
+			javaType="com.example.webapp.entity.TimeRecord">
+			<id property="timeRecordId" column="time_record_id"/>
+			<result property="clockIn" column="clock_in"/>
+			<result property="clockOut" column="clock_out"/>
+			<result property="workTime" column="work_time"/>
+			<result property="createdAt" column="created_at" />
+			<result property="updatedAt" column="updated_at" />			
+		</association>
+	</resultMap>
+	
+	<resultMap id="ShiftScheduleMap" type="com.example.webapp.entity.ShiftSchedule">
+		<id property="shiftId" column="id"/>
+	</resultMap>
+
+	<!--当日出勤者選択 -->
+	<select id="selectEmployeeByDate"
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+		SELECT
+		  e.name
+		  ,s.date
+		  ,t.clock_in
+		  ,t.clock_out
+		  ,SUBTIME(t.clock_out,t.clock_in) AS work_time
+		FROM
+		  test_shift_schedules AS s
+		  INNER JOIN test_time_records AS t
+		  ON s.id = t.shift_id
+		  INNER JOIN test_employees AS e
+ 		  ON s.employee_id = e.id		  
+		WHERE
+		  s.date = #{date}
+		;
+	</select>
+	<!-- シフトデータの抽出 -->
+	<!-- 下のt.clock_inやt.clock_outでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
+	<select id="selectByEmployeeId"
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+		<!-- SELECT * -->
+		<!-- FROM test_shift_and_timestamp2504 -->
+		SELECT
+		  s.id
+		  ,e.name
+		FROM
+		  test_employees AS e
+		  INNER JOIN test_shift_schedules AS s
+		  ON e.id = s.employee_id
+		WHERE
+		  employee_id = #{employeeId}
+		  AND date = CURRENT_DATE
+		;
+	</select>
+	<select id="selectByDateAndEmployeeId"
+		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+		SELECT
+		  s.id
+		  ,s.employee_id
+		  ,t.clock_in
+		  ,t.clock_out
+		FROM
+		  test_shift_schedules AS s
+		  INNER JOIN test_time_records AS t
+		  ON s.id=t.shift_id
+		WHERE
+		  id = #{shiftId}
+		;
+	</select>
+	<!-- 出勤の打刻 -->
+	<update id="updateStartTimeByShiftId">
+		UPDATE
+		  test_time_records
+		SET
+		  t.clock_in=CURRENT_TIME
+		WHERE
+		  shift_id=#{shiftId}
+		 ;
+	</update>
+	<!-- 退勤の打刻 -->
+	<update id="updateEndTimeByShiftId">
+		UPDATE
+		  test_time_records
+		SET
+		  t.clock_out=CURRENT_TIME
+		WHERE
+		  shift_id=#{shiftId}
+		;
+	</update>
+</mapper>

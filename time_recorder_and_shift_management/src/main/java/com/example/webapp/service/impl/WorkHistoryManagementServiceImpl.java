@@ -1,12 +1,12 @@
 package com.example.webapp.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.ShiftAndTimeRecord;
-import com.example.webapp.form.ShiftAndTimeRecordForm;
+import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.WorkHistoryManagementService;
 
@@ -18,12 +18,12 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 
 	private final WorkHistoryManagementMapper mapper;
 	@Override
-	public List<ShiftAndTimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth) {
+	public List<TimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth) {
 		return mapper.selectAllToDateByMonth(targetMonth);
 	}
 	
 	@Override
-	public List<ShiftAndTimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
+	public List<TimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
 		return mapper.selectToDateByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
 	
@@ -33,12 +33,12 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	}
 	
 	@Override
-	public ShiftAndTimeRecord selectWorkHistoryByShiftId(Integer shiftId) {
-		return mapper.selectByShiftId(shiftId);
+	public TimeRecord selectWorkHistoryByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
+		return mapper.selectByEmployeeIdAndDate(employeeId, date);
 	}
 	
 	@Override
-	public void updateWorkHistory(ShiftAndTimeRecordForm updatedHistory) {
+	public void updateWorkHistory(TimeRecord updatedHistory) {
 		mapper.update(updatedHistory);
 	}
 }

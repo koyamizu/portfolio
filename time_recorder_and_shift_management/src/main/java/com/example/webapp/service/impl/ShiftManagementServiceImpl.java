@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.form.ShiftScheduleEditForm;
+import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.form.FullCalendarForm;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
 
@@ -21,56 +21,69 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	private final ShiftManagementMapper mapper;
 
 	@Override
-	public List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
+	public List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
 		return mapper.selectThreeMonthByTargetMonth(thisMonth);
 	}
 
-	//	@Override
-	//	public 	Employee selectEmployeeById(Integer id) {
-	//		return mapper.selectEmployeeById(id);
-	//	}
-
 	@Override
-	public List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId) {
+	public List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId) {
 		return mapper.selectByEmployeeId(employeeId);
 	}
 
-//	@Override
-//	public void insertShiftRequests(Integer employeeId, List<LocalDate> dates) {
-//		mapper.insertShiftRequests(employeeId, dates);
-//	}
 	@Override
-	public void insertShiftRequests(List<ShiftScheduleEditForm> requests) {
+	public void insertShiftRequests(List<FullCalendarForm> requests) {
 		mapper.insertRequest(requests);
 	}
 
+	//	@Override
+	//	public void deleteShiftRequestsByEmployeeId(Integer employeeId) {
+	//		mapper.deleteRequestByEmployeeId(employeeId);
+	//	}
+
 	@Override
-	public void deleteShiftRequestsByEmployeeId(Integer employeeId) {
-		mapper.deleteRequestByEmployeeId(employeeId);
-	}
-	
-	@Override
-	public List<Employee> selectEmployeesNotSubmitRequests(){
+	public List<Employee> selectEmployeesNotSubmitRequests() {
 		return mapper.selectEmployeesNotSubmitRequests();
 	}
 
 	@Override
-	public List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
+	public List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
 		return mapper.selectOneMonthByTargetMonth(targetMonth);
 	}
 
 	@Override
-	public List<EntityForFullCalendar> selectAllShiftRequests() {
+	public List<FullCalendarEntity> selectAllShiftRequests() {
 		return mapper.selectAll();
 	}
 
+//	@Override
+//	public void deleteShiftsByTargetMonth(Integer targetMonth) {
+//		mapper.deleteShiftByTargetMonth(targetMonth);
+//	}
+
 	@Override
-	public void deleteShiftsByTargetMonth(Integer targetMonth) {
-		mapper.deleteShiftByTargetMonth(targetMonth);
+	public void insertNextMonthShifts(List<FullCalendarForm> newShifts) {
+		mapper.insertShift(newShifts);
 	}
 
 	@Override
-	public void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts) {
-		mapper.insertShift(newShifts);
+	public void insertAdditionalRequest(List<FullCalendarForm> requests) {
+		mapper.insertAdditionalRequest(requests);
+	}
+
+	@Override
+	public void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId) {
+		mapper.deleteByEmployeeId(requests, employeeId);
+	}
+
+	@Override
+	public void insertAdditionalShift(List<FullCalendarForm> newShifts) {
+		mapper.insertAdditionalShift(newShifts);
+		
+	}
+
+	@Override
+	public void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth) {
+		mapper.deleteByMonth(newShifts,targetMonth);
+		
 	}
 }

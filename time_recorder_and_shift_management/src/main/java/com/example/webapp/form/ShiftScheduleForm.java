@@ -13,21 +13,20 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftAndTimeRecordForm {
-	//シフトid
+public class ShiftScheduleForm {
+
+//	シフトID
 	private Integer shiftId;
-	//従業員
-	private Employee employee;
-	//出勤日
+//	出勤予定日
 	private LocalDate date;
-	//出勤時刻
-	private LocalTime start;
-	//退勤時刻
-	private LocalTime end;
-	
-	private LocalTime workTime;
-	
+//	開始予定時間
+	private LocalTime scheduledStart;
+//	終了予定時間
+	private LocalTime scheduledEnd;
+//	作成時間
 	private LocalDateTime createdAt;
-	
-	private LocalDateTime updatedAt;
+//	従業員（外部キー（employeesのid））
+	private Employee employee;
+//	打刻時間ID（外部キー（timeRecordのid））
+	private TimeRecordForm timeRecord;
 }

@@ -5,28 +5,36 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.form.ShiftScheduleEditForm;
+import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.form.FullCalendarForm;
 
 @Mapper
 public interface ShiftManagementMapper {
-	
-	List<EntityForFullCalendar> selectThreeMonthByTargetMonth(Integer targetMonth);
 
-	List<EntityForFullCalendar> selectByEmployeeId(Integer employeeId);
+	List<FullCalendarEntity> selectThreeMonthByTargetMonth(Integer targetMonth);
 
-	List<EntityForFullCalendar> selectOneMonthByTargetMonth(Integer targetMonth);
-	
-	List<EntityForFullCalendar> selectAll();
+	List<FullCalendarEntity> selectByEmployeeId(Integer employeeId);
+
+	List<FullCalendarEntity> selectOneMonthByTargetMonth(Integer targetMonth);
+
+	List<FullCalendarEntity> selectAll();
 
 	List<Employee> selectEmployeesNotSubmitRequests();
 
-	void insertRequest(List<ShiftScheduleEditForm> requests);
+	void insertRequest(List<FullCalendarForm> requests);
 
-	void insertShift(List<ShiftScheduleEditForm> newShifts);
+	void insertAdditionalRequest(List<FullCalendarForm> requests);
 
-	void deleteRequestByEmployeeId(Integer employeeId);
+	void insertShift(List<FullCalendarForm> newShifts);
+
+	void insertAdditionalShift(List<FullCalendarForm> newShifts);
+
+	//	void deleteRequestByEmployeeId(Integer employeeId);
+
+//	void deleteShiftsByTargetMonth(Integer targetMonth);
 	
-	void deleteShiftByTargetMonth(Integer targetMonth);
+	void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId);
+
+	void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth);
 
 }

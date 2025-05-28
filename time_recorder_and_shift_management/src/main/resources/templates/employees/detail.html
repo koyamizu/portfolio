@@ -44,17 +44,17 @@
 			</tr>
 			<tr>
 				<th>登録日時</th>
-				<td th:text="*{#temporals.format(created_at,'yyyy-MM-dd HH:mm:ss')}">
+				<td th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}">
 				</td>
 			</tr>
 			<tr>
 				<th>更新日時</th>
-				<td th:text="*{#temporals.format(updated_at,'yyyy-MM-dd HH:mm:ss')}">
+				<td th:text="*{#temporals.format(updatedAt,'yyyy-MM-dd HH:mm:ss')}">
 				</td>
 			</tr>
 			<tr>
 				<th>パスワード更新日時</th>
-				<td th:text="*{#temporals.format(password_updated_at,'yyyy-MM-dd HH:mm:ss')}">
+				<td th:text="*{#temporals.format(passwordUpdatedAt,'yyyy-MM-dd HH:mm:ss')}">
 				</td>
 			</tr>
 		</table>

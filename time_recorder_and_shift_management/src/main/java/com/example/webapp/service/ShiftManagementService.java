@@ -3,25 +3,33 @@ package com.example.webapp.service;
 import java.util.List;
 
 import com.example.webapp.entity.Employee;
-import com.example.webapp.entity.EntityForFullCalendar;
-import com.example.webapp.form.ShiftScheduleEditForm;
+import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.form.FullCalendarForm;
 
 public interface ShiftManagementService {
-	List<EntityForFullCalendar> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
-		
-	List<EntityForFullCalendar> selectShiftRequestsByEmployeeId(Integer employeeId);
-	
-	void insertShiftRequests(List<ShiftScheduleEditForm> requests);
-	
-	void deleteShiftRequestsByEmployeeId(Integer employeeId);
-	
-	List<EntityForFullCalendar> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
+	List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
 
-	List<EntityForFullCalendar> selectAllShiftRequests();
+	List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId);
+
+	List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth);
+	
+	List<FullCalendarEntity> selectAllShiftRequests();
 	
 	List<Employee> selectEmployeesNotSubmitRequests();
+	
+	void insertShiftRequests(List<FullCalendarForm> requests);
 
-	void deleteShiftsByTargetMonth(Integer targetMonth);
+	void insertAdditionalRequest(List<FullCalendarForm> requests);
+	
+	void insertNextMonthShifts(List<FullCalendarForm> newShifts);
 
-	void insertNextMonthShifts(List<ShiftScheduleEditForm> newShifts);
+	void insertAdditionalShift(List<FullCalendarForm> newShifts);
+
+	//	void deleteShiftRequestsByEmployeeId(Integer employeeId);
+
+//	void deleteShiftsByTargetMonth(Integer targetMonth);
+
+	void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId);
+	
+	void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth);
 }
