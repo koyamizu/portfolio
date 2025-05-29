@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.webapp.entity.Absence;
+import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.repository.AbsenceApplicationMapper;
 import com.example.webapp.service.AbsenceApplicationService;
@@ -27,7 +27,7 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	}
 
 	@Override
-	public List<Absence> selectAllReasons() {
+	public List<AbsenceReason> selectAllReasons() {
 		return mapper.selectAllReasons();
 	}
 

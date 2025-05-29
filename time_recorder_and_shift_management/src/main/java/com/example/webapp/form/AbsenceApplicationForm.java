@@ -1,6 +1,6 @@
 package com.example.webapp.form;
 
-import com.example.webapp.entity.Absence;
+import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 
@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AbsenceApplicationForm {
 	
-	private Integer id;
+	private Integer applicationId;
 	
 	private ShiftSchedule shiftSchedule;
 	
 	private Employee employee;
 	
-	private Absence absence;
+	private AbsenceReason absenceReason;
 	
 	private String detail;
 	

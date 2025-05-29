@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.webapp.entity.Absence;
 import com.example.webapp.entity.AbsenceApplication;
+import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.Role;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.AbsenceApplicationForm;
@@ -50,10 +50,10 @@ public class AbsenceApplicationController {
 	public String showForm(Model model, Authentication auth) {
 		Integer employeeId = Integer.parseInt(auth.getName());
 		List<ShiftSchedule> shiftSchedules = shiftManagementService.selectAllShiftsAfterTodayByEmployeeId(employeeId);
-		List<Absence> reasons = absenceApplicationService.selectAllReasons();
+		List<AbsenceReason> absenceReasons = absenceApplicationService.selectAllReasons();
 		model.addAllAttributes(
 				Map.of(
-						"shiftSchedules", shiftSchedules, "reasons", reasons, "employeeId", employeeId, "form", new AbsenceApplicationForm()));
+						"shiftSchedules", shiftSchedules, "absenceReasons", absenceReasons, "employeeId", employeeId, "form", new AbsenceApplicationForm()));
 		return "absence-application/form";
 	}
 

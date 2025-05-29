@@ -22,7 +22,7 @@ public interface ShiftManagementMapper {
 
 	List<FullCalendarEntity> selectAll();
 
-	List<Employee> selectEmployeesNotSubmitRequests();
+	List<Employee> selectNotSubmit();
 
 	void insertRequest(List<FullCalendarForm> requests);
 

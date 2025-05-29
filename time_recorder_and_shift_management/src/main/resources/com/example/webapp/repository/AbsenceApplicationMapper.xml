@@ -6,7 +6,7 @@
 	<resultMap
 		id="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult"
 		type="com.example.webapp.entity.AbsenceApplication">
-		<id property="id" column="id" />
+		<id property="applicationId" column="id" />
 		<result property="isApprove" column="is_approve" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
@@ -17,10 +17,10 @@
  			<result property="date" column="date"/>
 		</association>
 		<association property="employee" javaType="com.example.webapp.entity.Employee">
-			<id property="name" column="name"/>
+			<id property="name" column="employee_name"/>
 		</association>
-		<association property="absence" javaType="com.example.webapp.entity.Absence">
-			<id property="reason" column="reason"/>
+		<association property="absenceReason" javaType="com.example.webapp.entity.Absence">
+			<id property="name" column="reason_name"/>
 		</association>
 	</resultMap>
 
@@ -29,11 +29,11 @@
 		  aa.id
 		  ,aa.shift_id
 		  ,s.date
-		  ,e.name
+		  ,e.name AS employee_name
 		  ,aa.created_at
 		  ,aa.updated_at
 		  ,aa.is_approve
-		  ,ar.reason
+		  ,ar.name AS reason_name
 		  ,aa.detail
 		FROM
 		  test_absence_applications AS aa
@@ -53,11 +53,11 @@
 		  aa.id
 		  ,aa.shift_id
 		  ,s.date
-		  ,e.name
+		  ,e.name employee_name
 		  ,aa.created_at
 		  ,aa.updated_at
 		  ,aa.is_approve
-		  ,ar.reason
+		  ,ar.name reason_name
 		  ,aa.detail
 		FROM
 		  test_absence_applications AS aa
@@ -76,7 +76,7 @@
 	<select id="selectAllReasons">
 		SELECT
 		  id as reasonId
-		  ,reason
+		  ,name
 		FROM
 		  test_absence_reasons
 		;
@@ -86,7 +86,7 @@
 		INSERT INTO
 		  test_absence_applications(shift_id,reason_id,detail,created_at,updated_at)
 		VALUE
-		  (#{shiftSchedule.shiftId},#{absence.reasonId},#{detail},now(),now())
+		  (#{shiftSchedule.shiftId},#{absenceReason.reasonId},#{detail},now(),now())
 		;
 	</insert>
 	

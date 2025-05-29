@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 //AbsenceReasonとかに変える
-public class Absence {
+public class AbsenceReason {
 
 	private Integer reasonId;
 	
 	//nameとかにするか
-	private String reason;
+	private String name;
 }

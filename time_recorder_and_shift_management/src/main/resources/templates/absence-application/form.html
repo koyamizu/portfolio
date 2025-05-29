@@ -44,8 +44,10 @@
 				<th>欠勤理由</th>
 				<td>
 					<!--				selectではabsence.nameのほうを表示させる-->
-					<select th:field="*{absence.reasonId}" required>
-						<option th:each="reason: ${reasons}" th:value="${reason.reasonId}" th:text="${reason.reason}">
+					<select th:field="*{absenceReason.reasonId}" required>
+						<option th:each="absenceReason: ${absenceReasons}"
+						th:value="${absenceReason.reasonId}"
+						th:text="${absenceReason.name}">
 						</option>
 					</select>
 					<!--				<td><select th:field="*{absence.reasonId}" required>-->

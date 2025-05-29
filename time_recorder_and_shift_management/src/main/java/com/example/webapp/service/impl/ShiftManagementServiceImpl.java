@@ -48,7 +48,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<Employee> selectEmployeesNotSubmitRequests() {
-		return mapper.selectEmployeesNotSubmitRequests();
+		return mapper.selectNotSubmit();
 	}
 
 	@Override

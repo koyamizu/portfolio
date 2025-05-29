@@ -43,15 +43,16 @@
 				</tr>
 			</thead>
 			<tbody class="employee-list">
+<!--				「application」という変数にしたらエラーになったのでappにした-->
 				<tr th:each="app:${applications}">
 					<th:block th:object="${app}">
-						<td th:text="*{id}"></td>
+						<td th:text="*{applicationId}"></td>
 						<td th:text="*{shiftSchedule.date}"></td>
 						<td th:text="*{employee.name}"></td>
-						<td th:text="*{absence.reason}"></td>
+						<td th:text="*{absenceReason.name}"></td>
 						<td th:text="*{detail}"></td>
 						<td sec:authorize="!hasAuthority('ADMIN')"><a
-								th:href="@{/absence-application/delete/{application-id}(application-id=*{id})}">削除</a>
+								th:href="@{/absence-application/delete/{application-id}(application-id=*{applicationId})}">削除</a>
 						</td>
 						<td sec:authorize="hasAuthority('ADMIN')"
 							th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"></td>

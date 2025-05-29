@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AbsenceApplication {
 	
-	private Integer id;
+	private Integer applicationId;
 	
 	private ShiftSchedule shiftSchedule;
 	
 	private Employee employee;
 	
-	private Absence absence;
+	private AbsenceReason absenceReason;
 	
 	private String detail;
 	

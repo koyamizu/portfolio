@@ -106,8 +106,8 @@ public class ShiftManagementController {
 		return "redirect:/shift/request";
 	}
 
-	@GetMapping("edit")
-	public String showEditPage(Model model) {
+	@GetMapping("create")
+	public String showCreatePage(Model model) {
 		//id,start(date)のみの情報が返ってくる
 		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		//		↓クエリにOrder Byを足す
@@ -121,25 +121,26 @@ public class ShiftManagementController {
 							"nextMonthShifts", nextMonthShifts,
 							"state", State.CONFIRM.toString(),
 							"month", nextMonth));
-			return "shift/edit";
+			return "shift/create";
 		}
 		List<FullCalendarEntity> requests = shiftManagementService.selectAllShiftRequests();
 		EntityForFullCalendarHelper.setColorProperties("#02e09a", "#006666", requests);
 		//		submittedはここでしか使っていないので、未提出者はSQLで取得する
-		List<Integer> submittedEmployeeIds = requests.stream().map(r -> r.getEmployeeId()).distinct().toList();
+//		List<Integer> submittedEmployeeIds = requests.stream().map(r -> r.getEmployeeId()).distinct().toList();
 		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
-		List<Employee> notSubmits = allEmployees.stream().filter(e -> !submittedEmployeeIds.contains(e.getEmployeeId()))
-				.toList();
+		List<Employee> notSubmits =shiftManagementService.selectEmployeesNotSubmitRequests();
+//				allEmployees.stream().filter(e -> !submittedEmployeeIds.contains(e.getEmployeeId()))
+//				.toList();
 		model.addAllAttributes(Map.of(
 				"requests", requests,
 				"state", State.NEW.toString(),
 				"allEmployees", allEmployees,
 				"notSubmits", notSubmits,
 				"month", nextMonth));
-		return "shift/edit";
+		return "shift/create";
 	}
 
-	@GetMapping("edit/renew/{month}")
+	@GetMapping("create/edit/{month}")
 	public String deleteShifts(@PathVariable Integer month, Model model) {
 		List<FullCalendarEntity> shifts = shiftManagementService
 				.selectOneMonthShiftsByTargetMonth(month);
@@ -159,10 +160,10 @@ public class ShiftManagementController {
 		//		model.addAttribute("requests", nextMonthShifts);
 		//		model.addAttribute("state", State.EDIT.toString());
 		//		model.addAttribute("allEmployees",allEmployees);
-		return "shift/edit";
+		return "shift/create";
 	}
 
-	@PostMapping("edit/create")
+	@PostMapping("create/execute")
 	public String submitShifts(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month)
 			throws JsonProcessingException {
@@ -192,7 +193,7 @@ public class ShiftManagementController {
 			shiftManagementService.deleteByMonth(newShifts, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
 		}
-		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/edit";
+		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/create";
 		return "redirect:" + path;
 	}
 }

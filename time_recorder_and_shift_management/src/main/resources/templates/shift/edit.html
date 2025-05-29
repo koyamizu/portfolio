@@ -27,7 +27,7 @@
 				<span th:each="employee : ${notSubmits}" th:text="|${employee.name}&nbsp;&nbsp;|"
 					class="error-message"></span>
 			</p>
-			<form id="shift-form" th:action="@{/shift/edit/create}" method="post">
+			<form id="shift-form" th:action="@{/shift/create/execute}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="hidden" name="state" th:value="${state}">
 				<input type="hidden" name="month" th:value="${month}">
@@ -55,7 +55,7 @@
 			<p>来月のシフトは以下の日程で作成済みです</p>
 			<p>変更はありますか？</p>
 			<div class="shift-confirm">
-				<a th:href="@{/shift/edit/renew/{month}(month=${month})}">ある</a>
+				<a th:href="@{/shift/create/edit/{month}(month=${month})}">ある</a>
 				<a th:href="@{/shift}">ない</a>
 			</div>
 			<div id="calendar" class="shift-edit"></div>

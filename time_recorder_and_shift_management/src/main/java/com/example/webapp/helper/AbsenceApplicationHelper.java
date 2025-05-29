@@ -7,10 +7,10 @@ public class AbsenceApplicationHelper {
 
 	public static AbsenceApplication convertAbsenceApplication(AbsenceApplicationForm form) {
 		AbsenceApplication entity=new AbsenceApplication();
-		entity.setId(form.getId());
+		entity.setApplicationId(form.getApplicationId());
 		entity.setShiftSchedule(form.getShiftSchedule());
 		entity.setEmployee(form.getEmployee());
-		entity.setAbsence(form.getAbsence());
+		entity.setAbsenceReason(form.getAbsenceReason());
 		entity.setDetail(form.getDetail());
 		entity.setIsApprove(form.getIsApprove());
 		return entity;
@@ -18,10 +18,10 @@ public class AbsenceApplicationHelper {
 	
 	public static AbsenceApplicationForm convertAbsenceApplicationForm(AbsenceApplication entity) {
 		AbsenceApplicationForm form=new AbsenceApplicationForm();
-		form.setId(entity.getId());
+		form.setApplicationId(entity.getApplicationId());
 		form.setShiftSchedule(entity.getShiftSchedule());
 		form.setEmployee(entity.getEmployee());
-		form.setAbsence(entity.getAbsence());
+		form.setAbsenceReason(entity.getAbsenceReason());
 		form.setDetail(entity.getDetail());
 		form.setIsApprove(entity.getIsApprove());
 		return form;
