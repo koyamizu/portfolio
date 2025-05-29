@@ -18,7 +18,7 @@ public interface AbsenceApplicationMapper {
 	
 	void insert(AbsenceApplication application);
 	
-	void update(Integer employeeId,Boolean decision);
+	void update(Integer shiftId,Boolean decision);
 	
 	void delete(Integer applicationId);
 }

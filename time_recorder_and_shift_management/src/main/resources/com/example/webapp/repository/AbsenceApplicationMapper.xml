@@ -10,6 +10,7 @@
 		<result property="isApprove" column="is_approve" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
+		<result property="detail" column="detail" />
 		<association property="shiftSchedule"
 			javaType="com.example.webapp.entity.ShiftSchedule">
 			<id property="shiftId" column="shift_id" />
@@ -33,6 +34,7 @@
 		  ,aa.updated_at
 		  ,aa.is_approve
 		  ,ar.reason
+		  ,aa.detail
 		FROM
 		  test_absence_applications AS aa
 		  INNER JOIN test_shift_schedules AS s
@@ -56,6 +58,7 @@
 		  ,aa.updated_at
 		  ,aa.is_approve
 		  ,ar.reason
+		  ,aa.detail
 		FROM
 		  test_absence_applications AS aa
 		  INNER JOIN shift_schedules AS s
@@ -65,15 +68,15 @@
 		  INNER JOIN test_absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		WHERE
-		  s.date>=CURRENT_DATE
+		  s.date &gt;=CURRENT_DATE
 		  AND s.employee_id=#{employeeId}
 		;
 	</select>
 	
 	<select id="selectAllReasons">
 		SELECT
-		  id
-		  name
+		  id as reasonId
+		  ,reason
 		FROM
 		  test_absence_reasons
 		;
@@ -83,7 +86,7 @@
 		INSERT INTO
 		  test_absence_applications(shift_id,reason_id,detail,created_at,updated_at)
 		VALUE
-		  #{shiftId},#{reasonId},#{detail},now(),now()
+		  (#{shiftSchedule.shiftId},#{absence.reasonId},#{detail},now(),now())
 		;
 	</insert>
 	
@@ -91,9 +94,9 @@
 		UPDATE
 		  test_absence_applications
 		SET
-		  is_approve=#{dedicion}
+		  is_approve=#{decision}
 		WHERE
-		  shift_id=#{shiftid}
+		  shift_id=#{shiftId}
 		;
 	</update>
 	

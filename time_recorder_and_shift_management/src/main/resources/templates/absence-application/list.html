@@ -12,9 +12,12 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a th:href="@{/absence-application/request}">新規申請</a></li>
+				<li sec:authorize="!hasAuthority('ADMIN')">
+					<a th:href="@{/absence-application/request}">新規申請</a>
+				</li>
 				<li class="li-index">
-					<a th:href="@{/admin}">戻る</a>
+					<a th:href="${#authorization.expression('hasRole(''ADMIN'')')}
+					? @{/admin}:@{/user}">戻る</a>
 				</li>
 			</ul>
 		</nav>
@@ -23,22 +26,20 @@
 		<h1>欠勤申請一覧</h1>
 		<p th:if="${message}" th:text="${message}" class="message">完了メッセージ</p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message">エラーメッセージ</p>
-		<table class="employee-list">
+		<table style="width:auto">
 			<thead>
 				<tr>
-					<th class="w10">申請ID</th>
-					<th class="w10">日付</th>
-					<th class="w30">従業員名</th>
-					<th class="w30">欠勤理由</th>
-					<th class="">詳細</th>
-					<th sec:authorize="!hasAuthority('ADMIN')" class="w30">申請結果</th>
-					<th sec:authorize="!hasAuthority('ADMIN')" class="w30">削除</th>
-					<div sec:authorize="hasAuthority('ADMIN')">
-						<th class="w">申請日時</th>
-						<th class="w">決裁日時</th>
-						<th class="w10">許可</th>
-						<th>不許可</th>
-					</div>
+					<th>申請ID</th>
+					<th>出勤予定日</th>
+					<th>従業員名</th>
+					<th>欠勤理由</th>
+					<th>詳細</th>
+					<th sec:authorize="!hasAuthority('ADMIN')">取消</th>
+					<th sec:authorize="hasAuthority('ADMIN')">申請日時</th>
+					<th sec:authorize="hasAuthority('ADMIN')">決裁日時</th>
+					<th sec:authorize="hasAuthority('ADMIN')">許可</th>
+					<th sec:authorize="hasAuthority('ADMIN')">不許可</th>
+					<th>申請結果</th>
 				</tr>
 			</thead>
 			<tbody class="employee-list">
@@ -49,19 +50,30 @@
 						<td th:text="*{employee.name}"></td>
 						<td th:text="*{absence.reason}"></td>
 						<td th:text="*{detail}"></td>
-						<div>
-							<td sec:authorize="!hasAuthority('ADMIN')" th:text="*{isApprove}=='true'?'許可':'不許可'"></td>
-							<td sec:authorize="!hasAuthority('ADMIN')" a
-								th:href="/absence/delete/{shift-id}(shift-id=${shiftSchedule.shiftId})">削除</td>
-						</div>
-						<div sec:authorize="hasAuthority('ADMIN')">
-							<td th:text="*{createdAt}"></td>
-							<td th:text="*{updatedAt}"></td>
+						<td sec:authorize="!hasAuthority('ADMIN')"><a
+								th:href="@{/absence-application/delete/{application-id}(application-id=*{id})}">削除</a>
+						</td>
+						<td sec:authorize="hasAuthority('ADMIN')"
+							th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')"
+							th:text="*{#temporals.format(updatedAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td sec:authorize="hasAuthority('ADMIN')">
 							<form th:action="@{/absence-application/decision}" method="post">
-								<input type="hidden" th:value="${shiftSchedule.shiftId}">
-								<td><input type="submit" th:name="decision" value="true">許可</a></td>
-								<td><input type="submit" th:name="decision" value="false">不許可</a></td>
+								<input type="hidden" th:name="shiftId" th:value="*{shiftSchedule.shiftId}">
+								<button type="submit" th:name="decision" th:value="true">許可</button>
 							</form>
+						</td>
+						<td sec:authorize="hasAuthority('ADMIN')">
+							<form th:action="@{/absence-application/decision}" method="post">
+								<input type="hidden" th:name="shiftId" th:value="*{shiftSchedule.shiftId}">
+								<button type="submit" th:name="decision" th:value="false">不許可</button>
+							</form>
+						</td>
+						<!--						<td th:text="*{isApprove}=='true'?'許可':'不許可'"></td>-->
+						<div th:switch="*{isApprove}">
+							<td th:case="true" th:text="許可"></td>
+							<td th:case="false" th:text="不許可"></td>
+							<td th:case="*"></td>
 						</div>
 					</th:block>
 				</tr>

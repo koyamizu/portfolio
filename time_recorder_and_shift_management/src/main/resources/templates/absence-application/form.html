@@ -18,45 +18,48 @@
 			</ul>
 		</nav>
 	</header>
-	<form th:action="@{/absence/submit}" th:object="${form}" method="post">
+	<form th:action="@{/absence-application/submit}" th:object="${form}" method="post">
 		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
 			class="error-message">
 			エラーメッセージ
 		</p>
+		<h1>欠勤申請フォーム</h1>
 		<table>
 			<tr>
-				<th>名前</th>
-				<td th:text="${name}" required></td>
+				<th>従業員名</th>
+				<td th:text="${#authentication.principal.name}"></td>
 			</tr>
 			<tr>
-				<th>欠勤日</th>
+				<th>欠勤予定日</th>
 				<td>
-				<!--				selectではshift.dateのほうを表示させる-->
-				<select th:field="*{shift.shiftId}" required>
-					<option th:each="shift : ${shifts}" th:value="${shift.shiftId}" th:text="${shift.date}"></option>
-				</select>
-				<!--				<td> <select th:field="*{shift.shiftId}" required></select>-->
+					<!--				selectではshiftSchedule.dateのほうを表示させる-->
+					<select th:field="*{shiftSchedule.shiftId}" required>
+						<option th:each="shiftSchedule : ${shiftSchedules}" th:value="${shiftSchedule.shiftId}"
+							th:text="${shiftSchedule.date}"></option>
+					</select>
+					<!--				<td> <select th:field="*{shiftSchedule.shiftId}" required></select>-->
 				</td>
 			</tr>
 			<tr>
 				<th>欠勤理由</th>
 				<td>
-				<!--				selectではabsence.nameのほうを表示させる-->
-				<select th:field="*{absence.absenceId}" required>
-					<option th:each="reason: ${reasons}" th:value="${reason.absenceId}" th:text="${reason.reason}"></option>
-				</select>
-<!--				<td><select th:field="*{absence.absenceId}" required>-->
+					<!--				selectではabsence.nameのほうを表示させる-->
+					<select th:field="*{absence.reasonId}" required>
+						<option th:each="reason: ${reasons}" th:value="${reason.reasonId}" th:text="${reason.reason}">
+						</option>
+					</select>
+					<!--				<td><select th:field="*{absence.reasonId}" required>-->
 				</td>
 			</tr>
 			<tr>
 				<th>詳細</th>
 				<td>
-					<textarea rxws="5" column="30" th:field="*{detail}" required>
+					<textarea rows="5" cols="50" th:field="*{detail}" required>
 					</textarea>
 				</td>
 			</tr>
-			<button type="submit">送信</butt送信>
 		</table>
+		<button type="submit">送信</butt送信>
 	</form>
 </body>
 

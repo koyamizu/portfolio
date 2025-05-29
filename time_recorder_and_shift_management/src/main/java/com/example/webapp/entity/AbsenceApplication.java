@@ -27,7 +27,4 @@ public class AbsenceApplication {
 	
 	private LocalDateTime updatedAt;
 	
-	public ShiftSchedule getShiftSchedule() {
-		return shiftSchedule;
-	}
 }

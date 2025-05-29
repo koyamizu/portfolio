@@ -37,8 +37,8 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	}
 
 	@Override
-	public void updateApprove(Integer employeeId, Boolean decision) {
-		mapper.update(employeeId, decision);
+	public void updateApprove(Integer shiftId, Boolean decision) {
+		mapper.update(shiftId, decision);
 	}
 
 	@Override

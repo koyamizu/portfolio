@@ -35,33 +35,25 @@ public class AbsenceApplicationController {
 
 	@GetMapping
 	public String showList(Model model, Authentication auth) {
-//		List<AbsenceApplication> applications;
+		List<AbsenceApplication> applications;
 		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
-			List<AbsenceApplication> applications = absenceApplicationService.selectAllApplicationsAfterToday();
-			model.addAttribute("applications", applications);
-			return "absence-application/list";
+			applications = absenceApplicationService.selectAllApplicationsAfterToday();
 		} else {
-			Integer employeeId=Integer.parseInt(auth.getName());
-			List<AbsenceApplication> applications = absenceApplicationService.selectPersonalApplicationsAfterToday(employeeId);
-			model.addAttribute("applications", applications);
-			return "absence-application/list";
+			Integer employeeId = Integer.parseInt(auth.getName());
+			applications = absenceApplicationService.selectPersonalApplicationsAfterToday(employeeId);
 		}
+		model.addAttribute("applications", applications);
+		return "absence-application/list";
 	}
 
 	@GetMapping("request")
 	public String showForm(Model model, Authentication auth) {
 		Integer employeeId = Integer.parseInt(auth.getName());
-		List<ShiftSchedule> shifts = shiftManagementService.selectAllShiftsAfterTodayByEmployeeId(employeeId);
+		List<ShiftSchedule> shiftSchedules = shiftManagementService.selectAllShiftsAfterTodayByEmployeeId(employeeId);
 		List<Absence> reasons = absenceApplicationService.selectAllReasons();
-		String name = auth.getName();
 		model.addAllAttributes(
 				Map.of(
-						"shifts", shifts
-						, "reasons", reasons
-						, "name", name
-						, "form", new AbsenceApplicationForm()
-						)
-				);
+						"shiftSchedules", shiftSchedules, "reasons", reasons, "employeeId", employeeId, "form", new AbsenceApplicationForm()));
 		return "absence-application/form";
 	}
 
@@ -75,17 +67,17 @@ public class AbsenceApplicationController {
 	}
 
 	@PostMapping("submit")
-	public String insertApplication(AbsenceApplicationForm form,RedirectAttributes attributes)  {
+	public String insertApplication(AbsenceApplicationForm form, RedirectAttributes attributes) {
 		AbsenceApplication application = AbsenceApplicationHelper.convertAbsenceApplication(form);
 		absenceApplicationService.insertApplication(application);
 		attributes.addFlashAttribute("message", "申請が完了しました");
-		return "redirect:/absece-application";
+		return "redirect:/absence-application";
 	}
 
-	@GetMapping("delete/{shift-id}")
-	public String deleteApplication(@PathVariable("shift-id") Integer applicationId, RedirectAttributes attributes) {
+	@GetMapping("delete/{application-id}")
+	public String deleteApplication(@PathVariable("application-id") Integer applicationId, RedirectAttributes attributes) {
 		absenceApplicationService.deleteApplication(applicationId);
 		attributes.addFlashAttribute("message", "申請を削除しました");
-		return "redirect:/absece-application";
+		return "redirect:/absence-application";
 	}
 }

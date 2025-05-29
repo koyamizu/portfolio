@@ -18,7 +18,7 @@ public interface AbsenceApplicationService {
 	
 	void insertApplication(AbsenceApplication application);
 	
-	void updateApprove(Integer employeeId,Boolean decision);
+	void updateApprove(Integer shiftId,Boolean decision);
 	
 	void deleteApplication(Integer applicationId);
 }
