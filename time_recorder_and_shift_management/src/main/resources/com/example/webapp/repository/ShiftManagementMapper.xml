@@ -98,7 +98,7 @@
 		;
 	</select>
 
-現状使用していない
+<!--現状使用していない-->
 	<select id="selectNotSubmit">
 		SELECT
 		  id

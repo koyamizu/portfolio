@@ -22,7 +22,7 @@ public interface ShiftManagementService {
 	
 	void insertShiftRequests(List<FullCalendarForm> requests);
 
-	void insertAdditionalRequest(List<FullCalendarForm> requests);
+	void insertAdditionalRequest(List<FullCalendarForm> additionals);
 	
 	void insertNextMonthShifts(List<FullCalendarForm> newShifts);
 

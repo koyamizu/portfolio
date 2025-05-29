@@ -19,7 +19,7 @@
 		<association property="employee" javaType="com.example.webapp.entity.Employee">
 			<id property="name" column="employee_name"/>
 		</association>
-		<association property="absenceReason" javaType="com.example.webapp.entity.Absence">
+		<association property="absenceReason" javaType="com.example.webapp.entity.AbsenceReason">
 			<id property="name" column="reason_name"/>
 		</association>
 	</resultMap>
