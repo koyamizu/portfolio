@@ -49,11 +49,12 @@
 					<th>実働時間</th>
 					<th sec:authorize="hasAuthority('ADMIN')">作成日時</th>
 					<th sec:authorize="hasAuthority('ADMIN')">更新日時</th>
+					<th>欠勤理由</th>
 					<th sec:authorize="hasAuthority('ADMIN')">修正</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="history:${histories}">
+				<tr th:each="history:${histories}"  class="p10">
 					<th:block th:object="${history}">
 						<td th:text="*{#temporals.format(date,'MM/dd')}"></td>
 						<td th:text="*{#temporals.dayOfWeekNameShort(date)}"></td>
@@ -63,11 +64,16 @@
 						<td th:text="*{#temporals.format(workTime,'HH:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')"
 							th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"></td>
-						<td sec:authorize="hasAuthority('ADMIN')"
-							th:text="*{#temporals.format(updatedAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td th:style="*{createdAt} != *{updatedAt} ? 'color:red' : ''">
+							<span sec:authorize="hasAuthority('ADMIN')"
+								th:text="*{#temporals.format(updatedAt,'yyyy-MM-dd HH:mm:ss')}">
+							</span>
+						</td>
+						<td th:text="*{absenceReason.name}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')">
 							<a th:href="@{/work-history/edit/{target-date}/{employee-id}
-							(target-date=*{date},employee-id=*{employeeId})}">修正</a></td>
+							(target-date=*{date},employee-id=*{employeeId})}">修正</a>
+						</td>
 					</th:block>
 				</tr>
 			</tbody>

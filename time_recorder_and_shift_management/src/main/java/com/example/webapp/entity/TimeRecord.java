@@ -36,4 +36,6 @@ public class TimeRecord {
 	private LocalDateTime createdAt;
 //	更新時刻
 	private LocalDateTime updatedAt;
+	
+	private AbsenceReason absenceReason;
 }

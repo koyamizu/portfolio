@@ -112,12 +112,24 @@ th {
 	color: white;
 }
 
+.absence-application{
+	width:90%;
+}
+
 .name {
 	width: 30%;
 }
 
 td {
 	border: 2px solid #000000;
+}
+
+.p10 tr td{
+	padding:0 10px;
+}
+
+.p5 td{
+	padding:0 5px;
 }
 
 /*tr .time-recorder{*/
@@ -310,7 +322,7 @@ td.fc-day-sun,
 
 /* 勤怠履歴のtableで使用 なにかもっと大きなクラスに統合してもいいかもしれない */
 .history {
-	width: 50%;
+	width:70%;
 }
 
 .employee-list{

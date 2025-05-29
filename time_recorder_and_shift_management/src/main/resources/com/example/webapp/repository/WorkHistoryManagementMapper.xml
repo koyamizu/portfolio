@@ -3,16 +3,19 @@
 <mapper
 	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">
 	
-	<resultMap id="TimeRecordWithEmployeeResult"
+	<resultMap id="TimeRecordWithEmployeeAndAbsenceReasonResult"
 		type="com.example.webapp.entity.TimeRecord">
 		<id property="date" column="date" />
 		<id property="employeeId" column="employee_id"/>
-		<result property="employeeName" column="name" />
+		<result property="employeeName" column="employee_name" />
 		<result property="clockIn" column="clock_in"/>
 		<result property="clockOut" column="clock_out"/>
 		<result property="workTime" column="work_time"/>
 		<result property="createdAt" column="created_at" />
-		<result property="updatedAt" column="updated_at" />		
+		<result property="updatedAt" column="updated_at" />
+		<association property="absenceReason" javaType="com.example.webapp.entity.AbsenceReason">
+			<result property="name" column="reason_name"/>
+		</association>
 <!--		<association property="employee"-->
 <!--			javaType="com.example.webapp.entity.Employee">-->
 <!--			<id property="employeeId" column="employee_id" />-->
@@ -25,71 +28,111 @@
 <!--	</resultMap>-->
 
 	<select id="selectAllToDateByMonth"
-		resultMap="TimeRecordWithEmployeeResult">
+		resultMap="TimeRecordWithEmployeeAndAbsenceReasonResult">
 		SELECT
-		  t.date
-		  ,t.employee_id
-		  ,e.name
+		  s.date
+		  ,s.employee_id
+		  ,e.name AS employee_name
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
 		  ,t.created_at
 		  ,t.updated_at
+		  ,CASE
+		    WHEN t.clock_in IS NULL AND ar.name IS NULL THEN '不明'
+		    WHEN t.clock_in IS NULL AND is_approve IS NULL THEN '可否忘れ'
+		    WHEN t.clock_in IS NULL AND is_approve='false' THEN '無断欠勤'
+		    WHEN t.clock_in IS NULL AND is_approve='true' THEN ar.name		    
+		    ELSE " "
+		    END AS reason_name
 		FROM
-		  test_time_records AS t
+		  test_shift_schedules AS s
 		  INNER JOIN test_employees AS e
-	 	  ON t.employee_id = e.id
-		WHERE
-		  MONTH(t.date) = #{targetMonth}
-		ORDER BY t.date ASC
+	 	  ON s.employee_id = e.id
+		  LEFT JOIN test_time_records AS t
+		  ON s.date=t.date
+		     AND s.employee_id=t.employee_id
+	 	  LEFT JOIN absence_applications AS a
+	 	  ON a.shift_id=s.id
+	 	  LEFT JOIN absence_reasons AS ar
+	 	  ON a.reason_id=ar.id
+	 	WHERE
+	 	  MONTH(s.date)=#{targetMonth}
+	 	  AND s.date &lt; CURRENT_DATE
+		ORDER BY s.date ASC
 		;
+<!--		SELECT-->
+<!--		  t.date-->
+<!--		  ,t.employee_id-->
+<!--		  ,e.name-->
+<!--		  ,t.clock_in-->
+<!--		  ,t.clock_out-->
+<!--		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time-->
+<!--		  ,t.created_at-->
+<!--		  ,t.updated_at-->
+<!--		FROM-->
+<!--		  test_time_records AS t-->
+<!--		  INNER JOIN test_employees AS e-->
+<!--	 	  ON t.employee_id = e.id-->
+<!--		WHERE-->
+<!--		  MONTH(t.date) = #{targetMonth}-->
+<!--		ORDER BY t.date ASC-->
+<!--		;-->
 	</select>
 
 	<select id="selectToDateByEmployeeIdAndMonth"
-		resultMap="TimeRecordWithEmployeeResult">
+		resultMap="TimeRecordWithEmployeeAndAbsenceReasonResult">
 		SELECT
-		  t.date
-		  ,t.employee_id
-		  ,e.name
+		  s.date
+		  ,s.employee_id
+		  ,e.name AS employee_name
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
 		  ,t.created_at
 		  ,t.updated_at
+		  ,CASE
+		    WHEN t.clock_in IS NULL AND ar.name IS NULL THEN '不明'
+		    WHEN t.clock_in IS NULL AND is_approve IS NULL THEN '可否忘れ'
+		    WHEN t.clock_in IS NULL AND is_approve='false' THEN '無断欠勤'
+		    WHEN t.clock_in IS NULL AND is_approve='true' THEN ar.name		    
+		    ELSE " "
+		    END AS reason_name
 		FROM
 		  test_time_records AS t
 		  INNER JOIN test_employees AS e
 	 	  ON t.employee_id = e.id
 		WHERE
 		  MONTH(t.date) = #{targetMonth}
+		  AND s.date &lt; CURRENT_DATE
 		  AND t.employee_id = #{employeeId}
-		ORDER BY t.date ASC
+		ORDER BY s.date ASC
 		;
 	</select>
 	
 <!--	これは廃止するかも-->
 <!--→やっぱ使う-->
 	<select id="selectByMonth">
-	SELECT
-	  DISTINCT e.id AS employeeId
-	  ,e.name
-	FROM
-	  test_shift_schedules s
-	  INNER JOIN test_employees e
-	  ON s.employee_id = e.id
-	WHERE
-	  MONTH(s.date) = #{targetMonth}
-	;
+		SELECT
+		  DISTINCT e.id AS employeeId
+		  ,e.name 
+		FROM
+		  test_shift_schedules s
+		  INNER JOIN test_employees e
+		  ON s.employee_id = e.id
+		WHERE
+		  MONTH(s.date) = #{targetMonth}
+		;
 	</select>
 	
 <!--	履歴編集で使用-->
-	<select id="selectByEmployeeIdAndDate" resultMap="TimeRecordWithEmployeeResult">
+	<select id="selectByEmployeeIdAndDate" resultMap="TimeRecordWithEmployeeAndAbsenceReasonResult">
 		SELECT
 		  t.date
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,t.employee_id
-		  ,e.name
+		  ,e.name AS employee_name
 		FROM
 		  test_time_records AS t
 		  INNER JOIN test_employees AS e
@@ -118,7 +161,7 @@
 <!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 <!--<mapper-->
 <!--	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">-->
-<!--	<resultMap id="ShiftAndTimeRecordWithEmployeeResult"-->
+<!--	<resultMap id="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult"-->
 <!--		type="com.example.webapp.entity.ShiftAndTimeRecord">-->
 <!--		<id property="shiftId" column="id" />-->
 <!--		<result property="date" column="date" />-->
@@ -139,7 +182,7 @@
 <!--	</resultMap>-->
 
 <!--	<select id="selectAllToDateByMonth"-->
-<!--		resultMap="ShiftAndTimeRecordWithEmployeeResult">-->
+<!--		resultMap="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult">-->
 <!--	SELECT-->
 <!--	  s.id-->
 <!--	  ,s.date-->
@@ -161,7 +204,7 @@
 <!--	</select>-->
 
 <!--	<select id="selectToDateByEmployeeIdAndMonth"-->
-<!--		resultMap="ShiftAndTimeRecordWithEmployeeResult">-->
+<!--		resultMap="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult">-->
 <!--	SELECT-->
 <!--	  s.id-->
 <!--	  ,s.date-->
@@ -195,7 +238,7 @@
 <!--	;-->
 <!--	</select>-->
 	
-<!--	<select id="selectByDateAndEmployeeId" resultMap="ShiftAndTimeRecordWithEmployeeResult">-->
+<!--	<select id="selectByDateAndEmployeeId" resultMap="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult">-->
 <!--	SELECT-->
 <!--	  s.id-->
 <!--	  ,s.date-->

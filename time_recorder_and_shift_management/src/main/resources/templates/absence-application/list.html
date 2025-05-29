@@ -26,7 +26,7 @@
 		<h1>欠勤申請一覧</h1>
 		<p th:if="${message}" th:text="${message}" class="message">完了メッセージ</p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message">エラーメッセージ</p>
-		<table style="width:auto">
+		<table class="absence-application">
 			<thead>
 				<tr>
 					<th>申請ID</th>
@@ -44,7 +44,7 @@
 			</thead>
 			<tbody class="employee-list">
 <!--				「application」という変数にしたらエラーになったのでappにした-->
-				<tr th:each="app:${applications}">
+				<tr th:each="app:${applications}" class="p5">
 					<th:block th:object="${app}">
 						<td th:text="*{applicationId}"></td>
 						<td th:text="*{shiftSchedule.date}"></td>
