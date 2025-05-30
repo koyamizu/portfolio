@@ -16,8 +16,8 @@
 					<a th:href="@{/absence-application/request}">新規申請</a>
 				</li>
 				<li class="li-index">
-					<a th:href="${#authorization.expression('hasRole(''ADMIN'')')}
-					? @{/admin}:@{/user}">戻る</a>
+					<a th:href="${#authorization.expression('hasAuthority(''ADMIN'')')} ?
+					@{/admin} : @{/user}">戻る</a>
 				</li>
 			</ul>
 		</nav>

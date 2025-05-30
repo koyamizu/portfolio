@@ -89,8 +89,6 @@
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
-		  ,t.created_at
-		  ,t.updated_at
 		  ,CASE
 		    WHEN t.clock_in IS NULL AND ar.name IS NULL THEN '不明'
 		    WHEN t.clock_in IS NULL AND is_approve IS NULL THEN '可否忘れ'
@@ -99,9 +97,16 @@
 		    ELSE " "
 		    END AS reason_name
 		FROM
-		  test_time_records AS t
+		  test_shift_schedules AS s
 		  INNER JOIN test_employees AS e
-	 	  ON t.employee_id = e.id
+	 	  ON s.employee_id = e.id
+		  LEFT JOIN test_time_records AS t
+		  ON s.date=t.date
+		     AND s.employee_id=t.employee_id
+	 	  LEFT JOIN absence_applications AS a
+	 	  ON a.shift_id=s.id
+	 	  LEFT JOIN absence_reasons AS ar
+	 	  ON a.reason_id=ar.id
 		WHERE
 		  MONTH(t.date) = #{targetMonth}
 		  AND s.date &lt; CURRENT_DATE

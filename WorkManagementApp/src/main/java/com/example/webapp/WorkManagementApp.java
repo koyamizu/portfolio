@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class TimeRecorderAndShiftManagementApplication {
+public class WorkManagementApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TimeRecorderAndShiftManagementApplication.class, args);
+		SpringApplication.run(WorkManagementApp.class, args);
 	}
 }
