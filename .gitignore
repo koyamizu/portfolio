@@ -1,1 +1,15 @@
-/.metadata/
+/bin/
+.target/
+.settings/
+.classpath
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Gradle
+/build/
+
+/Servers
+.metadata
+.gradle
