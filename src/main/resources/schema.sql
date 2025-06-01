@@ -1,29 +1,26 @@
 -- 外部キー制約の削除（※必要に応じて使用）
--- ALTER TABLE absence_applications DROP FOREIGN KEY fk_absence_applications_shift_id;
--- ALTER TABLE absence_applications DROP FOREIGN KEY fk_absence_applications_reason_id;
--- ALTER TABLE shift_schedules DROP FOREIGN KEY fk_shift_schedules_employee_id;
--- ALTER TABLE shift_requests DROP FOREIGN KEY fk_shift_requests_employee_id;
--- ALTER TABLE time_records DROP FOREIGN KEY fk_time_records_employee_id;
--- ALTER TABLE time_records DROP FOREIGN KEY fk_time_records_date;
+ ALTER TABLE test_absence_applications DROP FOREIGN KEY fk_test_absence_applications_shift_id;
+ ALTER TABLE test_absence_applications DROP FOREIGN KEY fk_test_absence_applications_reason_id;
+ ALTER TABLE test_shift_schedules DROP FOREIGN KEY fk_test_shift_schedules_employee_id;
+ ALTER TABLE test_shift_requests DROP FOREIGN KEY fk_test_shift_requests_employee_id;
+ ALTER TABLE test_time_records DROP FOREIGN KEY fk_test_time_records_employee_id;
+ ALTER TABLE test_time_records DROP FOREIGN KEY fk_test_time_records_date;
 
--- テーブル削除
-DROP TABLE IF EXISTS time_records;
-DROP TABLE IF EXISTS shift_requests;
-DROP TABLE IF EXISTS shift_schedules;
-DROP TABLE IF EXISTS employees;
-DROP TABLE IF EXISTS absence_applications;
-DROP TABLE IF EXISTS absence_reasons;
+DROP TABLE IF EXISTS test_time_records;
+DROP TABLE IF EXISTS test_absence_applications;
+DROP TABLE IF EXISTS test_shift_requests;
+DROP TABLE IF EXISTS test_shift_schedules;
+DROP TABLE IF EXISTS test_employees;
+DROP TABLE IF EXISTS test_absence_reasons;
 
--- 欠勤理由
-CREATE TABLE absence_reasons (
+CREATE TABLE test_absence_reasons (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 
--- 従業員
-CREATE TABLE employees (
+CREATE TABLE test_employees (
     id INT NOT NULL AUTO_INCREMENT,
     password CHAR(60) NOT NULL,
     name VARCHAR(50) NOT NULL,
@@ -37,8 +34,7 @@ CREATE TABLE employees (
     PRIMARY KEY (id)
 );
 
--- シフトスケジュール
-CREATE TABLE shift_schedules (
+CREATE TABLE test_shift_schedules (
     id INT NOT NULL AUTO_INCREMENT,
     employee_id INT NOT NULL,
     date DATE NOT NULL,
@@ -46,38 +42,26 @@ CREATE TABLE shift_schedules (
     scheduled_end TIME NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT fk_shift_schedules_employee_id FOREIGN KEY (employee_id)
-        REFERENCES employees(id)
+    CONSTRAINT fk_test_shift_schedules_employee_id FOREIGN KEY (employee_id)
+        REFERENCES test_employees(id),
+    CONSTRAINT uq_test_shift_schedules_employee_date UNIQUE (employee_id, date)
 );
 
--- シフト希望
-CREATE TABLE shift_requests (
+CREATE TABLE test_shift_requests (
     id INT NOT NULL AUTO_INCREMENT,
     employee_id INT NOT NULL,
     date DATE NOT NULL,
+    scheduled_start TIME NOT NULL,
+    scheduled_end TIME NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT fk_shift_requests_employee_id FOREIGN KEY (employee_id)
-        REFERENCES employees(id)
+    CONSTRAINT fk_test_shift_requests_employee_id FOREIGN KEY (employee_id)
+        REFERENCES test_employees(id)
+--        ,
+--    CONSTRAINT uq_test_shift_requests_employee_date UNIQUE (employee_id, date)
 );
 
--- 出退勤打刻
-CREATE TABLE time_records (
-    date DATE NOT NULL,
-    employee_id INT NOT NULL,
-    clock_in TIME NOT NULL,
-    clock_out TIME DEFAULT NULL,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (date, employee_id),
-    CONSTRAINT fk_time_records_employee_id FOREIGN KEY (employee_id)
-        REFERENCES shift_requests(employee_id),
-    CONSTRAINT fk_time_records_date FOREIGN KEY (date)
-        REFERENCES shift_requests(date)
-);
-
--- 欠勤申請
-CREATE TABLE absence_applications (
+CREATE TABLE test_absence_applications (
     id INT NOT NULL AUTO_INCREMENT,
     shift_id INT NOT NULL,
     reason_id INT NOT NULL,
@@ -86,15 +70,29 @@ CREATE TABLE absence_applications (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT fk_absence_applications_shift_id FOREIGN KEY (shift_id)
-        REFERENCES shift_schedules(id),
-    CONSTRAINT fk_absence_applications_reason_id FOREIGN KEY (reason_id)
-        REFERENCES absence_reasons(id)
+    CONSTRAINT fk_test_absence_applications_shift_id FOREIGN KEY (shift_id)
+        REFERENCES test_shift_schedules(id),
+    CONSTRAINT fk_test_absence_applications_reason_id FOREIGN KEY (reason_id)
+        REFERENCES test_absence_reasons(id)
+);
+
+CREATE TABLE test_time_records (
+    employee_id INT NOT NULL,
+    date DATE NOT NULL,
+    clock_in TIME NOT NULL,
+    clock_out TIME DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (date, employee_id)
+    ,CONSTRAINT fk_test_time_records_employee_date FOREIGN KEY (employee_id,date)
+        REFERENCES test_shift_schedules(employee_id,date)
 );
 
 
 
-----ALTER TABLE test_shifts_and_time_records DROP FOREIGN KEY test_shifts_and_time_records_ibfk_1;
+
+
+----ALTER TABLE test_shifts_and_time_records DROP FOREIGN KEY test_shifts_and_time_records_ibfk_test_1;
 ----ALTER TABLE test_shifts_and_time_records DROP employee_id;
 --DROP TABLE IF EXISTS test_employees;
 ----DROP TABLE IF EXISTS test_shifts_and_time_records;
