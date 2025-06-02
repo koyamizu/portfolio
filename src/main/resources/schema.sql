@@ -1,10 +1,10 @@
 -- 外部キー制約の削除（※必要に応じて使用）
- ALTER TABLE test_absence_applications DROP FOREIGN KEY fk_test_absence_applications_shift_id;
- ALTER TABLE test_absence_applications DROP FOREIGN KEY fk_test_absence_applications_reason_id;
- ALTER TABLE test_shift_schedules DROP FOREIGN KEY fk_test_shift_schedules_employee_id;
- ALTER TABLE test_shift_requests DROP FOREIGN KEY fk_test_shift_requests_employee_id;
- ALTER TABLE test_time_records DROP FOREIGN KEY fk_test_time_records_employee_id;
- ALTER TABLE test_time_records DROP FOREIGN KEY fk_test_time_records_date;
+-- ALTER TABLE test_absence_applications DROP FOREIGN KEY fk_test_absence_applications_shift_id;
+-- ALTER TABLE test_absence_applications DROP FOREIGN KEY fk_test_absence_applications_reason_id;
+-- ALTER TABLE test_shift_schedules DROP FOREIGN KEY fk_test_shift_schedules_employee_id;
+-- ALTER TABLE test_shift_requests DROP FOREIGN KEY fk_test_shift_requests_employee_id;
+-- ALTER TABLE test_time_records DROP FOREIGN KEY fk_test_time_records_employee_id;
+-- ALTER TABLE test_time_records DROP FOREIGN KEY fk_test_time_records_date;
 
 DROP TABLE IF EXISTS test_time_records;
 DROP TABLE IF EXISTS test_absence_applications;
