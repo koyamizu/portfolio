@@ -54,18 +54,28 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="history:${histories}"  class="p10">
+				<tr th:each="history:${histories}" class="p10">
 					<th:block th:object="${history}">
 						<td th:text="*{#temporals.format(date,'MM/dd')}"></td>
-						<td th:text="*{#temporals.dayOfWeekNameShort(date)}"></td>
+						<td>
+							<span th:switch="*{#temporals.dayOfWeekNameShort(date)}">
+								<span th:case="土" th:style="'color:blue'"
+									th:text="*{#temporals.dayOfWeekNameShort(date)}"></span>
+								<span th:case="日" th:style="'color:red'"
+									th:text="*{#temporals.dayOfWeekNameShort(date)}"></span>
+								<span th:case="*" th:text="*{#temporals.dayOfWeekNameShort(date)}"></span>
+							</span>
+						</td>
 						<td th:text="*{employeeName}"></td>
-						<td th:text="*{#temporals.format(clockIn,'HH:mm:ss')}"></td>
+						<td>
+							<span th:text="*{#temporals.format(clockIn,'HH:mm:ss')}"></span>
+						</td>
 						<td th:text="*{#temporals.format(clockOut,'HH:mm:ss')}"></td>
 						<td th:text="*{#temporals.format(workTime,'HH:mm:ss')}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')"
 							th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"></td>
-						<td th:style="*{createdAt} != *{updatedAt} ? 'color:red' : ''">
-							<span sec:authorize="hasAuthority('ADMIN')"
+						<td th:style="*{createdAt} != *{updatedAt} ? 'color:red' : ''"  sec:authorize="hasAuthority('ADMIN')">
+							<span
 								th:text="*{#temporals.format(updatedAt,'yyyy-MM-dd HH:mm:ss')}">
 							</span>
 						</td>

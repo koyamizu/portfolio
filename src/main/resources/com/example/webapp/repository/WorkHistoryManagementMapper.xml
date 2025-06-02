@@ -36,13 +36,13 @@
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
-		  ,t.created_at
-		  ,t.updated_at
+          ,t.created_at
+          ,t.updated_at
 		  ,CASE
-		    WHEN t.clock_in IS NULL AND ar.name IS NULL THEN '不明'
-		    WHEN t.clock_in IS NULL AND is_approve IS NULL THEN '可否忘れ'
-		    WHEN t.clock_in IS NULL AND is_approve='false' THEN '無断欠勤'
-		    WHEN t.clock_in IS NULL AND is_approve='true' THEN ar.name		    
+		    WHEN t.clock_in IS NULL AND a.reason_id IS NULL THEN '不明'
+		    WHEN t.clock_in IS NULL AND a.is_approve IS NULL THEN '承認忘れ'
+		    WHEN t.clock_in IS NULL AND a.is_approve=false THEN '未承認'
+		    WHEN t.clock_in IS NULL AND a.is_approve=true THEN ar.name	    
 		    ELSE " "
 		    END AS reason_name
 		FROM
@@ -54,7 +54,7 @@
 		     AND s.employee_id=t.employee_id
 	 	  LEFT JOIN test_absence_applications AS a
 	 	  ON a.shift_id=s.id
-	 	  LEFT JOIN test_absence_reasons AS ar
+	 	  LEFT JOIN absence_reasons AS ar
 	 	  ON a.reason_id=ar.id
 	 	WHERE
 	 	  MONTH(s.date)=#{targetMonth}
@@ -89,11 +89,13 @@
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+		  ,t.created_at
+          ,t.updated_at
 		  ,CASE
-		    WHEN t.clock_in IS NULL AND ar.name IS NULL THEN '不明'
-		    WHEN t.clock_in IS NULL AND is_approve IS NULL THEN '可否忘れ'
-		    WHEN t.clock_in IS NULL AND is_approve='false' THEN '無断欠勤'
-		    WHEN t.clock_in IS NULL AND is_approve='true' THEN ar.name		    
+		    WHEN t.clock_in IS NULL AND a.reason_id IS NULL THEN '不明'
+		    WHEN t.clock_in IS NULL AND a.is_approve IS NULL THEN '承認忘れ'
+		    WHEN t.clock_in IS NULL AND a.is_approve=false THEN '未承認'
+		    WHEN t.clock_in IS NULL AND a.is_approve=true THEN ar.name	    
 		    ELSE " "
 		    END AS reason_name
 		FROM
@@ -105,12 +107,12 @@
 		     AND s.employee_id=t.employee_id
 	 	  LEFT JOIN test_absence_applications AS a
 	 	  ON a.shift_id=s.id
-	 	  LEFT JOIN test_absence_reasons AS ar
+	 	  LEFT JOIN absence_reasons AS ar
 	 	  ON a.reason_id=ar.id
 		WHERE
-		  MONTH(t.date) = #{targetMonth}
+		  MONTH(s.date) = #{targetMonth}
 		  AND s.date &lt; CURRENT_DATE
-		  AND t.employee_id = #{employeeId}
+		  AND s.employee_id = #{employeeId}
 		ORDER BY s.date ASC
 		;
 	</select>

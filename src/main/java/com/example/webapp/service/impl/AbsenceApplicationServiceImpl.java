@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.AbsenceApplication;
+import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.repository.AbsenceApplicationMapper;
+import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.service.AbsenceApplicationService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,34 +16,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AbsenceApplicationServiceImpl implements AbsenceApplicationService {
 
-	private final AbsenceApplicationMapper mapper;
+	private final AbsenceApplicationMapper absenceApplicationMapper;
+	private final EmployeesManagementMapper employeeManagementMapper;
+
 	@Override
 	public List<AbsenceApplication> selectAllApplicationsAfterToday() {
-		return mapper.selectAll();
+		return absenceApplicationMapper.selectAll();
 	}
 
 	@Override
 	public List<AbsenceApplication> selectPersonalApplicationsAfterToday(Integer employeeId) {
-		return mapper.selectAllByEmployeeId(employeeId);
+		if (employeeId.equals(null)) {
+			throw new RuntimeException("認証情報がありません");
+		}
+		List<Integer> employeeIds = employeeManagementMapper.selectAllIdAndName().stream().map(e -> e.getEmployeeId())
+				.toList();
+		if (!employeeIds.contains(employeeId)) {
+			throw new RuntimeException("そのIDを持つ従業員は存在しません");
+		}
+		return absenceApplicationMapper.selectAllByEmployeeId(employeeId);
 	}
 
 	@Override
 	public List<AbsenceReason> selectAllReasons() {
-		return mapper.selectAllReasons();
+		return absenceApplicationMapper.selectAllReasons();
 	}
 
 	@Override
 	public void insertApplication(AbsenceApplication application) {
-		mapper.insert(application);
+		absenceApplicationMapper.insert(application);
 	}
 
 	@Override
 	public void updateApprove(Integer shiftId, Boolean decision) {
-		mapper.update(shiftId, decision);
+		try {
+			absenceApplicationMapper.update(shiftId, decision);
+		} catch (Exception e) {
+			
+		}
 	}
 
 	@Override
 	public void deleteApplication(Integer applicationId) {
-		mapper.delete(applicationId);
+		absenceApplicationMapper.delete(applicationId);
 	}
 }

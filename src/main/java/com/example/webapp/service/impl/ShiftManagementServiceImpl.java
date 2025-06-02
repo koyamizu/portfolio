@@ -9,6 +9,7 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.FullCalendarForm;
+import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
 
@@ -19,26 +20,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ShiftManagementServiceImpl implements ShiftManagementService {
 
-	private final ShiftManagementMapper mapper;
+	private final ShiftManagementMapper shiftManagementMapper;
+	private final EmployeesManagementMapper employeeManagementMapper;
 
 	@Override
 	public List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
-		return mapper.selectThreeMonthByTargetMonth(thisMonth);
+		return shiftManagementMapper.selectThreeMonthByTargetMonth(thisMonth);
 	}
 
 	@Override
 	public List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId) {
-		return mapper.selectByEmployeeId(employeeId);
+		return shiftManagementMapper.selectByEmployeeId(employeeId);
 	}
 
 	@Override
 	public List<ShiftSchedule> selectAllShiftsAfterTodayByEmployeeId(Integer employeeId) {
-		return mapper.selectAllAfterTodayByEmployeeId(employeeId);
+		List<Integer> employeeIds=employeeManagementMapper.selectAllIdAndName().stream().map(e->e.getEmployeeId()).toList();
+		if(!employeeIds.contains(employeeId)) {
+			throw new RuntimeException("そのIDを持つ従業員は存在しません");
+		}
+		return shiftManagementMapper.selectAllAfterTodayByEmployeeId(employeeId);
 	}
 	
 	@Override
 	public void insertShiftRequests(List<FullCalendarForm> requests) {
-		mapper.insertRequest(requests);
+		shiftManagementMapper.insertRequest(requests);
 	}
 
 	//	@Override
@@ -48,17 +54,17 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<Employee> selectEmployeesNotSubmitRequests() {
-		return mapper.selectNotSubmit();
+		return shiftManagementMapper.selectNotSubmit();
 	}
 
 	@Override
 	public List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
-		return mapper.selectOneMonthByTargetMonth(targetMonth);
+		return shiftManagementMapper.selectOneMonthByTargetMonth(targetMonth);
 	}
 
 	@Override
 	public List<FullCalendarEntity> selectAllShiftRequests() {
-		return mapper.selectAll();
+		return shiftManagementMapper.selectAll();
 	}
 
 //	@Override
@@ -68,28 +74,28 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public void insertNextMonthShifts(List<FullCalendarForm> newShifts) {
-		mapper.insertShift(newShifts);
+		shiftManagementMapper.insertShift(newShifts);
 	}
 
 	@Override
 	public void insertAdditionalRequest(List<FullCalendarForm> requests) {
-		mapper.insertAdditionalRequest(requests);
+		shiftManagementMapper.insertAdditionalRequest(requests);
 	}
 
 	@Override
 	public void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId) {
-		mapper.deleteByEmployeeId(requests, employeeId);
+		shiftManagementMapper.deleteByEmployeeId(requests, employeeId);
 	}
 
 	@Override
 	public void insertAdditionalShift(List<FullCalendarForm> newShifts) {
-		mapper.insertAdditionalShift(newShifts);
+		shiftManagementMapper.insertAdditionalShift(newShifts);
 		
 	}
 
 	@Override
 	public void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth) {
-		mapper.deleteByMonth(newShifts,targetMonth);
+		shiftManagementMapper.deleteByMonth(newShifts,targetMonth);
 		
 	}
 
