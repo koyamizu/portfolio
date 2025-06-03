@@ -25,7 +25,7 @@
 --CREATE TABLE test_employees (
 --    id INT NOT NULL AUTO_INCREMENT,
 --    password CHAR(60) NOT NULL,
---    name VARCHAR(50) NOT NULL,
+--    name VARCHAR(50) NOT NULL UNIQUE,
 --    birth DATE NOT NULL,
 --    tel VARCHAR(13) NOT NULL,
 --    address VARCHAR(150) NOT NULL,
@@ -65,7 +65,7 @@
 --
 --CREATE TABLE test_absence_applications (
 --    id INT NOT NULL AUTO_INCREMENT,
---    shift_id INT NOT NULL,
+--    shift_id INT NOT NULL UNIQUE,
 --    reason_id INT NOT NULL,
 --    detail TEXT NOT NULL,
 --    is_approve TINYINT(1) DEFAULT NULL,
