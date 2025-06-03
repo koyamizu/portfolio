@@ -43,8 +43,8 @@
 		  ON s.employee_id=e.id
 		  INNER JOIN test_absence_reasons AS ar
 		  ON aa.reason_id=ar.id
-		WHERE
-		  s.date &gt;=CURRENT_DATE
+<!--		WHERE-->
+<!--		  s.date &gt;=CURRENT_DATE-->
 		;
 	</select>
 	
@@ -68,8 +68,9 @@
 		  INNER JOIN test_absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		WHERE
-		  s.date &gt;=CURRENT_DATE
-		  AND s.employee_id=#{employeeId}
+<!--		  s.date &gt;=CURRENT_DATE-->
+<!--		  AND-->
+		  s.employee_id=#{employeeId}
 		;
 	</select>
 	

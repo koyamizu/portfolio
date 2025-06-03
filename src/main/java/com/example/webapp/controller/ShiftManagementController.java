@@ -180,15 +180,10 @@ public class ShiftManagementController {
 			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month)
 			throws JsonProcessingException {
 
-		//		Integer nextMonth = LocalDate.now().getMonthValue() + 1;
 		ObjectMapper mapper = new ObjectMapper();
 		List<FullCalendarForm> newShifts = mapper.readValue(selectedDatesJson,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
-
-		//		shiftManagementService.insertNextMonthShifts(newShifts);
-		//		attributes.addFlashAttribute("message", "シフトの作成が完了しました");
-		//		return "redirect:/shift/edit";
 
 		if (state.equals(State.NEW)) {
 			shiftManagementService.insertNextMonthShifts(newShifts);

@@ -171,14 +171,13 @@ function initializeCalendar(events, month) {
 		console.log('Selected dates:', selectedShifts);
 	}
 
-	form.addEventListener('submit', function(e) {
+	form.addEventListener('submit', function() {
 		selectedShifts.sort((a, b) => {
-			//-1はそのまま　0が変更
+			//-1はそのまま 0が変更
 			return (a.start < b.start) ? -1 : 0
 		});
 		// 例: ["2025-04-01","2025-04-08",…] の形
 		hiddenInput.value = JSON.stringify(selectedShifts);
-		// （特に e.preventDefault は不要。値セット後 自然送信。）
 	});
 
 }
