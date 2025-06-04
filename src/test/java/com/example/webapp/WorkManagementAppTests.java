@@ -1,10 +1,10 @@
-package com.example.demo;
+package com.example.webapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TimeRecorderAndShiftManagementApplicationTests {
+class WorkManagementAppTests {
 
 	@Test
 	void contextLoads() {

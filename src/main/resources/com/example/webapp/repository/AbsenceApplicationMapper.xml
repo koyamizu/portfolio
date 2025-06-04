@@ -53,11 +53,11 @@
 		  aa.id
 		  ,aa.shift_id
 		  ,s.date
-		  ,e.name employee_name
+		  ,e.name AS employee_name
 		  ,aa.created_at
 		  ,aa.updated_at
 		  ,aa.is_approve
-		  ,ar.name reason_name
+		  ,ar.name AS reason_name
 		  ,aa.detail
 		FROM
 		  test_absence_applications AS aa
@@ -77,8 +77,8 @@
 	<select id="selectToday" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
 		SELECT
 		  aa.id
-		  ,e.name employee_name
-		  ,ar.name reason_name
+		  ,e.name AS employee_name
+		  ,ar.name AS reason_name
 		FROM
 		  test_absence_applications AS aa
 		  INNER JOIN shift_schedules AS s
@@ -96,9 +96,9 @@
 	
 	<select id="selectByApplicationId" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
 		SELECT
-		  e.name employee_name
+		  e.name AS employee_name
 		  ,aa.created_at
-		  ,ar.name reason_name
+		  ,ar.name AS reason_name
 		  ,aa.detail
 		FROM
 		  test_absence_applications AS aa

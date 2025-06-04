@@ -58,7 +58,7 @@
 		  test_shift_schedules
 		WHERE
 		  employee_id = #{employeeId}
-		  AND date &gt; CURRENT_DATE
+		  AND date &gt;= CURRENT_DATE
 		ORDER BY date ASC
 		;
 	</select>
