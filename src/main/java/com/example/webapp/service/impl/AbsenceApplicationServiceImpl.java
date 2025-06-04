@@ -36,6 +36,16 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 		}
 		return absenceApplicationMapper.selectAllByEmployeeId(employeeId);
 	}
+	
+	@Override
+	public List<AbsenceApplication> getTodayApplications(){
+		return absenceApplicationMapper.selectToday();
+	}
+	
+	@Override
+	public List<AbsenceApplication> getApplicationDetail(){
+		return 	absenceApplicationMapper.selectByApplicationId();
+	}
 
 	@Override
 	public List<AbsenceReason> selectAllReasons() {

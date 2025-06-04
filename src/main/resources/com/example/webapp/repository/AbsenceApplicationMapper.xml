@@ -74,6 +74,45 @@
 		;
 	</select>
 	
+	<select id="selectToday" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
+		SELECT
+		  aa.id
+		  ,e.name employee_name
+		  ,ar.name reason_name
+		FROM
+		  test_absence_applications AS aa
+		  INNER JOIN shift_schedules AS s
+		  ON aa.shift_id=s.id
+		  INNER JOIN employees AS e
+		  ON s.employee_id=e.id
+		  INNER JOIN test_absence_reasons AS ar
+		  ON aa.reason_id=ar.id
+		WHERE
+		  s.date=CURRENT_DATE
+		  AND
+		  is_approve is null
+		;
+	</select>
+	
+	<select id="selectByApplicationId" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
+		SELECT
+		  e.name employee_name
+		  ,aa.created_at
+		  ,ar.name reason_name
+		  ,aa.detail
+		FROM
+		  test_absence_applications AS aa
+		  INNER JOIN shift_schedules AS s
+		  ON aa.shift_id=s.id
+		  INNER JOIN employees AS e
+		  ON s.employee_id=e.id
+		  INNER JOIN test_absence_reasons AS ar
+		  ON aa.reason_id=ar.id
+		WHERE
+		  aa.id=#{applicaionId}
+		;
+	</select>
+	
 	<select id="selectAllReasons">
 		SELECT
 		  id as reasonId

@@ -3,8 +3,6 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -23,6 +21,7 @@ import com.example.webapp.helper.TimeRecordHelper;
 import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.WorkHistoryManagementService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -101,6 +100,7 @@ public class WorkHistoryManagementController {
 //		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
 //		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
 		var fromPage=session.getAttribute("fromPage");
+		session.removeAttribute("fromPage");
 		return "redirect:/work-history/"+fromPage;
 	}
 }

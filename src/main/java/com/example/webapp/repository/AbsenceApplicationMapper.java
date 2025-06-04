@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.AbsenceApplication;
+import com.example.webapp.entity.AbsenceReason;
 
 @Mapper
 public interface AbsenceApplicationMapper {
@@ -13,6 +13,10 @@ public interface AbsenceApplicationMapper {
 	List<AbsenceApplication> selectAll();
 	
 	List<AbsenceApplication> selectAllByEmployeeId(Integer employeeId);
+	
+	List<AbsenceApplication> selectToday();
+	
+	List<AbsenceApplication> selectByApplicationId();
 	
 	List<AbsenceReason> selectAllReasons();
 	

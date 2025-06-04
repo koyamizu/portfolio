@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.AbsenceApplication;
+import com.example.webapp.entity.AbsenceReason;
 
 @Service
 public interface AbsenceApplicationService {
@@ -13,6 +13,10 @@ public interface AbsenceApplicationService {
 	List<AbsenceApplication> selectAllApplicationsAfterToday();
 	
 	List<AbsenceApplication> selectPersonalApplicationsAfterToday(Integer employeeId);
+	
+	List<AbsenceApplication> getTodayApplications();
+	
+	List<AbsenceApplication> getApplicationDetail();
 	
 	List<AbsenceReason> selectAllReasons();
 	
