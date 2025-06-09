@@ -1,8 +1,7 @@
-
 DROP TABLE IF EXISTS test_employees;
 
 CREATE TABLE test_employees (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT(1007),
     password CHAR(60) NOT NULL,
     name VARCHAR(50) NOT NULL UNIQUE,
     birth DATE NOT NULL,
@@ -14,7 +13,7 @@ CREATE TABLE test_employees (
     password_updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
---
+
 --CREATE TABLE test_shift_schedules (
 --    id INT NOT NULL AUTO_INCREMENT,
 --    employee_id INT NOT NULL,
