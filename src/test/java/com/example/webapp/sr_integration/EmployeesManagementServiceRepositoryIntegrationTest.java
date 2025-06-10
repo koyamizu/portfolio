@@ -1,86 +1,88 @@
-package com.example.webapp.repository;
+package com.example.webapp.sr_integration;
 
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
+import com.example.webapp.service.EmployeesManagementService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@MybatisTest
-@Sql("EmployeesManagementMapperTest.sql")
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@Sql("../repository/EmployeesManagementMapperTest.sql")
 @Slf4j
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class EmployeesManagementMapperTest {
+@Transactional
+public class EmployeesManagementServiceRepositoryIntegrationTest {
 
 	@Autowired
-	private EmployeesManagementMapper mapper;
-	
-	private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-	
-	private EmployeeTestData data=new EmployeeTestData();
-	
+	EmployeesManagementService service;
+
+	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	private EmployeeTestData data = new EmployeeTestData();
+
 	@Test
-	void testSelectById() {
-		Employee yoshizuka=data.getYoshizuka();
-		Employee actual=mapper.selectById(1001);
+	void testSelectEmployeeById() {
+		Employee yoshizuka = data.getYoshizuka();
+		Employee actual = service.selectEmployeeById(1001);
 		assertThat(actual.getEmployeeId()).isEqualTo(yoshizuka.getEmployeeId());
 		assertThat(encoder.matches(yoshizuka.getPassword(), actual.getPassword())).isTrue();
 		assertThat(actual.getName()).isEqualTo(yoshizuka.getName());
 		assertThat(actual.getBirth()).isEqualTo(yoshizuka.getBirth());
 		assertThat(actual.getTel()).isEqualTo(yoshizuka.getTel());
 		assertThat(actual.getAddress()).isEqualTo(yoshizuka.getAddress());
-		assertThat(actual.getAuthority()).isEqualTo(yoshizuka.getAuthority());	
+		assertThat(actual.getAuthority()).isEqualTo(yoshizuka.getAuthority());
 	}
-	
+
 	@Test
-	void testSelectAll() {
-		List<Employee> actuals=mapper.selectAll();
-		
+	void testSelectAllEmployees() {
+		List<Employee> actuals = service.selectAllEmployees();
+
 		assertThat(actuals.size()).isEqualTo(6);
-		
-		Employee yoshizuka=data.getYoshizuka();
-		
+
+		Employee yoshizuka = data.getYoshizuka();
+
 		assertThat(actuals.get(0).getEmployeeId()).isEqualTo(yoshizuka.getEmployeeId());
 		assertThat(encoder.matches(yoshizuka.getPassword(), actuals.get(0).getPassword())).isTrue();
 		assertThat(actuals.get(0).getName()).isEqualTo(yoshizuka.getName());
 		assertThat(actuals.get(0).getBirth()).isEqualTo(yoshizuka.getBirth());
 		assertThat(actuals.get(0).getTel()).isEqualTo(yoshizuka.getTel());
 		assertThat(actuals.get(0).getAddress()).isEqualTo(yoshizuka.getAddress());
-		assertThat(actuals.get(0).getAuthority()).isEqualTo(yoshizuka.getAuthority());	
+		assertThat(actuals.get(0).getAuthority()).isEqualTo(yoshizuka.getAuthority());
 	}
-	
+
 	@Test
 	void testSelectAllIdAndName() {
-		List<Employee> actuals=mapper.selectAllIdAndName();
-		
+		List<Employee> actuals = service.selectAllIdAndName();
+
 		assertThat(actuals.size()).isEqualTo(6);
-		
-		Employee yoshizuka=data.getYoshizuka();
-		
+
+		Employee yoshizuka = data.getYoshizuka();
+
 		assertThat(actuals).extracting(Employee::getEmployeeId).contains(yoshizuka.getEmployeeId());
 		assertThat(actuals).extracting(Employee::getName).contains(yoshizuka.getName());
 	}
-	
+
 	@Test
-	void testSelectIdByName() {
-		Integer id=mapper.selectIdByName("吉塚");
+	void testSelectEmployeeIdByName() {
+		Integer id=service.selectEmployeeIdByName("吉塚");
 		assertThat(id).isEqualTo(1001);
 	}
-	
+
 	@Test
-	void testInsert() {
+	void testInsertEmployee() {
 		Employee chihaya=data.getChihaya();
-		mapper.insert(chihaya);
-		Employee confirm=mapper.selectById(1007);
+		service.insertEmployee(chihaya);
+		Employee confirm=service.selectEmployeeById(1007);
 		assertThat(confirm.getPassword()).isEqualTo(chihaya.getPassword());
 		assertThat(confirm.getName()).isEqualTo(chihaya.getName());
 		assertThat(confirm.getBirth()).isEqualTo(chihaya.getBirth());
@@ -88,21 +90,21 @@ public class EmployeesManagementMapperTest {
 		assertThat(confirm.getAddress()).isEqualTo(chihaya.getAddress());
 		assertThat(confirm.getAuthority()).isEqualTo(chihaya.getAuthority());
 	}
-	
+
 	@Test
-	void testUpdate() {
-		Employee koga=mapper.selectById(1002);
+	void testUpdateEmployee() {
+		Employee koga=service.selectEmployeeById(1002);
 		log.info("名前変更前："+koga.getName());
 		koga.setName("鹿部");
-		mapper.update(koga);
-		Employee exKoga=mapper.selectById(1002);
+		service.updateEmployee(koga);
+		Employee exKoga=service.selectEmployeeById(1002);
 		assertThat(exKoga.getName()).isEqualTo("鹿部");
 	}
-	
+
 	@Test
-	void testDelete() {
-		assertThat(mapper.selectById(1001)).isNotNull();
-		mapper.deleteById(1001);
-		assertThat(mapper.selectById(1001)).isNull();
+	void testDeleteEmployeeById() {
+		assertThat(service.selectEmployeeById(1001)).isNotNull();
+		service.deleteEmployeeById(1001);
+		assertThat(service.selectEmployeeById(1001)).isNull();
 	}
 }

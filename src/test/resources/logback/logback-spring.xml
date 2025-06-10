@@ -28,12 +28,12 @@
     </appender>
 
     <!-- ロガー -->
-    <logger name="appLogger" level="INFO">
+    <logger name="appLogger" level="DEBUG">
       <appender-ref ref="APPLIATION_LOG" />
     </logger>
 
     <!-- ルート -->
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
