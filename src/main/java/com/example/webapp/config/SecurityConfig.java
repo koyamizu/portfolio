@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	//↓このふたつ必要なのかどうか要検討
 	private final UserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
 

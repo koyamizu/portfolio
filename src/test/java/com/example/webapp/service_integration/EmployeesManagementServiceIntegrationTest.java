@@ -1,4 +1,4 @@
-package com.example.webapp.sr_integration;
+package com.example.webapp.service_integration;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Sql("../repository/EmployeesManagementMapperTest.sql")
 @Slf4j
 @Transactional
-public class EmployeesManagementServiceRepositoryIntegrationTest {
+public class EmployeesManagementServiceIntegrationTest {
 
 	@Autowired
 	EmployeesManagementService service;

@@ -51,4 +51,7 @@ public class EmployeeTestData {
 						Role.USER, null, null, null));
 	}
 
+	public String getPassword() {
+		return "$2a$10$1bByysmSqkXL7c1fEeRgwemvFa0jJZfn3txG5foVXZUbr5cRYdyAS";
+	}
 }
