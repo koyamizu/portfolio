@@ -37,7 +37,7 @@
 <!--	</resultMap>-->
 
 	<!--当日出勤者選択 -->
-	<select id="selectEmployeeByDate"
+	<select id="selectByDate"
 		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 		SELECT
 		  e.name

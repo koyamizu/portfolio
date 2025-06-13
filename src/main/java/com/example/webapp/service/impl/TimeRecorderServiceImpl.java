@@ -22,7 +22,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 
 	@Override
 	public List<ShiftSchedule> selectEmployeesByDate(LocalDate date) {
-		return timeRecorderMapper.selectEmployeeByDate(date);
+		return timeRecorderMapper.selectByDate(date);
 	}
 
 	@Override

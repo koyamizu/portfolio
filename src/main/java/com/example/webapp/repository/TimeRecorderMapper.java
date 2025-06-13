@@ -11,7 +11,7 @@ import com.example.webapp.entity.TimeRecord;
 @Mapper
 public interface TimeRecorderMapper {
 
-	List<ShiftSchedule> selectEmployeeByDate(LocalDate date);
+	List<ShiftSchedule> selectByDate(LocalDate date);
 	
 	//ShiftSchedule型
 	ShiftSchedule selectByEmployeeId(Integer employeeId);
