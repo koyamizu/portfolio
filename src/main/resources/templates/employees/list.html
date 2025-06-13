@@ -40,8 +40,7 @@
 						<td th:text="*{employeeId}"></td>
 						<td th:text="*{name}"></td>
 						<td><a th:href="@{/password/reset/{employee-id}(employee-id=*{employeeId})}">パスワード再設定</td>
-						<!--REST形式-->
-						<td><a th:href="@{/employees/detail/{employee-id}(employee-id=*{employeeId})}">詳細</a></td>
+						<td><a th:href="@{/employees/detail/{employee-id}(employee-id=*{employeeId})}" id="detail">詳細</a></td>
 						<td><a th:href="@{/employees/edit/{employee-id}(employee-id=*{employeeId})}">編集</a></td>
 						<td><a th:href="@{/employees/delete/{employee-id}(employee-id=*{employeeId})}">削除</a></tdth>
 					</th:block>
