@@ -66,7 +66,7 @@ public class TimeRecorderController {
 
 	//	シフトデータが存在しなければ打刻ページには移れない。
 	//	打刻ができたということはシフトが存在しているということなので、パラメーター引数はemployee-idでいいのではないかと思う
-	@PostMapping("/stamp/start")
+	@PostMapping("/start")
 	public String start(@RequestParam("employee-id") Integer employeeId, Model model, RedirectAttributes attributes) {
 		//ここでしか使わないんだったらemployeeIdだけ渡して、date=CURRENT_DATEでいい気もする
 		TimeRecord timeRecord = timeRecorderService.selectByDateAndEmployeeId(employeeId, today);
@@ -80,7 +80,7 @@ public class TimeRecorderController {
 		}
 	}
 
-	@PostMapping("/stamp/end")
+	@PostMapping("/end")
 	public String end(@RequestParam("employee-id") Integer employeeId, Model model, RedirectAttributes attributes) {
 		TimeRecord timeRecord = timeRecorderService.selectByDateAndEmployeeId(employeeId, today);
 		if (Objects.equals(timeRecord, null)) {

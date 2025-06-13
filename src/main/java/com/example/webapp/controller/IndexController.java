@@ -37,7 +37,7 @@ public class IndexController {
 		return "menu/user";
 	}
 	
-	//デベロッパーツールを開いた状態でログインすると、エラーになるのでエラーページを準備した。
+	//デベロッパーツールを開いた状態でログインすると、エラーになるのでエラーページを用意した。
 	@GetMapping(".well-known/appspecific/com.chrome.devtools.json")
 	public String showOpenDevtoolError() {
 		return "error/devtool";
