@@ -87,6 +87,7 @@
 --    PRIMARY KEY (date, employee_id)
 --    ,CONSTRAINT fk_test_time_records_employee_date FOREIGN KEY (employee_id,date)
 --        REFERENCES test_shift_schedules(employee_id,date)
+--        ,CONSTRAINT uq_test_time_records_employee_date UNIQUE (employee_id, date)
 --);
 
 --↓開発用

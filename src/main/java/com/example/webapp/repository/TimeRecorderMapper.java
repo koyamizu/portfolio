@@ -12,13 +12,12 @@ import com.example.webapp.entity.TimeRecord;
 public interface TimeRecorderMapper {
 
 	List<ShiftSchedule> selectByDate(LocalDate date);
-	
-	//ShiftSchedule型
-	ShiftSchedule selectByEmployeeId(Integer employeeId);
-	
-	TimeRecord selectByDateAndEmployeeId(Integer employeeId, LocalDate date);
 
-	void insert(Integer employeeId, LocalDate date);
+	ShiftSchedule selectShiftScheduleByEmployeeId(Integer employeeId);
 	
-	void update(Integer employeeId, LocalDate date);
+	TimeRecord selectTimeRecordByEmployeeId(Integer employeeId);
+
+	void insert(Integer employeeId);
+	
+	void update(Integer employeeId);
 }

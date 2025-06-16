@@ -16,9 +16,10 @@ import com.example.webapp.entity.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 @MybatisTest
+//shift_scheduleと外部制約がある関係で、既存の従業員のdeleteができないので
+//テスト用のデータを個別に挿入
 @Sql("EmployeesManagementMapperTest.sql")
 @Slf4j
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class EmployeesManagementMapperTest {
 
 	@Autowired

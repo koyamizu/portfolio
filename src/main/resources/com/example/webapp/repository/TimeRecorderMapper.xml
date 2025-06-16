@@ -56,11 +56,8 @@
 		;
 	</select>
 	<!-- シフトデータの抽出 -->
-	<!-- 下のt.clock_inやt.clock_outでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
-	<select id="selectByEmployeeId"
+	<select id="selectShiftScheduleByEmployeeId"
 		resultMap="ShiftWithEmployeeAndTimeRecordResult">
-		<!-- SELECT * -->
-		<!-- FROM test_shift_and_timestamp2504 -->
 		SELECT
 		  s.employee_id
 		  ,e.name 
@@ -73,10 +70,8 @@
 		  AND date = CURRENT_DATE
 		;
 	</select>
-<!--	time_recordsのdateとemployee_idを複合主キーにして、
-		start(),end()のときはdateとemployeeIdを条件にselectする？
-		shift_schedulesのdateとemployee_idを外部キー制約にするとか-->
-	<select id="selectByDateAndEmployeeId">
+<!--	打刻データの抽出-->
+	<select id="selectTimeRecordByEmployeeId">
 <!--		resultType="com.example.webapp.entity.TimeRecord">-->
 		SELECT
 		  clock_in AS clockIn
@@ -84,8 +79,8 @@
 		FROM
 		  test_time_records
 		WHERE
-		  date=#{date}
-		  AND employee_id=#{employeeId}
+		  employee_id = #{employeeId}
+		  AND date = CURRENT_DATE
 		;
 	</select>
 	<!-- 出勤の打刻 -->
@@ -93,7 +88,7 @@
 		INSERT INTO 
 		  test_time_records(date, employee_id, clock_in, created_at, updated_at)
 		VALUE
-		  (#{date} ,#{employeeId} ,CURRENT_TIME, now(), now())
+		  (CURRENT_DATE ,#{employeeId} ,CURRENT_TIME, now(), now())
 		 ;
 	</update>
 	<!-- 退勤の打刻 -->
@@ -103,105 +98,8 @@
 		SET
 		  clock_out=CURRENT_TIME
 		WHERE
-		  date=#{date}
-		  AND employee_id=#{employeeId}
+		  employee_id = #{employeeId}
+		  AND date = CURRENT_DATE
 		;
 	</update>
 </mapper>
-
-<!--↓分割前-->
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
-<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
-<!--<mapper-->
-<!--	namespace="com.example.webapp.repository.TimeRecorderMapper">-->
-
-<!--	<resultMap id="ShiftAndTimeRecordWithEmployeeResult"-->
-<!--		type="com.example.webapp.entity.ShiftAndTimeRecord">-->
-<!--		<id property="shiftId" column="id" />-->
-<!--		<result property="date" column="date" />-->
-<!--		<result property="start" column="start" />-->
-<!--		<result property="end" column="end" />-->
-<!--		<result property="workTime" column="work_time"/>-->
-<!--		<result property="createdAt" column="created_at" />-->
-<!--		<result property="updatedAt" column="updated_at" />-->
-<!--		<association property="employee"-->
-<!--			javaType="com.example.webapp.entity.Employee">-->
-<!--			<id property="employeeId" column="employee_id" />-->
-<!--			<result property="name" column="name" />-->
-<!--		</association>-->
-<!--	</resultMap>-->
-	
-<!--	<resultMap id="ShiftAntTimeRecordMap" type="com.example.webapp.entity.ShiftAndTimeRecord">-->
-<!--		<id property="shiftId" column="id"/>-->
-<!--	</resultMap>-->
-
-<!--	当日出勤者選択 -->
-<!--	<select id="selectEmployeeByDate"-->
-<!--		resultMap="ShiftAndTimeRecordWithEmployeeResult">-->
-<!--		SELECT-->
-<!--		  e.name-->
-<!--		  ,s.date-->
-<!--		  ,s.start-->
-<!--		  ,s.end-->
-<!--		  ,SUBTIME(end,start) AS work_time-->
-<!--		FROM-->
-<!--		  test_employees AS e-->
-<!--		  INNER JOIN test_shifts_and_time_records AS s-->
-<!--		  ON e.id = s.employee_id-->
-<!--		WHERE-->
-<!--		  s.date = #{date}-->
-<!--		;-->
-<!--	</select>-->
-<!--	 シフトデータの抽出 -->
-<!--	 下のstartやendでの使用が想定されるが、もし打刻時のみの使用ならdate=CURRENT_DATEでもいい気はする -->
-<!--	<select id="selectShiftByEmployeeIdAndDate"-->
-<!--		resultMap="ShiftAndTimeRecordWithEmployeeResult">-->
-<!--		 SELECT * -->
-<!--		 FROM test_shift_and_timestamp2504 -->
-<!--		SELECT-->
-<!--		  s.id-->
-<!--		  ,e.name-->
-<!--		  ,s.date-->
-<!--		FROM-->
-<!--		  test_employees AS e-->
-<!--		  INNER JOIN test_shifts_and_time_records AS s-->
-<!--		  ON e.id = s.employee_id-->
-<!--		WHERE-->
-<!--		  employee_id = #{employeeId}-->
-<!--		  AND date = #{date}-->
-<!--		;-->
-<!--	</select>-->
-<!--	<select id="selectTimeRecordByShiftId"-->
-<!--		resultMap="ShiftAntTimeRecordMap">-->
-<!--		SELECT-->
-<!--		  id-->
-<!--		  ,employee_id-->
-<!--		  ,start-->
-<!--		  ,end-->
-<!--		FROM-->
-<!--		  test_shifts_and_time_records-->
-<!--		WHERE-->
-<!--		  id = #{shiftId}-->
-<!--		;-->
-<!--	</select>-->
-<!--	 出勤の打刻 -->
-<!--	<update id="updateStartTimeByShiftId">-->
-<!--		UPDATE-->
-<!--		  test_shifts_and_time_records-->
-<!--		SET-->
-<!--		  start=CURRENT_TIME-->
-<!--		WHERE-->
-<!--		  id=#{shiftId}-->
-<!--		 ;-->
-<!--	</update>-->
-<!--	 退勤の打刻 -->
-<!--	<update id="updateEndTimeByShiftId">-->
-<!--		UPDATE-->
-<!--		  test_shifts_and_time_records-->
-<!--		SET-->
-<!--		  end=CURRENT_TIME-->
-<!--		WHERE-->
-<!--		  id=#{shiftId}-->
-<!--		;-->
-<!--	</update>-->
-<!--</mapper>-->
