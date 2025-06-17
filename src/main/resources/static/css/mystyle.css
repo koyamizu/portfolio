@@ -137,7 +137,7 @@ td {
 /*}*/
 
 /* 打刻画面の出退勤フォーム */
-.stamp {
+.record {
 	display: flex;
 	/*	gap:40px;*/
 	margin: 30px auto;
@@ -157,7 +157,7 @@ td {
 }
 
 /* time-recorder/top.htmlの「タイムレコーダー」
-time-recorder/stamp.htmlの「現在●●さんでログインしています」
+time-recorder/record.htmlの「現在●●さんでログインしています」
 という文字のレイアウト */
 .sub-h1 {
 	margin-block-end: 5px;
@@ -165,7 +165,7 @@ time-recorder/stamp.htmlの「現在●●さんでログインしています�
 	padding-top: 10px;
 }
 
-.stamp-title{
+.record-title{
 	font-size: 120%;
 	margin-bottom:10px;
 }
@@ -387,7 +387,7 @@ table .w30{
 		margin-top: 15px;
 	}
 
-	.stamp {
+	.record {
 		display: block;
 		width: auto;
 	}

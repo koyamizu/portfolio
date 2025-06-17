@@ -18,7 +18,7 @@
 		</nav>
 	</header>
 	<article>
-		<h1 class="stamp-title">
+		<h1 class="record-title">
 			現在&nbsp;<span th:text="${employee.name}" class="login-employee-name"></span>
 			&nbsp;さんでログインしています
 		</h1>
@@ -37,12 +37,12 @@
 			updateClock();
 			setInterval(updateClock, 1000);
 		</script>
-		<div class="stamp">
-			<form th:action="@{/time-recorder/start}" method="post">
+		<div class="record">
+			<form th:action="@{/time-recorder/clock-in}" method="post">
 				<input type="hidden" name="employee-id" th:value=${employee.employeeId}>
 				<input type="submit" value="出勤" class="sub-button red">
 			</form>
-			<form th:action="@{/time-recorder/end}" method="post">
+			<form th:action="@{/time-recorder/clock-out}" method="post">
 				<input type="hidden" name="employee-id" th:value=${employee.employeeId}>
 				<input type="submit" value="退勤" class="sub-button blue">
 			</form>

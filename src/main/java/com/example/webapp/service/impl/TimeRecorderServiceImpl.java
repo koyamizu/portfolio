@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
@@ -32,11 +32,14 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 
 	@Override
 	public List<ShiftSchedule> getEmployeeList(LocalDate date) throws NoDataException {
-		try {
-			return timeRecorderMapper.selectByDate(date);
-		} catch (EmptyResultDataAccessException e) {
+
+		List<ShiftSchedule> todayEmployeeList = timeRecorderMapper.selectByDate(date);
+
+		if (CollectionUtils.isEmpty(todayEmployeeList)) {
 			throw new NoDataException("今日の出勤者情報が取得できませんでした。");
 		}
+
+		return todayEmployeeList;
 	}
 
 	@Override
@@ -46,21 +49,21 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 		if (Objects.equal(targetEmployee, null)) {
 			throw new InvalidEmployeeIdException("そのIDを持つ従業員は存在しません");
 		}
-		try {
-			return timeRecorderMapper.selectShiftScheduleByEmployeeId(employeeId);
-		} catch (EmptyResultDataAccessException e) {
-			throw new NoDataException(targetEmployee.getName() + " さんは本日出勤予定ではありません");
+		ShiftSchedule targetShift = timeRecorderMapper.selectShiftScheduleByEmployeeId(employeeId);
+		if (Objects.equal(targetShift, null)) {
+			throw new NoDataException("その従業員IDの方は本日出勤予定ではありません");
 		}
+		return targetShift;
 	}
 
-	@Override
-	public TimeRecord getTodayPersonalTimeRecordData(Integer employeeId) {
-		return timeRecorderMapper.selectTimeRecordByEmployeeId(employeeId);
+//	@Override
+//	public TimeRecord getTodayPersonalTimeRecordData(Integer employeeId) {
+//		return timeRecorderMapper.selectTimeRecordByEmployeeId(employeeId);
+//
+//	}
 
-	}
-
 	@Override
-	public void clockIn(Integer employeeId) throws DuplicateClockException{
+	public void clockIn(Integer employeeId) throws DuplicateClockException {
 		try {
 			timeRecorderMapper.insert(employeeId);
 		} catch (DuplicateKeyException e) {
@@ -69,13 +72,13 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	}
 
 	@Override
-	public void clockOut(Integer employeeId) throws InvalidClockException,DuplicateClockException{
-		
-		TimeRecord targetTimeRecord=timeRecorderMapper.selectTimeRecordByEmployeeId(employeeId);
-		if(Objects.equal(targetTimeRecord, null)) {
+	public void clockOut(Integer employeeId) throws InvalidClockException, DuplicateClockException {
+
+		TimeRecord targetTimeRecord = timeRecorderMapper.selectTimeRecordByEmployeeId(employeeId);
+		if (Objects.equal(targetTimeRecord, null)) {
 			throw new InvalidClockException("「出勤」より先に「退勤」は押せません");
 		}
-		if(!Objects.equal(targetTimeRecord.getClockOut(), null)) {
+		if (!Objects.equal(targetTimeRecord.getClockOut(), null)) {
 			throw new DuplicateClockException("すでに退勤済みです");
 		}
 		timeRecorderMapper.update(employeeId);

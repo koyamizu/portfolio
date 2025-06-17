@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.example.webapp.entity.ShiftSchedule;
-import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
@@ -16,7 +15,7 @@ public interface TimeRecorderService {
 
 	ShiftSchedule getTodayPersonalShiftData(Integer employeeId) throws InvalidEmployeeIdException,NoDataException;
 
-	TimeRecord getTodayPersonalTimeRecordData(Integer employeeId);
+//	TimeRecord getTodayPersonalTimeRecordData(Integer employeeId);
 	
 	void clockIn(Integer employeeId) throws DuplicateClockException;
 
