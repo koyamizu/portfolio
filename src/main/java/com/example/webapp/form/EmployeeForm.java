@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeForm {
 //	従業員id
-	@NotNull
 	private Integer employeeId;
 //	従業員パスワード
 	private String password;
@@ -35,7 +34,6 @@ public class EmployeeForm {
 	@NotNull
 	private String address;
 	
-	@NotNull
 	private Role authority;
 	
 	private Boolean isNew;

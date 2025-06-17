@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 public class IndexController {
 	@GetMapping
 	public String showIndex(HttpSession session){
-		session.invalidate();
+		session.removeAttribute("from");
 		return "index";
 	}
 	
