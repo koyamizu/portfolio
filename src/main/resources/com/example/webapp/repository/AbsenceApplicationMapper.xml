@@ -36,12 +36,12 @@
 		  ,ar.name AS reason_name
 		  ,aa.detail
 		FROM
-		  test_absence_applications AS aa
-		  INNER JOIN test_shift_schedules AS s
+		  absence_applications AS aa
+		  INNER JOIN shift_schedules AS s
 		  ON aa.shift_id=s.id
 		  INNER JOIN employees AS e
 		  ON s.employee_id=e.id
-		  INNER JOIN test_absence_reasons AS ar
+		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 <!--		WHERE-->
 <!--		  s.date &gt;=CURRENT_DATE-->
@@ -60,12 +60,12 @@
 		  ,ar.name AS reason_name
 		  ,aa.detail
 		FROM
-		  test_absence_applications AS aa
+		  absence_applications AS aa
 		  INNER JOIN shift_schedules AS s
 		  ON aa.shift_id=s.id
 		  INNER JOIN employees AS e
 		  ON s.employee_id=e.id
-		  INNER JOIN test_absence_reasons AS ar
+		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		WHERE
 <!--		  s.date &gt;=CURRENT_DATE-->
@@ -80,12 +80,12 @@
 		  ,e.name AS employee_name
 		  ,ar.name AS reason_name
 		FROM
-		  test_absence_applications AS aa
+		  absence_applications AS aa
 		  INNER JOIN shift_schedules AS s
 		  ON aa.shift_id=s.id
 		  INNER JOIN employees AS e
 		  ON s.employee_id=e.id
-		  INNER JOIN test_absence_reasons AS ar
+		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		WHERE
 		  s.date=CURRENT_DATE
@@ -101,12 +101,12 @@
 		  ,ar.name AS reason_name
 		  ,aa.detail
 		FROM
-		  test_absence_applications AS aa
+		  absence_applications AS aa
 		  INNER JOIN shift_schedules AS s
 		  ON aa.shift_id=s.id
 		  INNER JOIN employees AS e
 		  ON s.employee_id=e.id
-		  INNER JOIN test_absence_reasons AS ar
+		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		WHERE
 		  aa.id=#{applicaionId}
@@ -118,13 +118,13 @@
 		  id as reasonId
 		  ,name
 		FROM
-		  test_absence_reasons
+		  absence_reasons
 		;
 	</select>
 	
 	<insert id="insert">
 		INSERT INTO
-		  test_absence_applications(shift_id,reason_id,detail,created_at,updated_at)
+		  absence_applications(shift_id,reason_id,detail,created_at,updated_at)
 		VALUE
 		  (#{shiftSchedule.shiftId},#{absenceReason.reasonId},#{detail},now(),now())
 		;
@@ -132,7 +132,7 @@
 	
 	<update id="update">
 		UPDATE
-		  test_absence_applications
+		  absence_applications
 		SET
 		  is_approve=#{decision}
 		WHERE
@@ -143,7 +143,7 @@
 	<delete id="delete">
 		DELETE
 		FROM
-		  test_absence_applications
+		  absence_applications
 		WHERE
 		  id=#{applicationId}
 		;

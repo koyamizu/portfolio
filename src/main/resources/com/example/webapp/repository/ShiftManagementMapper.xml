@@ -25,8 +25,8 @@
 		  ,s.scheduled_start
 		  ,s.scheduled_end
 		FROM
-		  test_shift_schedules AS s
-		  INNER JOIN test_employees AS e
+		  shift_schedules AS s
+		  INNER JOIN employees AS e
 		  ON s.employee_id = e.id
 		WHERE
 		  MONTH(s.date) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1
@@ -42,7 +42,7 @@
 		  ,scheduled_start
 		  ,scheduled_end
 		FROM
-		  test_shift_requests
+		  shift_requests
 		WHERE
 		  employee_id = #{employeeId}
 		ORDER BY date ASC
@@ -55,7 +55,7 @@
 		  id AS shiftId
 		  ,date
 		FROM
-		  test_shift_schedules
+		  shift_schedules
 		WHERE
 		  employee_id = #{employeeId}
 		  AND date &gt;= CURRENT_DATE
@@ -73,8 +73,8 @@
 		  ,s.scheduled_start
 		  ,s.scheduled_end
 		FROM
-		  test_shift_schedules AS s
-		  INNER JOIN test_employees AS e
+		  shift_schedules AS s
+		  INNER JOIN employees AS e
 		  ON s.employee_id = e.id
 		WHERE
 		  MONTH(s.date) = #{targetMonth}
@@ -92,8 +92,8 @@
 		  ,r.scheduled_start
 		  ,r.scheduled_end
 		FROM
-		  test_shift_requests AS r
-		  INNER JOIN test_employees AS e
+		  shift_requests AS r
+		  INNER JOIN employees AS e
 		  ON r.employee_id = e.id
 		;
 	</select>
@@ -104,20 +104,20 @@
 		  id
 		  ,name
 		FROM
-		  test_employees
+		  employees
 		WHERE
 		  id NOT IN (
 		    SELECT
 		      employee_id
 		    FROM
-		      test_shift_requests
+		      shift_requests
 		  )
 		;
 	</select>
 
 	<insert id="insertRequest">
 		INSERT INTO
-		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end, created_at)
+		  shift_requests(employee_id, date, scheduled_start, scheduled_end, created_at)
 		VALUES
 		<foreach collection="requests" item="r" separator=",">
 <!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える。-->
@@ -129,7 +129,7 @@
 	
 	<insert id="insertAdditionalRequest">
 		INSERT INTO
-		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end,created_at)
+		  shift_requests(employee_id, date, scheduled_start, scheduled_end,created_at)
 		VALUES
 		<foreach collection="requests" item="r" separator=",">
 			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
@@ -139,7 +139,7 @@
 
 	<insert id="insertShift">
 		INSERT INTO
-		  test_shift_schedules(employee_id,date,scheduled_start,scheduled_end, created_at)
+		  shift_schedules(employee_id,date,scheduled_start,scheduled_end, created_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
 		<!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える-->
@@ -151,7 +151,7 @@
 	
 	<insert id="insertAdditionalShift">
 		INSERT INTO
-		  test_shift_schedules(employee_id, date, scheduled_start, scheduled_end, created_at)
+		  shift_schedules(employee_id, date, scheduled_start, scheduled_end, created_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
 			(#{s.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd},now())
@@ -162,7 +162,7 @@
 <!--	リクエストの削除-->
 	<delete id="deleteByEmployeeId">
 		DELETE FROM
-		  test_shift_requests
+		  shift_requests
 		WHERE
 		  date NOT IN (
 		  <foreach collection="requests" item="r" separator=",">
@@ -176,7 +176,7 @@
 <!--シフトの削除-->
 	<delete id="deleteByMonth">
 		DELETE FROM
-		  test_shift_schedules
+		  shift_schedules
 		WHERE
 		  (date,employee_id) NOT IN (
 		  <foreach collection="newShifts" item="s" separator=",">
@@ -190,22 +190,22 @@
 
 	<!-- 以下はサックル提出分には含めない -->
 	<!-- <update id="createShiftRequestsTable"> -->
-	<!-- CREATE TABLE test_shift_requests_${newMonth} -->
+	<!-- CREATE TABLE shift_requests_${newMonth} -->
 	<!-- (id INT AUTO_INCREMENT PRIMARY KEY, -->
 	<!-- employee_id INT NOT NULL, -->
 	<!-- date date NOT NULL, -->
 	<!-- FOREIGN KEY (employee_id) -->
-	<!-- REFERENCES test_employees(id) -->
+	<!-- REFERENCES employees(id) -->
 	<!-- ) -->
 	<!-- </update> -->
 
 	<!-- <update id="dropForeignKeyOfShiftRequestsTable"> -->
-	<!-- ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY -->
-	<!-- test_shift_requests_${oldMonth}_ibfk_1 -->
+	<!-- ALTER TABLE shift_requests_${oldMonth} DROP FOREIGN KEY -->
+	<!-- shift_requests_${oldMonth}_ibfk_1 -->
 	<!-- </update> -->
 
 	<!-- <delete id="deleteShiftRequestTable"> -->
-	<!-- DROP TABLE test_shift_requests_${oldMonth}; -->
+	<!-- DROP TABLE shift_requests_${oldMonth}; -->
 	<!-- </delete> -->
 
 
@@ -234,8 +234,8 @@
 <!--		  ,CONCAT(s.date,' ',s.scheduled_start) AS start-->
 <!--		  ,CONCAT(s.date,' ',s.scheduled_end) AS end-->
 <!--		FROM-->
-<!--		  test_shift_schedules AS s-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  shift_schedules AS s-->
+<!--		  INNER JOIN employees AS e-->
 <!--		  ON s.employee_id = e.id-->
 <!--		WHERE-->
 <!--		  MONTH(start) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1-->
@@ -249,7 +249,7 @@
 <!--		  ,CONCAT(s.date,' ',s.scheduled_start) AS start-->
 <!--		  ,CONCAT(s.date,' ',s.scheduled_end) AS end-->
 <!--		FROM-->
-<!--		  test_shift_requests-->
+<!--		  shift_requests-->
 <!--		WHERE-->
 <!--		  employee_id = #{employeeId}-->
 <!--		;-->
@@ -263,8 +263,8 @@
 <!--		  ,CONCAT(s.date,' ',s.scheduled_start) AS start-->
 <!--		  ,CONCAT(s.date,' ',s.scheduled_end) AS end-->
 <!--		FROM-->
-<!--		  test_shift_schedules AS s-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  shift_schedules AS s-->
+<!--		  INNER JOIN employees AS e-->
 <!--		  ON s.employee_id = e.id-->
 <!--		WHERE-->
 <!--		  MONTH(s.date) = #{targetMonth}-->
@@ -280,8 +280,8 @@
 <!--		  ,CONCAT(s.date,' ',s.scheduled_start) AS start-->
 <!--		  ,CONCAT(s.date,' ',s.scheduled_end) AS end-->
 <!--		FROM-->
-<!--		  test_shift_requests AS r-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  shift_requests AS r-->
+<!--		  INNER JOIN employees AS e-->
 <!--		  ON r.employee_id = e.id-->
 <!--		;-->
 <!--	</select>-->
@@ -298,14 +298,14 @@
 <!--		    SELECT-->
 <!--		      employee_id-->
 <!--		    FROM-->
-<!--		      test_shift_requests-->
+<!--		      shift_requests-->
 <!--		  )-->
 <!--		;-->
 <!--	</select>-->
 
 <!--	<insert id="insertRequest">-->
 <!--		INSERT INTO-->
-<!--		  test_shift_requests(employee_id, date, scheduled_start, scheduled_end)-->
+<!--		  shift_requests(employee_id, date, scheduled_start, scheduled_end)-->
 <!--		VALUES-->
 <!--		<foreach collection="requests" item="r" separator=",">-->
 <!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える。-->
@@ -317,7 +317,7 @@
 
 <!--	<insert id="insertShift">-->
 <!--		INSERT INTO-->
-<!--		  test_shift_schedules(employee_id,date,scheduled_start,scheduled_end,created_at,updated_at)-->
+<!--		  shift_schedules(employee_id,date,scheduled_start,scheduled_end,created_at,updated_at)-->
 <!--		VALUES-->
 <!--		<foreach collection="newShifts" item="s" separator=",">-->
 <!--				↓変換したJSONデータを受けるオブジェクトの型によって書き換える-->
@@ -329,7 +329,7 @@
 
 <!--	<delete id="deleteRequestByEmployeeId">-->
 <!--		DELETE FROM-->
-<!--		  test_shift_requests-->
+<!--		  shift_requests-->
 <!--		WHERE-->
 <!--		  employee_id = #{employeeId}-->
 <!--		;-->
@@ -337,7 +337,7 @@
 
 <!--	<delete id="deleteShiftByTargetMonth">-->
 <!--		DELETE FROM-->
-<!--		  test_shift_schedules-->
+<!--		  shift_schedules-->
 <!--		WHERE-->
 <!--		  MONTH(date) = #{targetMonth}-->
 <!--		;-->
@@ -346,22 +346,22 @@
 
 <!--	 以下はサックル提出分には含めない -->
 <!--	 <update id="createShiftRequestsTable"> -->
-<!--	 CREATE TABLE test_shift_requests_${newMonth} -->
+<!--	 CREATE TABLE shift_requests_${newMonth} -->
 <!--	 (id INT AUTO_INCREMENT PRIMARY KEY, -->
 <!--	 employee_id INT NOT NULL, -->
 <!--	 date date NOT NULL, -->
 <!--	 FOREIGN KEY (employee_id) -->
-<!--	 REFERENCES test_employees(id) -->
+<!--	 REFERENCES employees(id) -->
 <!--	 ) -->
 <!--	 </update> -->
 
 <!--	 <update id="dropForeignKeyOfShiftRequestsTable"> -->
-<!--	 ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY -->
-<!--	 test_shift_requests_${oldMonth}_ibfk_1 -->
+<!--	 ALTER TABLE shift_requests_${oldMonth} DROP FOREIGN KEY -->
+<!--	 shift_requests_${oldMonth}_ibfk_1 -->
 <!--	 </update> -->
 
 <!--	 <delete id="deleteShiftRequestTable"> -->
-<!--	 DROP TABLE test_shift_requests_${oldMonth}; -->
+<!--	 DROP TABLE shift_requests_${oldMonth}; -->
 <!--	 </delete> -->
 
 
@@ -387,8 +387,8 @@
 <!--		  ,e.name-->
 <!--		  ,s.date-->
 <!--		FROM-->
-<!--		  test_shifts_and_time_records AS s-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  shifts_and_time_records AS s-->
+<!--		  INNER JOIN employees AS e-->
 <!--		  ON s.employee_id = e.id-->
 <!--		WHERE-->
 <!--		  MONTH(date) BETWEEN #{targetMonth} -1 AND #{targetMonth} +1-->
@@ -401,7 +401,7 @@
 <!--		  id-->
 <!--		  ,date-->
 <!--		FROM-->
-<!--		  test_shift_requests-->
+<!--		  shift_requests-->
 <!--		WHERE-->
 <!--		  employee_id = #{employeeId}-->
 <!--		;-->
@@ -414,8 +414,8 @@
 <!--		  ,e.name-->
 <!--		  ,s.date-->
 <!--		FROM-->
-<!--		  test_shifts_and_time_records AS s-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  shifts_and_time_records AS s-->
+<!--		  INNER JOIN employees AS e-->
 <!--		  ON s.employee_id = e.id-->
 <!--		WHERE-->
 <!--		  MONTH(date) = #{targetMonth}-->
@@ -430,8 +430,8 @@
 <!--		  ,e.name-->
 <!--		  ,r.date-->
 <!--		FROM-->
-<!--		  test_shift_requests AS r-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  shift_requests AS r-->
+<!--		  INNER JOIN employees AS e-->
 <!--		  ON r.employee_id = e.id-->
 <!--		;-->
 <!--	</select>-->
@@ -448,14 +448,14 @@
 <!--		    SELECT-->
 <!--		      employee_id-->
 <!--		    FROM-->
-<!--		      test_shift_requests-->
+<!--		      shift_requests-->
 <!--		  )-->
 <!--		;-->
 <!--	</select>-->
 
 <!--	<insert id="insertRequest">-->
 <!--		INSERT INTO-->
-<!--		  test_shift_requests(employee_id, date)-->
+<!--		  shift_requests(employee_id, date)-->
 <!--		VALUES -->
 <!--		<foreach collection="requests" item="r" separator=",">-->
 <!--			(#{r.employeeId}, #{r.start})-->
@@ -465,7 +465,7 @@
 
 <!--	<insert id="insertShift">-->
 <!--		INSERT INTO-->
-<!--		  test_shifts_and_time_records(employee_id,date,created_at,updated_at)-->
+<!--		  shifts_and_time_records(employee_id,date,created_at,updated_at)-->
 <!--		VALUES-->
 <!--		<foreach collection="newShifts" item="s" separator=",">-->
 <!--			(#{s.employeeId},#{s.start},now(),now())-->
@@ -475,7 +475,7 @@
 
 <!--	<delete id="deleteRequestByEmployeeId">-->
 <!--		DELETE FROM-->
-<!--		  test_shift_requests-->
+<!--		  shift_requests-->
 <!--		WHERE-->
 <!--		  employee_id = #{employeeId}-->
 <!--		;-->
@@ -483,7 +483,7 @@
 
 <!--	<delete id="deleteShiftByTargetMonth">-->
 <!--		DELETE FROM-->
-<!--		  test_shifts_and_time_records-->
+<!--		  shifts_and_time_records-->
 <!--		WHERE-->
 <!--		  MONTH(date) = #{targetMonth}-->
 <!--		;-->
@@ -492,22 +492,22 @@
 
 <!--	 以下はサックル提出分には含めない -->
 <!--	 <update id="createShiftRequestsTable"> -->
-<!--	 CREATE TABLE test_shift_requests_${newMonth} -->
+<!--	 CREATE TABLE shift_requests_${newMonth} -->
 <!--	 (id INT AUTO_INCREMENT PRIMARY KEY, -->
 <!--	 employee_id INT NOT NULL, -->
 <!--	 date date NOT NULL, -->
 <!--	 FOREIGN KEY (employee_id) -->
-<!--	 REFERENCES test_employees(id) -->
+<!--	 REFERENCES employees(id) -->
 <!--	 ) -->
 <!--	 </update> -->
 
 <!--	 <update id="dropForeignKeyOfShiftRequestsTable"> -->
-<!--	 ALTER TABLE test_shift_requests_${oldMonth} DROP FOREIGN KEY -->
-<!--	 test_shift_requests_${oldMonth}_ibfk_1 -->
+<!--	 ALTER TABLE shift_requests_${oldMonth} DROP FOREIGN KEY -->
+<!--	 shift_requests_${oldMonth}_ibfk_1 -->
 <!--	 </update> -->
 
 <!--	 <delete id="deleteShiftRequestTable"> -->
-<!--	 DROP TABLE test_shift_requests_${oldMonth}; -->
+<!--	 DROP TABLE shift_requests_${oldMonth}; -->
 <!--	 </delete> -->
 
 

@@ -46,13 +46,13 @@
 		    ELSE " "
 		    END AS reason_name
 		FROM
-		  test_shift_schedules AS s
-		  INNER JOIN test_employees AS e
+		  shift_schedules AS s
+		  INNER JOIN employees AS e
 	 	  ON s.employee_id = e.id
-		  LEFT JOIN test_time_records AS t
+		  LEFT JOIN time_records AS t
 		  ON s.date=t.date
 		     AND s.employee_id=t.employee_id
-	 	  LEFT JOIN test_absence_applications AS a
+	 	  LEFT JOIN absence_applications AS a
 	 	  ON a.shift_id=s.id
 	 	  LEFT JOIN absence_reasons AS ar
 	 	  ON a.reason_id=ar.id
@@ -71,8 +71,8 @@
 <!--		  ,t.created_at-->
 <!--		  ,t.updated_at-->
 <!--		FROM-->
-<!--		  test_time_records AS t-->
-<!--		  INNER JOIN test_employees AS e-->
+<!--		  time_records AS t-->
+<!--		  INNER JOIN employees AS e-->
 <!--	 	  ON t.employee_id = e.id-->
 <!--		WHERE-->
 <!--		  MONTH(t.date) = #{targetMonth}-->
@@ -99,13 +99,13 @@
 		    ELSE " "
 		    END AS reason_name
 		FROM
-		  test_shift_schedules AS s
-		  INNER JOIN test_employees AS e
+		  shift_schedules AS s
+		  INNER JOIN employees AS e
 	 	  ON s.employee_id = e.id
-		  LEFT JOIN test_time_records AS t
+		  LEFT JOIN time_records AS t
 		  ON s.date=t.date
 		     AND s.employee_id=t.employee_id
-	 	  LEFT JOIN test_absence_applications AS a
+	 	  LEFT JOIN absence_applications AS a
 	 	  ON a.shift_id=s.id
 	 	  LEFT JOIN absence_reasons AS ar
 	 	  ON a.reason_id=ar.id
@@ -124,8 +124,8 @@
 		  DISTINCT e.id AS employeeId
 		  ,e.name 
 		FROM
-		  test_shift_schedules s
-		  INNER JOIN test_employees e
+		  shift_schedules s
+		  INNER JOIN employees e
 		  ON s.employee_id = e.id
 		WHERE
 		  MONTH(s.date) = #{targetMonth}
@@ -141,8 +141,8 @@
 		  ,t.employee_id
 		  ,e.name AS employee_name
 		FROM
-		  test_time_records AS t
-		  INNER JOIN test_employees AS e
+		  time_records AS t
+		  INNER JOIN employees AS e
 	 	  ON t.employee_id = e.id
 		WHERE
 		  t.date=#{date}
@@ -152,7 +152,7 @@
 	
 	<update id="update">
 		UPDATE
-		  test_time_records
+		  time_records
 		SET
 		  clock_in = #{clockIn}
 		  ,clock_out = #{clockOut}
@@ -201,8 +201,8 @@
 <!--	  ,s.employee_id-->
 <!--	  ,e.name-->
 <!--	FROM-->
-<!--	  test_shifts_and_time_records AS s-->
-<!--	  INNER JOIN test_employees AS e-->
+<!--	  shifts_and_time_records AS s-->
+<!--	  INNER JOIN employees AS e-->
 <!-- 	  ON s.employee_id = e.id-->
 <!--	WHERE-->
 <!--	  MONTH(s.date) = #{targetMonth}-->
@@ -223,8 +223,8 @@
 <!--	  ,s.employee_id-->
 <!--	  ,e.name -->
 <!--	FROM-->
-<!--	  test_shifts_and_time_records AS s-->
-<!--	  INNER JOIN test_employees e-->
+<!--	  shifts_and_time_records AS s-->
+<!--	  INNER JOIN employees e-->
 <!--	  ON s.employee_id=e.id-->
 <!--	WHERE-->
 <!--	  MONTH(s.date) = #{targetMonth}-->
@@ -237,8 +237,8 @@
 <!--	  DISTINCT e.id-->
 <!--	  ,e.name-->
 <!--	FROM-->
-<!--	  test_shifts_and_time_records s-->
-<!--	  INNER JOIN test_employees e-->
+<!--	  shifts_and_time_records s-->
+<!--	  INNER JOIN employees e-->
 <!--	  ON s.employee_id = e.id-->
 <!--	WHERE-->
 <!--	  MONTH(s.date) = #{targetMonth}-->
@@ -254,8 +254,8 @@
 <!--	  ,s.employee_id-->
 <!--	  ,e.name-->
 <!--	FROM-->
-<!--	  test_shifts_and_time_records AS s-->
-<!--	  INNER JOIN test_employees AS e-->
+<!--	  shifts_and_time_records AS s-->
+<!--	  INNER JOIN employees AS e-->
 <!-- 	  ON s.employee_id = e.id-->
 <!--	WHERE-->
 <!--	  s.id = #{shiftId}-->
@@ -265,7 +265,7 @@
 <!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
 <!--	<update id="update">-->
 <!--	UPDATE-->
-<!--	  test_shifts_and_time_records-->
+<!--	  shifts_and_time_records-->
 <!--	SET-->
 <!--	  start = #{start}-->
 <!--	  ,end = #{end}-->

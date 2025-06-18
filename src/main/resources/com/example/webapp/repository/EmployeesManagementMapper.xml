@@ -14,7 +14,7 @@
 		SELECT
 		  *
 		FROM
-		  test_employees
+		  employees
 		WHERE
 		  id = #{employeeId}
 		;
@@ -24,7 +24,7 @@
 		SELECT
 		  id,name
 		FROM
-		  test_employees
+		  employees
 		;
 	</select>
 	
@@ -32,7 +32,7 @@
 		SELECT
 		  *
 		FROM
-		  test_employees
+		  employees
 		;
 	</select>
 	
@@ -40,7 +40,7 @@
 		SELECT
 		  id AS employeeId
 		FROM
-		  test_employees
+		  employees
 		WHERE
 		  name = #{name}
 		;
@@ -48,7 +48,7 @@
 	
 	<insert id="insert">
 		INSERT INTO
-		  test_employees (
+		  employees (
 		    name ,birth ,password ,tel ,address 
 		    ,authority ,created_at ,updated_at ,password_updated_at
 		  )
@@ -61,7 +61,7 @@
 	
 	<update id="update">
 		UPDATE
-		  test_employees
+		  employees
 		SET
 		  name = #{name}
 		  ,birth = #{birth}
@@ -75,7 +75,7 @@
 	
 	<delete id="deleteById">
 		DELETE FROM
-		  test_employees
+		  employees
 		WHERE
 		  id = #{employeeId}
 		;
