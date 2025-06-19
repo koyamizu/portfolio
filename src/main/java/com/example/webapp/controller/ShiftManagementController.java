@@ -139,7 +139,7 @@ public class ShiftManagementController {
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", requests);
 		//		submittedはここでしか使っていないので、未提出者はSQLで取得する
 		//		List<Integer> submittedEmployeeIds = requests.stream().map(r -> r.getEmployeeId()).distinct().toList();
-		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
+		List<Employee> allEmployees = employeesManagementService.getAllIdAndName();
 		List<Employee> notSubmits = shiftManagementService.selectEmployeesNotSubmitRequests();
 		//				allEmployees.stream().filter(e -> !submittedEmployeeIds.contains(e.getEmployeeId()))
 		//				.toList();
@@ -157,7 +157,7 @@ public class ShiftManagementController {
 		List<FullCalendarEntity> shifts = shiftManagementService
 				.selectOneMonthShiftsByTargetMonth(month);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
-		List<Employee> allEmployees = employeesManagementService.selectAllIdAndName();
+		List<Employee> allEmployees = employeesManagementService.getAllIdAndName();
 		//initializeCalendarの引数が「requests」なので、requestsとして格納
 		model.addAttribute("requests", shifts);
 		model.addAttribute("month", month);

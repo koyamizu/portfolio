@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 public class PasswordServiceImpl implements PasswordService {
 
 	private final PasswordMapper mapper;
-	@Override
-	public void updatePasswordByEmployeeId(Integer employeeId, String newPassword) {
-		mapper.updateByEmployeeId(employeeId, newPassword);
-	}
 
+	@Override
+	public void updatePassword(Integer employeeId, String newPassword) {
+			mapper.updateByEmployeeId(employeeId, newPassword);
+	}
 }

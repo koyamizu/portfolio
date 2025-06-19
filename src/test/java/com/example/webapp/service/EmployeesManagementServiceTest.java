@@ -14,6 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
+import com.example.webapp.exception.DuplicateEmployeeException;
+import com.example.webapp.exception.ForeiginKeyViolationException;
+import com.example.webapp.exception.InvalidEmployeeIdException;
+import com.example.webapp.exception.NoDataException;
+import com.example.webapp.form.EmployeeForm;
+import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.service.impl.EmployeesManagementServiceImpl;
 
@@ -32,22 +38,22 @@ public class EmployeesManagementServiceTest {
 	private EmployeeTestData data=new EmployeeTestData();
 	
 	@Test
-	void testSelectEmployeeById() {
+	void testSelectEmployeeById() throws InvalidEmployeeIdException {
 		Employee yoshizuka=data.getYoshizuka();
 		
 		doReturn(yoshizuka).when(employeesManagementMapper).selectById(1001);
 		
-		Employee actual=service.selectEmployeeById(1001);
+		EmployeeForm actual=service.getEmployeeForm(1001);
 		
 		assertThat(actual).isEqualTo(yoshizuka);
 	}
 	
 	@Test
-	void testSelectAllEmployees() {
+	void testSelectAllEmployees() throws NoDataException {
 		List<Employee> employees=data.createAllEmployees();
 		
 		doReturn(employees).when(employeesManagementMapper).selectAll();
-		List<Employee> actuals=service.selectAllEmployees();
+		List<Employee> actuals=service.getAllEmployees();
 		
 		assertThat(actuals).isEqualTo(employees);
 	}
@@ -58,7 +64,7 @@ public class EmployeesManagementServiceTest {
 		
 		doReturn(employees).when(employeesManagementMapper).selectAllIdAndName();
 		
-		List<Employee> actuals=service.selectAllIdAndName();
+		List<Employee> actuals=service.getAllIdAndName();
 		
 		assertThat(actuals).isEqualTo(employees);
 	}
@@ -67,7 +73,7 @@ public class EmployeesManagementServiceTest {
 	void testSelectEmployeeIdByName() {
 		Integer id=1001;
 		doReturn(id).when(employeesManagementMapper).selectIdByName("吉塚");
-		Integer actual=service.selectEmployeeIdByName("吉塚");
+		Integer actual=service.getEmployeeIdByName("吉塚");
 		assertThat(actual).isEqualTo(id);
 	}
 	
@@ -80,30 +86,32 @@ public class EmployeesManagementServiceTest {
 	}
 	
 	@Test
-	void testUpdateEmployee() {
+	void testUpdateEmployee() throws DuplicateEmployeeException, InvalidEmployeeIdException {
 		Employee employee=new Employee();
 		employee.setName("古賀");
 		doReturn(employee).when(employeesManagementMapper).selectById(1002);
-		Employee koga=service.selectEmployeeById(1002);
+		EmployeeForm kogaForm=service.getEmployeeForm(1002);
 
-		log.info("名前変更前："+koga.getName());
-		koga.setName("鹿部");
+		log.info("名前変更前："+kogaForm.getName());
+		kogaForm.setName("鹿部");
+		
+		Employee koga=EmployeeHelper.convertEmployee(kogaForm);
 		
 		doNothing().when(employeesManagementMapper).update(koga);
-		service.updateEmployee(koga);
+		service.updateEmployee(kogaForm);
 		
 		verify(employeesManagementMapper).update(koga);
 	}
 	
 	@Test
-	void testDeleteEmployeeById() {
+	void testDeleteEmployeeById() throws InvalidEmployeeIdException, ForeiginKeyViolationException {
 		Employee yoshizuka=data.getYoshizuka();
 		
 		doReturn(yoshizuka).when(employeesManagementMapper).selectById(1001);
 		doNothing().when(employeesManagementMapper).deleteById(1001);
 		
-		assertThat(service.selectEmployeeById(1001)).isNotNull();
-		service.deleteEmployeeById(1001);
-		assertThat(service.selectEmployeeById(1001)).isNull();
+		assertThat(service.getEmployeeForm(1001)).isNotNull();
+		service.deleteEmployee(1001);
+		assertThat(service.getEmployeeForm(1001)).isNull();
 	}
 }

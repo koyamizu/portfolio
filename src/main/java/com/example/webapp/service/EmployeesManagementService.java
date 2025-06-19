@@ -3,19 +3,26 @@ package com.example.webapp.service;
 import java.util.List;
 
 import com.example.webapp.entity.Employee;
+import com.example.webapp.exception.DuplicateEmployeeException;
+import com.example.webapp.exception.ForeiginKeyViolationException;
+import com.example.webapp.exception.InvalidEmployeeIdException;
+import com.example.webapp.exception.NoDataException;
+import com.example.webapp.form.EmployeeForm;
 
 public interface EmployeesManagementService {
-	Employee selectEmployeeById(Integer employeeId);
+	EmployeeForm getEmployeeForm(Integer employeeId) throws InvalidEmployeeIdException;
 	
-	List<Employee> selectAllEmployees();
+	Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException;
 	
-	List<Employee> selectAllIdAndName();
+	List<Employee> getAllEmployees() throws NoDataException;
 	
-	Integer selectEmployeeIdByName(String name);
+	List<Employee> getAllIdAndName();
 	
-	void insertEmployee(Employee employee);
+	Integer getEmployeeIdByName(String name);
 	
-	void updateEmployee(Employee employee);
+	void insertEmployee(EmployeeForm newEmployee) throws DuplicateEmployeeException;
 	
-	void deleteEmployeeById(Integer employeeId);
+	void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException;
+	
+	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, ForeiginKeyViolationException;
 }

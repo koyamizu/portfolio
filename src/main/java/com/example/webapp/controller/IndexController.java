@@ -26,14 +26,15 @@ public class IndexController {
 		session.setAttribute("from","admin");
 		/*		ブラウザバックをしたとき、showIndexのsession.invalidate()によってセッションが破棄されるようにしたが
 				ブラウザバック→ブラウザフォワードしたときにログインなしで遷移できるので、ログイン後15分経過したらセッションが破棄されるようにした。*/
-		session.setMaxInactiveInterval(1800);
+//		タイムレコーダー画面のセッション有効時間が短くなってしまうのでコメントアウト
+//		session.setMaxInactiveInterval(1800);
 		return "menu/admin";
 	}
 	
 	@GetMapping("user")
 	public String showUserMenu(HttpSession session) {
 		session.setAttribute("from", "user");
-		session.setMaxInactiveInterval(1800);
+//		session.setMaxInactiveInterval(1800);
 		return "menu/user";
 	}
 	

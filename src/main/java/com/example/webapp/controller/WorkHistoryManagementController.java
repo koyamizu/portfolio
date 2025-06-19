@@ -41,7 +41,7 @@ public class WorkHistoryManagementController {
 			List<TimeRecord> histories = workHistoryManagementService
 					.selectAllWorkHistoriesToDateByMonth(targetMonth);
 			//従業員IDと名前だけを返すマッパーメソッドを作る？　シフト編集ページのドラッグ＆ドロップ部分にも使えそう
-			List<Employee> employees = employeesManagementService.selectAllIdAndName();
+			List<Employee> employees = employeesManagementService.getAllIdAndName();
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			model.addAttribute("histories", histories);
@@ -60,7 +60,7 @@ public class WorkHistoryManagementController {
 		if (isAdmin) {
 			//これ、従業員一覧を取得するマッパーメソッドあった気がするからそれでいいと思う
 //			List<Employee> employees = workHistoryManagementService.selectWorkedEmployeesByMonth(targetMonth);
-			List<Employee> employees = employeesManagementService.selectAllIdAndName();
+			List<Employee> employees = employeesManagementService.getAllIdAndName();
 			model.addAttribute("employees", employees);
 		} else {
 			boolean isSame = auth.getName().equals(employeeId.toString());

@@ -21,6 +21,7 @@ import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.service.AbsenceApplicationService;
 import com.example.webapp.service.TimeRecorderService;
+import com.example.webapp.utility.DateTimeIntervalGenerator;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,11 @@ public class TimeRecorderController {
 		if (Objects.equals(null, sessionTodayAbsences)) {
 //			if (Objects.equals(null, session.getAttribute("todayAbsences"))) {
 			List<AbsenceApplication> todayAbsences = absenceApplicationService.getTodayApplications();
+			int byTheEndOfToday=DateTimeIntervalGenerator.getIntervalBetweenMidNight();
+			
 			session.setAttribute("todayAbsences", todayAbsences);
+//			午前0時まで当日欠勤者情報を保持する。
+			session.setMaxInactiveInterval(byTheEndOfToday);
 			model.addAttribute("todayAbsences", todayAbsences);
 			return "time-recorder/top";
 		}
@@ -81,7 +86,7 @@ public class TimeRecorderController {
 
 	@ExceptionHandler({ InvalidClockException.class, NoDataException.class, InvalidEmployeeIdException.class,
 			DuplicateClockException.class, InvalidClockException.class })
-	public String redirectTimeRecorderPage(Exception e, RedirectAttributes attributes) {
+	public String redirectToTimeRecorderPage(Exception e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("errorMessage", e.getMessage());
 		return "redirect:/time-recorder";
 	}

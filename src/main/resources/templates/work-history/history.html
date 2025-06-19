@@ -81,7 +81,7 @@
 						</td>
 						<td th:text="*{absenceReason.name}"></td>
 						<td sec:authorize="hasAuthority('ADMIN')">
-							<a th:href="@{/work-history/edit/{target-date}/{employee-id}
+							<a th:if="*{absenceReason.name}==' '" th:href="@{/work-history/edit/{target-date}/{employee-id}
 							(target-date=*{date},employee-id=*{employeeId})}">修正</a>
 						</td>
 					</th:block>

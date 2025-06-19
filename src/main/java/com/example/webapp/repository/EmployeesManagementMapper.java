@@ -18,7 +18,7 @@ public interface EmployeesManagementMapper {
 	
 	void insert(Employee employee);
 	
-	void update(Employee employee);
+	int update(Employee employee);
 	
-	void deleteById(Integer employeeId);
+	int deleteById(Integer employeeId);
 }

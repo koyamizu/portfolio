@@ -14,6 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
+import com.example.webapp.exception.DuplicateEmployeeException;
+import com.example.webapp.exception.ForeiginKeyViolationException;
+import com.example.webapp.exception.InvalidEmployeeIdException;
+import com.example.webapp.exception.NoDataException;
+import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.service.EmployeesManagementService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +36,9 @@ public class EmployeesManagementServiceIntegrationTest {
 	private EmployeeTestData data = new EmployeeTestData();
 
 	@Test
-	void testSelectEmployeeById() {
+	void test_getEmployeeForm() throws InvalidEmployeeIdException {
 		Employee yoshizuka = data.getYoshizuka();
-		Employee actual = service.selectEmployeeById(1001);
+		EmployeeForm actual = service.getEmployeeForm(1001);
 		assertThat(actual.getEmployeeId()).isEqualTo(yoshizuka.getEmployeeId());
 		assertThat(encoder.matches(yoshizuka.getPassword(), actual.getPassword())).isTrue();
 		assertThat(actual.getName()).isEqualTo(yoshizuka.getName());
@@ -44,8 +49,8 @@ public class EmployeesManagementServiceIntegrationTest {
 	}
 
 	@Test
-	void testSelectAllEmployees() {
-		List<Employee> actuals = service.selectAllEmployees();
+	void test_getAllEmployees() throws NoDataException {
+		List<Employee> actuals = service.getAllEmployees();
 
 		assertThat(actuals.size()).isEqualTo(6);
 
@@ -62,7 +67,7 @@ public class EmployeesManagementServiceIntegrationTest {
 
 	@Test
 	void testSelectAllIdAndName() {
-		List<Employee> actuals = service.selectAllIdAndName();
+		List<Employee> actuals = service.getAllIdAndName();
 
 		assertThat(actuals.size()).isEqualTo(6);
 
@@ -74,15 +79,15 @@ public class EmployeesManagementServiceIntegrationTest {
 
 	@Test
 	void testSelectEmployeeIdByName() {
-		Integer id=service.selectEmployeeIdByName("吉塚");
+		Integer id=service.getEmployeeIdByName("吉塚");
 		assertThat(id).isEqualTo(1001);
 	}
 
 	@Test
-	void testInsertEmployee() {
+	void testInsertEmployee() throws InvalidEmployeeIdException {
 		Employee chihaya=data.getChihaya();
 		service.insertEmployee(chihaya);
-		Employee confirm=service.selectEmployeeById(1007);
+		EmployeeForm confirm=service.getEmployeeForm(1007);
 		assertThat(confirm.getPassword()).isEqualTo(chihaya.getPassword());
 		assertThat(confirm.getName()).isEqualTo(chihaya.getName());
 		assertThat(confirm.getBirth()).isEqualTo(chihaya.getBirth());
@@ -92,19 +97,19 @@ public class EmployeesManagementServiceIntegrationTest {
 	}
 
 	@Test
-	void testUpdateEmployee() {
-		Employee koga=service.selectEmployeeById(1002);
-		log.info("名前変更前："+koga.getName());
-		koga.setName("鹿部");
-		service.updateEmployee(koga);
-		Employee exKoga=service.selectEmployeeById(1002);
+	void testUpdateEmployee() throws InvalidEmployeeIdException, DuplicateEmployeeException {
+		EmployeeForm kogaForm=service.getEmployeeForm(1002);
+		log.info("名前変更前："+kogaForm.getName());
+		kogaForm.setName("鹿部");
+		service.updateEmployee(kogaForm);
+		EmployeeForm exKoga=service.getEmployeeForm(1002);
 		assertThat(exKoga.getName()).isEqualTo("鹿部");
 	}
 
 	@Test
-	void testDeleteEmployeeById() {
-		assertThat(service.selectEmployeeById(1001)).isNotNull();
-		service.deleteEmployeeById(1001);
-		assertThat(service.selectEmployeeById(1001)).isNull();
+	void testDeleteEmployeeById() throws InvalidEmployeeIdException, ForeiginKeyViolationException {
+		assertThat(service.getEmployeeForm(1001)).isNotNull();
+		service.deleteEmployee(1001);
+		assertThat(service.getEmployeeForm(1001)).isNull();
 	}
 }

@@ -62,7 +62,7 @@ public class EmployeesManagementControllerTest {
 
 		List<Employee> employees = data.createAllEmployees();
 
-		doReturn(employees).when(service).selectAllEmployees();
+		doReturn(employees).when(service).getAllEmployees();
 
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class EmployeesManagementControllerTest {
 	void test_editEmployee() throws Exception {
 
 		Employee yoshizuka = data.getYoshizuka();
-		doReturn(yoshizuka).when(service).selectEmployeeById(1001);
+		doReturn(yoshizuka).when(service).getEmployeeForm(1001);
 		mockMvc.perform(
 				get("/employees/edit/{employee-id}", 1001))
 				.andExpect(status().isOk())
@@ -137,7 +137,6 @@ public class EmployeesManagementControllerTest {
 				post("/employees/update")
 						.with(csrf()))
 				.andExpect(view().name("employees/form"))
-				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "employeeId", "NotNull"))
 				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "name", "NotNull"))
 				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "birth", "NotNull"))
 				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "tel", "NotNull"))
@@ -151,16 +150,20 @@ public class EmployeesManagementControllerTest {
 	void test_updateEmployee_PatternInvalid() throws Exception {
 
 		EmployeeForm form = new EmployeeForm();
+		form.setName("0123");
 		form.setBirth("00000000000");
 		form.setTel("0000000000");
+		form.setAddress("千早4-9-9");
 		mockMvc.perform(
 				post("/employees/update")
 						.flashAttr("employeeForm", form)
 						.with(csrf()))
 				.andExpect(view().name("employees/form"))
+				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "name", "Pattern"))
 				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "birth", "Pattern"))
 				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "tel", "Pattern"))
-		//		.andDo(print())
+				.andExpect(model().attributeHasFieldErrorCode("employeeForm", "address", "Pattern"))
+				.andDo(print())
 		;
 	}
 
@@ -168,8 +171,8 @@ public class EmployeesManagementControllerTest {
 	void test_deleteEmployee() throws Exception {
 
 		Employee yoshizuka = data.getYoshizuka();
-		doReturn(yoshizuka).when(service).selectEmployeeById(1001);
-		doNothing().when(service).deleteEmployeeById(1001);
+		doReturn(yoshizuka).when(service).getEmployeeForm(1001);
+		doNothing().when(service).deleteEmployee(1001);
 
 		mockMvc.perform(
 				get("/employees/delete/{employee-id}", 1001))
@@ -198,7 +201,7 @@ public class EmployeesManagementControllerTest {
 	@Test
 	void test_deleteEmployee_Error() throws Exception {
 
-		doReturn(null).when(service).selectEmployeeById(1001);
+		doReturn(null).when(service).getEmployeeForm(1001);
 
 		mockMvc.perform(
 				get("/employees/delete/{employee-id}", 1001))
@@ -211,7 +214,7 @@ public class EmployeesManagementControllerTest {
 	void test_showEmployeeDetail() throws Exception {
 
 		Employee yoshizuka = data.getYoshizuka();
-		doReturn(yoshizuka).when(service).selectEmployeeById(1001);
+		doReturn(yoshizuka).when(service).getEmployeeForm(1001);
 
 		mockMvc.perform(
 				get("/employees/detail/{employee-id}", 1001))

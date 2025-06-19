@@ -13,18 +13,18 @@
 		<nav>
 			<ul>
 				<li class="li-index">
-					<a th:href="@{/employees}">戻る</a>>
+					<a th:href="@{/employees}">戻る</a>
 				</li>
 			</ul>
 		</nav>
 	</header>
 	<h1 th:if="${passwordForm.isNew}">パスワード登録</h1>
 	<h1 th:unless="${passwordForm.isNew}">パスワード再設定</h1>
-	<form th:action="@{/password/update}" th:object="${passwordForm}" method="post">
+	<form th:action="${passwordForm.isNew}?@{/employees/register}:@{/password/update}" th:object="${passwordForm}" method="post">
 		<p th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}"class="error-message">
 			パスワード不一致
 		</p>
-		<input type="hidden" value="${employeeForm.employeeId}" th:field="*{employeeId}">
+		<input th:unless="${passwordForm.isNew}" type="hidden" value="${employeeForm.employeeId}" th:field="*{employeeId}">
 		<input type="hidden" value="${passwordForm.isNew}" th:field="*{isNew}">
 		<table>
 			<tr>
