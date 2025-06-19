@@ -19,6 +19,7 @@ import com.example.webapp.exception.ForeiginKeyViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
+import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.service.EmployeesManagementService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -84,9 +85,10 @@ public class EmployeesManagementServiceIntegrationTest {
 	}
 
 	@Test
-	void testInsertEmployee() throws InvalidEmployeeIdException {
+	void testInsertEmployee() throws InvalidEmployeeIdException, DuplicateEmployeeException {
 		Employee chihaya=data.getChihaya();
-		service.insertEmployee(chihaya);
+		EmployeeForm chihayaForm=EmployeeHelper.convertEmployeeForm(chihaya);
+		service.insertEmployee(chihayaForm);
 		EmployeeForm confirm=service.getEmployeeForm(1007);
 		assertThat(confirm.getPassword()).isEqualTo(chihaya.getPassword());
 		assertThat(confirm.getName()).isEqualTo(chihaya.getName());

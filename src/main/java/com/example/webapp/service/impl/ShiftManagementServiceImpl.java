@@ -24,8 +24,8 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	private final EmployeesManagementMapper employeeManagementMapper;
 
 	@Override
-	public List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer thisMonth) {
-		return shiftManagementMapper.selectThreeMonthByTargetMonth(thisMonth);
+	public List<FullCalendarEntity> getThreeMonthShifts(Integer targetMonth) {
+		return shiftManagementMapper.selectThreeMonthByTargetMonth(targetMonth);
 	}
 
 	@Override

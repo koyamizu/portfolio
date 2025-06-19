@@ -41,7 +41,7 @@ public class ShiftManagementController {
 	@GetMapping
 	public String showShiftSchedule(HttpSession session, Model model) {
 		Integer thisMonth = LocalDate.now().getMonthValue();
-		List<FullCalendarEntity> shifts = shiftManagementService.selectThreeMonthShiftsByTargetMonth(thisMonth);
+		List<FullCalendarEntity> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
 		String from = (String) session.getAttribute("from");
 		model.addAttribute("from", from);
@@ -175,7 +175,7 @@ public class ShiftManagementController {
 		return "shift/create";
 	}
 
-	@PostMapping("create/execute")
+	@PostMapping("create/submit")
 	public String submitShifts(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month)
 			throws JsonProcessingException {

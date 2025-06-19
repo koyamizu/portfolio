@@ -78,10 +78,11 @@ public class EmployeesManagementServiceTest {
 	}
 	
 	@Test
-	void testInsertEmployee() {
+	void testInsertEmployee() throws DuplicateEmployeeException {
 		Employee newEmployee=data.getChihaya();
 		doNothing().when(employeesManagementMapper).insert(newEmployee);
-		service.insertEmployee(newEmployee);
+		EmployeeForm form=EmployeeHelper.convertEmployeeForm(newEmployee);
+		service.insertEmployee(form);
 		verify(employeesManagementMapper).insert(any());
 	}
 	

@@ -8,7 +8,7 @@ import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.FullCalendarForm;
 
 public interface ShiftManagementService {
-	List<FullCalendarEntity> selectThreeMonthShiftsByTargetMonth(Integer targetMonth);
+	List<FullCalendarEntity> getThreeMonthShifts(Integer targetMonth);
 
 	List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId);
 	
