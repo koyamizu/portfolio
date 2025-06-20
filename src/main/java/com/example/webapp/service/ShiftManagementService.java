@@ -10,7 +10,7 @@ import com.example.webapp.form.FullCalendarForm;
 public interface ShiftManagementService {
 	List<FullCalendarEntity> getThreeMonthShifts(Integer targetMonth);
 
-	List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId);
+	List<FullCalendarEntity> getPersonalShiftRequests(Integer employeeId);
 	
 	List<ShiftSchedule> selectAllShiftsAfterTodayByEmployeeId(Integer employeeId);
 

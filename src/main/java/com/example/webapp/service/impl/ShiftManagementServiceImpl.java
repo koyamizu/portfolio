@@ -29,7 +29,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
-	public List<FullCalendarEntity> selectShiftRequestsByEmployeeId(Integer employeeId) {
+	public List<FullCalendarEntity> getPersonalShiftRequests(Integer employeeId) {
 		return shiftManagementMapper.selectByEmployeeId(employeeId);
 	}
 

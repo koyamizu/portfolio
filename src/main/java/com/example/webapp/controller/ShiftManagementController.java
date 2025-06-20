@@ -53,22 +53,22 @@ public class ShiftManagementController {
 	@GetMapping("request")
 	public String showRequestPage(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
-		if (!CollectionUtils.isEmpty(requests)) {
-			FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
-			model.addAttribute("requests", requests);
-			//			model.addAttribute("currentRequests",new List<FullCalendarEntity> currentRequests;
+		List<FullCalendarEntity> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
+		if (CollectionUtils.isEmpty(requests)) {
+			model.addAttribute("state", State.NEW.toString());
+			return "shift/request";
 		}
-		State state = (CollectionUtils.isEmpty(requests)) ? State.NEW : State.CONFIRM;
-		model.addAttribute("state", state.toString());
-		return "shift/request";
+		FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
+		model.addAttribute("requests", requests);
+		model.addAttribute("state", State.CONFIRM.toString());
+		return "shift/request";			
+		//			model.addAttribute("currentRequests",new List<FullCalendarEntity> currentRequests;
 	}
 
-	//	@GetMapping("request/renew")
 	@GetMapping("request/edit")
 	public String editRequests(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		List<FullCalendarEntity> requests = shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
+		List<FullCalendarEntity> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
 		FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
 		model.addAttribute("requests", requests);
 		model.addAttribute("state", State.EDIT.toString());
@@ -99,7 +99,7 @@ public class ShiftManagementController {
 		}
 		
 		if (state.equals(State.EDIT)) {
-			List<FullCalendarEntity> oldRequestsStr=shiftManagementService.selectShiftRequestsByEmployeeId(employeeId);
+			List<FullCalendarEntity> oldRequestsStr=shiftManagementService.getPersonalShiftRequests(employeeId);
 			List<FullCalendarForm> oldRequests=oldRequestsStr.stream().map(o->FullCalendarHelper.convertFullCalendarForm(o)).toList();
 			//additionals = Objects.equals(r.getId(), null) && oldRequestsにdateが存在しない
 			List<FullCalendarForm> additionals = requests.stream()
