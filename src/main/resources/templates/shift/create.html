@@ -22,6 +22,7 @@
 	</header>
 	<article>
 		<p th:if="${message}" th:text="${message}" class="message"></p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
 		<div th:unless="${state}=='CONFIRM'">
 			<p>未提出者:
 				<span th:each="employee : ${notSubmits}" th:text="|${employee.name}&nbsp;&nbsp;|"

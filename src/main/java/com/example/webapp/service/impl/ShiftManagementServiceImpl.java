@@ -1,17 +1,30 @@
 package com.example.webapp.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.entity.ShiftCreateContainer;
+import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.ShiftSchedule;
+import com.example.webapp.exception.DuplicateShiftException;
+import com.example.webapp.exception.InvalidEditException;
 import com.example.webapp.form.FullCalendarForm;
+import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.service.ShiftManagementService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	private final ShiftManagementMapper shiftManagementMapper;
-	private final EmployeesManagementMapper employeeManagementMapper;
+	private final EmployeesManagementMapper employeesManagementMapper;
 
 	@Override
 	public List<FullCalendarEntity> getThreeMonthShifts(Integer targetMonth) {
@@ -35,16 +48,73 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<ShiftSchedule> selectAllShiftsAfterTodayByEmployeeId(Integer employeeId) {
-		List<Integer> employeeIds=employeeManagementMapper.selectAllIdAndName().stream().map(e->e.getEmployeeId()).toList();
-		if(!employeeIds.contains(employeeId)) {
+		List<Integer> employeeIds = employeesManagementMapper.selectAllIdAndName().stream().map(e -> e.getEmployeeId())
+				.toList();
+		if (!employeeIds.contains(employeeId)) {
 			throw new RuntimeException("そのIDを持つ従業員は存在しません");
 		}
 		return shiftManagementMapper.selectAllAfterTodayByEmployeeId(employeeId);
 	}
-	
+
 	@Override
-	public void insertShiftRequests(List<FullCalendarForm> requests) {
+	public void registerShiftRequests(String requestsStr, Integer employeeId)
+			throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<FullCalendarForm> requests = mapper.readValue(requestsStr,
+				new TypeReference<List<FullCalendarForm>>() {
+				});
 		shiftManagementMapper.insertRequest(requests);
+	}
+
+	@Override
+	@Transactional
+	public void updateShiftRequests(String requestsStr, Integer employeeId)
+			throws JsonMappingException, JsonProcessingException, DuplicateShiftException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		List<FullCalendarForm> latestVersion = mapper.readValue(requestsStr,
+				new TypeReference<List<FullCalendarForm>>() {
+				});
+
+		List<FullCalendarEntity> oldVersionStr = shiftManagementMapper.selectByEmployeeId(employeeId);
+		List<FullCalendarForm> oldVersion = oldVersionStr.stream()
+				.map(o -> FullCalendarHelper.convertFullCalendarForm(o)).toList();
+
+		List<FullCalendarForm> additionals = latestVersion.stream()
+				//				新しく追加した希望日
+				.filter(r -> Objects.equals(r.getId(), null)
+						//						かつ、すでに登録してある日付と重複していない
+						&& oldVersion.stream().noneMatch(o -> r.getStart().isEqual(o.getStart())))
+				.toList();
+		if (!CollectionUtils.isEmpty(additionals)) {
+			//			追加する日付が存在する
+			try {
+				shiftManagementMapper.insertRequest(latestVersion);
+			} catch (DataIntegrityViolationException e) {
+				//通常は起こりえない例外。ユーザーのミスではなくプログラム側のミス。
+				throw new DuplicateShiftException("シフト日が重複して登録されています");
+			}
+		}
+		//newRequestsに存在しない日付を削除
+		shiftManagementMapper.deleteByEmployeeId(latestVersion, employeeId);
+
+	}
+
+	@Override
+	public ShiftCreateContainer initializeShiftCreateContainerFields() {
+		List<Employee> allEmployees = employeesManagementMapper.selectAllIdAndName();
+		List<Employee> notSubmits = shiftManagementMapper.selectNotSubmit();
+		List<FullCalendarEntity> requests = shiftManagementMapper.selectAll();
+		FullCalendarHelper.setColorProperties("#02e09a", "#006666", requests);
+		return new ShiftCreateContainer(requests, allEmployees, notSubmits);
+	}
+
+	@Override
+	public ShiftEditContainer initializeShiftEditContainerFields(Integer month) {
+		List<Employee> allEmployees = employeesManagementMapper.selectAllIdAndName();
+		List<FullCalendarEntity> shifts = shiftManagementMapper.selectOneMonthByTargetMonth(month);
+		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
+		return new ShiftEditContainer(shifts, allEmployees);
 	}
 
 	//	@Override
@@ -52,51 +122,81 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	//		mapper.deleteRequestByEmployeeId(employeeId);
 	//	}
 
+//	@Override
+//	public List<Employee> selectEmployeesNotSubmitRequests() {
+//		return shiftManagementMapper.selectNotSubmit();
+//	}
+//
 	@Override
-	public List<Employee> selectEmployeesNotSubmitRequests() {
-		return shiftManagementMapper.selectNotSubmit();
-	}
-
-	@Override
-	public List<FullCalendarEntity> selectOneMonthShiftsByTargetMonth(Integer targetMonth) {
+	public List<FullCalendarEntity> selectOneMonthShifts(Integer targetMonth) {
 		return shiftManagementMapper.selectOneMonthByTargetMonth(targetMonth);
 	}
-
-	@Override
-	public List<FullCalendarEntity> selectAllShiftRequests() {
-		return shiftManagementMapper.selectAll();
-	}
-
+//
 //	@Override
-//	public void deleteShiftsByTargetMonth(Integer targetMonth) {
-//		mapper.deleteShiftByTargetMonth(targetMonth);
+//	public List<FullCalendarEntity> selectAllShiftRequests() {
+//		return shiftManagementMapper.selectAll();
 //	}
 
+	//	@Override
+	//	public void deleteShiftsByTargetMonth(Integer targetMonth) {
+	//		mapper.deleteShiftByTargetMonth(targetMonth);
+	//	}
+
 	@Override
-	public void insertNextMonthShifts(List<FullCalendarForm> newShifts) {
+	public void createNextMonthShifts(String newShiftsStr) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<FullCalendarForm> newShifts = mapper.readValue(newShiftsStr,
+				new TypeReference<List<FullCalendarForm>>() {
+				});
+
 		shiftManagementMapper.insertShift(newShifts);
 	}
 
 	@Override
-	public void insertAdditionalRequest(List<FullCalendarForm> requests) {
-		shiftManagementMapper.insertAdditionalRequest(requests);
+	public void updateShiftSchedules(String latestVersionStr, Integer month)
+			throws JsonMappingException, JsonProcessingException, InvalidEditException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<FullCalendarForm> latestVersion = mapper.readValue(latestVersionStr,
+				new TypeReference<List<FullCalendarForm>>() {
+				});
+		List<FullCalendarForm> additionals = latestVersion.stream().filter(r -> Objects.equals(r.getId(), null))
+				.toList();
+		//追加なしで「更新」を押したときは迂回する。
+		try {
+			if (!CollectionUtils.isEmpty(additionals)) {
+				additionals.stream().forEach(a -> {
+					if (a.getStart().isBefore(LocalDate.now())) {
+						throw new DataIntegrityViolationException("");
+					}
+				});
+				shiftManagementMapper.insertShift(additionals);
+			}
+			shiftManagementMapper.deleteByMonth(latestVersion, month);
+		} catch (DataIntegrityViolationException e) {
+			throw new InvalidEditException("今日より前のシフト、および打刻済みのものは編集できません");
+		}
 	}
 
-	@Override
-	public void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId) {
-		shiftManagementMapper.deleteByEmployeeId(requests, employeeId);
-	}
-
-	@Override
-	public void insertAdditionalShift(List<FullCalendarForm> newShifts) {
-		shiftManagementMapper.insertAdditionalShift(newShifts);
-		
-	}
-
-	@Override
-	public void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth) {
-		shiftManagementMapper.deleteByMonth(newShifts,targetMonth);
-		
-	}
+//	@Override
+//	public void insertAdditionalRequest(List<FullCalendarForm> requests) {
+//		shiftManagementMapper.insertAdditionalRequest(requests);
+//	}
+//
+//	@Override
+//	public void deleteRequests(List<FullCalendarForm> requests, Integer employeeId) {
+//		shiftManagementMapper.deleteByEmployeeId(requests, employeeId);
+//	}
+//
+//	@Override
+//	public void insertAdditionalShift(List<FullCalendarForm> newShifts) {
+//		shiftManagementMapper.insertAdditionalShift(newShifts);
+//
+//	}
+//
+//	@Override
+//	public void deleteByMonth(List<FullCalendarForm> newShifts, Integer targetMonth) {
+//		shiftManagementMapper.deleteByMonth(newShifts, targetMonth);
+//
+//	}
 
 }
