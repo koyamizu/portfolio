@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.entity.AbsenceReason;
-import com.example.webapp.entity.Role;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.AbsenceApplicationForm;
 import com.example.webapp.helper.AbsenceApplicationHelper;
@@ -35,13 +33,14 @@ public class AbsenceApplicationController {
 
 	@GetMapping
 	public String showList(Model model, Authentication auth) {
-		List<AbsenceApplication> applications;
-		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
-			applications = absenceApplicationService.selectAllApplicationsAfterToday();
-		} else {
-			Integer employeeId = Integer.parseInt(auth.getName());
-			applications = absenceApplicationService.selectPersonalApplicationsAfterToday(employeeId);
-		}
+//		List<AbsenceApplication> applications;
+//		if (auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()))) {
+//			applications = absenceApplicationService.selectAllApplicationsAfterToday();
+//		} else {
+//			Integer employeeId = Integer.parseInt(auth.getName());
+//			applications = absenceApplicationService.selectPersonalApplicationsAfterToday(employeeId);
+//		}
+		List<AbsenceApplication> applications=absenceApplicationService.get(auth);
 		model.addAttribute("applications", applications);
 		return "absence-application/list";
 	}
@@ -49,7 +48,7 @@ public class AbsenceApplicationController {
 	@GetMapping("request")
 	public String showForm(Model model, Authentication auth) {
 		Integer employeeId = Integer.parseInt(auth.getName());
-		List<ShiftSchedule> shiftSchedules = shiftManagementService.selectAllShiftsAfterTodayByEmployeeId(employeeId);
+		List<ShiftSchedule> shiftSchedules = shiftManagementService.getAllShiftsAfterToday(employeeId);
 		List<AbsenceReason> absenceReasons = absenceApplicationService.selectAllReasons();
 		model.addAllAttributes(
 				Map.of(

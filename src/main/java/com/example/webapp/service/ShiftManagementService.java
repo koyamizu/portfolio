@@ -16,9 +16,9 @@ public interface ShiftManagementService {
 
 	List<FullCalendarEntity> getPersonalShiftRequests(Integer employeeId);
 	
-	List<ShiftSchedule> selectAllShiftsAfterTodayByEmployeeId(Integer employeeId);
+	List<ShiftSchedule> getAllShiftsAfterToday(Integer employeeId);
 
-	List<FullCalendarEntity> selectOneMonthShifts(Integer targetMonth);
+	List<FullCalendarEntity> getOneMonthShifts(Integer targetMonth);
 	
 //	List<FullCalendarEntity> selectAllShiftRequests();
 	
