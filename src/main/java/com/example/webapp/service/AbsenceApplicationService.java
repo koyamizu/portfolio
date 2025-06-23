@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.entity.AbsenceReason;
+import com.example.webapp.form.AbsenceApplicationForm;
 
 @Service
 public interface AbsenceApplicationService {
@@ -21,9 +22,9 @@ public interface AbsenceApplicationService {
 	
 	List<AbsenceApplication> getApplicationDetail();
 	
-	List<AbsenceReason> selectAllReasons();
+	List<AbsenceReason> getAllReasons();
 	
-	void insertApplication(AbsenceApplication application);
+	void submitApplication(AbsenceApplicationForm applicationForm);
 	
 	void updateApprove(Integer shiftId,Boolean decision);
 	

@@ -17,7 +17,6 @@ import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.form.AbsenceApplicationForm;
-import com.example.webapp.helper.AbsenceApplicationHelper;
 import com.example.webapp.service.AbsenceApplicationService;
 import com.example.webapp.service.ShiftManagementService;
 
@@ -49,7 +48,7 @@ public class AbsenceApplicationController {
 	public String showForm(Model model, Authentication auth) {
 		Integer employeeId = Integer.parseInt(auth.getName());
 		List<ShiftSchedule> shiftSchedules = shiftManagementService.getAllShiftsAfterToday(employeeId);
-		List<AbsenceReason> absenceReasons = absenceApplicationService.selectAllReasons();
+		List<AbsenceReason> absenceReasons = absenceApplicationService.getAllReasons();
 		model.addAllAttributes(
 				Map.of(
 						"shiftSchedules", shiftSchedules, "absenceReasons", absenceReasons, "employeeId", employeeId, "form", new AbsenceApplicationForm()));
@@ -57,18 +56,16 @@ public class AbsenceApplicationController {
 	}
 
 	@PostMapping("decision")
-	public String registerDecision(@RequestParam Integer shiftId, @RequestParam Boolean decision,
+	public String makeDecision(@RequestParam Integer shiftId, @RequestParam Boolean decision,
 			RedirectAttributes attributes) {
 		absenceApplicationService.updateApprove(shiftId, decision);
-		//失敗したときのメッセージもいると思う
 		attributes.addFlashAttribute("message", "承認処理が完了しました");
 		return "redirect:/absence-application";
 	}
 
 	@PostMapping("submit")
-	public String insertApplication(AbsenceApplicationForm form, RedirectAttributes attributes) {
-		AbsenceApplication application = AbsenceApplicationHelper.convertAbsenceApplication(form);
-		absenceApplicationService.insertApplication(application);
+	public String submitApplication(AbsenceApplicationForm form, RedirectAttributes attributes) {
+		absenceApplicationService.submitApplication(form);
 		attributes.addFlashAttribute("message", "申請が完了しました");
 		return "redirect:/absence-application";
 	}

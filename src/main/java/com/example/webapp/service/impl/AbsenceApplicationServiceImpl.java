@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.entity.AbsenceReason;
 import com.example.webapp.entity.Role;
+import com.example.webapp.form.AbsenceApplicationForm;
+import com.example.webapp.helper.AbsenceApplicationHelper;
 import com.example.webapp.repository.AbsenceApplicationMapper;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.service.AbsenceApplicationService;
@@ -51,22 +53,19 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	}
 
 	@Override
-	public List<AbsenceReason> selectAllReasons() {
+	public List<AbsenceReason> getAllReasons() {
 		return absenceApplicationMapper.selectAllReasons();
 	}
 
 	@Override
-	public void insertApplication(AbsenceApplication application) {
+	public void submitApplication(AbsenceApplicationForm applicationForm) {
+		AbsenceApplication application = AbsenceApplicationHelper.convertAbsenceApplication(applicationForm);
 		absenceApplicationMapper.insert(application);
 	}
 
 	@Override
 	public void updateApprove(Integer shiftId, Boolean decision) {
-		try {
 			absenceApplicationMapper.update(shiftId, decision);
-		} catch (Exception e) {
-			
-		}
 	}
 
 	@Override
