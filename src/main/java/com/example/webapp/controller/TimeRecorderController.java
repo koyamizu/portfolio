@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.AbsenceApplication;
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
@@ -61,10 +62,10 @@ public class TimeRecorderController {
 
 	@PostMapping("/record")
 	public String showRecordPage(@RequestParam("employee-id") Integer employeeId, Model model,
-			RedirectAttributes attributes) throws InvalidEmployeeIdException, NoDataException {
-		ShiftSchedule targetShift = timeRecorderService.getTodayPersonalShiftData(employeeId);
-		model.addAttribute("employee", targetShift.getEmployee());
-		model.addAttribute("today", targetShift.getDate());
+			RedirectAttributes attributes) throws NoDataException {
+		Employee targetEmployee = timeRecorderService.getEmployeeToClock(employeeId);
+		model.addAttribute("employee", targetEmployee);
+		model.addAttribute("today", today);
 		return "time-recorder/record";
 	}
 

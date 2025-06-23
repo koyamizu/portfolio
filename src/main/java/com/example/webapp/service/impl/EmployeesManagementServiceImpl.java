@@ -39,7 +39,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException {
 		Employee employee = mapper.selectById(employeeId);
-		if (employee == null) {
+		if (employee.equals(null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		return employee;
@@ -48,7 +48,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public EmployeeForm getEmployeeForm(Integer employeeId) throws InvalidEmployeeIdException {
 		Employee target = mapper.selectById(employeeId);
-		if (target == null) {
+		if (target.equals(null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
@@ -88,7 +88,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, ForeiginKeyViolationException {
 		Employee target = mapper.selectById(employeeId);
-		if (target == null) {
+		if (target.equals(null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		try {

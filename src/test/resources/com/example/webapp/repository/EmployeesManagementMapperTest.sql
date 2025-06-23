@@ -1,4 +1,4 @@
-INSERT INTO `test_employees` VALUES
+INSERT INTO `employees` VALUES
   (1001, '$2a$10$1bByysmSqkXL7c1fEeRgwemvFa0jJZfn3txG5foVXZUbr5cRYdyAS', '吉塚',   '1986-05-27', '030-1920-8394', '福岡県福岡市博多区吉塚本町13-28',        'ADMIN', '2025-05-07 14:33:32', '2025-05-07 14:33:32', '2025-05-07 14:33:32'),
   (1002, '$2a$10$hdBltFRc7sOprzGrrCEQ.ufH0RmowXTxkc1R0cDjMMKD7dq7Vzzci', '古賀',   '1972-01-06', '030-5438-1393', '福岡県古賀市天神1-1-1',                'USER',  '2025-05-07 14:33:32', '2025-05-07 14:33:32', '2025-05-07 14:33:32'),
   (1003, '$2a$10$I8.L1/xgC7Uy4aFKm9hRhePclxVPh7jlpB0Wgh2IbEKeJHhjQKMKS', '黒崎',   '1980-07-12', '030-6703-8331', '福岡県北九州市八幡西区黒崎3-15-1',    'USER',  '2025-05-07 14:33:32', '2025-05-07 14:33:32', '2025-05-07 14:33:32'),

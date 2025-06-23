@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 //テスト用のデータを個別に挿入
 @Sql("EmployeesManagementMapperTest.sql")
 @Slf4j
+@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 public class EmployeesManagementMapperTest {
 
 	@Autowired
@@ -30,7 +32,7 @@ public class EmployeesManagementMapperTest {
 	private EmployeeTestData data=new EmployeeTestData();
 	
 	@Test
-	void testSelectById() {
+	void test_selectById() {
 		Employee yoshizuka=data.getYoshizuka();
 		Employee actual=mapper.selectById(1001);
 		assertThat(actual.getEmployeeId()).isEqualTo(yoshizuka.getEmployeeId());
@@ -43,7 +45,7 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
-	void testSelectAll() {
+	void test_selectAll() {
 		List<Employee> actuals=mapper.selectAll();
 		
 		assertThat(actuals.size()).isEqualTo(6);
@@ -60,7 +62,7 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
-	void testSelectAllIdAndName() {
+	void test_selectAllIdAndName() {
 		List<Employee> actuals=mapper.selectAllIdAndName();
 		
 		assertThat(actuals.size()).isEqualTo(6);
@@ -72,13 +74,13 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
-	void testSelectIdByName() {
+	void test_selectIdByName() {
 		Integer id=mapper.selectIdByName("吉塚");
 		assertThat(id).isEqualTo(1001);
 	}
 	
 	@Test
-	void testInsert() {
+	void test_insert() {
 		Employee chihaya=data.getChihaya();
 		mapper.insert(chihaya);
 		Employee confirm=mapper.selectById(1007);
@@ -91,7 +93,7 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
-	void testUpdate() {
+	void test_update() {
 		Employee koga=mapper.selectById(1002);
 		log.info("名前変更前："+koga.getName());
 		koga.setName("鹿部");
@@ -101,7 +103,7 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
-	void testDelete() {
+	void test_delete() {
 		assertThat(mapper.selectById(1001)).isNotNull();
 		mapper.deleteById(1001);
 		assertThat(mapper.selectById(1001)).isNull();
