@@ -71,31 +71,31 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 			throws JsonMappingException, JsonProcessingException, DuplicateShiftException {
 
 		ObjectMapper mapper = new ObjectMapper();
-		List<FullCalendarForm> latestVersion = mapper.readValue(requestsStr,
+		List<FullCalendarForm> latestVersionForm = mapper.readValue(requestsStr,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
 
 		List<FullCalendarEntity> oldVersionStr = shiftManagementMapper.selectByEmployeeId(employeeId);
-		List<FullCalendarForm> oldVersion = oldVersionStr.stream()
+		List<FullCalendarForm> oldVersionForm = oldVersionStr.stream()
 				.map(o -> FullCalendarHelper.convertFullCalendarForm(o)).toList();
 
-		List<FullCalendarForm> additionals = latestVersion.stream()
+		List<FullCalendarForm> additionals = latestVersionForm.stream()
 				//				新しく追加した希望日
 				.filter(r -> Objects.equals(r.getId(), null)
 						//						かつ、すでに登録してある日付と重複していない
-						&& oldVersion.stream().noneMatch(o -> r.getStart().isEqual(o.getStart())))
+						&& oldVersionForm.stream().noneMatch(o -> r.getStart().isEqual(o.getStart())))
 				.toList();
 		if (!CollectionUtils.isEmpty(additionals)) {
 			//			追加する日付が存在する
 			try {
-				shiftManagementMapper.insertRequest(latestVersion);
+				shiftManagementMapper.insertRequest(additionals);
 			} catch (DataIntegrityViolationException e) {
 				//通常は起こりえない例外。ユーザーのミスではなくプログラム側のミス。
 				throw new DuplicateShiftException("シフト日が重複して登録されています");
 			}
 		}
 		//newRequestsに存在しない日付を削除
-		shiftManagementMapper.deleteByEmployeeId(latestVersion, employeeId);
+		shiftManagementMapper.deleteByEmployeeId(latestVersionForm, employeeId);
 
 	}
 

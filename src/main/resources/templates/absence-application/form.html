@@ -33,25 +33,21 @@
 			<tr>
 				<th>欠勤予定日</th>
 				<td>
-					<!--				selectではshiftSchedule.dateのほうを表示させる-->
 					<select th:field="*{shiftSchedule.shiftId}" required>
 						<option th:each="shiftSchedule : ${shiftSchedules}" th:value="${shiftSchedule.shiftId}"
 							th:text="${shiftSchedule.date}"></option>
 					</select>
-					<!--				<td> <select th:field="*{shiftSchedule.shiftId}" required></select>-->
 				</td>
 			</tr>
 			<tr>
 				<th>欠勤理由</th>
 				<td>
-					<!--				selectではabsence.nameのほうを表示させる-->
 					<select th:field="*{absenceReason.reasonId}" required>
 						<option th:each="absenceReason: ${absenceReasons}"
 						th:value="${absenceReason.reasonId}"
 						th:text="${absenceReason.name}">
 						</option>
 					</select>
-					<!--				<td><select th:field="*{absence.reasonId}" required>-->
 				</td>
 			</tr>
 			<tr>

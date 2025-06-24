@@ -3,12 +3,13 @@ package com.example.webapp.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.Role;
 import com.example.webapp.entity.TimeRecord;
+import com.example.webapp.exception.InvalidEditException;
+import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.TimeRecordForm;
-import com.example.webapp.helper.TimeRecordHelper;
 import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.WorkHistoryManagementService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -39,15 +42,18 @@ public class WorkHistoryManagementController {
 			Authentication auth, Model model, HttpSession session) {
 		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
 		if (isAdmin) {
-			List<TimeRecord> histories = workHistoryManagementService
-					.getAllWorkHistoriesToDate(targetMonth);
-			List<Employee> employees = employeesManagementService.getAllIdAndName();
+			session.setAttribute("fromPage", targetMonth);
+			List<TimeRecord> histories = workHistoryManagementService.getAllWorkHistoriesToDate(targetMonth);
+			List<Employee> employees = employeesManagementService.getAllEmployeeIdAndName();
 			model.addAttribute("employees", employees);
 			model.addAttribute("targetMonth", targetMonth);
 			model.addAttribute("histories", histories);
 			session.setAttribute("fromPage", targetMonth);
+			return "work-history/history";
 		}
-		return "work-history/history";
+
+		Integer principalEmployeeId = Integer.parseInt(auth.getName());
+		return "redirect:/work-history/" + targetMonth + "/" + principalEmployeeId;
 	}
 
 	//userとadmin
@@ -55,21 +61,21 @@ public class WorkHistoryManagementController {
 	public String showPersonalWorkHistories(@PathVariable("month") Integer targetMonth,
 			@PathVariable("employee-id") Integer employeeId,
 			Authentication auth, Model model, RedirectAttributes attributes, HttpSession session) {
-		//		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
-
-		session.setAttribute("fromPage", targetMonth + "/" + employeeId);
-		boolean isSame = auth.getName().equals(employeeId.toString());
-		if (!isSame) {
+		
+		Integer principalEmployeeId = Integer.parseInt(auth.getName());
+		
+		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
+		boolean isSame = principalEmployeeId.equals(employeeId);
+		
+		if (!isSame&&!isAdmin) {
 			attributes.addFlashAttribute("errorMessage", "他人の勤務履歴は閲覧できません");
-			employeeId = Integer.parseInt(auth.getName());
-			String fromPage=(String)session.getAttribute("fromPage");
-			return "redirect:/work-history/"+fromPage;
+			return "redirect:/work-history/" + targetMonth+"/"+principalEmployeeId;
 		}
-
+		session.setAttribute("fromPage", targetMonth + "/" + employeeId);
 		List<TimeRecord> personalHistories = workHistoryManagementService
-				.selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,
+				.gettPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,
 						targetMonth);
-		List<Employee> employees = employeesManagementService.getAllIdAndName();
+		List<Employee> employees = employeesManagementService.getAllEmployeeIdAndName();
 		model.addAttribute("employees", employees);
 		model.addAttribute("targetMonth", targetMonth);
 		model.addAttribute("histories", personalHistories);
@@ -78,27 +84,38 @@ public class WorkHistoryManagementController {
 
 	}
 
-	@GetMapping("edit/{target-date}/{employee-id}")
-	public String showPersonalWorkHistory(@PathVariable("target-date") LocalDate targetDate,
-			@PathVariable("employee-id") Integer employeeId, Model model) {
-		TimeRecord targetHistoriy = workHistoryManagementService.selectWorkHistoryByEmployeeIdAndDate(employeeId,
+	@GetMapping("edit/{date}/{employee-id}")
+	public String showPersonalWorkHistory(@PathVariable("date") LocalDate targetDate,
+			@PathVariable("employee-id") Integer employeeId, Model model, HttpSession session) throws NoDataException {
+		TimeRecordForm targetHistory = workHistoryManagementService.getWorkHistoryDetailByEmployeeIdAndDate(employeeId,
 				targetDate);
-		TimeRecordForm form = TimeRecordHelper.convertTimeRecordForm(targetHistoriy);
-		model.addAttribute("form", form);
+		session.setAttribute("editPage", "edit/"+targetDate + "/" + employeeId);
+		String fromPage=(String)session.getAttribute("fromPage");
+		model.addAttribute("form", targetHistory);
+		model.addAttribute("fromPage", fromPage);
 		return "work-history/edit";
 	}
 
 	@PostMapping("update")
-	public String updateWorkHistory(TimeRecordForm form, RedirectAttributes attribute,
-			HttpSession session) {
-		TimeRecord updatedHistory = TimeRecordHelper.convertTimeRecord(form);
-		workHistoryManagementService.updateWorkHistory(updatedHistory);
+	public String updateWorkHistory(@Validated TimeRecordForm form,BindingResult bindingResult, RedirectAttributes attribute,
+			HttpSession session) throws InvalidEditException {
+		if(bindingResult.hasErrors()) {
+			String editPage=(String)session.getAttribute("editPage");
+			return "redirect:/work-history/"+editPage;
+		}
+		workHistoryManagementService.updateWorkHistory(form);
 		attribute.addFlashAttribute("message", "更新しました");
-		//		Integer targetMonth=updatedHistory.getDate().getMonthValue();
-		//		Integer employeeId=updatedHistory.getEmployee().getEmployeeId();
-		//		return "redirect:/work-history/"+targetMonth+"/"+employeeId;
 		var fromPage = session.getAttribute("fromPage");
 		session.removeAttribute("fromPage");
+		session.removeAttribute("editPage");
 		return "redirect:/work-history/" + fromPage;
+	}
+
+	@ExceptionHandler({ InvalidEditException.class })
+	public String redirectToApplicationsPage(Exception e, RedirectAttributes attributes, HttpSession session) {
+		attributes.addFlashAttribute("errorMessage", e.getMessage());
+		String editPage = (String) session.getAttribute("editPage");
+		session.removeAttribute("editPage");
+		return "redirect:/work-history/" + editPage;
 	}
 }

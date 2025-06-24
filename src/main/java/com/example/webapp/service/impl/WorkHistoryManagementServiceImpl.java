@@ -1,12 +1,17 @@
 package com.example.webapp.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
+import com.example.webapp.exception.InvalidEditException;
+import com.example.webapp.exception.NoDataException;
+import com.example.webapp.form.TimeRecordForm;
+import com.example.webapp.helper.TimeRecordHelper;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.WorkHistoryManagementService;
 
@@ -23,7 +28,7 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	}
 	
 	@Override
-	public List<TimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
+	public List<TimeRecord> gettPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
 		
 		return mapper.selectToDateByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
@@ -34,12 +39,23 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	}
 	
 	@Override
-	public TimeRecord selectWorkHistoryByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
-		return mapper.selectByEmployeeIdAndDate(employeeId, date);
+	public TimeRecordForm getWorkHistoryDetailByEmployeeIdAndDate(Integer employeeId, LocalDate date) throws NoDataException {
+		TimeRecord targetHistory=mapper.selectByEmployeeIdAndDate(employeeId, date);
+		if(targetHistory.equals(null)) {
+			throw new NoDataException("勤怠履歴データが取得できませんでした。管理者にお問い合わせください。");
+		}
+		return TimeRecordHelper.convertTimeRecordForm(targetHistory);
 	}
 	
 	@Override
-	public void updateWorkHistory(TimeRecord updatedHistory) {
+	public void updateWorkHistory(TimeRecordForm form) throws InvalidEditException {
+		TimeRecord updatedHistory = TimeRecordHelper.convertTimeRecord(form);
+		LocalTime clockIn=updatedHistory.getClockIn();
+		LocalTime clockOut=updatedHistory.getClockOut();
+		Boolean isInvalid=clockIn.isAfter(clockOut);
+		if(isInvalid) {
+			throw new InvalidEditException("出勤時刻を退勤時刻の後には設定できません");
+		}
 		mapper.update(updatedHistory);
 	}
 }

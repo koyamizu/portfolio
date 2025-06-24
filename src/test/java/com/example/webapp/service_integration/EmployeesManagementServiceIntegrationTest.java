@@ -69,7 +69,7 @@ public class EmployeesManagementServiceIntegrationTest {
 
 	@Test
 	void testSelectAllIdAndName() {
-		List<Employee> actuals = service.getAllIdAndName();
+		List<Employee> actuals = service.getAllEmployeeIdAndName();
 
 		assertThat(actuals.size()).isEqualTo(6);
 

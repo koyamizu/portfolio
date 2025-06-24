@@ -56,7 +56,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	}
 
 	@Override
-	public List<Employee> getAllIdAndName() {
+	public List<Employee> getAllEmployeeIdAndName() {
 		return mapper.selectAllIdAndName();
 	}
 

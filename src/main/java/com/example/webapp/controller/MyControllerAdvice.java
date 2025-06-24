@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 public class MyControllerAdvice {
 
 	@ExceptionHandler({DataAccessResourceFailureException.class,BadSqlGrammarException.class
-		,EmptyResultDataAccessException.class,EmptyResultDataAccessException.class
-		,TypeMismatchDataAccessException.class})
+		,EmptyResultDataAccessException.class,TypeMismatchDataAccessException.class
+		,NullPointerException.class})
 	public String showDatabaseErrorPage(Exception e) {
 		log.error(e.getCause().toString());
-		return "error/database-error";
+		return "error/system-error";
 	}
 }

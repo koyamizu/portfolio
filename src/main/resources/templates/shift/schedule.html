@@ -15,10 +15,10 @@
 	<header>
 		<nav>
 			<ul>
-				<li th:if="${from}=='user'"><a th:href="@{/shift/request}">従業員シフト提出</a></li>
+				<li th:if="${#authorization.expression('hasAuthority(''USER'')')}"><a th:href="@{/shift/request}">従業員シフト提出</a></li>
 <!--				<div th:if="${from}=='admin'">-->
-					<li th:if="${from}=='admin'"><a th:href="@{/shift/create/edit/{month}(month=${thisMonth})}">今月のシフト変更</a></li>
-					<li th:if="${from}=='admin'"><a th:href="@{/shift/create}">来月のシフト作成</a></li>
+					<li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a th:href="@{/shift/create/edit/{month}(month=${thisMonth})}">今月のシフト変更</a></li>
+					<li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a th:href="@{/shift/create}">来月のシフト作成</a></li>
 <!--				</div>-->
 				<li class="li-index">
 					<a th:href="${from}?@{/{from}(from=${from})}:'javascript:history.back()'">戻る</a>

@@ -44,8 +44,6 @@
 		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		ORDER BY aa.id ASC
-<!--		WHERE-->
-<!--		  s.date &gt;=CURRENT_DATE-->
 		;
 	</select>
 	
@@ -69,8 +67,6 @@
 		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
 		WHERE
-<!--		  s.date &gt;=CURRENT_DATE-->
-<!--		  AND-->
 		  s.employee_id=#{employeeId}
 		ORDER BY aa.id ASC
 		;
@@ -138,6 +134,7 @@
 		  absence_applications
 		SET
 		  is_approve=#{decision}
+		  ,updated_at=now()
 		WHERE
 		  shift_id=#{shiftId}
 		;

@@ -64,7 +64,7 @@ public class EmployeesManagementServiceTest {
 		
 		doReturn(employees).when(employeesManagementMapper).selectAllIdAndName();
 		
-		List<Employee> actuals=service.getAllIdAndName();
+		List<Employee> actuals=service.getAllEmployeeIdAndName();
 		
 		assertThat(actuals).isEqualTo(employees);
 	}

@@ -1,8 +1,12 @@
 package com.example.webapp.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.webapp.entity.Role;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -15,30 +19,23 @@ public class IndexController {
 		return "index";
 	}
 	
-//	@GetMapping("to-time-recorder")
-//	public String showTimeRecorder(HttpSession session) {
-////		session.setAttribute("from", "timeRecorder");
-//		return "redirect:/time-recorder";
-//	}
-
 	@GetMapping("admin")
 	public String showAdminMenu(HttpSession session) {
 		session.setAttribute("from","admin");
-		/*		ブラウザバックをしたとき、showIndexのsession.invalidate()によってセッションが破棄されるようにしたが
-				ブラウザバック→ブラウザフォワードしたときにログインなしで遷移できるので、ログイン後15分経過したらセッションが破棄されるようにした。*/
-//		タイムレコーダー画面のセッション有効時間が短くなってしまうのでコメントアウト
-//		session.setMaxInactiveInterval(1800);
 		return "menu/admin";
 	}
 	
 	@GetMapping("user")
-	public String showUserMenu(HttpSession session) {
+	public String showUserMenu(HttpSession session,Authentication auth) {
+		boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.toString()));
+		if(isAdmin) {
+			return "redirect:/admin";
+		}
 		session.setAttribute("from", "user");
-//		session.setMaxInactiveInterval(1800);
 		return "menu/user";
 	}
 	
-	//デベロッパーツールを開いた状態でログインすると、エラーになるのでエラーページを用意した。
+	//デベロッパーツールを開いた状態でログインするとエラーになるので、エラーページを用意した。
 	@GetMapping(".well-known/appspecific/com.chrome.devtools.json")
 	public String showOpenDevtoolError() {
 		return "error/devtool";

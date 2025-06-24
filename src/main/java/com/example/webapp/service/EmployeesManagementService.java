@@ -16,7 +16,7 @@ public interface EmployeesManagementService {
 	
 	List<Employee> getAllEmployees() throws NoDataException;
 	
-	List<Employee> getAllIdAndName();
+	List<Employee> getAllEmployeeIdAndName();
 	
 	Integer getEmployeeIdByName(String name);
 	

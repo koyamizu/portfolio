@@ -1,7 +1,5 @@
 package com.example.webapp.form;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftScheduleForm {
+//AbsenceReasonとかに変える
+public class AbsenceReasonForm {
 
-//	シフトID
-	@NotNull(message="出勤日を選択してください")
-	private Integer shiftId;
-//	出勤予定日
-	private LocalDate date;
+	@NotNull(message="欠勤理由を選択してください")
+	private Integer reasonId;
+	
+	//nameとかにするか
+	private String name;
 }
