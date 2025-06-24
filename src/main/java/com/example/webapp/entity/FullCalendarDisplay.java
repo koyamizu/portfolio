@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FullCalendarEntity {
+public class FullCalendarDisplay {
 	//シフトid
 	//Fullcalendarに表示する際に、「id」という名称である必要があるので、ここは「id」で固定
 	private Integer id;
@@ -26,4 +26,5 @@ public class FullCalendarEntity {
 	private String borderColor;
 	
 	private String textColor;
+
 }

@@ -19,8 +19,6 @@
 		SELECT
 		  s.id
 		  ,e.name
-<!--		  ,CONCAT(s.date,' ',TIME_FORMAT(s.scheduled_start,'%H:%i')) AS start-->
-<!--		  ,CONCAT(s.date,' ',TIME_FORMAT(s.scheduled_end,'%H:%i')) AS end-->
 		  ,s.date
 		  ,s.scheduled_start
 		  ,s.scheduled_end
@@ -120,8 +118,6 @@
 		  shift_requests(employee_id, date, scheduled_start, scheduled_end, created_at)
 		VALUES
 		<foreach collection="requests" item="r" separator=",">
-<!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える。-->
-<!--		date,scheduled_start,scheduled_endを持っているクラス(ShiftSchedule)で受ける-->
 			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
 		</foreach>
 		;
@@ -142,8 +138,6 @@
 		  shift_schedules(employee_id,date,scheduled_start,scheduled_end, created_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
-		<!--		↓変換したJSONデータを受けるオブジェクトの型によって書き換える-->
-		<!--		date,scheduled_start,scheduled_endを持っているクラスで受ける-->
 			(#{s.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd}, now())
 		</foreach>
 		;
