@@ -18,6 +18,7 @@
 			</ul>
 		</nav>
 	</header>
+	<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
 	<form th:action="@{/absence-application/submit}" th:object="${form}" method="post">
 		<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
 			class="error-message">

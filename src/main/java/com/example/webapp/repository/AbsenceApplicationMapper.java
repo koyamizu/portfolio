@@ -16,7 +16,7 @@ public interface AbsenceApplicationMapper {
 	
 	List<AbsenceApplication> selectToday();
 	
-	List<AbsenceApplication> selectByApplicationId();
+	AbsenceApplication selectByApplicationId(Integer applicationId);
 	
 	List<AbsenceReason> selectAllReasons();
 	

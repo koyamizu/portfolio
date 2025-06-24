@@ -18,12 +18,13 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 
 	private final WorkHistoryManagementMapper mapper;
 	@Override
-	public List<TimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth) {
+	public List<TimeRecord> getAllWorkHistoriesToDate(Integer targetMonth) {
 		return mapper.selectAllToDateByMonth(targetMonth);
 	}
 	
 	@Override
 	public List<TimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
+		
 		return mapper.selectToDateByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
 	

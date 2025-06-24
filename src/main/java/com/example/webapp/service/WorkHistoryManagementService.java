@@ -8,7 +8,7 @@ import com.example.webapp.entity.TimeRecord;
 
 public interface WorkHistoryManagementService {
 	
-	List<TimeRecord> selectAllWorkHistoriesToDateByMonth(Integer targetMonth);
+	List<TimeRecord> getAllWorkHistoriesToDate(Integer targetMonth);
 	
 	List<TimeRecord> selectPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
 	

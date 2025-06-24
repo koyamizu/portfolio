@@ -12,12 +12,11 @@
 	<header>
 		<nav>
 			<ul>
-				<li sec:authorize="!hasAuthority('ADMIN')">
+				<li th:if="${from}=='user'">
 					<a th:href="@{/absence-application/request}">新規申請</a>
 				</li>
 				<li class="li-index">
-					<a th:href="${#authorization.expression('hasAuthority(''ADMIN'')')} ?
-					@{/admin} : @{/user}">戻る</a>
+					<a th:href="@{/{from}(from=${from})}">戻る</a>
 				</li>
 			</ul>
 		</nav>

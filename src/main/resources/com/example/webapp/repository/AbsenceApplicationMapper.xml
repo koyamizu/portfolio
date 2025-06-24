@@ -43,6 +43,7 @@
 		  ON s.employee_id=e.id
 		  INNER JOIN absence_reasons AS ar
 		  ON aa.reason_id=ar.id
+		ORDER BY aa.id ASC
 <!--		WHERE-->
 <!--		  s.date &gt;=CURRENT_DATE-->
 		;
@@ -71,6 +72,7 @@
 <!--		  s.date &gt;=CURRENT_DATE-->
 <!--		  AND-->
 		  s.employee_id=#{employeeId}
+		ORDER BY aa.id ASC
 		;
 	</select>
 	
@@ -97,6 +99,7 @@
 	<select id="selectByApplicationId" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
 		SELECT
 		  e.name AS employee_name
+		  ,s.date
 		  ,aa.created_at
 		  ,ar.name AS reason_name
 		  ,aa.detail

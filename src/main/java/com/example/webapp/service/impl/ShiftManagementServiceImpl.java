@@ -1,6 +1,5 @@
 package com.example.webapp.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,11 +47,6 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<ShiftSchedule> getAllShiftsAfterToday(Integer employeeId) {
-		List<Integer> employeeIds = employeesManagementMapper.selectAllIdAndName().stream().map(e -> e.getEmployeeId())
-				.toList();
-		if (!employeeIds.contains(employeeId)) {
-			throw new RuntimeException("そのIDを持つ従業員は存在しません");
-		}
 		return shiftManagementMapper.selectAllAfterTodayByEmployeeId(employeeId);
 	}
 	
@@ -133,6 +127,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	}
 
 	@Override
+	@Transactional
 	public void updateShiftSchedules(String latestVersionStr, Integer month)
 			throws JsonMappingException, JsonProcessingException, InvalidEditException {
 		ObjectMapper mapper = new ObjectMapper();
@@ -144,16 +139,11 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		//追加なしで「更新」を押したときは迂回する。
 		try {
 			if (!CollectionUtils.isEmpty(additionals)) {
-				additionals.stream().forEach(a -> {
-					if (a.getStart().isBefore(LocalDate.now())) {
-						throw new DataIntegrityViolationException("");
-					}
-				});
 				shiftManagementMapper.insertShift(additionals);
 			}
 			shiftManagementMapper.deleteByMonth(latestVersion, month);
 		} catch (DataIntegrityViolationException e) {
-			throw new InvalidEditException("今日より前のシフト、および打刻済みのものは編集できません");
+			throw new InvalidEditException("勤怠履歴のあるシフト/欠勤申請の出されているシフトは編集できません");
 		}
 	}
 

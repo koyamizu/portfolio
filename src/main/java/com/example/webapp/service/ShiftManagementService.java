@@ -19,11 +19,7 @@ public interface ShiftManagementService {
 	List<ShiftSchedule> getAllShiftsAfterToday(Integer employeeId);
 
 	List<FullCalendarEntity> getOneMonthShifts(Integer targetMonth);
-	
-//	List<FullCalendarEntity> selectAllShiftRequests();
-	
-//	List<Employee> selectEmployeesNotSubmitRequests();
-	
+		
 	ShiftCreateContainer initializeShiftCreateContainerFields();
 	
 	ShiftEditContainer initializeShiftEditContainerFields(Integer month);
@@ -31,20 +27,8 @@ public interface ShiftManagementService {
 	void registerShiftRequests(String requestsStr, Integer employeeId) throws JsonMappingException, JsonProcessingException;
 	
 	void updateShiftRequests(String requestsStr, Integer employeeId) throws JsonMappingException, JsonProcessingException, DuplicateShiftException;
-
-//	void insertAdditionalRequest(List<FullCalendarForm> additionals);
 	
 	void createNextMonthShifts(String newShiftsStr) throws JsonMappingException, JsonProcessingException;
-
-//	void insertAdditionalShift(List<FullCalendarForm> newShifts);
 	
 	void updateShiftSchedules(String shiftSchedulesStr, Integer month) throws JsonMappingException, JsonProcessingException, InvalidEditException;
-
-	//	void deleteShiftRequestsByEmployeeId(Integer employeeId);
-
-//	void deleteShiftsByTargetMonth(Integer targetMonth);
-
-//	void deleteRequests(List<FullCalendarForm> requests, Integer employeeId);
-	
-//	void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth);
 }
