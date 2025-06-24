@@ -2,6 +2,7 @@ package com.example.webapp.service_integration;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ public class EmployeesManagementServiceIntegrationTest {
 		assertThat(actual.getName()).isEqualTo(yoshizuka.getName());
 		assertThat(actual.getBirth()).isEqualTo(yoshizuka.getBirth());
 		assertThat(actual.getTel()).isEqualTo(yoshizuka.getTel());
-		assertThat(actual.getAddress()).isEqualTo(yoshizuka.getAddress());
+		assertThat(LocalDate.parse(actual.getAddress())).isEqualTo(yoshizuka.getAddress());
 		assertThat(actual.getAuthority()).isEqualTo(yoshizuka.getAuthority());
 	}
 
@@ -92,7 +93,7 @@ public class EmployeesManagementServiceIntegrationTest {
 		EmployeeForm confirm=service.getEmployeeForm(1007);
 		assertThat(confirm.getPassword()).isEqualTo(chihaya.getPassword());
 		assertThat(confirm.getName()).isEqualTo(chihaya.getName());
-		assertThat(confirm.getBirth()).isEqualTo(chihaya.getBirth());
+		assertThat(LocalDate.parse(confirm.getBirth())).isEqualTo(chihaya.getBirth());
 		assertThat(confirm.getTel()).isEqualTo(chihaya.getTel());
 		assertThat(confirm.getAddress()).isEqualTo(chihaya.getAddress());
 		assertThat(confirm.getAuthority()).isEqualTo(chihaya.getAuthority());

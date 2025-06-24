@@ -18,29 +18,13 @@
 			<result property="workTime" column="work_time"/>		
 		</association>
 	</resultMap>
-	
-<!--	<resultMap id="TimeRecordWithEmployeeResult"-->
-<!--		type="com.example.webapp.entity.TimeRecord">-->
-<!--		<id property="date" column="date" />-->
-<!--		<id property="employeeId" column="employee_id" />-->
-<!--		<result property="employeeName" column="name" />-->
-<!--		<result property="clockIn" column="clock_in"/>-->
-<!--		<result property="clockOut" column="clock_out"/>-->
-<!--		<result property="workTime" column="work_time"/>-->
-<!--		<result property="createdAt" column="created_at" />-->
-<!--		<result property="updatedAt" column="updated_at" />		-->
-<!--		<association property="employee"-->
-<!--			javaType="com.example.webapp.entity.Employee">-->
-<!--			<id property="employeeId" column="employee_id" />-->
-<!--			<result property="name" column="name" />-->
-<!--		</association>-->
-<!--	</resultMap>-->
 
 	<!--当日出勤者選択 -->
 	<select id="selectByDate"
 		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 		SELECT
-		  e.name
+		  s.employee_id
+		  ,e.name
 		  ,t.clock_in
 		  ,t.clock_out
 		  ,SUBTIME(t.clock_out,t.clock_in) AS work_time
@@ -56,10 +40,9 @@
 		;
 	</select>
 	<!-- シフトデータの抽出 -->
-	<select id="selectShiftScheduleByEmployeeId"
-		resultMap="ShiftWithEmployeeAndTimeRecordResult">
+	<select id="selectAMenberOfTodayEmployeesByEmployeeId">
 		SELECT
-		  s.employee_id
+		  s.employee_id as employeeId
 		  ,e.name 
 		FROM
 		  employees AS e
@@ -71,8 +54,7 @@
 		;
 	</select>
 <!--	打刻データの抽出-->
-	<select id="selectTimeRecordByEmployeeId">
-<!--		resultType="com.example.webapp.entity.TimeRecord">-->
+	<select id="selectTodayTimeRecordByEmployeeId">
 		SELECT
 		  clock_in AS clockIn
 		  ,clock_out AS clockOut

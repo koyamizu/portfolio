@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.entity.TimeRecord;
 
@@ -15,9 +16,9 @@ public interface TimeRecorderMapper {
 
 	List<ShiftSchedule> selectByDate(LocalDate date);
 
-	ShiftSchedule selectShiftScheduleByEmployeeId(Integer employeeId);
+	Employee selectAMenberOfTodayEmployeesByEmployeeId(Integer employeeId);
 	
-	TimeRecord selectTimeRecordByEmployeeId(Integer employeeId);
+	TimeRecord selectTodayTimeRecordByEmployeeId(Integer employeeId);
 
 	void insert(Integer employeeId);
 	

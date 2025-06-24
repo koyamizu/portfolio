@@ -24,7 +24,7 @@ public interface AbsenceApplicationService {
 	
 //	List<AbsenceApplication> getApplicationDetail();
 	
-	List<AbsenceReason> selectAllReasons();
+	List<AbsenceReason> getAllReasons();
 	
 	void submitApplication(AbsenceApplicationForm form) throws DuplicateApplicationException;
 	

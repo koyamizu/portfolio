@@ -52,7 +52,7 @@ public class AbsenceApplicationController {
 	public String showForm(Model model, Authentication auth) {
 		Integer employeeId = Integer.parseInt(auth.getName());
 		List<ShiftSchedule> shiftSchedules = shiftManagementService.getAllShiftsAfterToday(employeeId);
-		List<AbsenceReason> absenceReasons = absenceApplicationService.selectAllReasons();
+		List<AbsenceReason> absenceReasons = absenceApplicationService.getAllReasons();
 		model.addAllAttributes(
 				Map.of(
 						"shiftSchedules", shiftSchedules

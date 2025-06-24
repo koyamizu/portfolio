@@ -58,7 +58,7 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	}
 
 	@Override
-	public List<AbsenceReason> selectAllReasons() {
+	public List<AbsenceReason> getAllReasons() {
 		return absenceApplicationMapper.selectAllReasons();
 	}
 

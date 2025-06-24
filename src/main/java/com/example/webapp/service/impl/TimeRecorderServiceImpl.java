@@ -13,7 +13,6 @@ import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
-import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.repository.TimeRecorderMapper;
@@ -43,24 +42,20 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	}
 
 	@Override
-	public ShiftSchedule getTodayPersonalShiftData(Integer employeeId)
-			throws InvalidEmployeeIdException, NoDataException {
-		Employee targetEmployee = employeesManagementMapper.selectById(employeeId);
-		if (Objects.equal(targetEmployee, null)) {
-			throw new InvalidEmployeeIdException("そのIDを持つ従業員は存在しません");
-		}
-		ShiftSchedule targetShift = timeRecorderMapper.selectShiftScheduleByEmployeeId(employeeId);
-		if (Objects.equal(targetShift, null)) {
+	public Employee getEmployeeToClock(Integer employeeId)
+			throws NoDataException {
+//		targetEmployeeの値はこれ以降使わないので、存在確認のためだけに呼び出すのは少し無駄な気もする。
+//		Employee targetEmployee = employeesManagementMapper.selectById(employeeId);
+//		if (Objects.equal(targetEmployee, null)) {
+//			throw new InvalidEmployeeIdException("そのIDを持つ従業員は存在しません");
+//		}
+		Employee employeeToClock = timeRecorderMapper.selectAMenberOfTodayEmployeesByEmployeeId(employeeId);
+		if (Objects.equal(employeeToClock, null)) {
 			throw new NoDataException("その従業員IDの方は本日出勤予定ではありません");
 		}
-		return targetShift;
+		return employeeToClock;
 	}
 
-//	@Override
-//	public TimeRecord getTodayPersonalTimeRecordData(Integer employeeId) {
-//		return timeRecorderMapper.selectTimeRecordByEmployeeId(employeeId);
-//
-//	}
 
 	@Override
 	public void clockIn(Integer employeeId) throws DuplicateClockException {
@@ -74,7 +69,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	@Override
 	public void clockOut(Integer employeeId) throws InvalidClockException, DuplicateClockException {
 
-		TimeRecord targetTimeRecord = timeRecorderMapper.selectTimeRecordByEmployeeId(employeeId);
+		TimeRecord targetTimeRecord = timeRecorderMapper.selectTodayTimeRecordByEmployeeId(employeeId);
 		if (Objects.equal(targetTimeRecord, null)) {
 			throw new InvalidClockException("「出勤」より先に「退勤」は押せません");
 		}

@@ -6,12 +6,12 @@
 -- ALTER TABLE time_records DROP FOREIGN KEY fk_time_records_employee_id;
 -- ALTER TABLE time_records DROP FOREIGN KEY fk_time_records_employee_date;
 
---DROP TABLE IF EXISTS time_records;
---DROP TABLE IF EXISTS absence_applications;
---DROP TABLE IF EXISTS shift_requests;
---DROP TABLE IF EXISTS shift_schedules;
---DROP TABLE IF EXISTS employees;
---DROP TABLE IF EXISTS absence_reasons;
+DROP TABLE IF EXISTS time_records;
+DROP TABLE IF EXISTS absence_applications;
+DROP TABLE IF EXISTS shift_requests;
+DROP TABLE IF EXISTS shift_schedules;
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS absence_reasons;
 
 CREATE TABLE absence_reasons (
     id INT NOT NULL AUTO_INCREMENT,
