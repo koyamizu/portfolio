@@ -5,12 +5,14 @@
 
 	<resultMap id="FullCalendarEntityResult"
 		type="com.example.webapp.entity.FullCalendarEntity">
-		<id property="id" column="id"/>
-		<result property="employeeId" column="employee_id"/>
-		<result property="title" column="name" />
+		<id property="shiftId" column="id"/>
 		<result property="start" column="date" />
 		<result property="scheduledStart" column="scheduled_start" />
 		<result property="scheduledEnd" column="scheduled_end" />
+		<association property="employee" javaType="com.example.webapp.entity.Employee">
+			<id property="employeeId" column="employee_id"/>
+			<result property="name" column="name"/>
+		</association>
 	</resultMap>
 
 <!--シフトの表示にしか使ってない-->
@@ -118,17 +120,7 @@
 		  shift_requests(employee_id, date, scheduled_start, scheduled_end, created_at)
 		VALUES
 		<foreach collection="requests" item="r" separator=",">
-			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
-		</foreach>
-		;
-	</insert>
-	
-	<insert id="insertAdditionalRequest">
-		INSERT INTO
-		  shift_requests(employee_id, date, scheduled_start, scheduled_end,created_at)
-		VALUES
-		<foreach collection="requests" item="r" separator=",">
-			(#{r.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
+			(#{r.employee.employeeId}, #{r.start}, #{r.scheduledStart}, #{r.scheduledEnd},now())
 		</foreach>
 		;
 	</insert>
@@ -138,20 +130,10 @@
 		  shift_schedules(employee_id,date,scheduled_start,scheduled_end, created_at)
 		VALUES
 		<foreach collection="newShifts" item="s" separator=",">
-			(#{s.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd}, now())
+			(#{s.employee.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd}, now())
 		</foreach>
 		;
 	</insert>
-	
-	<insert id="insertAdditionalShift">
-		INSERT INTO
-		  shift_schedules(employee_id, date, scheduled_start, scheduled_end, created_at)
-		VALUES
-		<foreach collection="newShifts" item="s" separator=",">
-			(#{s.employeeId}, #{s.start}, #{s.scheduledStart}, #{s.scheduledEnd},now())
-		</foreach>
-		;
-	</insert>	
 
 <!--	リクエストの削除-->
 	<delete id="deleteByEmployeeId">
@@ -174,7 +156,7 @@
 		WHERE
 		  (date,employee_id) NOT IN (
 		  <foreach collection="newShifts" item="s" separator=",">
-			  (#{s.start},#{s.employeeId})
+			  (#{s.start},#{s.employee.employeeId})
 		  </foreach>		  
 		  )
 		  AND MONTH(date)=#{targetMonth}

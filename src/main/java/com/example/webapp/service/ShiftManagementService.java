@@ -2,7 +2,7 @@ package com.example.webapp.service;
 
 import java.util.List;
 
-import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.entity.FullCalendarDisplay;
 import com.example.webapp.entity.ShiftCreateContainer;
 import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.ShiftSchedule;
@@ -12,13 +12,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 public interface ShiftManagementService {
-	List<FullCalendarEntity> getThreeMonthShifts(Integer targetMonth);
+	List<FullCalendarDisplay> getThreeMonthShifts(Integer targetMonth);
 
-	List<FullCalendarEntity> getPersonalShiftRequests(Integer employeeId);
+	List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId);
 	
 	List<ShiftSchedule> getAllShiftsAfterToday(Integer employeeId);
 
-	List<FullCalendarEntity> getOneMonthShifts(Integer targetMonth);
+	List<FullCalendarDisplay> getOneMonthShifts(Integer targetMonth);
 		
 	ShiftCreateContainer initializeShiftCreateContainerFields();
 	

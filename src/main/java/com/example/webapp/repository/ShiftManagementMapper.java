@@ -24,12 +24,12 @@ public interface ShiftManagementMapper {
 
 	List<Employee> selectNotSubmit();
 
-	void insertRequest(List<FullCalendarForm> requests);
+	void insertRequest(List<FullCalendarEntity> requests);
 
-	void insertShift(List<FullCalendarForm> newShifts);
+	void insertShift(List<FullCalendarEntity> newShifts);
 
-	void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId);
+	void deleteByEmployeeId(List<FullCalendarEntity> requests, Integer employeeId);
 
-	void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth);
+	void deleteByMonth(List<FullCalendarEntity> newShifts,Integer targetMonth);
 
 }

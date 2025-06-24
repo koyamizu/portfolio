@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.webapp.entity.FullCalendarDisplay;
 import com.example.webapp.entity.FullCalendarEntity;
 import com.example.webapp.entity.ShiftCreateContainer;
 import com.example.webapp.entity.ShiftEditContainer;
@@ -40,7 +41,7 @@ public class ShiftManagementController {
 	@GetMapping
 	public String showShiftSchedule(HttpSession session, Model model) {
 		Integer thisMonth = LocalDate.now().getMonthValue();
-		List<FullCalendarEntity> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
+		List<FullCalendarDisplay> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
 		String from = (String) session.getAttribute("from");
 		model.addAttribute("from", from);
@@ -52,7 +53,7 @@ public class ShiftManagementController {
 	@GetMapping("request")
 	public String showRequestPage(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		List<FullCalendarEntity> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
+		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
 		State state = CollectionUtils.isEmpty(requests) ? State.NEW : State.CONFIRM;
 		if (state.equals(State.CONFIRM)) {
 			FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
@@ -69,13 +70,14 @@ public class ShiftManagementController {
 	@GetMapping("request/edit")
 	public String editRequests(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		List<FullCalendarEntity> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
+		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
 		FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
 		model.addAttribute("requests", requests);
 		model.addAttribute("state", State.EDIT.toString());
 		return "shift/request";
 	}
 
+	//↓ここから
 	@PostMapping("request/submit")
 	public String submitRequests(@RequestParam String selectedDatesJson,
 			@RequestParam State state,
