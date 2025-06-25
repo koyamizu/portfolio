@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.FullCalendarDisplay;
-import com.example.webapp.entity.FullCalendarEntity;
 import com.example.webapp.entity.ShiftCreateContainer;
 import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.State;
@@ -28,7 +29,6 @@ import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -108,7 +108,7 @@ public class ShiftManagementController {
 	public String showCreatePage(Model model) {
 		Integer nextMonth = LocalDate.now().plus(1, ChronoUnit.MONTHS).getMonthValue();
 		//id,start(date)のみの情報が返ってくる
-		List<FullCalendarEntity> nextMonthShifts = shiftManagementService
+		List<FullCalendarDisplay> nextMonthShifts = shiftManagementService
 				.getOneMonthShifts(nextMonth);
 		State state = CollectionUtils.isEmpty(nextMonthShifts) ? State.NEW : State.CONFIRM;
 		model.addAttribute("state", state.toString());

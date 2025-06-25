@@ -3,6 +3,7 @@ package com.example.webapp.helper;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarDisplay;
 import com.example.webapp.entity.FullCalendarEntity;
 import com.example.webapp.form.FullCalendarForm;
@@ -15,23 +16,25 @@ public class FullCalendarHelper {
 		shifts.stream().forEach(s -> s.setTextColor(textColor));
 	}
 	
-//	public static FullCalendarForm convertFullCalendarForm(FullCalendarEntity entity) {
-//		FullCalendarEntity form = new FullCalendarEntity();
-//		form.setId(entity.getId());
-//		form.setEmployeeId(entity.getEmployeeId());
-//		form.setStart(LocalDate.parse(entity.getStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//		form.setScheduledStart(LocalTime.parse(entity.getScheduledStart(), DateTimeFormatter.ofPattern("HH:mm:ss")));
-//		form.setScheduledEnd(LocalTime.parse(entity.getScheduledEnd(), DateTimeFormatter.ofPattern("HH:mm:ss")));
-//		return form;
-//	}
+	public static FullCalendarForm convertFullCalendarForm(FullCalendarEntity entity) {
+		FullCalendarForm form = new FullCalendarForm();
+		form.setId(entity.getShiftId());
+		form.setEmployeeId(entity.getEmployee().getEmployeeId());
+		form.setStart(entity.getStart());
+		form.setScheduledStart(entity.getScheduledStart());
+		form.setScheduledEnd(entity.getScheduledEnd());
+		return form;
+	}
 	
 	public static FullCalendarEntity convertFullCalendarEntity(FullCalendarForm form) {
 	    FullCalendarEntity entity = new FullCalendarEntity();
+	    Employee employee=new Employee();
+	    employee.setEmployeeId(form.getEmployeeId());
 	    entity.setShiftId(form.getId());
-	    entity.getEmployee().setEmployeeId(form.getEmployeeId());
-		entity.setStart(entity.getStart());
-		entity.setScheduledStart(entity.getScheduledStart());
-		entity.setScheduledEnd(entity.getScheduledEnd());
+	    entity.setEmployee(employee);
+		entity.setStart(form.getStart());
+		entity.setScheduledStart(form.getScheduledStart());
+		entity.setScheduledEnd(form.getScheduledEnd());
 	    return entity;
 	}
 
@@ -46,14 +49,16 @@ public class FullCalendarHelper {
 		return display;
 	}
 	
-//	public static FullCalendarEntity convertFullCalendarEntity(FullCalendarDisplay form) {
-//	    FullCalendarEntity entity = new FullCalendarEntity();
-//	    entity.setId(form.getId());
-//	    entity.setEmployeeId(form.getEmployeeId());
-//	    entity.setStart(form.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//	    entity.setScheduledStart(form.getScheduledStart().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-//	    entity.setScheduledEnd(form.getScheduledEnd().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-//	    return entity;
-//	}
+	public static List<FullCalendarForm> convertFullCalendarForm(List<FullCalendarEntity> entities) {
+		return entities.stream().map(e->convertFullCalendarForm(e)).toList();
+	}
+	
+	public static List<FullCalendarEntity> convertFullCalendarEntity(List<FullCalendarForm> forms){
+		return forms.stream().map(e->convertFullCalendarEntity(e)).toList();
+	}
+	
+	public static List<FullCalendarDisplay> convertFullCalendarDisplay(List<FullCalendarEntity> entities){
+		return entities.stream().map(e->convertFullCalendarDisplay(e)).toList();
+	}
 
 }

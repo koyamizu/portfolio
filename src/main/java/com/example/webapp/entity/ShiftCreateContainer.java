@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ShiftCreateContainer{
-	private List<FullCalendarEntity> requests;
+	private List<FullCalendarDisplay> requests;
 	private List<Employee> allEmployees;
 	private List<Employee> notSubmits;
 }
