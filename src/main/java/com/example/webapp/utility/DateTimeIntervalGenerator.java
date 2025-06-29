@@ -13,7 +13,7 @@ public class DateTimeIntervalGenerator {
 		LocalDate nextDay=LocalDate.now().plusDays(1);
 		
 		LocalDateTime midNight=LocalDateTime.of(nextDay, LocalTime.of(0, 0));
-		return Duration.between(now, midNight).toSecondsPart();
+		return (int)Duration.between(now, midNight).getSeconds();
 		
 	}
 }

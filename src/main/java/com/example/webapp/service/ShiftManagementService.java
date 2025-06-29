@@ -30,5 +30,5 @@ public interface ShiftManagementService {
 	
 	void createNextMonthShifts(String newShiftsStr) throws JsonMappingException, JsonProcessingException;
 	
-	void updateShiftSchedules(String shiftSchedulesStr, Integer month) throws JsonMappingException, JsonProcessingException, InvalidEditException;
+	Boolean updateShiftSchedules(String shiftSchedulesStr, Integer month) throws JsonMappingException, JsonProcessingException, InvalidEditException;
 }

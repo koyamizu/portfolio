@@ -1,5 +1,6 @@
 package com.example.webapp.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -139,8 +140,9 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	@Transactional
-	public void updateShiftSchedules(String latestVersionStr, Integer month)
+	public Boolean updateShiftSchedules(String latestVersionStr, Integer month)
 			throws JsonMappingException, JsonProcessingException, InvalidEditException {
+		Boolean isEditTodayMember=false;
 		ObjectMapper mapper = new ObjectMapper();
 		List<FullCalendarForm> latestVersionForm = mapper.readValue(latestVersionStr,
 				new TypeReference<List<FullCalendarForm>>() {
@@ -152,11 +154,13 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		try {
 			if (!CollectionUtils.isEmpty(additionals)) {
 				shiftManagementMapper.insertShift(additionals);
+				isEditTodayMember=additionals.stream().anyMatch(a->a.getStart().equals(LocalDate.now()));
 			}
 			shiftManagementMapper.deleteByMonth(latestVersion, month);
 		} catch (DataIntegrityViolationException e) {
 			throw new InvalidEditException("勤怠履歴のあるシフト/欠勤申請の出されているシフトは編集できません");
 		}
+		return isEditTodayMember;
 	}
 
 }

@@ -16,6 +16,7 @@ public interface TimeRecorderMapper {
 
 	List<ShiftSchedule> selectByDate(LocalDate date);
 
+//	これ多分いらないメソッドだと思う
 	Employee selectAMenberOfTodayEmployeesByEmployeeId(Integer employeeId);
 	
 	TimeRecord selectTodayTimeRecordByEmployeeId(Integer employeeId);

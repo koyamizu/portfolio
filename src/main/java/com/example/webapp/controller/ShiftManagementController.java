@@ -144,7 +144,8 @@ public class ShiftManagementController {
 
 	@PostMapping("create/submit")
 	public String submitShifts(@RequestParam String selectedDatesJson,
-			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month)
+			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month
+			,HttpSession session)
 			throws JsonProcessingException, InvalidEditException {
 
 		if (state.equals(State.NEW)) {
@@ -152,8 +153,11 @@ public class ShiftManagementController {
 			attributes.addFlashAttribute("message", "シフトの作成が完了しました");
 		}
 		if (state.equals(State.EDIT)) {
-			shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
+			Boolean isEditTodayMember=shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
+			if(isEditTodayMember) {
+				session.removeAttribute("todayMembersWithClockTime");
+			}
 		}
 		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/create";
 		return "redirect:" + path;

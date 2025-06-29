@@ -48,16 +48,28 @@ public class TimeRecorderMapperTest {
 
 	@Test
 	void test_selectTodayTimeRecordByEmployeeId() {
-		TimeRecord timeRecord=mapper.selectTodayTimeRecordByEmployeeId(1001);
-		assertThat(timeRecord).isNull();
 		mapper.insert(1001);
 		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
 		assertThat(actual).isNotNull();
 	}
 
-	//	mapper.selectTimeRecordByEmployeeId(Integer employeeId);
-	//
-	//	mapper.insert(Integer employeeId);
-	//	
+	@Test
+	void test_insert() {
+//		List<ShiftSchedule> employees= mapper.selectByDate(LocalDate.now());
+//		Integer employeeId=employees.get(0).getEmployee().getEmployeeId();
+		mapper.insert(1001);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
+		assertThat(actual.getClockIn()).isNotNull();
+//		確認用のコード必要？
+	}
+	
+	@Test
+	void test_update() {
+		mapper.insert(1001);
+		mapper.update(1001);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
+		assertThat(actual.getClockIn()).isNotNull();
+		assertThat(actual.getClockOut()).isNotNull();
+	}
 	//	mapper.update(Integer employeeId);
 }
