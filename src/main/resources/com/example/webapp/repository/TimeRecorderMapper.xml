@@ -53,7 +53,7 @@
 		  AND date = CURRENT_DATE
 		;
 	</select>
-<!--	打刻データの抽出-->
+<!--打刻データの抽出-->
 	<select id="selectTodayTimeRecordByEmployeeId">
 		SELECT
 		  clock_in AS clockIn

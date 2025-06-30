@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,11 +22,10 @@ import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
+import com.example.webapp.helper.Caster;
 import com.example.webapp.service.AbsenceApplicationService;
 import com.example.webapp.service.TimeRecorderService;
-import com.example.webapp.utility.DateTimeIntervalGenerator;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -38,32 +39,30 @@ public class TimeRecorderController {
 
 	@GetMapping
 	public String showTimeRecorder(Model model, HttpSession session) throws NoDataException {
-		List<ShiftSchedule> todayEmployeeList = timeRecorderService.getEmployeeList(today);
-		model.addAttribute("todaysEmployees", todayEmployeeList);
-
-		Object sessionTodayAbsences=session.getAttribute("todayAbsences");
+		
+		List<ShiftSchedule> todayMembersWithClockTime=Caster.castToShiftScheduleList(session.getAttribute("todayMembersWithClockTime"));
+		List<AbsenceApplication> todayAbsences=Caster.castToAbsenceApplicationList(session.getAttribute("todayAbsences"));
+		
+		if(Objects.equals(null,todayMembersWithClockTime)) {
+			todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime(today);
+			session.setAttribute("todayMembersWithClockTime", todayMembersWithClockTime);
+		}
 		//		当日欠勤者がセッションに保存されていないとき(ホームからタイムレコーダーに推移してきたとき)
-		if (Objects.equals(null, sessionTodayAbsences)) {
-//			if (Objects.equals(null, session.getAttribute("todayAbsences"))) {
-			List<AbsenceApplication> todayAbsences = absenceApplicationService.getTodayApplications();
-			int byTheEndOfToday=DateTimeIntervalGenerator.getIntervalBetweenMidNight();
-			
+		if (Objects.equals(null, todayAbsences)) {
+			todayAbsences = absenceApplicationService.getTodayApplications();
 			session.setAttribute("todayAbsences", todayAbsences);
-//			午前0時まで当日欠勤者情報を保持する。
-			session.setMaxInactiveInterval(byTheEndOfToday);
-			model.addAttribute("todayAbsences", todayAbsences);
-			return "time-recorder/top";
 		}
 
-//		model.addAttribute("todayAbsences", session.getAttribute("todayAbsences"));
-		model.addAttribute("todayAbsences", sessionTodayAbsences);
+		model.addAttribute("todayAbsences", todayAbsences);
+		model.addAttribute("todayMembersWithClockTime", todayMembersWithClockTime);
 		return "time-recorder/top";
 	}
 
 	@PostMapping("/record")
 	public String showRecordPage(@RequestParam("employee-id") Integer employeeId, Model model,
 			RedirectAttributes attributes) throws NoDataException {
-		Employee targetEmployee = timeRecorderService.getEmployeeToClock(employeeId);
+		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime(today);
+		Employee targetEmployee = timeRecorderService.getEmployeeToClock(todayMembersWithClockTime,employeeId);
 		model.addAttribute("employee", targetEmployee);
 		model.addAttribute("today", today);
 		return "time-recorder/record";

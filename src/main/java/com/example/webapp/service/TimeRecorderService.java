@@ -11,12 +11,10 @@ import com.example.webapp.exception.NoDataException;
 
 public interface TimeRecorderService {
 	
-	List<ShiftSchedule> getEmployeeList(LocalDate date) throws NoDataException;
+	List<ShiftSchedule> getEmployeeWithClockTime(LocalDate date) throws NoDataException;
 
-	Employee getEmployeeToClock(Integer employeeId) throws NoDataException;
+	Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId) throws NoDataException;
 
-//	TimeRecord getTodayPersonalTimeRecordData(Integer employeeId);
-	
 	void clockIn(Integer employeeId) throws DuplicateClockException;
 
 	void clockOut(Integer employeeId) throws DuplicateClockException,InvalidClockException;

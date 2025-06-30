@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.entity.FullCalendarDisplay;
 import com.example.webapp.entity.ShiftCreateContainer;
 import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.State;
@@ -27,7 +29,6 @@ import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -40,7 +41,7 @@ public class ShiftManagementController {
 	@GetMapping
 	public String showShiftSchedule(HttpSession session, Model model) {
 		Integer thisMonth = LocalDate.now().getMonthValue();
-		List<FullCalendarEntity> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
+		List<FullCalendarDisplay> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
 		String from = (String) session.getAttribute("from");
 		model.addAttribute("from", from);
@@ -52,7 +53,7 @@ public class ShiftManagementController {
 	@GetMapping("request")
 	public String showRequestPage(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		List<FullCalendarEntity> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
+		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
 		State state = CollectionUtils.isEmpty(requests) ? State.NEW : State.CONFIRM;
 		if (state.equals(State.CONFIRM)) {
 			FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
@@ -69,13 +70,14 @@ public class ShiftManagementController {
 	@GetMapping("request/edit")
 	public String editRequests(Authentication authentication, Model model) {
 		Integer employeeId = Integer.parseInt(authentication.getName());
-		List<FullCalendarEntity> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
+		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
 		FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
 		model.addAttribute("requests", requests);
 		model.addAttribute("state", State.EDIT.toString());
 		return "shift/request";
 	}
 
+	//↓ここから
 	@PostMapping("request/submit")
 	public String submitRequests(@RequestParam String selectedDatesJson,
 			@RequestParam State state,
@@ -106,7 +108,7 @@ public class ShiftManagementController {
 	public String showCreatePage(Model model) {
 		Integer nextMonth = LocalDate.now().plus(1, ChronoUnit.MONTHS).getMonthValue();
 		//id,start(date)のみの情報が返ってくる
-		List<FullCalendarEntity> nextMonthShifts = shiftManagementService
+		List<FullCalendarDisplay> nextMonthShifts = shiftManagementService
 				.getOneMonthShifts(nextMonth);
 		State state = CollectionUtils.isEmpty(nextMonthShifts) ? State.NEW : State.CONFIRM;
 		model.addAttribute("state", state.toString());
@@ -142,7 +144,8 @@ public class ShiftManagementController {
 
 	@PostMapping("create/submit")
 	public String submitShifts(@RequestParam String selectedDatesJson,
-			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month)
+			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month
+			,HttpSession session)
 			throws JsonProcessingException, InvalidEditException {
 
 		if (state.equals(State.NEW)) {
@@ -150,8 +153,11 @@ public class ShiftManagementController {
 			attributes.addFlashAttribute("message", "シフトの作成が完了しました");
 		}
 		if (state.equals(State.EDIT)) {
-			shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
+			Boolean isEditTodayMember=shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
+			if(isEditTodayMember) {
+				session.removeAttribute("todayMembersWithClockTime");
+			}
 		}
 		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/create";
 		return "redirect:" + path;

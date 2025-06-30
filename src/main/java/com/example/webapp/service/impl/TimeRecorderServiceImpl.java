@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -30,27 +31,26 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	private final EmployeesManagementMapper employeesManagementMapper;
 
 	@Override
-	public List<ShiftSchedule> getEmployeeList(LocalDate date) throws NoDataException {
+	public List<ShiftSchedule> getEmployeeWithClockTime(LocalDate date) throws NoDataException {
 
 		List<ShiftSchedule> todayEmployeeList = timeRecorderMapper.selectByDate(date);
 
 		if (CollectionUtils.isEmpty(todayEmployeeList)) {
-			throw new NoDataException("今日の出勤者情報が取得できませんでした。");
+//			TimeRecorderMapper.xmlに問題があるのでBadSqlGrammarExceptionを投げる
+			throw new BadSqlGrammarException(null, null, null);
 		}
 
 		return todayEmployeeList;
 	}
 
 	@Override
-	public Employee getEmployeeToClock(Integer employeeId)
+	public Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId)
 			throws NoDataException {
-//		targetEmployeeの値はこれ以降使わないので、存在確認のためだけに呼び出すのは少し無駄な気もする。
-//		Employee targetEmployee = employeesManagementMapper.selectById(employeeId);
-//		if (Objects.equal(targetEmployee, null)) {
-//			throw new InvalidEmployeeIdException("そのIDを持つ従業員は存在しません");
-//		}
-		Employee employeeToClock = timeRecorderMapper.selectAMenberOfTodayEmployeesByEmployeeId(employeeId);
-		if (Objects.equal(employeeToClock, null)) {
+//		↓これsessionからEmployees取り出してその中から打刻するメンバーをemployeeIdで取り出せばいいから不要な気がする
+		List<Employee> employees = todayMembersWithClockTime.stream().map(ShiftSchedule::getEmployee).toList();
+		Employee employeeToClock = employees.stream().filter(e -> e.getEmployeeId().equals(employeeId))
+			    .findFirst().orElse(null);
+		if (employeeToClock.equals(null)) {
 			throw new NoDataException("その従業員IDの方は本日出勤予定ではありません");
 		}
 		return employeeToClock;
@@ -68,7 +68,6 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 
 	@Override
 	public void clockOut(Integer employeeId) throws InvalidClockException, DuplicateClockException {
-
 		TimeRecord targetTimeRecord = timeRecorderMapper.selectTodayTimeRecordByEmployeeId(employeeId);
 		if (Objects.equal(targetTimeRecord, null)) {
 			throw new InvalidClockException("「出勤」より先に「退勤」は押せません");

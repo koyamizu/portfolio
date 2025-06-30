@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ShiftEditContainer{
-	private List<FullCalendarEntity> shifts;
+	private List<FullCalendarDisplay> shifts;
 	private List<Employee> allEmployees;
 }

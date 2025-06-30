@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
 import com.example.webapp.entity.ShiftSchedule;
-import com.example.webapp.form.FullCalendarForm;
 
 @Mapper
 public interface ShiftManagementMapper {
@@ -24,12 +23,12 @@ public interface ShiftManagementMapper {
 
 	List<Employee> selectNotSubmit();
 
-	void insertRequest(List<FullCalendarForm> requests);
+	void insertRequest(List<FullCalendarEntity> requests);
 
-	void insertShift(List<FullCalendarForm> newShifts);
+	void insertShift(List<FullCalendarEntity> newShifts);
 
-	void deleteByEmployeeId(List<FullCalendarForm> requests, Integer employeeId);
+	void deleteByEmployeeId(List<FullCalendarEntity> requests, Integer employeeId);
 
-	void deleteByMonth(List<FullCalendarForm> newShifts,Integer targetMonth);
+	void deleteByMonth(List<FullCalendarEntity> newShifts,Integer targetMonth);
 
 }
