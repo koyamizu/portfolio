@@ -90,7 +90,7 @@ public class WorkHistoryManagementController {
 		TimeRecordForm targetHistory = workHistoryManagementService.getWorkHistoryDetailByEmployeeIdAndDate(employeeId,
 				targetDate);
 		session.setAttribute("editPage", "edit/"+targetDate + "/" + employeeId);
-		String fromPage=(String)session.getAttribute("fromPage");
+		String fromPage=session.getAttribute("fromPage").toString();
 		model.addAttribute("form", targetHistory);
 		model.addAttribute("fromPage", fromPage);
 		return "work-history/edit";
