@@ -24,24 +24,6 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 
 	private final AbsenceApplicationMapper absenceApplicationMapper;
 
-//	@Override
-//	public List<AbsenceApplication> selectAllApplicationsAfterToday() {
-//		return absenceApplicationMapper.selectAll();
-//	}
-//
-//	@Override
-//	public List<AbsenceApplication> selectPersonalApplicationsAfterToday(Integer employeeId) {
-//		if (employeeId.equals(null)) {
-//			throw new RuntimeException("認証情報がありません");
-//		}
-//		List<Integer> employeeIds = employeeManagementMapper.selectAllIdAndName().stream().map(e -> e.getEmployeeId())
-//				.toList();
-//		if (!employeeIds.contains(employeeId)) {
-//			throw new RuntimeException("そのIDを持つ従業員は存在しません");
-//		}
-//		return absenceApplicationMapper.selectAllByEmployeeId(employeeId);
-//	}
-//	
 	@Override
 	public List<AbsenceApplication> get(String fromPage,Integer employeeId) throws InvalidAccessException {
 		if (fromPage.equals("admin")) {

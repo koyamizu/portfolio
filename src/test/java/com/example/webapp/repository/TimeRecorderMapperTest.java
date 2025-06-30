@@ -44,16 +44,13 @@ public class TimeRecorderMapperTest {
 		mapper.insert(1001);
 		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
 		assertThat(actual.getClockIn()).isNotNull();
-//		確認用のコード必要？
 	}
 	
 	@Test
 	void test_update() {
-		mapper.insert(1001);
-		mapper.update(1001);
-		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
+		mapper.update(1002);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1002);
 		assertThat(actual.getClockIn()).isNotNull();
 		assertThat(actual.getClockOut()).isNotNull();
 	}
-	//	mapper.update(Integer employeeId);
 }
