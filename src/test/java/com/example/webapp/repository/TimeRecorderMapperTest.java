@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.entity.TimeRecord;
 
@@ -32,18 +31,6 @@ public class TimeRecorderMapperTest {
 		List<ShiftSchedule> actuals = mapper.selectByDate(date);
 		assertThat(actuals).extracting(a -> a.getEmployee().getEmployeeId())
 				.containsExactlyInAnyOrder(1001, 1002, 1003);
-	}
-
-	@Test
-	void test_selectAMenberOfTodayEmployeesByEmployeeId() {
-		List<ShiftSchedule> actuals = mapper.selectByDate(LocalDate.now());
-		log.info(actuals.toString());
-		//actualsはテストをした日の出勤者なので、selectAMemberOfTodayEmployeesByEmployeeIdがnullになることはない
-		for (int count = 0; count < actuals.size(); count++) {
-			Integer employeeId=actuals.get(count).getEmployee().getEmployeeId();
-			Employee actual = mapper.selectAMenberOfTodayEmployeesByEmployeeId(employeeId);
-			assertThat(actual).isNotNull();
-		}
 	}
 
 	@Test

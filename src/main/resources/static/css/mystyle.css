@@ -1,413 +1,469 @@
 @charset "utf-8";
 
-nav {
-	background-color: #006666;
-	height: 44px;
-}
-
-nav a {
-	color: #ffffff;
-	text-decoration: none;
-	font-weight: bold;
-	padding: 10px;
-}
-
-nav a:hover {
-	color: #000000;
-	background-color: #99ffcc;
-}
-
-nav ul {
-	padding: 10px 0;
-	list-style-type: none;
-	margin: 0;
-	position: relative;
-}
-
-.display-inline{
-	display:inline;
-}
-
-/*ナビゲーションメニュー中のそれぞれのリンクは中央に配置する*/
-nav li {
-	display: inline;
-	text-align: center;
-}
-
-/*ひとつ前の画面やホームへのリンクを右端に配置する*/
-.li-index {
-	position: absolute;
-	right: 10px;
-}
+/*「CSSセレクタ→オリジナルクラス→@media」の順番で、また各カテゴリのなかでアルファベット順になっている*/
 
 body {
-	background-color: lightgrey;
-	text-align: center;
-	margin: 0 auto;
+    background-color: lightgrey;
+    text-align: center;
+    margin: 0 auto;
 }
 
-/*タイムレコーダーのデジタル時計のレイアウト*/
-#clock {
-	background-color: #ffffff;
-	width: 23vw;
-	height: auto;
-	border: 2px solid #000000;
-	font-size: 5vw;
-	margin: 10px auto 20px;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-#calendar {
-	width: 80%;
-	margin: 0 auto;
-}
-
-/*タイムレコーダーにて、従業員IDを入力するフィールドのレイアウト*/
-.login-field {
-	height: 25px;
-	margin: 0 10px;
-	/* padding-top:5px; */
-}
-
-.login-employee-name {
-	font-size: 150%;
-}
-
-.login-button-align{
-	display: flex;
-	justify-content: space-between;
-	width: 200px;
-	margin: 5px auto;
-}
-
-.shift-request-employee{
-	font-weight: bold;
-	font-size:120%
-}
-
-table {
-	border: 2px solid #000000;
-	border-collapse: collapse;
-	margin: 0 auto 20px;
-	width: 60%;
-	background-color: white;
-}
-
-/* カレンダーの曜日部分のボーダーラインの色変更 */
-table .fc-col-header {
-	border-color: transparent;
-}
 
 /* タイムレコーダーの「本日の勤務予定者」という文字のレイアウト*/
 caption {
-	font-weight: bold;
-	margin-bottom: 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-th {
-	border: 2px solid #000000;
-	width: auto;
-	background-color: #006666;
-	color: white;
+
+nav {
+    background-color: #006666;
+    height: 44px;
 }
 
-.absence-application{
-	width:90%;
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
 }
 
-.name {
-	width: 30%;
+
+nav a:hover {
+    color: #000000;
+    background-color: #99ffcc;
 }
+
+
+/*ナビゲーションメニュー中のそれぞれのリンクは中央に配置する*/
+nav li {
+    display: inline;
+    text-align: center;
+}
+
+
+nav ul {
+    padding: 10px 0;
+    list-style-type: none;
+    margin: 0;
+    position: relative;
+}
+
+table {
+    border: 2px solid #000000;
+    border-collapse: collapse;
+    margin: 0 auto 20px;
+    width: 60%;
+    background-color: white;
+}
+
+
+/* カレンダーの曜日部分のボーダーラインの色変更 */
+table .fc-col-header {
+    border-color: transparent;
+}
+
+
+table .w10 {
+    width:10%;
+}
+
+
+table .w30 {
+    width:30%;
+}
+
 
 td {
-	border: 2px solid #000000;
+    border: 2px solid #000000;
 }
 
-.p10 tr td{
-	padding:0 10px;
+
+th {
+    border: 2px solid #000000;
+    width: auto;
+    background-color: #006666;
+    color: white;
 }
 
-.p5 td{
-	padding:0 5px;
-}
-
-/*tr .time-recorder{*/
-/*	width:1em;*/
-/*}*/
-
-/* 打刻画面の出退勤フォーム */
-.record {
-	display: flex;
-	/*	gap:40px;*/
-	margin: 30px auto;
-	/*	margin-top: 30px;*/
-	width: 23vw;
-	justify-content: space-between;
-}
-
-.message {
-	color: blue;
-	font-weight: bold;
-}
-
-.error-message {
-	color: red;
-	font-weight: bold;
-}
-
-/* time-recorder/top.htmlの「タイムレコーダー」
-time-recorder/record.htmlの「現在●●さんでログインしています」
-という文字のレイアウト */
-.sub-h1 {
-	margin-block-end: 5px;
-	margin-block-start: 5px;
-	padding-top: 10px;
-}
-
-.record-title{
-	font-size: 120%;
-	margin-bottom:10px;
-}
-
-.nav-history-admin{
-	height:auto;
-}
-
-/* タイムレコーダー画面の「xxxx年xx月xx日(x)」という日付のフォント */
-.sub-h2 {
-	margin-block-end: 5px;
-	margin-block-start: 5px;
-	font-size: 130%;
-}
-
-/* 出退勤ボタンのレイアウト */
-.sub-button {
-	width: 8vw;
-	height: 50px;
-	padding: 10px;
-	color: white;
-	font-size: large;
-}
-
-.sub-button:hover {
-	box-shadow: 5px 5px 0 0 #999999;
-}
-
-.sub-button.red {
-	background-color: #DE3143;
-}
-
-.sub-button.blue {
-	background-color: #147CBC;
-}
-
-/* shift/edit.htmlおよびshift/reqest.htmlの「はい」「いいえ」ボタン */
-.sub-button2 {
-	margin: 0 5px;
-}
 
 /* カレンダー上の土曜日の数字と「土」という文字の色 */
 th.fc-day-sat,
 td.fc-day-sat {
-	color: #147CBC
+    color: #147CBC
 }
+
 
 /* カレンダー上の日曜日、祝祭日の数字と「日」という文字の色 */
 th.fc-day-sun,
 td.fc-day-sun,
 .is_holiday {
-	color: red;
+    color: red;
 }
 
-/* シフトの名前の境界線 */
-.fc-daygrid-event {
-	border: none;
+
+#calendar {
+    width: 80%;
+    margin: 0 auto;
 }
 
-/* Googleカレンダーから取り入れた祝祭日*/
-.is_holiday .fc-daygrid-day-events .holiday {
-	display: none;
+
+/*タイムレコーダーのデジタル時計のレイアウト*/
+#clock {
+    background-color: #ffffff;
+    width: 23vw;
+    height: auto;
+    border: 2px solid #000000;
+    font-size: 5vw;
+    margin: 10px auto 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+#external-events {
+    width: 10%;
+    text-align: center;
+    padding: 5px 10px;
+    background-color: #e5e5e5;
+}
+
+
+.absence-application {
+    width:90%;
+}
+
+
+/* シフト希望確認のページにて、登録済みの日付の背景色を変えるために使用 */
+.confirm {
+    background-color: #FB9D00;
+}
+
+
+.display-inline {
+    display:inline;
+}
+
+
+.employee-list {
+    width:40%;
+}
+
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+
+/* カレンダー上の今日のセルの背景色 */
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: rgb(255 214 5)
 }
 
 
 /* カレンダーの上の「2025年〇月」を含むバー */
 .fc .fc-toolbar.fc-header-toolbar {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
-/* カレンダー上の今日のセルの背景色 */
-.fc .fc-daygrid-day.fc-day-today {
-	background-color: rgb(255 214 5)
+
+/* カレンダーの上にあるチェックボックスを中央配置 */
+.fc-col-header-cell-cushion .col-checkbox {
+    display: block;
+    margin: 2px auto;
 }
 
-/* シフト提出と編集にて使用。カレンダーの上にある月の切り替えボタンを消す */
-.shift-edit .fc-toolbar-chunk .fc-today-button,
-.shift-edit .fc-toolbar-chunk .fc-button,
-.shift-edit .fc-toolbar-chunk .fc-button-primary,
-.shift-edit .fc-toolbar-chunk .fc-button-group {
-	display: none;
+
+/* シフトの名前の境界線 */
+.fc-daygrid-event {
+    border: none;
 }
+
+
+.fc-direction-ltr {
+    text-align: center;
+}
+
+
+/* シフトカレンダーの従業員名を太くする */
+.fc-event .fc-event-title {
+    font-weight: bold;
+}
+
+
+/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、
+カレンダー上にあるその従業員名が白くなる */
+.fc-event.highlight .fc-event-title {
+    color: white;
+}
+
+
+/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、
+カレンダー上にあるその従業員以外の人の名前が透明になる */
+.fc-event.lowlight .fc-event-title {
+    color: transparent;
+}
+
+
+/* 勤怠履歴のtableで使用 */
+.history {
+    width:70%;
+}
+
+
+/* Googleカレンダーから取り入れた祝祭日*/
+.is_holiday .fc-daygrid-day-events .holiday {
+    display: none;
+}
+
+
+/*ひとつ前の画面やホームへのリンクを右端に配置する*/
+.li-index {
+    position: absolute;
+    right: 10px;
+}
+
+
+.login-button-align {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin: 5px auto;
+}
+
+
+.login-employee-name {
+    font-size: 150%;
+}
+
+
+/*タイムレコーダーにて、従業員IDを入力するフィールドのレイアウト*/
+.login-field {
+    height: 25px;
+    margin: 0 10px;
+    /* padding-top:5px; */
+}
+
+
+.message {
+    color: blue;
+    font-weight: bold;
+}
+
+
+.name {
+    width: 30%;
+}
+
+
+.nav-history-admin {
+    height:auto;
+}
+
+
+.p10 tr td {
+    padding:0 10px;
+}
+
+
+.p5 td {
+    padding:0 5px;
+}
+
+
+/* 打刻画面の出退勤フォーム */
+.record {
+    display: flex;
+    /*  gap:40px;*/
+    margin: 30px auto;
+    /*  margin-top: 30px;*/
+    width: 23vw;
+    justify-content: space-between;
+}
+
+
+.record-title {
+    font-size: 120%;
+    margin-bottom:10px;
+}
+
 
 /* 選択セルの背景色 シフト希望提出のページで使用 */
 .selected {
-	background-color: #22e0a4 !important;
-}
-
-/* シフト希望確認のページにて、登録済みの日付の背景色を変えるために使用 */
-.confirm {
-	background-color: #FB9D00;
-}
-
-.fc-direction-ltr {
-	text-align: center;
-}
-
-.shift-confirm {
-	display: flex;
-	justify-content: space-between;
-	width: 300px;
-	margin: 0 auto;
-}
-
-.shift-confirm a{
-	text-decoration: none;
-	border:solid 1px #000000;
-	color:black;
-	background-color: #ffffff;
-	width:100px;
-}
-
-.shift-confirm a:hover {
-	box-shadow: 5px 5px 0 0 #999999;
-}
-
-#external-events {
-	width: 10%;
-	text-align: center;
-	padding: 5px 10px;
-	background-color: #e5e5e5;
+    background-color: #22e0a4 !important;
 }
 
 
 /* 日付の色変更（背景色変更に伴う視認性確保） */
 .selected .fc-daygrid-day-number,
 .confirm .fc-daygrid-day-number {
-	color: white;
+    color: white;
+}
+
+.shift-create{
+	margin-top:5px;
+}
+
+.shift-confirm {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin: 0 auto;
 }
 
 
-/* シフトカレンダーの従業員名を太くする */
-.fc-event .fc-event-title {
-	font-weight: bold;
+.shift-confirm a {
+    text-decoration: none;
+    border:solid 1px #000000;
+    color:black;
+    background-color: #ffffff;
+    width:100px;
 }
 
-/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、
-カレンダー上にあるその従業員名が白くなる */
-.fc-event.highlight .fc-event-title {
-	color: white;
+
+.shift-confirm a:hover {
+    box-shadow: 5px 5px 0 0 #999999;
 }
 
-/* シフトカレンダーにおいて、特定の従業員の名前にマウスを合わせると、
-カレンダー上にあるその従業員以外の人の名前が透明になる */
-.fc-event.lowlight .fc-event-title {
-	color: transparent;
+
+/* シフト提出と編集にて使用。カレンダーの上にある月の切り替えボタンを消す */
+.shift-edit .fc-toolbar-chunk .fc-today-button,
+.shift-edit .fc-toolbar-chunk .fc-button,
+.shift-edit .fc-toolbar-chunk .fc-button-primary,
+.shift-edit .fc-toolbar-chunk .fc-button-group {
+    display: none;
 }
 
-/* カレンダーの上にあるチェックボックスを中央配置 */
-.fc-col-header-cell-cushion .col-checkbox {
-	display: block;
-	margin: 2px auto;
+
+.shift-edit-draggable {
+    display:flex;
 }
 
-/* 勤怠履歴のtableで使用 なにかもっと大きなクラスに統合してもいいかもしれない */
-.history {
-	width:70%;
+
+.shift-request-employee {
+    font-weight: bold;
+    font-size:120%
 }
 
-.employee-list{
-	width:40%;
+
+/* 出退勤ボタンのレイアウト */
+.sub-button {
+    width: 8vw;
+    height: 50px;
+    padding: 10px;
+    color: white;
+    font-size: large;
 }
 
-table .w10{
-	width:10%;
+
+.sub-button.blue {
+    background-color: #147CBC;
 }
 
-table .w30{
-	width:30%;
+
+.sub-button.red {
+    background-color: #DE3143;
 }
 
-.shift-edit-draggable{
-	display:flex;
+
+/* shift/edit.htmlおよびshift/reqest.htmlの「はい」「いいえ」ボタン */
+.sub-button2 {
+    margin: 0 5px;
 }
 
+
+.sub-button:hover {
+    box-shadow: 5px 5px 0 0 #999999;
+}
+
+
+/* time-recorder/top.htmlの「タイムレコーダー」
+time-recorder/record.htmlの「現在●●さんでログインしています」
+という文字のレイアウト */
+.sub-h1 {
+    margin-block-end: 5px;
+    margin-block-start: 5px;
+    padding-top: 10px;
+}
+
+
+/* タイムレコーダー画面の「xxxx年xx月xx日(x)」という日付のフォント */
+.sub-h2 {
+    margin-block-end: 5px;
+    margin-block-start: 5px;
+    font-size: 130%;
+}
+
+
+@media(max-width:600px) {
+    table {
+        font-size: 90%;
+    }
+
+    .li-index {
+        position: static;
+    }
+
+    .sub-h1 {
+        font-size: 120%;
+    }
+
+    .sub-h2 {
+        font-size: 100%;
+    }
+
+    .sub-button {
+        width: 138px;
+        height: 30px;
+    }
+
+    .sub-button.blue {
+        margin-top: 15px;
+    }
+
+    .record {
+        display: block;
+        width: auto;
+    }
+
+    #clock {
+        font-size: 30px;
+        width: 138px;
+        max-width: none;
+    }
+
+    #calendar{
+        width:auto;
+        margin:5px 5px;
+    }
+
+    table .fc-col-header {
+        width:auto;
+    }
+
+    .fc .fc-toolbar-title{
+        font-size:1.5em;
+    }
+}
+
+
+@media(max-width:960px) {
+    .sub-button {
+        height: 40px;
+        padding: 0;
+    }
+}
 
 
 @media(min-width:1024px) {
-	#clock {
-		width: 235.28px;
-		font-size: 51.2px;
-	}
+    #clock {
+        width: 235.28px;
+        font-size: 51.2px;
+    }
 
-	table {
-		width: 512px;
-	}
-}
-
-@media(max-width:960px) {
-	.sub-button {
-		height: 40px;
-		padding: 0;
-	}
-}
-
-@media(max-width:600px) {
-	table {
-		font-size: 90%;
-	}
-
-	.li-index {
-		position: static;
-	}
-
-	.sub-h1 {
-		font-size: 120%;
-	}
-
-	.sub-h2 {
-		font-size: 100%;
-	}
-
-	.sub-button {
-		width: 138px;
-		height: 30px;
-	}
-
-	.sub-button.blue {
-		margin-top: 15px;
-	}
-
-	.record {
-		display: block;
-		width: auto;
-	}
-
-	#clock {
-		font-size: 30px;
-		width: 138px;
-		max-width: none;
-	}
-	
-	#calendar{
-		width:auto;
-		margin:5px 5px;
-	}
-	
-	table .fc-col-header {
-		width:auto;
-	}
-	
-	.fc .fc-toolbar-title{
-		font-size:1.5em;
-	}
+    table {
+        width: 512px;
+    }
 }

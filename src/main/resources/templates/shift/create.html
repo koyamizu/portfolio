@@ -24,11 +24,14 @@
 		<p th:if="${message}" th:text="${message}" class="message"></p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
 		<div th:unless="${state}=='CONFIRM'">
-			<p>未提出者:
-				<span th:each="employee : ${notSubmits}" th:text="|${employee.name}&nbsp;&nbsp;|"
-					class="error-message"></span>
-			</p>
-			<form id="shift-form" th:action="@{/shift/create/submit}" method="post">
+			<div th:if="${state}=='NEW'">
+				<p>シフト提出期限:&nbsp;<span th:text="${deadLine}"></span></p>
+				<p>未提出者:
+					<span th:each="employee : ${notSubmits}" th:text="|${employee.name}&nbsp;&nbsp;|"
+						class="error-message"></span>
+				</p>
+			</div>
+			<form id="shift-form" th:action="@{/shift/create/submit}" method="post" class="shift-create">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="hidden" name="state" th:value="${state}">
 				<input type="hidden" name="month" th:value="${month}">

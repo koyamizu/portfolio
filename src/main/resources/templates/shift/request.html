@@ -25,10 +25,9 @@
 				class="shift-request-employee"></span>&nbsp;さんでログインしています</p>
 		<p th:if="${message}" th:text="${message}" class="message"></p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
-		<!--		<div th:if="${shiftRequestForm.isNew}">-->
 		<div th:unless="${state}=='CONFIRM'">
+			<p>シフト提出期限:&nbsp;<span th:text="${deadLine}"></span></p>
 			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
-				<!--				<input type="hidden" name="employeeId" th:value="${shiftRequestForm.employeeId}">-->
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="hidden" name="state" th:value="${state}">
 				<input type="submit" th:value="${state}=='NEW'?'提出':'更新'">
@@ -42,21 +41,14 @@
 					, initializeCalendar(/*[[${#authentication.principal.username}]],[[${requests}]]*/));
 			</script>
 		</div>
-		<!--		<div th:unless="${shiftRequestForm.isNew}">-->
 		<div th:if="${state}=='CONFIRM'">
 			<p>来月の希望シフトは以下の日程で提出済みです</p>
-			<p>変更はありますか？</p>
+			<p>変更はありますか？（シフト編集期限:&nbsp;<span th:text="${deadLine}"></span>）</p>
 			<div class="shift-confirm">
-				<!--				<form th:action="@{/shift/request/renew}" method="get">-->
-				<!--					<button type="submit" class="sub-button2">ある(再作成)</button>-->
-				<!--				</form>-->
-				<!--				<form th:action="@{/shift}" method="get">-->
-				<!--					<button type="submit" class="sub-button2">ない</button>-->
-				<!--				</form>-->
-				<!--				<a th:href="@{/shift/request/edit}">ある(再作成)</a>-->
 				<a th:href="@{/shift/request/edit}">ある</a>
 				<a th:href="@{/shift}">ない</a>
 			</div>
+<!--			<p>シフト編集期限<span th:text="${deadLine}"></span></p>-->
 			<div id="calendar" class="shift-edit"></div>
 			<script th:src="@{/js/shift/confirm-requests-calendar.js}"></script>
 			<script type="text/javascript" th:inline="javascript">

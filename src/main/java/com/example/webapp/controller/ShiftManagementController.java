@@ -5,8 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.webapp.entity.FullCalendarDisplay;
 import com.example.webapp.entity.ShiftCreateContainer;
 import com.example.webapp.entity.ShiftEditContainer;
+import com.example.webapp.entity.ShiftRequestDeadLine;
 import com.example.webapp.entity.State;
 import com.example.webapp.exception.DuplicateShiftException;
 import com.example.webapp.exception.InvalidEditException;
@@ -29,6 +28,7 @@ import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -51,16 +51,27 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("request")
-	public String showRequestPage(Authentication authentication, Model model) {
+	public String showRequestPage(Authentication authentication, Model model,RedirectAttributes attributes) {
+		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
+		model.addAttribute("deadLine", deadLine.toString());
+		
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
+		
 		State state = CollectionUtils.isEmpty(requests) ? State.NEW : State.CONFIRM;
+		
 		if (state.equals(State.CONFIRM)) {
 			FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
 			model.addAttribute("requests", requests);
 			model.addAttribute("state", state.toString());
 			return "shift/request";
 		}
+		
+		if(deadLine.isOverDeadLine(LocalDate.now())) {
+			attributes.addFlashAttribute("errorMessage", "シフトの提出期限を超えています。責任者に直接希望日を伝えてください。");
+			return "redirect:/shift";
+		}
+		
 		if (state.equals(State.NEW)) {
 			model.addAttribute("state", state.toString());
 		}
@@ -68,7 +79,12 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("request/edit")
-	public String editRequests(Authentication authentication, Model model) {
+	public String editRequests(Authentication authentication, Model model,RedirectAttributes attributes) {
+		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
+		if(deadLine.isOverDeadLine(LocalDate.now())) {
+			attributes.addFlashAttribute("errorMessage", "シフトの編集可能な日付を超えています。変更があれば、責任者に直接伝えてください。");
+			return "redirect:/shift";
+		}
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
 		FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
@@ -106,13 +122,17 @@ public class ShiftManagementController {
 
 	@GetMapping("create")
 	public String showCreatePage(Model model) {
+		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
+		model.addAttribute("deadLine", deadLine.toString());
+		
 		Integer nextMonth = LocalDate.now().plus(1, ChronoUnit.MONTHS).getMonthValue();
+		model.addAttribute("month", nextMonth);
 		//id,start(date)のみの情報が返ってくる
 		List<FullCalendarDisplay> nextMonthShifts = shiftManagementService
 				.getOneMonthShifts(nextMonth);
+		
 		State state = CollectionUtils.isEmpty(nextMonthShifts) ? State.NEW : State.CONFIRM;
 		model.addAttribute("state", state.toString());
-		model.addAttribute("month", nextMonth);
 
 		if (state.equals(State.CONFIRM)) {
 			FullCalendarHelper.setColorProperties("#FB9D00", "white", nextMonthShifts);
@@ -148,16 +168,21 @@ public class ShiftManagementController {
 			,HttpSession session)
 			throws JsonProcessingException, InvalidEditException {
 
+		if (state.equals(State.EDIT)) {
+			shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
+			attributes.addFlashAttribute("message", "シフトを更新しました");
+		}
+		
+		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
+		
+		if(deadLine.isJustOrUnderDeadLine(LocalDate.now())) {
+			attributes.addFlashAttribute("errorMessage", deadLine.toString()+"まではシフトの作成ができません");
+			return "redirect:/shift";
+		}
+		
 		if (state.equals(State.NEW)) {
 			shiftManagementService.createNextMonthShifts(selectedDatesJson);
 			attributes.addFlashAttribute("message", "シフトの作成が完了しました");
-		}
-		if (state.equals(State.EDIT)) {
-			Boolean isEditTodayMember=shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
-			attributes.addFlashAttribute("message", "シフトを更新しました");
-			if(isEditTodayMember) {
-				session.removeAttribute("todayMembersWithClockTime");
-			}
 		}
 		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/create";
 		return "redirect:" + path;

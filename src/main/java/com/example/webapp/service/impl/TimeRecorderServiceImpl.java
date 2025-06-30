@@ -15,7 +15,6 @@ import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
 import com.example.webapp.exception.NoDataException;
-import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.repository.TimeRecorderMapper;
 import com.example.webapp.service.TimeRecorderService;
 import com.google.common.base.Objects;
@@ -28,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class TimeRecorderServiceImpl implements TimeRecorderService {
 
 	private final TimeRecorderMapper timeRecorderMapper;
-	private final EmployeesManagementMapper employeesManagementMapper;
 
 	@Override
 	public List<ShiftSchedule> getEmployeeWithClockTime(LocalDate date) throws NoDataException {

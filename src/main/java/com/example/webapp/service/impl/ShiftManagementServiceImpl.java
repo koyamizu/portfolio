@@ -1,6 +1,5 @@
 package com.example.webapp.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,14 +39,12 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	@Override
 	public List<FullCalendarDisplay> getThreeMonthShifts(Integer targetMonth) {
 		List<FullCalendarEntity> entities=shiftManagementMapper.selectThreeMonthByTargetMonth(targetMonth);
-//		return entities.stream().map(e->FullCalendarHelper.convertFullCalendarDisplay(e)).toList();
 		return FullCalendarHelper.convertFullCalendarDisplay(entities);
 	}
 
 	@Override
 	public List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId) {
 		List<FullCalendarEntity> entities=shiftManagementMapper.selectByEmployeeId(employeeId);
-//		return entities.stream().map(e->FullCalendarHelper.convertFullCalendarDisplay(e)).toList();
 		return FullCalendarHelper.convertFullCalendarDisplay(entities);
 	}
 
@@ -59,7 +56,6 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	@Override
 	public List<FullCalendarDisplay> getOneMonthShifts(Integer targetMonth) {
 		List<FullCalendarEntity> entities=shiftManagementMapper.selectOneMonthByTargetMonth(targetMonth);
-//		return entities.stream().map(e->FullCalendarHelper.convertFullCalendarDisplay(e)).toList();
 		return FullCalendarHelper.convertFullCalendarDisplay(entities);
 	}
 
@@ -86,8 +82,6 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntity(latestVersionForm);
 
 		List<FullCalendarEntity> oldVersion = shiftManagementMapper.selectByEmployeeId(employeeId);
-//		List<FullCalendarForm> oldVersionForm = oldVersion.stream()
-//				.map(o -> FullCalendarHelper.convertFullCalendarForm(o)).toList();
 
 		List<FullCalendarEntity> additionals= latestVersion.stream()
 				//				新しく追加した希望日
@@ -140,9 +134,8 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	@Transactional
-	public Boolean updateShiftSchedules(String latestVersionStr, Integer month)
+	public void updateShiftSchedules(String latestVersionStr, Integer month)
 			throws JsonMappingException, JsonProcessingException, InvalidEditException {
-		Boolean isEditTodayMember=false;
 		ObjectMapper mapper = new ObjectMapper();
 		List<FullCalendarForm> latestVersionForm = mapper.readValue(latestVersionStr,
 				new TypeReference<List<FullCalendarForm>>() {
@@ -150,17 +143,14 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntity(latestVersionForm);
 		List<FullCalendarEntity> additionals = latestVersion.stream().filter(r -> Objects.equals(r.getShiftId(), null))
 				.toList();
-		//追加なしで「更新」を押したときは迂回する。
 		try {
 			if (!CollectionUtils.isEmpty(additionals)) {
 				shiftManagementMapper.insertShift(additionals);
-				isEditTodayMember=additionals.stream().anyMatch(a->a.getStart().equals(LocalDate.now()));
 			}
 			shiftManagementMapper.deleteByMonth(latestVersion, month);
 		} catch (DataIntegrityViolationException e) {
 			throw new InvalidEditException("勤怠履歴のあるシフト/欠勤申請の出されているシフトは編集できません");
 		}
-		return isEditTodayMember;
 	}
 
 }
