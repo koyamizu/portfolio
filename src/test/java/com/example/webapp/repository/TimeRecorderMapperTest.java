@@ -35,15 +35,12 @@ public class TimeRecorderMapperTest {
 
 	@Test
 	void test_selectTodayTimeRecordByEmployeeId() {
-		mapper.insert(1001);
-		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1002);
 		assertThat(actual).isNotNull();
 	}
 
 	@Test
 	void test_insert() {
-//		List<ShiftSchedule> employees= mapper.selectByDate(LocalDate.now());
-//		Integer employeeId=employees.get(0).getEmployee().getEmployeeId();
 		mapper.insert(1001);
 		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
 		assertThat(actual.getClockIn()).isNotNull();

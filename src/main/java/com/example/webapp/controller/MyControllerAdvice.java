@@ -17,7 +17,7 @@ public class MyControllerAdvice {
 		,EmptyResultDataAccessException.class,TypeMismatchDataAccessException.class
 		,NullPointerException.class})
 	public String showDatabaseErrorPage(Exception e) {
-		log.error(e.getCause().toString());
+//		log.error(e.getCause().toString());
 		return "error/system-error";
 	}
 }

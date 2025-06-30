@@ -48,7 +48,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 		List<Employee> employees = todayMembersWithClockTime.stream().map(ShiftSchedule::getEmployee).toList();
 		Employee employeeToClock = employees.stream().filter(e -> e.getEmployeeId().equals(employeeId))
 			    .findFirst().orElse(null);
-		if (employeeToClock.equals(null)) {
+		if (Objects.equal(employeeToClock, null)) {
 			throw new NoDataException("その従業員IDの方は本日出勤予定ではありません");
 		}
 		return employeeToClock;
