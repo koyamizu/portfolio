@@ -12,9 +12,7 @@
 	<header>
 		<nav>
 			<ul>
-<!--				<li th:if="${from}=='user'">-->
 					<a th:href="@{/absence-application/request}">新規申請</a>
-<!--				</li>-->
 				<li class="li-index">
 					<a th:href="@{/{from}(from=${from})}">戻る</a>
 				</li>
@@ -69,7 +67,6 @@
 								<button type="submit" th:name="decision" th:value="false">不承認</button>
 							</form>
 						</td>
-						<!--						<td th:text="*{isApprove}=='true'?'許可':'不許可'"></td>-->
 						<div th:switch="*{isApprove}">
 							<td th:case="true" th:text="承認"></td>
 							<td th:case="false" th:text="不承認"></td>

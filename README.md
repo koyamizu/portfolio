@@ -122,7 +122,7 @@ FK…外部キー
 
 ### エラー１：アクセス権限のないページへの推移
 
-「タイムレコーダー」と「管理者ページ」に移るには管理者権限が必要です。権限のないアカウントでログインしようとするとエラーページに推移するようにしています。
+「タイムレコーダー」と「管理者メニュー」に移るには管理者権限が必要です。権限のないアカウントでログインしようとするとエラーページに推移するようにしています。
 
 ![image 2](https://github.com/user-attachments/assets/87b45514-4c86-4b80-90c1-a8eb7670144a)
 
@@ -176,7 +176,7 @@ FK…外部キー
 
 ![image 14](https://github.com/user-attachments/assets/9c9a109d-f009-4f9a-bd62-753c6756c561)
 
-## 管理者ページ
+## 管理者メニュー
 
 ![image 15](https://github.com/user-attachments/assets/db1d34c4-474d-46a4-bd12-c62c0556bb88)
 
@@ -208,7 +208,7 @@ htmlファイルは「シフト表」と同じものを使用していますが�
 
 なお、今回のアプリで使用しているjsファイルのほとんどはChatGPTによって生成しておりますが、「今月のシフト変更」と「来月のシフト作成」で使用しているjsファイル（\main\resources\static\js\shift\create-calendar.js）はChatGPTは使用せずに私自身で記述、編集しております。
 
-## 勤怠履歴（管理者ページ）
+## 勤怠履歴（管理者メニュー）
 
 ### 5月の全員分の勤怠履歴
 
@@ -296,7 +296,7 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 
 ![image 37](https://github.com/user-attachments/assets/f0123c1f-7337-4e00-8c28-06938a387ecd)
 
-## 欠勤申請一覧（管理者ページ）
+## 欠勤申請一覧（管理者メニュー）
 
 アプリを立ち上げた初期状態では、申請ID5が未承認となっております。
 
@@ -304,7 +304,7 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 
 ![image 39](https://github.com/user-attachments/assets/df6bfe3c-b7ef-4ee0-8a6b-6ed2dac471c9)
 
-## 従業員ページ
+## 従業員メニュー
 
 ![image 40](https://github.com/user-attachments/assets/d4daa02a-548b-4b20-92ef-fbc20c3bd3ed)
 
@@ -318,11 +318,11 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 
 ![image 41](https://github.com/user-attachments/assets/ca09243d-89cc-43bc-9143-b60f0db8e1ec)
 
-## 勤怠履歴（従業員ページ）
+## 勤怠履歴（従業員メニュー）
 
 ![image 42](https://github.com/user-attachments/assets/81ef5d07-64de-4af5-ad84-98bcc217c763)
 
-## 欠勤申請一覧（従業員ページ）
+## 欠勤申請一覧（従業員メニュー）
 
 ![image 43](https://github.com/user-attachments/assets/305cd804-1f16-4c64-9239-108df587e1fa)
 
