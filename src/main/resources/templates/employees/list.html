@@ -12,7 +12,7 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a href="/employees/form">新規従業員登録</a></li>
+				<li><a th:href="@{/employees/form}">新規従業員登録</a></li>
 				<li class="li-index">
 					<a th:href="@{/admin}">戻る</a>
 				</li>
@@ -23,6 +23,16 @@
 		<h1>従業員一覧</h1>
 		<p th:if="${message}" th:text="${message}" class="message">完了メッセージ</p>
 		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message">エラーメッセージ</p>
+		<form id="erase-form" th:if="${confirmMessage} != null" th:action="@{/employees/all-erase}" method="post">
+			<input type="hidden" name="employee-id" th:value="${targetEmployeeId}" />
+		</form>
+
+		<script th:if="${confirmMessage} != null" th:inline="javascript">
+			let ret = window.confirm(/*[[${confirmMessage}]]*/);
+			if (ret) {
+				document.getElementById('erase-form').submit();
+			}
+		</script>
 		<table class="employee-list">
 			<thead>
 				<tr>
@@ -40,7 +50,8 @@
 						<td th:text="*{employeeId}"></td>
 						<td th:text="*{name}"></td>
 						<td><a th:href="@{/password/reset/{employee-id}(employee-id=*{employeeId})}">パスワード再設定</td>
-						<td><a th:href="@{/employees/detail/{employee-id}(employee-id=*{employeeId})}" id="detail">詳細</a></td>
+						<td><a th:href="@{/employees/detail/{employee-id}(employee-id=*{employeeId})}"
+								id="detail">詳細</a></td>
 						<td><a th:href="@{/employees/edit/{employee-id}(employee-id=*{employeeId})}">編集</a></td>
 						<td><a th:href="@{/employees/delete/{employee-id}(employee-id=*{employeeId})}">削除</a></tdth>
 					</th:block>

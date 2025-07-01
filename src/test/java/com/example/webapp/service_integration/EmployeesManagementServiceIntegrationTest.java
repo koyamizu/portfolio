@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.ForeiginKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
@@ -110,7 +110,7 @@ public class EmployeesManagementServiceIntegrationTest {
 	}
 
 	@Test
-	void testDeleteEmployeeById() throws InvalidEmployeeIdException, ForeiginKeyViolationException {
+	void testDeleteEmployeeById() throws InvalidEmployeeIdException,EmployeeDataIntegrityException {
 		assertThat(service.getEmployeeForm(1001)).isNotNull();
 		service.deleteEmployee(1001);
 		assertThat(service.getEmployeeForm(1001)).isNull();

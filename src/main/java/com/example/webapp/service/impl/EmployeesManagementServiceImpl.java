@@ -9,7 +9,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.ForeiginKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityException;
+import com.example.webapp.exception.ForeignKeyViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
@@ -35,7 +36,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 		}
 		return allEmployees;
 	}
-	
+
 	@Override
 	public Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException {
 		Employee employee = mapper.selectById(employeeId);
@@ -86,7 +87,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	}
 
 	@Override
-	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, ForeiginKeyViolationException {
+	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, EmployeeDataIntegrityException {
 		Employee target = mapper.selectById(employeeId);
 		if (target.equals(null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
@@ -94,7 +95,23 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 		try {
 			mapper.deleteById(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new ForeiginKeyViolationException("そのIDをもつ従業員はシフトに登録されているので削除できません");
+			throw new EmployeeDataIntegrityException("勤怠履歴の存在する従業員です", employeeId);
+		}
+	}
+
+	@Transactional
+	@Override
+	public void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId)
+			throws ForeignKeyViolationException {
+		try {
+			mapper.setForeignKeyChecksOff();
+			mapper.deleteTimeRecords(employeeId);
+			mapper.deleteShiftSchedules(employeeId);
+			mapper.deleteShiftRequests(employeeId);
+			mapper.setForeignKeyChecksOn();
+		} catch (DataIntegrityViolationException e) {
+			StackTraceElement[] element = e.getStackTrace();
+			throw new ForeignKeyViolationException(element[0].getClassName());
 		}
 	}
 }

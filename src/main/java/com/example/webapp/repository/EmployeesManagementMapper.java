@@ -21,4 +21,14 @@ public interface EmployeesManagementMapper {
 	int update(Employee employee);
 	
 	int deleteById(Integer employeeId);
+	
+	void setForeignKeyChecksOn();
+	
+	void setForeignKeyChecksOff();
+
+	void deleteTimeRecords(Integer employeeId);
+
+	void deleteShiftSchedules(Integer employeeId);
+
+	void deleteShiftRequests(Integer employeeId);
 }

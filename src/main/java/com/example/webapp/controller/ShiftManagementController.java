@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +30,6 @@ import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -171,6 +172,7 @@ public class ShiftManagementController {
 		if (state.equals(State.EDIT)) {
 			shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
+			return "redirect:/shift";
 		}
 		
 		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());

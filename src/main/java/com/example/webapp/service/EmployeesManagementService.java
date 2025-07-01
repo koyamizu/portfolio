@@ -4,7 +4,8 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.ForeiginKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityException;
+import com.example.webapp.exception.ForeignKeyViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
@@ -24,5 +25,7 @@ public interface EmployeesManagementService {
 	
 	void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException;
 	
-	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, ForeiginKeyViolationException;
+	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException,EmployeeDataIntegrityException;
+
+	void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId) throws ForeignKeyViolationException;
 }

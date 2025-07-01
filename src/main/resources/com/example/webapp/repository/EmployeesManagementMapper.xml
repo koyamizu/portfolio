@@ -81,4 +81,35 @@
 		;
 	</delete>
 	
+	<update id="setForeignKeyChecksOff">
+		SET FOREIGN_KEY_CHECKS = 0;
+	</update>
+	
+	<update id="setForeignKeyChecksOn">
+		SET FOREIGN_KEY_CHECKS = 1;
+	</update>
+	
+	<delete id="deleteTimeRecords">
+		DELETE FROM
+		  time_records
+		WHERE
+		  employee_id=#{employeeId}
+		;
+	</delete>
+	
+	<delete id="deleteShiftSchedules">
+		DELETE FROM
+		  shift_schedules
+		WHERE
+		  employee_id=#{employeeId}
+		;
+	</delete>
+	
+	<delete id="deleteShiftRequests">
+		DELETE FROM
+		  shift_requests
+		WHERE
+		  employee_id=#{employeeId}
+		;
+	</delete>
 </mapper>

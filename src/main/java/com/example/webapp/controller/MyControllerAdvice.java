@@ -1,6 +1,7 @@
 package com.example.webapp.controller;
 
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.TypeMismatchDataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -15,9 +16,9 @@ public class MyControllerAdvice {
 
 	@ExceptionHandler({DataAccessResourceFailureException.class,BadSqlGrammarException.class
 		,EmptyResultDataAccessException.class,TypeMismatchDataAccessException.class
-		,NullPointerException.class})
+		,NullPointerException.class,DataIntegrityViolationException.class})
 	public String showDatabaseErrorPage(Exception e) {
-//		log.error(e.getCause().toString());
+		e.printStackTrace();
 		return "error/system-error";
 	}
 }
