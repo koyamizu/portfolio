@@ -8,6 +8,7 @@ import com.example.webapp.entity.Employee;
 
 @Mapper
 public interface EmployeesManagementMapper {
+	
 	Employee selectById(Integer employeeId);
 	
 	List<Employee> selectAll();

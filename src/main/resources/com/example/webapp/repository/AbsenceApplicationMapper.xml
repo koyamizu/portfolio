@@ -72,7 +72,7 @@
 		;
 	</select>
 	
-	<select id="selectToday" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
+	<select id="selectTodayAndIsApproveEqualsNull" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
 		SELECT
 		  aa.id
 		  ,e.name AS employee_name

@@ -112,7 +112,7 @@ public class EmployeesManagementController {
 	
 	@ExceptionHandler(EmployeeDataIntegrityException.class)
 	public String confirmAllErase(EmployeeDataIntegrityException e, RedirectAttributes attributes) {
-		attributes.addFlashAttribute("confirmMessage", e.getMessage()+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？\nこの操作は取り消せません");
+		attributes.addFlashAttribute("confirmMessage", e.getMessage()+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？（この操作は取り消せません）");
 		attributes.addFlashAttribute("targetEmployeeId", e.getEmployeeId());
 		return "redirect:/employees";
 	}

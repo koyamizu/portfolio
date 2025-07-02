@@ -27,7 +27,7 @@ public class TimeRecorderMapperTest {
 
 	@Test
 	void test_selectByDate() {
-		LocalDate date = LocalDate.of(2025, 5, 1);
+		LocalDate date = LocalDate.now();
 		List<ShiftSchedule> actuals = mapper.selectByDate(date);
 		assertThat(actuals).extracting(a -> a.getEmployee().getEmployeeId())
 				.containsExactlyInAnyOrder(1001, 1002, 1003);
@@ -35,21 +35,21 @@ public class TimeRecorderMapperTest {
 
 	@Test
 	void test_selectTodayTimeRecordByEmployeeId() {
-		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1002);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
 		assertThat(actual).isNotNull();
 	}
 
 	@Test
 	void test_insert() {
-		mapper.insert(1001);
-		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
+		mapper.insert(1002);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1002);
 		assertThat(actual.getClockIn()).isNotNull();
 	}
 	
 	@Test
 	void test_update() {
-		mapper.update(1002);
-		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1002);
+		mapper.update(1001);
+		TimeRecord actual=mapper.selectTodayTimeRecordByEmployeeId(1001);
 		assertThat(actual.getClockIn()).isNotNull();
 		assertThat(actual.getClockOut()).isNotNull();
 	}

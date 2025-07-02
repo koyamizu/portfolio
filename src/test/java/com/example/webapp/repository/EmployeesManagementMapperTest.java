@@ -80,6 +80,7 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
+	@Sql(statements="ALTER TABLE employees AUTO_INCREMENT=1007")
 	void test_insert() {
 		Employee chihaya=data.getChihaya();
 		mapper.insert(chihaya);
@@ -103,9 +104,11 @@ public class EmployeesManagementMapperTest {
 	}
 	
 	@Test
-	void test_delete() {
-		assertThat(mapper.selectById(1001)).isNotNull();
-		mapper.deleteById(1001);
-		assertThat(mapper.selectById(1001)).isNull();
+	@Sql(statements="INSERT INTO employees (id,password, name, birth, tel, address, authority) VALUES"
+			+ "  (1007,'p', 'hogehoge',   '1986-05-27', '030-1920-8394', '福岡県福岡市博多区', 'USER')")
+	void test_deleteById() {
+		assertThat(mapper.selectById(1007)).isNotNull();
+		mapper.deleteById(1007);
+		assertThat(mapper.selectById(1007)).isNull();
 	}
 }

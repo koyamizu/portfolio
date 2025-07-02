@@ -1,3 +1,5 @@
+--↓HerokuアドオンのDB（jawsDB）でテストする場合。
+
 -- 外部キー制約の削除（※必要に応じて使用）
 -- ALTER TABLE absence_applications DROP FOREIGN KEY fk_absence_applications_shift_id;
 -- ALTER TABLE absence_applications DROP FOREIGN KEY fk_absence_applications_reason_id;
@@ -17,7 +19,8 @@ CREATE TABLE absence_reasons (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT uq_absence_reasons UNIQUE (name)
 );
 
 CREATE TABLE employees (
@@ -32,6 +35,7 @@ CREATE TABLE employees (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     password_updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
+    --テストで使うDBではAUTO_INCREMENTの初期値は設定しない。
 );
 
 CREATE TABLE shift_schedules (
@@ -87,3 +91,100 @@ CREATE TABLE time_records (
         REFERENCES shift_schedules(employee_id,date)
         ,CONSTRAINT uq_time_records_employee_date UNIQUE (employee_id, date)
 );
+
+------↓ローカルのMySQLでテストする場合
+--DROP TABLE IF EXISTS employees;
+--DROP TABLE IF EXISTS shift_requests;
+--DROP TABLE IF EXISTS shift_schedules;
+--DROP TABLE IF EXISTS time_records;
+--DROP TABLE IF EXISTS absence_applications;
+--DROP TABLE IF EXISTS absence_reasons;
+--
+--
+--CREATE TABLE
+--  shift_requests
+--LIKE
+--  origin_shift_requests
+--;
+--
+----従業員テーブルの作成
+--CREATE TABLE
+--  employees
+--LIKE
+--  origin_employees
+--;
+--
+--CREATE TABLE
+--  shift_schedules
+--LIKE
+--  origin_shift_schedules
+--;
+--
+--CREATE TABLE
+--  time_records
+--LIKE
+--  origin_time_records
+--;
+--
+--CREATE TABLE
+--  absence_applications
+--LIKE
+--  origin_absence_applications
+--;
+--
+--CREATE TABLE
+--  absence_reasons
+--LIKE
+--  origin_absence_reasons
+--;
+--
+----パスワード
+----"yoshizuka01","koga09","kurosaki21","togo13","komorie30","hakozaki02"
+--
+--INSERT INTO
+--  shift_requests
+--  SELECT
+--    *
+--  FROM
+--    origin_shift_requests
+--;
+--
+--INSERT INTO
+--  employees
+--SELECT
+--  *
+--FROM
+--  origin_employees
+--;
+--
+--INSERT INTO
+--  shift_schedules
+--SELECT
+--  *
+--FROM
+--  origin_shift_schedules
+--;
+--
+--INSERT INTO
+--  time_records
+--SELECT
+--  *
+--FROM
+--  origin_time_records
+--;
+--
+--INSERT INTO
+--  absence_applications
+--  SELECT
+--    *
+--  FROM
+--    origin_absence_applications
+--;
+--
+--INSERT INTO
+--  absence_reasons
+--  SELECT
+--    *
+--  FROM
+--    origin_absence_reasons
+--;

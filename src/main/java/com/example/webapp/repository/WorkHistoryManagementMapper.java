@@ -11,11 +11,11 @@ import com.example.webapp.entity.TimeRecord;
 @Mapper
 public interface WorkHistoryManagementMapper {
 	
-	List<TimeRecord> selectAllToDateByMonth(Integer targetMonth);
+	List<TimeRecord> selectAllByMonth(Integer targetMonth);
 
-	List<TimeRecord> selectToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
+	List<TimeRecord> selectByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth);
 
-	List<Employee> selectByMonth(Integer targerMonth);
+	List<Employee> selectEmployeeByMonth(Integer targerMonth);
 
 	TimeRecord selectByEmployeeIdAndDate(Integer employeeId, LocalDate date);
 

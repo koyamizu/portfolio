@@ -36,7 +36,7 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	}
 	@Override
 	public List<AbsenceApplication> getTodayApplications(){
-		return absenceApplicationMapper.selectToday();
+		return absenceApplicationMapper.selectTodayAndIsApproveEqualsNull();
 	}
 
 	@Override

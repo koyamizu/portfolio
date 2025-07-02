@@ -14,7 +14,7 @@ public interface AbsenceApplicationMapper {
 	
 	List<AbsenceApplication> selectAllByEmployeeId(Integer employeeId);
 	
-	List<AbsenceApplication> selectToday();
+	List<AbsenceApplication> selectTodayAndIsApproveEqualsNull();
 	
 	AbsenceApplication selectByApplicationId(Integer applicationId);
 	

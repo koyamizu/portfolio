@@ -16,18 +16,9 @@
 		<association property="absenceReason" javaType="com.example.webapp.entity.AbsenceReason">
 			<result property="name" column="reason_name"/>
 		</association>
-<!--		<association property="employee"-->
-<!--			javaType="com.example.webapp.entity.Employee">-->
-<!--			<id property="employeeId" column="employee_id" />-->
-<!--			<result property="name" column="name" />-->
-<!--		</association>-->
 	</resultMap>
-	
-<!--	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">-->
-<!--		<id property="employeeId" column="id"/>-->
-<!--	</resultMap>-->
 
-	<select id="selectAllToDateByMonth"
+	<select id="selectAllByMonth"
 		resultMap="TimeRecordWithEmployeeAndAbsenceReasonResult">
 		SELECT
 		  s.date
@@ -58,29 +49,12 @@
 	 	  ON a.reason_id=ar.id
 	 	WHERE
 	 	  MONTH(s.date)=#{targetMonth}
-	 	  AND s.date &lt; CURRENT_DATE
+<!--  	 	  AND s.date &lt; CURRENT_DATE  -->
 		ORDER BY s.date ASC
 		;
-<!--		SELECT-->
-<!--		  t.date-->
-<!--		  ,t.employee_id-->
-<!--		  ,e.name-->
-<!--		  ,t.clock_in-->
-<!--		  ,t.clock_out-->
-<!--		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time-->
-<!--		  ,t.created_at-->
-<!--		  ,t.updated_at-->
-<!--		FROM-->
-<!--		  time_records AS t-->
-<!--		  INNER JOIN employees AS e-->
-<!--	 	  ON t.employee_id = e.id-->
-<!--		WHERE-->
-<!--		  MONTH(t.date) = #{targetMonth}-->
-<!--		ORDER BY t.date ASC-->
-<!--		;-->
 	</select>
 
-	<select id="selectToDateByEmployeeIdAndMonth"
+	<select id="selectByEmployeeIdAndMonth"
 		resultMap="TimeRecordWithEmployeeAndAbsenceReasonResult">
 		SELECT
 		  s.date
@@ -117,9 +91,7 @@
 		;
 	</select>
 	
-<!--	これは廃止するかも-->
-<!--→やっぱ使う-->
-	<select id="selectByMonth">
+	<select id="selectEmployeeByMonth">
 		SELECT
 		  DISTINCT e.id AS employeeId
 		  ,e.name 
@@ -164,115 +136,3 @@
 	</update>
 	
 </mapper>
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
-<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
-<!--<mapper-->
-<!--	namespace="com.example.webapp.repository.WorkHistoryManagementMapper">-->
-<!--	<resultMap id="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult"-->
-<!--		type="com.example.webapp.entity.ShiftAndTimeRecord">-->
-<!--		<id property="shiftId" column="id" />-->
-<!--		<result property="date" column="date" />-->
-<!--		<result property="start" column="start" />-->
-<!--		<result property="end" column="end" />-->
-<!--		<result property="workTime" column="work_time"/>-->
-<!--		<result property="createdAt" column="created_at" />-->
-<!--		<result property="updatedAt" column="updated_at" />-->
-<!--		<association property="employee"-->
-<!--			javaType="com.example.webapp.entity.Employee">-->
-<!--			<id property="employeeId" column="employee_id" />-->
-<!--			<result property="name" column="name" />-->
-<!--		</association>-->
-<!--	</resultMap>-->
-	
-<!--	<resultMap id="EmployeeMap" type="com.example.webapp.entity.Employee">-->
-<!--		<id property="employeeId" column="id"/>-->
-<!--	</resultMap>-->
-
-<!--	<select id="selectAllToDateByMonth"-->
-<!--		resultMap="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult">-->
-<!--	SELECT-->
-<!--	  s.id-->
-<!--	  ,s.date-->
-<!--	  ,s.start-->
-<!--	  ,s.end-->
-<!--	  ,SUBTIME(s.end,s.start) AS work_time-->
-<!--	  ,s.created_at-->
-<!--	  ,s.updated_at-->
-<!--	  ,s.employee_id-->
-<!--	  ,e.name-->
-<!--	FROM-->
-<!--	  shifts_and_time_records AS s-->
-<!--	  INNER JOIN employees AS e-->
-<!-- 	  ON s.employee_id = e.id-->
-<!--	WHERE-->
-<!--	  MONTH(s.date) = #{targetMonth}-->
-<!--	ORDER BY s.date ASC-->
-<!--	;-->
-<!--	</select>-->
-
-<!--	<select id="selectToDateByEmployeeIdAndMonth"-->
-<!--		resultMap="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult">-->
-<!--	SELECT-->
-<!--	  s.id-->
-<!--	  ,s.date-->
-<!--	  ,s.start-->
-<!--	  ,s.end-->
-<!--	  ,SUBTIME(s.end,s.start) AS work_time-->
-<!--	  ,s.created_at-->
-<!--	  ,s.updated_at-->
-<!--	  ,s.employee_id-->
-<!--	  ,e.name -->
-<!--	FROM-->
-<!--	  shifts_and_time_records AS s-->
-<!--	  INNER JOIN employees e-->
-<!--	  ON s.employee_id=e.id-->
-<!--	WHERE-->
-<!--	  MONTH(s.date) = #{targetMonth}-->
-<!--	  AND s.employee_id = #{employeeId}-->
-<!--	;-->
-<!--	</select>-->
-	
-<!--	<select id="selectByMonth" resultMap="EmployeeMap">-->
-<!--	SELECT-->
-<!--	  DISTINCT e.id-->
-<!--	  ,e.name-->
-<!--	FROM-->
-<!--	  shifts_and_time_records s-->
-<!--	  INNER JOIN employees e-->
-<!--	  ON s.employee_id = e.id-->
-<!--	WHERE-->
-<!--	  MONTH(s.date) = #{targetMonth}-->
-<!--	;-->
-<!--	</select>-->
-	
-<!--	<select id="selectByDateAndEmployeeId" resultMap="ShiftAndTimeRecordWithEmployeeAndAbsenceReasonResult">-->
-<!--	SELECT-->
-<!--	  s.id-->
-<!--	  ,s.date-->
-<!--	  ,s.start-->
-<!--	  ,s.end-->
-<!--	  ,s.employee_id-->
-<!--	  ,e.name-->
-<!--	FROM-->
-<!--	  shifts_and_time_records AS s-->
-<!--	  INNER JOIN employees AS e-->
-<!-- 	  ON s.employee_id = e.id-->
-<!--	WHERE-->
-<!--	  s.id = #{shiftId}-->
-<!--	;-->
-<!--	</select>-->
-	
-<!--	「updatedStart」とかのほうがわかりやすいが、フォームクラスのフィールド名がstart,end,idなのでそのまま利用-->
-<!--	<update id="update">-->
-<!--	UPDATE-->
-<!--	  shifts_and_time_records-->
-<!--	SET-->
-<!--	  start = #{start}-->
-<!--	  ,end = #{end}-->
-<!--	  ,updated_at = NOW()-->
-<!--	WHERE-->
-<!--	  id = #{shiftId}-->
-<!--	;-->
-<!--	</update>-->
-	
-<!--</mapper>-->
