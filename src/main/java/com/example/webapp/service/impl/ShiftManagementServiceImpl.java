@@ -44,7 +44,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 
 	@Override
 	public List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId) {
-		List<FullCalendarEntity> entities=shiftManagementMapper.selectByEmployeeId(employeeId);
+		List<FullCalendarEntity> entities=shiftManagementMapper.selectRequestByEmployeeId(employeeId);
 		return FullCalendarHelper.convertFullCalendarDisplay(entities);
 	}
 
@@ -81,7 +81,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 				});
 		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntity(latestVersionForm);
 
-		List<FullCalendarEntity> oldVersion = shiftManagementMapper.selectByEmployeeId(employeeId);
+		List<FullCalendarEntity> oldVersion = shiftManagementMapper.selectRequestByEmployeeId(employeeId);
 
 		List<FullCalendarEntity> additionals= latestVersion.stream()
 				//				新しく追加した希望日
@@ -99,7 +99,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 			}
 		}
 		//newRequestsに存在しない日付を削除
-		shiftManagementMapper.deleteByEmployeeId(latestVersion, employeeId);
+		shiftManagementMapper.deleteOldRequestByEmployeeId(latestVersion, employeeId);
 
 	}
 
@@ -107,7 +107,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	public ShiftCreateContainer initializeShiftCreateContainerFields() {
 		List<Employee> allEmployees = employeesManagementMapper.selectAllIdAndName();
 		List<Employee> notSubmits = shiftManagementMapper.selectNotSubmit();
-		List<FullCalendarEntity> requests = shiftManagementMapper.selectAll();
+		List<FullCalendarEntity> requests = shiftManagementMapper.selectAllRequests();
 		List<FullCalendarDisplay> requestsDisplay=FullCalendarHelper.convertFullCalendarDisplay(requests);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", requestsDisplay);
 		return new ShiftCreateContainer(requestsDisplay, allEmployees, notSubmits);
@@ -147,7 +147,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 			if (!CollectionUtils.isEmpty(additionals)) {
 				shiftManagementMapper.insertShift(additionals);
 			}
-			shiftManagementMapper.deleteByMonth(latestVersion, month);
+			shiftManagementMapper.deleteOldShiftByMonth(latestVersion, month);
 		} catch (DataIntegrityViolationException e) {
 			throw new InvalidEditException("勤怠履歴のあるシフト/欠勤申請の出されているシフトは編集できません");
 		}

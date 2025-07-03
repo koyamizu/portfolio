@@ -13,13 +13,13 @@ public interface ShiftManagementMapper {
 
 	List<FullCalendarEntity> selectThreeMonthByTargetMonth(Integer targetMonth);
 
-	List<FullCalendarEntity> selectByEmployeeId(Integer employeeId);
+	List<FullCalendarEntity> selectRequestByEmployeeId(Integer employeeId);
 	
 	List<ShiftSchedule> selectAllAfterTodayByEmployeeId(Integer employeeId);
 
 	List<FullCalendarEntity> selectOneMonthByTargetMonth(Integer targetMonth);
 
-	List<FullCalendarEntity> selectAll();
+	List<FullCalendarEntity> selectAllRequests();
 
 	List<Employee> selectNotSubmit();
 
@@ -27,8 +27,8 @@ public interface ShiftManagementMapper {
 
 	void insertShift(List<FullCalendarEntity> newShifts);
 
-	void deleteByEmployeeId(List<FullCalendarEntity> requests, Integer employeeId);
+	void deleteOldRequestByEmployeeId(List<FullCalendarEntity> newRequests, Integer employeeId);
 
-	void deleteByMonth(List<FullCalendarEntity> newShifts,Integer targetMonth);
+	void deleteOldShiftByMonth(List<FullCalendarEntity> newShifts,Integer targetMonth);
 
 }

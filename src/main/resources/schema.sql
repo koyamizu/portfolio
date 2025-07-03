@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS absence_reasons;
 
 CREATE TABLE absence_reasons (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(15) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT uq_absence_reasons UNIQUE (name)
@@ -26,10 +26,10 @@ CREATE TABLE absence_reasons (
 CREATE TABLE employees (
     id INT NOT NULL AUTO_INCREMENT,
     password CHAR(60) NOT NULL,
-    name VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(30) NOT NULL UNIQUE,
     birth DATE NOT NULL,
     tel VARCHAR(13) NOT NULL,
-    address VARCHAR(150) NOT NULL,
+    address VARCHAR(50) NOT NULL,
     authority ENUM('ADMIN', 'USER') NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

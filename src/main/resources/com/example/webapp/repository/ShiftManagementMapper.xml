@@ -33,7 +33,7 @@
 		;
 	</select>
 
-	<select id="selectByEmployeeId"
+	<select id="selectRequestByEmployeeId"
 		resultMap="FullCalendarEntityResult">
 		SELECT
 		  id
@@ -45,6 +45,7 @@
 		  shift_requests
 		WHERE
 		  employee_id = #{employeeId}
+		  AND MONTH(date)=MONTH(CURRENT_DATE)+1
 		ORDER BY date ASC
 		;
 	</select>
@@ -82,7 +83,7 @@
 		;
 	</select>
 
-	<select id="selectAll"
+	<select id="selectAllRequests"
 		resultMap="FullCalendarEntityResult">
 		SELECT
 		  r.id
@@ -95,13 +96,14 @@
 		  shift_requests AS r
 		  INNER JOIN employees AS e
 		  ON r.employee_id = e.id
+		WHERE
+		  MONTH(date)=MONTH(CURRENT_DATE)+1
 		;
 	</select>
 
-<!--現状使用していない-->
 	<select id="selectNotSubmit">
 		SELECT
-		  id
+		  id as employeeId
 		  ,name
 		FROM
 		  employees
@@ -136,12 +138,12 @@
 	</insert>
 
 <!--	リクエストの削除-->
-	<delete id="deleteByEmployeeId">
+	<delete id="deleteOldRequestByEmployeeId">
 		DELETE FROM
 		  shift_requests
 		WHERE
 		  date NOT IN (
-		  <foreach collection="requests" item="r" separator=",">
+		  <foreach collection="newRequests" item="r" separator=",">
 			  #{r.start}
 		  </foreach>		  
 		  )
@@ -150,7 +152,7 @@
 	</delete>
 
 <!--シフトの削除-->
-	<delete id="deleteByMonth">
+	<delete id="deleteOldShiftByMonth">
 		DELETE FROM
 		  shift_schedules
 		WHERE

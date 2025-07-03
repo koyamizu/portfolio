@@ -1,6 +1,7 @@
 package com.example.webapp.repository;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -93,6 +95,14 @@ public class EmployeesManagementMapperTest {
 		assertThat(confirm.getAuthority()).isEqualTo(chihaya.getAuthority());
 	}
 	
+	//異常系。MySQLのデータ型の字数制限違反。いくつかあるが、今回はname VARCHAR(30)を検証
+	@Test
+	void test_insert_too_long_data(){
+		Employee chihaya=data.getChihaya();
+		chihaya.setName("hogehogehogehogehogehogehogehoge");//32文字
+		assertThrows(DataIntegrityViolationException.class,()->mapper.insert(chihaya));
+	}
+	
 	@Test
 	void test_update() {
 		Employee koga=mapper.selectById(1002);
@@ -101,6 +111,14 @@ public class EmployeesManagementMapperTest {
 		mapper.update(koga);
 		Employee exKoga=mapper.selectById(1002);
 		assertThat(exKoga.getName()).isEqualTo("鹿部");
+	}
+	
+	//異常系。MySQLのデータ型の字数制限違反。いくつかあるが、今回はaddress VARCHAR(50)を検証
+	@Test
+	void test_update_too_long_data() {
+		Employee koga=mapper.selectById(1002);
+		koga.setAddress("福岡県古賀市天神1-1hogehogehogehogehogehogehogehogehogehoge");//51文字
+		assertThrows(DataIntegrityViolationException.class,()->mapper.update(koga));
 	}
 	
 	@Test
