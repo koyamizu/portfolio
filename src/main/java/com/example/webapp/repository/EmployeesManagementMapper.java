@@ -19,9 +19,9 @@ public interface EmployeesManagementMapper {
 	
 	void insert(Employee employee);
 	
-	int update(Employee employee);
+	void update(Employee employee);
 	
-	int deleteById(Integer employeeId);
+	void deleteById(Integer employeeId);
 	
 	void setForeignKeyChecksOn();
 	

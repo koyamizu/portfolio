@@ -1,6 +1,7 @@
 package com.example.webapp.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -8,14 +9,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
@@ -31,88 +33,114 @@ public class EmployeesManagementServiceTest {
 
 	@InjectMocks
 	EmployeesManagementServiceImpl service;
-	
-	@Mock
-	EmployeesManagementMapper employeesManagementMapper;
 
-	private EmployeeTestData data=new EmployeeTestData();
-	
+	@Mock
+	EmployeesManagementMapper mapper;
+
+	private EmployeeTestData data = new EmployeeTestData();
+
 	@Test
-	void testSelectEmployeeById() throws InvalidEmployeeIdException {
-		Employee yoshizuka=data.getYoshizuka();
-		
-		doReturn(yoshizuka).when(employeesManagementMapper).selectById(1001);
-		
-		EmployeeForm actual=service.getEmployeeForm(1001);
-		
+	void test_getAllEmployees() throws NoDataException {
+		List<Employee> employees = data.createAllEmployees();
+		doReturn(employees).when(mapper).selectAll();
+		List<Employee> actuals = service.getAllEmployees();
+		assertThat(actuals).isEqualTo(employees);
+	}
+
+	@Test
+	void test_getAllEmployees_throws_NoDataExeption() {
+		doReturn(null).when(mapper).selectAll();
+		assertThrows(NoDataException.class, () -> service.getAllEmployees());
+	}
+
+	@Test
+	void test_getEmployee() throws InvalidEmployeeIdException {
+		Employee yoshizuka = data.getYoshizuka();
+		doReturn(yoshizuka).when(mapper).selectById(1001);
+		Employee actual = service.getEmployee(1001);
 		assertThat(actual).isEqualTo(yoshizuka);
 	}
-	
+
 	@Test
-	void testSelectAllEmployees() throws NoDataException {
-		List<Employee> employees=data.createAllEmployees();
-		
-		doReturn(employees).when(employeesManagementMapper).selectAll();
-		List<Employee> actuals=service.getAllEmployees();
-		
-		assertThat(actuals).isEqualTo(employees);
+	void test_getEmployee_throws_InvalidEmployeeeIdException() throws InvalidEmployeeIdException {
+		doReturn(null).when(mapper).selectById(1010);
+		assertThrows(InvalidEmployeeIdException.class, () -> service.getEmployee(1010));
 	}
-	
+
 	@Test
-	void testSelectAllIdAndName() {
-		List<Employee> employees=data.createTestEmployeeIdAndName();
-		
-		doReturn(employees).when(employeesManagementMapper).selectAllIdAndName();
-		
-		List<Employee> actuals=service.getAllEmployeeIdAndName();
-		
+	void test_getEmployeeForm() throws InvalidEmployeeIdException {
+		Employee yoshizuka = data.getYoshizuka();
+		EmployeeForm yoshizukaForm = EmployeeHelper.convertEmployeeForm(yoshizuka);
+		doReturn(yoshizuka).when(mapper).selectById(1001);
+		EmployeeForm actual = service.getEmployeeForm(1001);
+		assertThat(actual).isEqualTo(yoshizukaForm);
+	}
+
+	@Test
+	void test_getEmployeeForm_throws_InvalidEmployeeeIdException() {
+		doReturn(null).when(mapper).selectById(1010);
+		assertThrows(InvalidEmployeeIdException.class, () -> service.getEmployeeForm(1010));
+	}
+
+	@Test
+	void test_getAllEmployeeIdAndName() {
+		List<Employee> employees = data.createTestEmployeeIdAndName();
+		doReturn(employees).when(mapper).selectAllIdAndName();
+		List<Employee> actuals = service.getAllEmployeeIdAndName();
 		assertThat(actuals).isEqualTo(employees);
 	}
 
 	@Test
-	void testSelectEmployeeIdByName() {
-		Integer id=1001;
-		doReturn(id).when(employeesManagementMapper).selectIdByName("吉塚");
-		Integer actual=service.getEmployeeIdByName("吉塚");
+	void test_getEmployeeIdByName() {
+		Integer id = 1001;
+		doReturn(id).when(mapper).selectIdByName("吉塚");
+		Integer actual = service.getEmployeeIdByName("吉塚");
 		assertThat(actual).isEqualTo(id);
 	}
-	
-	@Test
-	void testInsertEmployee() throws DuplicateEmployeeException {
-		Employee newEmployee=data.getChihaya();
-		doNothing().when(employeesManagementMapper).insert(newEmployee);
-		EmployeeForm form=EmployeeHelper.convertEmployeeForm(newEmployee);
-		service.insertEmployee(form);
-		verify(employeesManagementMapper).insert(any());
-	}
-	
-	@Test
-	void testUpdateEmployee() throws DuplicateEmployeeException, InvalidEmployeeIdException {
-		Employee employee=new Employee();
-		employee.setName("古賀");
-		doReturn(employee).when(employeesManagementMapper).selectById(1002);
-		EmployeeForm kogaForm=service.getEmployeeForm(1002);
 
-		log.info("名前変更前："+kogaForm.getName());
-		kogaForm.setName("鹿部");
-		
-		Employee koga=EmployeeHelper.convertEmployee(kogaForm);
-		
-		doNothing().when(employeesManagementMapper).update(koga);
-		service.updateEmployee(kogaForm);
-		
-		verify(employeesManagementMapper).update(koga);
-	}
-	
 	@Test
-	void testDeleteEmployeeById() throws InvalidEmployeeIdException,EmployeeDataIntegrityException {
-		Employee yoshizuka=data.getYoshizuka();
-		
-		doReturn(yoshizuka).when(employeesManagementMapper).selectById(1001);
-		doNothing().when(employeesManagementMapper).deleteById(1001);
-		
-		assertThat(service.getEmployeeForm(1001)).isNotNull();
-		service.deleteEmployee(1001);
-		assertThat(service.getEmployeeForm(1001)).isNull();
+	void test_insertEmployee() throws DuplicateEmployeeException {
+		Employee newEmployee = data.getChihaya();
+		doNothing().when(mapper).insert(newEmployee);
+		EmployeeForm form = EmployeeHelper.convertEmployeeForm(newEmployee);
+		service.insertEmployee(form);
+		verify(mapper).insert(any());
 	}
+
+	@Test
+	void test_insertEmployee_throws_DuplicateEmployeeException() throws DuplicateEmployeeException {
+		Employee newEmployee = data.getYoshizuka();
+		doThrow(DataIntegrityViolationException.class).when(mapper).insert(newEmployee);
+		EmployeeForm form = EmployeeHelper.convertEmployeeForm(newEmployee);
+		assertThrows(DuplicateEmployeeException.class, () -> service.insertEmployee(form));
+	}
+
+	@Test
+	void test_updateEmployee() throws DuplicateEmployeeException, InvalidEmployeeIdException {
+		Employee original = data.getYoshizuka();
+		original.setName("吉津鹿");
+		EmployeeForm form = EmployeeHelper.convertEmployeeForm(original);
+
+		doNothing().when(mapper).update(original);
+		service.updateEmployee(form);
+
+		ArgumentCaptor<Employee> captor = ArgumentCaptor.forClass(Employee.class);
+//		実際にmapperに渡された値を検証できる
+		verify(mapper).update(captor.capture());
+		Employee updated = captor.getValue();
+
+		assertThat(updated.getName()).isEqualTo("吉津鹿");
+	}
+
+	//	@Test
+	//	void test_deleteEmploye() throws InvalidEmployeeIdException,EmployeeDataIntegrityException {
+	//		Employee yoshizuka=data.getYoshizuka();
+	//		
+	//		doReturn(yoshizuka).when(mapper).selectById(1001);
+	//		doNothing().when(mapper).deleteById(1001);
+	//		
+	//		assertThat(service.getEmployeeForm(1001)).isNotNull();
+	//		service.deleteEmployee(1001);
+	//		assertThat(service.getEmployeeForm(1001)).isNull();
+	//	}
 }

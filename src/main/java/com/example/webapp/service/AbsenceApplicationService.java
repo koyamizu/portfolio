@@ -13,16 +13,10 @@ import com.example.webapp.form.AbsenceApplicationForm;
 
 @Service
 public interface AbsenceApplicationService {
-
-//	List<AbsenceApplication> selectAllApplicationsAfterToday();
-//	
-//	List<AbsenceApplication> selectPersonalApplicationsAfterToday(Integer employeeId);
 	
 	List<AbsenceApplication> get(String fromPage, Integer employeeId) throws InvalidAccessException;
 	
 	List<AbsenceApplication> getTodayApplications();
-	
-//	List<AbsenceApplication> getApplicationDetail();
 	
 	List<AbsenceReason> getAllReasons();
 	

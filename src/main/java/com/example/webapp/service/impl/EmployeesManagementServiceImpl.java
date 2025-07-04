@@ -17,6 +17,7 @@ import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.service.EmployeesManagementService;
+import com.google.common.base.Objects;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +41,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException {
 		Employee employee = mapper.selectById(employeeId);
-		if (employee.equals(null)) {
+		if (Objects.equal(employee, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		return employee;
@@ -49,7 +50,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public EmployeeForm getEmployeeForm(Integer employeeId) throws InvalidEmployeeIdException {
 		Employee target = mapper.selectById(employeeId);
-		if (target.equals(null)) {
+		if (Objects.equal(target,null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
