@@ -26,10 +26,4 @@ public interface EmployeesManagementMapper {
 	void setForeignKeyChecksOn();
 	
 	void setForeignKeyChecksOff();
-
-	void deleteTimeRecords(Integer employeeId);
-
-	void deleteShiftSchedules(Integer employeeId);
-
-	void deleteShiftRequests(Integer employeeId);
 }

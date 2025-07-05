@@ -135,4 +135,12 @@
 		;
 	</update>
 	
+	<delete id="deleteAllTimeRecords">
+		DELETE FROM
+		  time_records
+		WHERE
+		  employee_id=#{employeeId}
+		;
+	</delete>
+	
 </mapper>

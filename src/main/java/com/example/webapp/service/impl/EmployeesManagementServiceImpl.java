@@ -16,6 +16,8 @@ import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
+import com.example.webapp.repository.ShiftManagementMapper;
+import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.EmployeesManagementService;
 import com.google.common.base.Objects;
 
@@ -26,11 +28,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmployeesManagementServiceImpl implements EmployeesManagementService {
 
-	private final EmployeesManagementMapper mapper;
+	private final EmployeesManagementMapper employeeManagementMapper;
+	private final WorkHistoryManagementMapper workHistoryManagementMapper;
+	private final ShiftManagementMapper shiftManagementMapper;
 
 	@Override
 	public List<Employee> getAllEmployees() throws NoDataException {
-		List<Employee> allEmployees = mapper.selectAll();
+		List<Employee> allEmployees = employeeManagementMapper.selectAll();
 
 		if (CollectionUtils.isEmpty(allEmployees)) {
 			throw new NoDataException("従業員一覧が取得できませんでした。");
@@ -40,7 +44,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException {
-		Employee employee = mapper.selectById(employeeId);
+		Employee employee = employeeManagementMapper.selectById(employeeId);
 		if (Objects.equal(employee, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
@@ -49,8 +53,8 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public EmployeeForm getEmployeeForm(Integer employeeId) throws InvalidEmployeeIdException {
-		Employee target = mapper.selectById(employeeId);
-		if (Objects.equal(target,null)) {
+		Employee target = employeeManagementMapper.selectById(employeeId);
+		if (Objects.equal(target, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		EmployeeForm form = EmployeeHelper.convertEmployeeForm(target);
@@ -59,19 +63,19 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public List<Employee> getAllEmployeeIdAndName() {
-		return mapper.selectAllIdAndName();
+		return employeeManagementMapper.selectAllIdAndName();
 	}
 
 	@Override
 	public Integer getEmployeeIdByName(String name) {
-		return mapper.selectIdByName(name);
+		return employeeManagementMapper.selectIdByName(name);
 	}
 
 	@Override
 	public void insertEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException {
 		Employee employee = EmployeeHelper.convertEmployee(employeeForm);
 		try {
-			mapper.insert(employee);
+			employeeManagementMapper.insert(employee);
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicateEmployeeException("従業員名が重複しています");
 		}
@@ -81,7 +85,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	public void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException {
 		Employee employee = EmployeeHelper.convertEmployee(employeeForm);
 		try {
-			mapper.update(employee);
+			employeeManagementMapper.update(employee);
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicateEmployeeException("従業員名が重複しています");
 		}
@@ -89,12 +93,12 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, EmployeeDataIntegrityException {
-		Employee target = mapper.selectById(employeeId);
-		if (target.equals(null)) {
+		Employee target = employeeManagementMapper.selectById(employeeId);
+		if (Objects.equal(target, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		try {
-			mapper.deleteById(employeeId);
+			employeeManagementMapper.deleteById(employeeId);
 		} catch (DataIntegrityViolationException e) {
 			throw new EmployeeDataIntegrityException("勤怠履歴の存在する従業員です", employeeId);
 		}
@@ -104,15 +108,21 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId)
 			throws ForeignKeyViolationException {
+		employeeManagementMapper.setForeignKeyChecksOff();
 		try {
-			mapper.setForeignKeyChecksOff();
-			mapper.deleteTimeRecords(employeeId);
-			mapper.deleteShiftSchedules(employeeId);
-			mapper.deleteShiftRequests(employeeId);
-			mapper.setForeignKeyChecksOn();
+			workHistoryManagementMapper.deleteAllTimeRecords(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			StackTraceElement[] element = e.getStackTrace();
-			throw new ForeignKeyViolationException(element[0].getClassName());
+			throw new ForeignKeyViolationException("Happened in deleteTimeRecords:"+e.getMessage());
+		}try {
+			shiftManagementMapper.deleteAllShiftSchedules(employeeId);
+		} catch (DataIntegrityViolationException e) {
+			throw new ForeignKeyViolationException("Happened in deleteShiftSchedules:"+e.getMessage());
+		}try {
+			shiftManagementMapper.deleteAllShiftRequests(employeeId);
+		} catch (DataIntegrityViolationException e) {
+			throw new ForeignKeyViolationException("Happened in deleteShiftRequests:"+e.getMessage());
+		} finally {
+			employeeManagementMapper.setForeignKeyChecksOn();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 INSERT INTO employees (id,password, name, birth, tel, address, authority) VALUES
-  (1001,'p', 'hogehoge',   '1986-05-27', '030-1920-8394', '福岡県福岡市博多区', 'ADMIN')
-  ,(1002,'q', 'fugafuga',   '1980-01-01', '030-1920-8394', '福岡県福岡市東区', 'USER')
-  ,(1003,'r', 'piyopiyo',   '1990-01-01', '030-1920-8394', '福岡県福岡市早良区', 'USER')
+  (1001,'hogehoge','hoge','1980-01-01','090-1111-1111','福岡県福岡市東区テスト1-1','ADMIN')
+  ,(1002,'fugafuga','fuga','1990-01-01','090-2222-2222','福岡県福岡市中央区テスト1-1','USER')
+  ,(1003,'piyopiyo','piyo','2000-01-01','090-3333-3333','福岡県福岡市南区テスト1-1','USER')
   ;
 
 INSERT INTO shift_schedules(id,employee_id,date,scheduled_start,scheduled_end)

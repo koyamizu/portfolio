@@ -20,6 +20,7 @@
 		resultMap="FullCalendarEntityResult">
 		SELECT
 		  s.id
+		  ,s.employee_id
 		  ,e.name
 		  ,s.date
 		  ,s.scheduled_start
@@ -162,6 +163,22 @@
 		  </foreach>		  
 		  )
 		  AND MONTH(date)=#{targetMonth}
+		;
+	</delete>
+	
+	<delete id="deleteAllShiftSchedules">
+		DELETE FROM
+		  shift_schedules
+		WHERE
+		  employee_id=#{employeeId}
+		;
+	</delete>
+	
+	<delete id="deleteAllShiftRequests">
+		DELETE FROM
+		  shift_requests
+		WHERE
+		  employee_id=#{employeeId}
 		;
 	</delete>
 </mapper>

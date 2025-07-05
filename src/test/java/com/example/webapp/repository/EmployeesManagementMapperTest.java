@@ -13,8 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
+import com.example.webapp.test_data.EmployeeTestData;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,90 +35,87 @@ public class EmployeesManagementMapperTest {
 	
 	@Test
 	void test_selectById() {
-		Employee yoshizuka=data.getYoshizuka();
+		Employee expected=data.getExistingEmployeeHoge();
 		Employee actual=mapper.selectById(1001);
-		assertThat(actual.getEmployeeId()).isEqualTo(yoshizuka.getEmployeeId());
-		assertThat(encoder.matches(yoshizuka.getPassword(), actual.getPassword())).isTrue();
-		assertThat(actual.getName()).isEqualTo(yoshizuka.getName());
-		assertThat(actual.getBirth()).isEqualTo(yoshizuka.getBirth());
-		assertThat(actual.getTel()).isEqualTo(yoshizuka.getTel());
-		assertThat(actual.getAddress()).isEqualTo(yoshizuka.getAddress());
-		assertThat(actual.getAuthority()).isEqualTo(yoshizuka.getAuthority());	
+		assertThat(actual.getEmployeeId()).isEqualTo(expected.getEmployeeId());
+		assertThat(encoder.matches(actual.getPassword(),expected.getPassword())).isTrue();
+		assertThat(actual.getName()).isEqualTo(expected.getName());
+		assertThat(actual.getBirth()).isEqualTo(expected.getBirth());
+		assertThat(actual.getTel()).isEqualTo(expected.getTel());
+		assertThat(actual.getAddress()).isEqualTo(expected.getAddress());
+		assertThat(actual.getAuthority()).isEqualTo(expected.getAuthority());	
 	}
 	
 	@Test
 	void test_selectAll() {
+		List<Employee> expecteds=data.getAllEmployees();
 		List<Employee> actuals=mapper.selectAll();
 		
-		assertThat(actuals.size()).isEqualTo(6);
+		assertThat(actuals.size()).isEqualTo(expecteds.size());
 		
-		Employee yoshizuka=data.getYoshizuka();
-		
-		assertThat(actuals.get(0).getEmployeeId()).isEqualTo(yoshizuka.getEmployeeId());
-		assertThat(encoder.matches(yoshizuka.getPassword(), actuals.get(0).getPassword())).isTrue();
-		assertThat(actuals.get(0).getName()).isEqualTo(yoshizuka.getName());
-		assertThat(actuals.get(0).getBirth()).isEqualTo(yoshizuka.getBirth());
-		assertThat(actuals.get(0).getTel()).isEqualTo(yoshizuka.getTel());
-		assertThat(actuals.get(0).getAddress()).isEqualTo(yoshizuka.getAddress());
-		assertThat(actuals.get(0).getAuthority()).isEqualTo(yoshizuka.getAuthority());	
+		assertThat(actuals).extracting(Employee::getEmployeeId).contains(expecteds.get(0).getEmployeeId());
+		assertThat(actuals).extracting(Employee::getName).contains(expecteds.get(0).getName());
+		assertThat(actuals).extracting(Employee::getBirth).contains(expecteds.get(0).getBirth());
+		assertThat(actuals).extracting(Employee::getTel).contains(expecteds.get(0).getTel());
+		assertThat(actuals).extracting(Employee::getAddress).contains(expecteds.get(0).getAddress());
+		assertThat(actuals).extracting(Employee::getAuthority).contains(expecteds.get(0).getAuthority());
+		assertThat(encoder.matches(actuals.get(0).getPassword(),expecteds.get(0).getPassword())).isTrue();		
 	}
 	
 	@Test
 	void test_selectAllIdAndName() {
+		List<Employee> expecteds=data.getAllEmployeeIdAndName();
 		List<Employee> actuals=mapper.selectAllIdAndName();
 		
-		assertThat(actuals.size()).isEqualTo(6);
+		assertThat(actuals.size()).isEqualTo(expecteds.size());
 		
-		Employee yoshizuka=data.getYoshizuka();
-		
-		assertThat(actuals).extracting(Employee::getEmployeeId).contains(yoshizuka.getEmployeeId());
-		assertThat(actuals).extracting(Employee::getName).contains(yoshizuka.getName());
+		assertThat(actuals).extracting(Employee::getEmployeeId).contains(expecteds.get(0).getEmployeeId());
+		assertThat(actuals).extracting(Employee::getName).contains(expecteds.get(0).getName());
 	}
 	
 	@Test
 	void test_selectIdByName() {
-		Integer id=mapper.selectIdByName("吉塚");
+		Integer id=mapper.selectIdByName("hoge");
 		assertThat(id).isEqualTo(1001);
 	}
 	
 	@Test
-	@Sql(statements="ALTER TABLE employees AUTO_INCREMENT=1007")
 	void test_insert() {
-		Employee chihaya=data.getChihaya();
-		mapper.insert(chihaya);
-		Employee confirm=mapper.selectById(1007);
-		assertThat(confirm.getPassword()).isEqualTo(chihaya.getPassword());
-		assertThat(confirm.getName()).isEqualTo(chihaya.getName());
-		assertThat(confirm.getBirth()).isEqualTo(chihaya.getBirth());
-		assertThat(confirm.getTel()).isEqualTo(chihaya.getTel());
-		assertThat(confirm.getAddress()).isEqualTo(chihaya.getAddress());
-		assertThat(confirm.getAuthority()).isEqualTo(chihaya.getAuthority());
+		Employee foo=data.getNewEmployeeFoo();
+		mapper.insert(foo);
+		Employee confirm=mapper.selectById(foo.getEmployeeId());
+		assertThat(confirm.getPassword()).isEqualTo(foo.getPassword());
+		assertThat(confirm.getName()).isEqualTo(foo.getName());
+		assertThat(confirm.getBirth()).isEqualTo(foo.getBirth());
+		assertThat(confirm.getTel()).isEqualTo(foo.getTel());
+		assertThat(confirm.getAddress()).isEqualTo(foo.getAddress());
+		assertThat(confirm.getAuthority()).isEqualTo(foo.getAuthority());
 	}
 	
 	//異常系。MySQLのデータ型の字数制限違反。いくつかあるが、今回はname VARCHAR(30)を検証
 	@Test
 	void test_insert_too_long_data(){
-		Employee chihaya=data.getChihaya();
-		chihaya.setName("hogehogehogehogehogehogehogehoge");//32文字
-		assertThrows(DataIntegrityViolationException.class,()->mapper.insert(chihaya));
+		Employee foo=data.getNewEmployeeFoo();
+		foo.setName("foofoofoofoofoofoofoofoofoofoofoo");//33文字
+		assertThrows(DataIntegrityViolationException.class,()->mapper.insert(foo));
 	}
 	
 	@Test
 	void test_update() {
-		Employee koga=mapper.selectById(1002);
-		log.info("名前変更前："+koga.getName());
-		koga.setName("鹿部");
-		mapper.update(koga);
-		Employee exKoga=mapper.selectById(1002);
-		assertThat(exKoga.getName()).isEqualTo("鹿部");
+		Employee fuga=mapper.selectById(1002);
+		log.info("名前変更前："+fuga.getName());
+		fuga.setName("hege");
+		mapper.update(fuga);
+		Employee actual=mapper.selectById(1002);
+		assertThat(actual.getName()).isEqualTo("hege");
 	}
 	
 	//異常系。MySQLのデータ型の字数制限違反。いくつかあるが、今回はaddress VARCHAR(50)を検証
 	@Test
 	void test_update_too_long_data() {
-		Employee koga=mapper.selectById(1002);
-		koga.setAddress("福岡県古賀市天神1-1hogehogehogehogehogehogehogehogehogehoge");//51文字
-		assertThrows(DataIntegrityViolationException.class,()->mapper.update(koga));
+		Employee hoge=mapper.selectById(1001);
+		hoge.setAddress("福岡県古賀市天神1-1hogehogehogehogehogehogehogehogehogehoge");//51文字
+		assertThrows(DataIntegrityViolationException.class,()->mapper.update(hoge));
 	}
 	
 	@Test

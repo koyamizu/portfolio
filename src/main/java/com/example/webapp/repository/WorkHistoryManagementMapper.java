@@ -20,4 +20,6 @@ public interface WorkHistoryManagementMapper {
 	TimeRecord selectByEmployeeIdAndDate(Integer employeeId, LocalDate date);
 
 	void update(TimeRecord updatedHistory);
+	
+	void deleteAllTimeRecords(Integer employeeId);
 }

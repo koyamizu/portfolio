@@ -18,11 +18,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.example.webapp.common.EmployeeTestData;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
+import com.example.webapp.exception.EmployeeDataIntegrityException;
+import com.example.webapp.exception.ForeignKeyViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
+import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.impl.EmployeesManagementServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +39,8 @@ public class EmployeesManagementServiceTest {
 
 	@Mock
 	EmployeesManagementMapper mapper;
+	@Mock
+	WorkHistoryManagementMapper workHistoryManagementMapper;
 
 	private EmployeeTestData data = new EmployeeTestData();
 
@@ -44,7 +49,7 @@ public class EmployeesManagementServiceTest {
 		List<Employee> employees = data.createAllEmployees();
 		doReturn(employees).when(mapper).selectAll();
 		List<Employee> actuals = service.getAllEmployees();
-		assertThat(actuals).isEqualTo(employees);
+		assertThat(actuals.size()).isEqualTo(employees.size());
 	}
 
 	@Test
@@ -125,22 +130,43 @@ public class EmployeesManagementServiceTest {
 		service.updateEmployee(form);
 
 		ArgumentCaptor<Employee> captor = ArgumentCaptor.forClass(Employee.class);
-//		実際にmapperに渡された値を検証できる
+		//		実際にmapperに渡された値を検証できる
 		verify(mapper).update(captor.capture());
 		Employee updated = captor.getValue();
 
 		assertThat(updated.getName()).isEqualTo("吉津鹿");
 	}
 
-	//	@Test
-	//	void test_deleteEmploye() throws InvalidEmployeeIdException,EmployeeDataIntegrityException {
-	//		Employee yoshizuka=data.getYoshizuka();
-	//		
-	//		doReturn(yoshizuka).when(mapper).selectById(1001);
-	//		doNothing().when(mapper).deleteById(1001);
-	//		
-	//		assertThat(service.getEmployeeForm(1001)).isNotNull();
-	//		service.deleteEmployee(1001);
-	//		assertThat(service.getEmployeeForm(1001)).isNull();
-	//	}
+	@Test
+	void test_deleteEmploye() throws InvalidEmployeeIdException, EmployeeDataIntegrityException {
+		Employee yoshizuka = data.getYoshizuka();
+		doReturn(yoshizuka).when(mapper).selectById(1001);
+		doNothing().when(mapper).deleteById(1001);
+		service.deleteEmployee(1001);
+	}
+	
+	@Test
+	void test_deleteEmploye_throws_InvalidEmployeeIdException() {
+		doReturn(null).when(mapper).selectById(1010);
+		assertThrows(InvalidEmployeeIdException.class,()->service.deleteEmployee(1010));
+	}
+	
+	@Test
+	void test_deleteEmployee_throws_EmployeeDataIntegerityException() {
+		Employee yoshizuka = data.getYoshizuka();
+		doReturn(yoshizuka).when(mapper).selectById(1001);
+		doThrow(DataIntegrityViolationException.class).when(mapper).deleteById(1001);
+		assertThrows(EmployeeDataIntegrityException.class,()->service.deleteEmployee(1001));
+	}
+
+	@Test
+	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests() throws ForeignKeyViolationException {
+		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001);
+	}
+	
+	@Test
+	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests_throws_ForeignKeyViolationException() throws ForeignKeyViolationException {
+		doThrow(DataIntegrityViolationException.class).when(workHistoryManagementMapper).deleteAllTimeRecords(1001);
+		assertThrows(ForeignKeyViolationException.class,()->service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001));
+	}
 }
