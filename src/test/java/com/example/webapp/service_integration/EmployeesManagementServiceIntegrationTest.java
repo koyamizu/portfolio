@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.webapp.common.EmployeeTestData;
+import com.example.webapp.common.EmployeeTestDataOld;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
 import com.example.webapp.exception.EmployeeDataIntegrityException;
@@ -35,7 +35,7 @@ public class EmployeesManagementServiceIntegrationTest {
 	EmployeesManagementService service;
 
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-	private EmployeeTestData data = new EmployeeTestData();
+	private EmployeeTestDataOld data = new EmployeeTestDataOld();
 
 	@Test
 	void test_getEmployeeForm() throws InvalidEmployeeIdException {

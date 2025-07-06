@@ -51,7 +51,8 @@ public class ShiftManagementMapperTest {
 	
 	@Test
 	void test_selectRequestByEmployeeId() {
-//		mapperメソッドでは名前は含まない
+//		selectRequestByEmployeeIdはnameは抽出しない。FullCalendarの表示に不要なため。
+//		getAllHogeRequestsOnlyEmployeeId内でexpectedsのnameフィールドをnullにしている
 		List<FullCalendarEntity> expecteds=data.getAllHogeRequestsOnlyEmployeeId();
 		List<FullCalendarEntity> actuals=mapper.selectRequestByEmployeeId(1001);
 		assertThat(actuals.size()).isEqualTo(expecteds.size());

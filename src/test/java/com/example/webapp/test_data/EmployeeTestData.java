@@ -39,6 +39,13 @@ public class EmployeeTestData {
 		return foo;
 	}
 	
+	public Employee getPiyoEmployeeIdAndName() {
+		Employee piyoIdAndName=new Employee();
+		piyoIdAndName.setEmployeeId(piyo.getEmployeeId());
+		piyoIdAndName.setName(piyo.getName());
+		return piyoIdAndName;
+	}
+	
 	public List<Employee> getAllEmployeeIdAndName(){
 		Employee hogeIdAndName=new Employee();
 		Employee fugaIdAndName=new Employee();

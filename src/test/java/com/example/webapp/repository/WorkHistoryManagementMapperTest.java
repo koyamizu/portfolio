@@ -16,9 +16,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.webapp.common.WorkHistoryManagementTestData;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
+import com.example.webapp.test_data.WorkHistoryManagementTestData;
 
 @MybatisTest
 @Sql("WorkHistoryManagementMapperTest.sql")

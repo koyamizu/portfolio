@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.example.webapp.common.EmployeeTestData;
+import com.example.webapp.common.EmployeeTestDataOld;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
 import com.example.webapp.exception.EmployeeDataIntegrityException;
@@ -42,7 +42,7 @@ public class EmployeesManagementServiceTest {
 	@Mock
 	WorkHistoryManagementMapper workHistoryManagementMapper;
 
-	private EmployeeTestData data = new EmployeeTestData();
+	private EmployeeTestDataOld data = new EmployeeTestDataOld();
 
 	@Test
 	void test_getAllEmployees() throws NoDataException {

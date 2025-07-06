@@ -11,7 +11,7 @@ import com.example.webapp.entity.Role;
 import lombok.Data;
 
 @Data
-public class EmployeeTestData {
+public class EmployeeTestDataOld {
 
 	public Employee getYoshizuka() {
 		return new Employee(
