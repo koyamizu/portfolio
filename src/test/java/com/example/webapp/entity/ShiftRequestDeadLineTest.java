@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.webapp.utility.ShiftRequestDeadLine;
+
 class ShiftRequestDeadLineTest {
 	
 	@Test

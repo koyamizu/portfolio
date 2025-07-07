@@ -19,8 +19,6 @@ import com.example.webapp.test_data.EmployeeTestData;
 import lombok.extern.slf4j.Slf4j;
 
 @MybatisTest
-//shift_scheduleと外部制約がある関係で、既存の従業員のdeleteができないので
-//テスト用のデータを個別に挿入
 @Sql("EmployeesManagementMapperTest.sql")
 @Slf4j
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
@@ -125,5 +123,11 @@ public class EmployeesManagementMapperTest {
 		assertThat(mapper.selectById(1007)).isNotNull();
 		mapper.deleteById(1007);
 		assertThat(mapper.selectById(1007)).isNull();
+	}
+	
+	@Test
+	//異常系。勤務履歴の存在する従業員を削除すると、DBのtime_recordテーブルの参照整合性違反によりエラーが発生する
+	void test_deleteById_invalid_because_work_history_exists() {
+		assertThrows(DataIntegrityViolationException.class,()->mapper.deleteById(1001));
 	}
 }

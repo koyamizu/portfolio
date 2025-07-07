@@ -128,7 +128,7 @@ public class ShiftManagementMapperTest {
 				+ "FROM shift_requests AS r INNER JOIN employees AS e ON r.employee_id=e.id "
 				+ "WHERE MONTH(date)=MONTH(CURRENT_DATE)+1 AND employee_id=?";
 		List<Map<String,Object>> before=jdbcTemplate.queryForList(query,1001);
-		assertThat(before).extracting(a->a.get("date")).contains(Date.valueOf(data.hogeRequestDateToDelete()));
+		assertThat(before).extracting(a->a.get("date")).contains(Date.valueOf(data.hogeRequestDateStringToDelete()));
 		
 		List<FullCalendarEntity> updatedRequests=data.getUpdatedHogeRequests();
 		

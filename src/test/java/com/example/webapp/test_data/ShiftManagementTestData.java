@@ -16,11 +16,14 @@ public class ShiftManagementTestData {
 	private FullCalendarEntity schedule_fuga_0501;
 	private FullCalendarEntity schedule_fuga_0511;
 	
+//	既存のrequest、または翌月のシフトとして使用
 	private FullCalendarEntity request_hoge_01;
 	private FullCalendarEntity request_hoge_15;
 	private FullCalendarEntity request_hoge_28;
 	private FullCalendarEntity request_fuga_10;
 	private FullCalendarEntity request_fuga_20;
+	
+	//request挿入用
 	private FullCalendarEntity request_piyo_01;
 	private FullCalendarEntity request_piyo_15;
 	
@@ -136,12 +139,8 @@ public class ShiftManagementTestData {
 				);
 	}
 	
-	public String hogeRequestDateToDelete() {
+	public String hogeRequestDateStringToDelete() {
 		return request_hoge_28.getStart().toString();
 	}
-//			new FullCalendarEntity(
-//			1,e,LocalDate.of(2025,4,1)
-//			,LocalTime.of(6,0,0),LocalTime.of(9,0,0)
-//			);
 	
 }
