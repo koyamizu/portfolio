@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//Shiftクラスから継承したいけどstartとかtitleがあるから無理なのか
 public class FullCalendarDisplay {
 	//シフトid
 	//Fullcalendarに表示する際に、「id」という名称である必要があるので、ここは「id」で固定

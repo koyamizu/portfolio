@@ -22,12 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.webapp.entity.FullCalendarDisplay;
 import com.example.webapp.entity.ShiftCreateContainer;
 import com.example.webapp.entity.ShiftEditContainer;
-import com.example.webapp.entity.ShiftRequestDeadLine;
 import com.example.webapp.entity.State;
 import com.example.webapp.exception.DuplicateShiftException;
 import com.example.webapp.exception.InvalidEditException;
 import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
+import com.example.webapp.utility.ShiftRequestDeadLine;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;

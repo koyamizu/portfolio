@@ -14,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.example.webapp.common.WorkHistoryManagementTestData;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
+import com.example.webapp.test_data.WorkHistoryManagementTestData;
 
 @MybatisTest
 @Sql("WorkHistoryManagementMapperTest.sql")
@@ -79,5 +80,17 @@ public class WorkHistoryManagementMapperTest {
 		String query=data.selectByEmployeeIdAndDate();
 		Map<String,Object> confirm=jdbcTemplate.queryForMap(query,LocalDate.of(2025, 5, 1),1002);
 		assertThat(confirm).isNotEqualTo(updatedHistory);
+	}
+	
+	@Test
+	@Transactional
+	@Sql(scripts="WorkHistoryManagementMapperTest.sql",statements="SET FOREIGN_KEY_CHECKS = 0;")
+	void test_deleteAllShiftRequests() {
+		String query="SELECT employee_id FROM time_records WHERE employee_id=?";
+		List<Map<String, Object>> before=jdbcTemplate.queryForList(query,1002);
+		assertThat(before).isNotEmpty();
+		mapper.deleteAllTimeRecords(1002);
+		List<Map<String,Object>> after=jdbcTemplate.queryForList(query,1002);
+		assertThat(after).isEmpty();
 	}
 }

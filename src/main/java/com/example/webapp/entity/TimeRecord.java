@@ -20,12 +20,11 @@ public class TimeRecord {
 	
 	private LocalDate date;
 
-//	Employeeクラス自体は存在するが、employeIdは複合主キーのひとつであり、
+//	Employeeクラス自体は存在するが、employeIdはdateと合わせて複合主キーを構成しており、
 //	Employee型オブジェクトではMyBatisでの値のマッピングがうまくいかなかったので分割している
 	private Integer employeeId;
 	
 	private String employeeName;
-//	private Employee employee;
 //	開始の打刻時間
 	private LocalTime clockIn;
 //	終了の打刻時間

@@ -1,4 +1,4 @@
-package com.example.webapp.common;
+package com.example.webapp.test_data;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class WorkHistoryManagementTestData {
 		reason.setName("理由1");
 		expected.setDate(LocalDate.of(2025, 4, 1));
 		expected.setEmployeeId(1001);
-		expected.setEmployeeName("hogehoge");
+		expected.setEmployeeName("hoge");
 		expected.setAbsenceReason(reason);
 		return expected;
 	}
@@ -27,7 +27,7 @@ public class WorkHistoryManagementTestData {
 		reason.setName("未承認");
 		expected.setDate(LocalDate.of(2025, 4, 1));
 		expected.setEmployeeId(1002);
-		expected.setEmployeeName("fugafuga");
+		expected.setEmployeeName("fuga");
 		expected.setAbsenceReason(reason);
 		return expected;
 	}
@@ -38,7 +38,7 @@ public class WorkHistoryManagementTestData {
 		reason.setName("承認忘れ");
 		expected.setDate(LocalDate.of(2025, 4, 1));
 		expected.setEmployeeId(1003);
-		expected.setEmployeeName("piyopiyo");
+		expected.setEmployeeName("piyo");
 		expected.setAbsenceReason(reason);
 		return expected;
 	}
@@ -49,7 +49,7 @@ public class WorkHistoryManagementTestData {
 		reason.setName("不明");
 		expected.setDate(LocalDate.of(2025, 5, 1));
 		expected.setEmployeeId(1001);
-		expected.setEmployeeName("hogehoge");
+		expected.setEmployeeName("hoge");
 		expected.setAbsenceReason(reason);
 		return expected;
 	}
@@ -64,7 +64,7 @@ public class WorkHistoryManagementTestData {
 		reason.setName(" ");
 		expected.setDate(LocalDate.of(2025, 5, 1));
 		expected.setEmployeeId(1002);
-		expected.setEmployeeName("fugafuga");
+		expected.setEmployeeName("fuga");
 		expected.setClockIn(clockIn);
 		expected.setClockOut(clockOut);
 		expected.setWorkTime(workTime);
@@ -80,7 +80,7 @@ public class WorkHistoryManagementTestData {
 		LocalTime clockOut = LocalTime.of(9, 1, 1);
 		expected.setDate(LocalDate.of(2025, 5, 11));
 		expected.setEmployeeId(1002);
-		expected.setEmployeeName("fugafuga");
+		expected.setEmployeeName("fuga");
 		expected.setClockIn(clockIn);
 		expected.setClockOut(clockOut);
 		return expected;

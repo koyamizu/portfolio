@@ -27,8 +27,8 @@
 | データベース | MySQL（9.2） | h2（2.3.232） |  |
 | PaaS | Heroku | JawsDB（Herokuアドオン） |  |
 | IDE, エディタ | Eclipse（2024 Pleiades） | Visual Studio Code（1.99.3） |  |
-| OS | Windows 11 Pro 24H2（訓練校） | Windows 11 Pro 23H2（私用PC：Panasonic Let’s note CF-NX3） |  |
-| ブラウザ | Google Chrome（135.0.7049.97） |  |  |
+| OS | Windows 11 Pro 24H2（訓練校） | Windows 11 Pro 23H2（私用PC：Panasonic Let’s note CF-NX3） | MacOS 15.2（私用PC：MacBook Air）  |
+| ブラウザ | Google Chrome（135.0.7049.97） | Safari（18.2） |  |
 | バージョン管理システム | Git（クライアントソフトはSourcetree） |  |  |
 | その他 | Excel（ER図の作成） | ChatGPT4o, o3（ダミーデータ,  jsファイルの生成） |  |
 
@@ -44,8 +44,6 @@ FK…外部キー
 
 # アプリのURL
 
-7/1 9:36追記　月が変わったので、6月分の勤怠履歴データと7月分のシフトデータ、8月分のシフト希望データを作成中です。7月のシフトデータが存在しないので、タイムレコーダーページでシステムエラーが発生します。
-対応中ですので、もし実際に動かされたいときは「タイムレコーダー」機能以外を試されるか、12時ほどまでお待ちいただければ幸いです。
 [https://work-management-app-7126fd9d36c3.herokuapp.com/](https://work-management-app-7126fd9d36c3.herokuapp.com/)
 
 # テスト用アカウント

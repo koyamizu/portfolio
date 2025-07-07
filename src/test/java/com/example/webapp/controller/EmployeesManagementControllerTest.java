@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.example.webapp.common.EmployeeTestData;
+import com.example.webapp.common.EmployeeTestDataOld;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.Role;
 import com.example.webapp.form.EmployeeForm;
@@ -50,11 +50,11 @@ public class EmployeesManagementControllerTest {
 	@MockitoBean
 	EmployeesManagementService service;
 
-	private EmployeeTestData data;
+	private EmployeeTestDataOld data;
 
 	@BeforeEach
 	void setup() {
-		data = new EmployeeTestData();
+		data = new EmployeeTestDataOld();
 	}
 
 	@Test

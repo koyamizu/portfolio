@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.webapp.common.EmployeeTestData;
+import com.example.webapp.common.EmployeeTestDataOld;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
@@ -33,11 +33,11 @@ public class EmployeesManagementControllerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	private EmployeeTestData data;
+	private EmployeeTestDataOld data;
 
 	@BeforeEach
 	void setup() {
-		data = new EmployeeTestData();
+		data = new EmployeeTestDataOld();
 	}
 
 	@Test

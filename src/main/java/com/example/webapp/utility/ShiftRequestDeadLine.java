@@ -1,4 +1,4 @@
-package com.example.webapp.entity;
+package com.example.webapp.utility;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
