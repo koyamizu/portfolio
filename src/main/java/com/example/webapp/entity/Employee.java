@@ -32,4 +32,11 @@ public class Employee {
 	private LocalDateTime updatedAt;
 //	パスワード更新日時
 	private LocalDateTime passwordUpdatedAt;
+	
+	public Employee getEmployeeIdAndName() {
+		Employee idAndName=new Employee();
+		idAndName.setEmployeeId(this.getEmployeeId());
+		idAndName.setName(this.getName());
+		return idAndName;
+	}
 }

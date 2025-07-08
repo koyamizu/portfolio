@@ -20,6 +20,8 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
 import com.example.webapp.test_data.EmployeeTestData;
 import com.example.webapp.test_data.ShiftManagementTestData;
+import com.example.webapp.test_data.employee.EMPLOYEE;
+import com.example.webapp.test_data.shift_schedule.HogeShift;
 
 @MybatisTest
 @Sql("ShiftManagementMapperTest.sql")
@@ -29,21 +31,19 @@ public class ShiftManagementMapperTest {
 	@Autowired
 	private ShiftManagementMapper mapper;
 	@Autowired
-	JdbcTemplate jdbcTemplate;
-	private ShiftManagementTestData data=new ShiftManagementTestData();
-	
+	JdbcTemplate jdbcTemplate;	
 	@Test
 	void test_selectThreeMonthByTargetMonth() {
-		List<FullCalendarEntity> expecteds=data.getAllSchedules();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getAllSchedules();
 		List<FullCalendarEntity> actuals=mapper.selectThreeMonthByTargetMonth(5);
 
-		FullCalendarEntity confirm=data.getHogeSchedule0401();
+		FullCalendarEntity confirm=new HogeShift(2025,4,1);
 		assertThat(actuals.size()).isEqualTo(expecteds.size());
 		assertThat(actuals).contains(confirm);
 	}
 	@Test
 	void test_selectOneMonthByTargetMonth() {
-		List<FullCalendarEntity> expecteds=data.getAprilSchedules();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getAprilSchedules();
 		List<FullCalendarEntity> actuals=mapper.selectOneMonthByTargetMonth(4);
 		assertThat(actuals.size()).isEqualTo(expecteds.size());
 		assertThat(actuals).containsExactlyInAnyOrderElementsOf(expecteds);
@@ -53,7 +53,7 @@ public class ShiftManagementMapperTest {
 	void test_selectRequestByEmployeeId() {
 //		selectRequestByEmployeeIdはnameは抽出しない。FullCalendarの表示に不要なため。
 //		getAllHogeRequestsOnlyEmployeeId内でexpectedsのnameフィールドをnullにしている
-		List<FullCalendarEntity> expecteds=data.getAllHogeRequestsOnlyEmployeeId();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getAllHogeRequests();
 		List<FullCalendarEntity> actuals=mapper.selectRequestByEmployeeId(1001);
 		assertThat(actuals.size()).isEqualTo(expecteds.size());
 		assertThat(actuals).containsAll(expecteds);
@@ -62,7 +62,7 @@ public class ShiftManagementMapperTest {
 	
 	@Test
 	void test_selectAllRequests() {
-		List<FullCalendarEntity> expecteds=data.getAllRequests();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getAllRequests();
 		List<FullCalendarEntity> actuals=mapper.selectAllRequests();
 		assertThat(actuals.size()).isEqualTo(expecteds.size());
 		assertThat(actuals).containsExactlyInAnyOrderElementsOf(expecteds);
@@ -70,8 +70,7 @@ public class ShiftManagementMapperTest {
 	
 	@Test
 	void test_selectNotSubmit() {
-		var factory=new EmployeeTestData();
-		Employee piyo=factory.getExistingEmployeePiyo();
+		Employee piyo=EmployeeTestData.getEmployee(EMPLOYEE.piyo);
 		List<Employee> actuals=mapper.selectNotSubmit();
 		assertThat(actuals.size()).isEqualTo(1);
 		assertThat(actuals).extracting(Employee::getEmployeeId).contains(piyo.getEmployeeId());
@@ -80,7 +79,7 @@ public class ShiftManagementMapperTest {
 
 	@Test
 	void test_insertRequest() {
-		List<FullCalendarEntity> expecteds=data.getPiyoRequests();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getPiyoRequests();
 		mapper.insertRequest(expecteds);
 		String query="SELECT employee_id,date "
 				+ "FROM shift_requests AS r INNER JOIN employees AS e ON r.employee_id=e.id "
@@ -95,13 +94,13 @@ public class ShiftManagementMapperTest {
 	
 	@Test
 	void test_insertRequest_invalid() {
-		List<FullCalendarEntity> insertData=data.getDuplicatedPiyoRequests();
+		List<FullCalendarEntity> insertData=ShiftManagementTestData.getDuplicatedPiyoRequests();
 		assertThrows(DataIntegrityViolationException.class, ()->mapper.insertRequest(insertData)) ;
 	}
 	
 	@Test
 	void test_insertShift() {
-		List<FullCalendarEntity> expecteds=data.getNextMonthScheduleToInsert();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getNextMonthScheduleToInsert();
 		mapper.insertShift(expecteds);
 		String query="SELECT employee_id,date "
 				+ "FROM shift_schedules AS s INNER JOIN employees AS e ON s.employee_id=e.id "
@@ -118,7 +117,7 @@ public class ShiftManagementMapperTest {
 	
 	@Test
 	void test_insertShift_invalid() {
-		List<FullCalendarEntity> insertData=data.getDuplicatedHogeScheduleToInsert();
+		List<FullCalendarEntity> insertData=ShiftManagementTestData.getDuplicatedHogeScheduleToInsert();
 		assertThrows(DataIntegrityViolationException.class, ()->mapper.insertShift(insertData)) ;
 	}
 	
@@ -128,9 +127,9 @@ public class ShiftManagementMapperTest {
 				+ "FROM shift_requests AS r INNER JOIN employees AS e ON r.employee_id=e.id "
 				+ "WHERE MONTH(date)=MONTH(CURRENT_DATE)+1 AND employee_id=?";
 		List<Map<String,Object>> before=jdbcTemplate.queryForList(query,1001);
-		assertThat(before).extracting(a->a.get("date")).contains(Date.valueOf(data.hogeRequestDateStringToDelete()));
+		assertThat(before).extracting(a->a.get("date")).contains(Date.valueOf(ShiftManagementTestData.hogeRequestDateStringToDelete()));
 		
-		List<FullCalendarEntity> updatedRequests=data.getUpdatedHogeRequests();
+		List<FullCalendarEntity> updatedRequests=ShiftManagementTestData.getUpdatedHogeRequests();
 		
 		mapper.deleteOldRequestByEmployeeId(updatedRequests, 1001);
 		List<Map<String,Object>> actuals=jdbcTemplate.queryForList(query,1001);
@@ -139,14 +138,14 @@ public class ShiftManagementMapperTest {
 	
 	@Test
 	void test_deleteOldShiftByMonth() {
-		List<FullCalendarEntity> expecteds=data.getAprilSchedules();
+		List<FullCalendarEntity> expecteds=ShiftManagementTestData.getAprilSchedules();
 		String query="SELECT employee_id,date "
 				+ "FROM shift_schedules AS s INNER JOIN employees AS e ON s.employee_id=e.id "
 				+ "WHERE MONTH(date)=?";
 		List<Map<String,Object>> before=jdbcTemplate.queryForList(query,4);
 		assertThat(before.size()).isEqualTo(expecteds.size());
 		
-		List<FullCalendarEntity> updatedSchedules=data.getUpdatedAprilSchedules();
+		List<FullCalendarEntity> updatedSchedules=ShiftManagementTestData.getUpdatedAprilSchedules();
 		
 		mapper.deleteOldShiftByMonth(updatedSchedules, 4);
 		List<Map<String,Object>> actuals=jdbcTemplate.queryForList(query,4);

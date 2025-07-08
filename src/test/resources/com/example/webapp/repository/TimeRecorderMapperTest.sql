@@ -13,5 +13,5 @@ INSERT INTO shift_schedules(id,employee_id,date,scheduled_start,scheduled_end)
 
 INSERT INTO time_records(employee_id,date,clock_in)
 VALUES
-(1001,CURRENT_DATE,'06:00:00')
+(1001,CURRENT_DATE,'05:50:50')
 ;

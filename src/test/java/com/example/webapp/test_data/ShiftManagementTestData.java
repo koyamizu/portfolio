@@ -1,146 +1,169 @@
 package com.example.webapp.test_data;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
-import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.FullCalendarEntity;
+import com.example.webapp.test_data.employee.EMPLOYEE;
+import com.example.webapp.test_data.shift_schedule.FugaShift;
+import com.example.webapp.test_data.shift_schedule.HogeShift;
+import com.example.webapp.test_data.shift_schedule.PiyoShift;
 
 public class ShiftManagementTestData {
 	
-	private FullCalendarEntity schedule_hoge_0401;
-	private FullCalendarEntity schedule_fuga_0401;
-	private FullCalendarEntity schedule_piyo_0401;
-	private FullCalendarEntity schedule_hoge_0501;
-	private FullCalendarEntity schedule_fuga_0501;
-	private FullCalendarEntity schedule_fuga_0511;
-	
-//	既存のrequest、または翌月のシフトとして使用
-	private FullCalendarEntity request_hoge_01;
-	private FullCalendarEntity request_hoge_15;
-	private FullCalendarEntity request_hoge_28;
-	private FullCalendarEntity request_fuga_10;
-	private FullCalendarEntity request_fuga_20;
-	
-	//request挿入用
-	private FullCalendarEntity request_piyo_01;
-	private FullCalendarEntity request_piyo_15;
-	
-	LocalDate todayOfNextMonth=LocalDate.now().plusMonths(1);
-	LocalDate firstDayOfNextMonth=LocalDate.of(todayOfNextMonth.getYear(),todayOfNextMonth.getMonthValue(),1);
-	
-	public ShiftManagementTestData() {
-		var factory=new EmployeeTestData();
-		List<Employee> e=factory.getAllEmployeeIdAndName();
-		schedule_hoge_0401=new FullCalendarEntity(1,e.get(0),LocalDate.of(2025,4,1),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		schedule_fuga_0401=new FullCalendarEntity(2,e.get(1),LocalDate.of(2025,4,1),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		schedule_piyo_0401=new FullCalendarEntity(3,e.get(2),LocalDate.of(2025,4,1),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		schedule_hoge_0501=new FullCalendarEntity(4,e.get(0),LocalDate.of(2025,5,1),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		schedule_fuga_0501=new FullCalendarEntity(5,e.get(1),LocalDate.of(2025,5,1),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		schedule_fuga_0511=new FullCalendarEntity(6,e.get(1),LocalDate.of(2025,5,11),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		
-		request_hoge_01=new FullCalendarEntity(1,e.get(0),firstDayOfNextMonth,LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		request_hoge_15=new FullCalendarEntity(2,e.get(0),firstDayOfNextMonth.plusDays(14),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		request_hoge_28=new FullCalendarEntity(3,e.get(0),firstDayOfNextMonth.plusDays(27),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		request_fuga_10=new FullCalendarEntity(4,e.get(1),firstDayOfNextMonth.plusDays(9),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		request_fuga_20=new FullCalendarEntity(5,e.get(1),firstDayOfNextMonth.plusDays(19),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		
-		request_piyo_01=new FullCalendarEntity(6,e.get(2),firstDayOfNextMonth,LocalTime.of(6,0,0),LocalTime.of(9,0,0));
-		request_piyo_15=new FullCalendarEntity(7,e.get(2),firstDayOfNextMonth.plusDays(14),LocalTime.of(6,0,0),LocalTime.of(9,0,0));
+	private static LocalDate getNextMonthDate() {
+	    return LocalDate.now().plusMonths(1);
+	}
+
+	private static int getNextMonthYear() {
+	    return getNextMonthDate().getYear();
+	}
+
+	private static int getNextMonthValue() {
+	    return getNextMonthDate().getMonthValue();
 	}
 	
-	public FullCalendarEntity getHogeSchedule0401() {
-		return schedule_hoge_0401;
+	public static FullCalendarEntity getAnyEmployeeSchedule(EMPLOYEE name,Integer month,Integer date) {
+		switch (name) {
+		case EMPLOYEE.hoge:
+			return new HogeShift(month,date);
+		case EMPLOYEE.fuga:
+			return new FugaShift(month,date);
+		case EMPLOYEE.piyo:
+			return new PiyoShift(month,date);
+		default:
+			break;
+		}
+		return null;
 	}
 	
-	public List<FullCalendarEntity> getAllSchedules(){
+	public static FullCalendarEntity getAnyEmployeeRequest(EMPLOYEE name,Integer year,Integer month,Integer date) {
+		switch (name) {
+		case EMPLOYEE.hoge:
+			return new HogeShift(year,month,date);
+		case EMPLOYEE.fuga:
+			return new FugaShift(year,month,date);
+		case EMPLOYEE.piyo:
+			return new PiyoShift(year,month,date);
+		default:
+			break;
+		}
+		return null;
+	}
+	
+//	getAnyEmployeeRequestと内容は一緒だが、「シフト希望」と「確定シフト」は意味が違うので分けている
+	public static FullCalendarEntity getAnyEmployeeNextMonthSchedule(EMPLOYEE name,Integer year,Integer month,Integer date) {
+		switch (name) {
+		case EMPLOYEE.hoge:
+			return new HogeShift(year,month,date);
+		case EMPLOYEE.fuga:
+			return new FugaShift(year,month,date);
+		case EMPLOYEE.piyo:
+			return new PiyoShift(year,month,date);
+		default:
+			break;
+		}
+		return null;
+	}
+
+	public static List<FullCalendarEntity> getAllSchedules(){
 		return List.of(
-				schedule_hoge_0401
-				,schedule_fuga_0401
-				,schedule_hoge_0501
-				,schedule_piyo_0401
-				,schedule_fuga_0501
-				,schedule_fuga_0511
+				new HogeShift(4,1)
+				,new FugaShift(4,1)
+				,new HogeShift(5,1)
+				,new PiyoShift(4,1)
+				,new FugaShift(5,1)
+				,new FugaShift(5,11)
 				);
 	}
 	
-	public List<FullCalendarEntity> getAprilSchedules(){
+	public static List<FullCalendarEntity> getAprilSchedules(){
 		return List.of(
-				schedule_hoge_0401
-				,schedule_fuga_0401
-				,schedule_piyo_0401
+				new HogeShift(4,1)
+				,new FugaShift(4,1)
+				,new PiyoShift(4,1)
 				);
 	}
 	
-	public List<FullCalendarEntity> getAllHogeRequestsOnlyEmployeeId(){
-		var hogeOnlyId=new Employee();
-		hogeOnlyId.setEmployeeId(1001);
-		request_hoge_01.setEmployee(hogeOnlyId);
-		request_hoge_15.setEmployee(hogeOnlyId);
-		request_hoge_28.setEmployee(hogeOnlyId);
+	public static List<FullCalendarEntity> getAllHogeRequests(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_hoge_01
-				,request_hoge_15
-				,request_hoge_28
+				new HogeShift(year,month,1)
+				,new HogeShift(year,month,15)
+				,new HogeShift(year,month,28)
 				);
 	}
 	
-	public List<FullCalendarEntity> getAllRequests(){
+	public static List<FullCalendarEntity> getAllRequests(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_hoge_01
-				,request_hoge_15
-				,request_hoge_28
-				,request_fuga_10
-				,request_fuga_20
+				new HogeShift(year,month,1)
+				,new HogeShift(year,month,15)
+				,new HogeShift(year,month,28)
+				,new FugaShift(year,month,10)
+				,new FugaShift(year,month,28)
 				);
 	}
 	
-	public List<FullCalendarEntity> getPiyoRequests(){
+	public static List<FullCalendarEntity> getPiyoRequests(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_piyo_01
-				,request_piyo_15
+				new PiyoShift(year,month,1)
+				,new PiyoShift(year,month,15)
 				);
 	}
 	
-	public List<FullCalendarEntity> getUpdatedHogeRequests(){
+	public static List<FullCalendarEntity> getUpdatedHogeRequests(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_hoge_01
-				,request_hoge_15
+				new HogeShift(year,month,1)
+				,new HogeShift(year,month,15)
 				);
 	}
 	
-	public List<FullCalendarEntity> getDuplicatedPiyoRequests(){
+	public static List<FullCalendarEntity> getDuplicatedPiyoRequests(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_piyo_01
-				,request_piyo_01
+				new PiyoShift(year,month,1)
+				,new PiyoShift(year,month,1)
 				);
 	}
 	
-	public List<FullCalendarEntity> getNextMonthScheduleToInsert(){
+	public static List<FullCalendarEntity> getNextMonthScheduleToInsert(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_hoge_01
-				,request_hoge_15
-				,request_fuga_10
+				new HogeShift(year,month,1)
+				,new HogeShift(year,month,15)
+				,new FugaShift(year,month,10)
 				);
 	}
 	
-	public List<FullCalendarEntity> getUpdatedAprilSchedules(){
+	public static List<FullCalendarEntity> getUpdatedAprilSchedules(){
 		return List.of(
-				schedule_hoge_0401
-				,schedule_fuga_0401
+				new HogeShift(4,1)
+				,new FugaShift(4,1)
 				);
 	}
 	
-	public List<FullCalendarEntity> getDuplicatedHogeScheduleToInsert(){
+	public static List<FullCalendarEntity> getDuplicatedHogeScheduleToInsert(){
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
 		return List.of(
-				request_hoge_01
-				,request_hoge_01
+				new HogeShift(year,month,1)
+				,new HogeShift(year,month,1)
 				);
 	}
 	
-	public String hogeRequestDateStringToDelete() {
-		return request_hoge_28.getStart().toString();
+	public static String hogeRequestDateStringToDelete() {
+		Integer year=getNextMonthYear();
+		Integer month=getNextMonthValue();
+		return LocalDate.of(year, month, 28).toString();
 	}
 	
 }

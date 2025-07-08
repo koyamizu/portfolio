@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.test_data.EmployeeTestData;
+import com.example.webapp.test_data.employee.EMPLOYEE;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +30,9 @@ public class EmployeesManagementMapperTest {
 	
 	private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
 	
-	private EmployeeTestData data=new EmployeeTestData();
-	
 	@Test
 	void test_selectById() {
-		Employee expected=data.getExistingEmployeeHoge();
+		Employee expected=EmployeeTestData.getEmployee(EMPLOYEE.hoge);
 		Employee actual=mapper.selectById(1001);
 		assertThat(actual.getEmployeeId()).isEqualTo(expected.getEmployeeId());
 		assertThat(encoder.matches(actual.getPassword(),expected.getPassword())).isTrue();
@@ -46,7 +45,7 @@ public class EmployeesManagementMapperTest {
 	
 	@Test
 	void test_selectAll() {
-		List<Employee> expecteds=data.getAllEmployees();
+		List<Employee> expecteds=EmployeeTestData.getAllEmployees();
 		List<Employee> actuals=mapper.selectAll();
 		
 		assertThat(actuals.size()).isEqualTo(expecteds.size());
@@ -62,7 +61,7 @@ public class EmployeesManagementMapperTest {
 	
 	@Test
 	void test_selectAllIdAndName() {
-		List<Employee> expecteds=data.getAllEmployeeIdAndName();
+		List<Employee> expecteds=EmployeeTestData.getAllEmployeeIdAndName();
 		List<Employee> actuals=mapper.selectAllIdAndName();
 		
 		assertThat(actuals.size()).isEqualTo(expecteds.size());
@@ -79,7 +78,7 @@ public class EmployeesManagementMapperTest {
 	
 	@Test
 	void test_insert() {
-		Employee foo=data.getNewEmployeeFoo();
+		Employee foo=EmployeeTestData.getEmployee(EMPLOYEE.foo);
 		mapper.insert(foo);
 		Employee confirm=mapper.selectById(foo.getEmployeeId());
 		assertThat(confirm.getPassword()).isEqualTo(foo.getPassword());
@@ -93,7 +92,7 @@ public class EmployeesManagementMapperTest {
 	//異常系。MySQLのデータ型の字数制限違反。いくつかあるが、今回はname VARCHAR(30)を検証
 	@Test
 	void test_insert_too_long_data(){
-		Employee foo=data.getNewEmployeeFoo();
+		Employee foo=EmployeeTestData.getEmployee(EMPLOYEE.foo);
 		foo.setName("foofoofoofoofoofoofoofoofoofoofoo");//33文字
 		assertThrows(DataIntegrityViolationException.class,()->mapper.insert(foo));
 	}

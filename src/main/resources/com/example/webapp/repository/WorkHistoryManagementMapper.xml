@@ -10,7 +10,7 @@
 		<result property="employeeName" column="employee_name" />
 		<result property="clockIn" column="clock_in"/>
 		<result property="clockOut" column="clock_out"/>
-		<result property="workTime" column="work_time"/>
+<!--		<result property="workTime" column="work_time"/>-->
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
 		<association property="absenceReason" javaType="com.example.webapp.entity.AbsenceReason">
@@ -26,7 +26,7 @@
 		  ,e.name AS employee_name
 		  ,t.clock_in
 		  ,t.clock_out
-		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+<!--		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time-->
           ,t.created_at
           ,t.updated_at
 		  ,CASE
@@ -62,7 +62,7 @@
 		  ,e.name AS employee_name
 		  ,t.clock_in
 		  ,t.clock_out
-		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time
+<!--		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time-->
 		  ,t.created_at
           ,t.updated_at
 		  ,CASE

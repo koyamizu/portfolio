@@ -90,6 +90,7 @@ public class AbsenceApplicationMapperTest {
 	void test_update() {
 		mapper.update(1, true);
 //		selectByApplicationId()の戻り値はisApproveを含まない
+		//jdbcTemplateに書き換える
 		List<AbsenceApplication> actuals=mapper.selectAll();
 		AbsenceApplication actual=actuals.stream().filter(a->a.getShiftSchedule().getShiftId().equals(1)).findFirst().orElse(null);
 		assertThat(actual.getIsApprove()).isEqualTo(true);

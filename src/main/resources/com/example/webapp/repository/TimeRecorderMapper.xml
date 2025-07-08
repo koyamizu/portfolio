@@ -15,7 +15,7 @@
 			javaType="com.example.webapp.entity.TimeRecord">
 			<result property="clockIn" column="clock_in"/>
 			<result property="clockOut" column="clock_out"/>
-			<result property="workTime" column="work_time"/>		
+<!--			<result property="workTime" column="work_time"/>		-->
 		</association>
 	</resultMap>
 
@@ -27,7 +27,6 @@
 		  ,e.name
 		  ,t.clock_in
 		  ,t.clock_out
-		  ,SUBTIME(t.clock_out,t.clock_in) AS work_time
 		FROM
 		  shift_schedules AS s
 		  LEFT JOIN time_records AS t
