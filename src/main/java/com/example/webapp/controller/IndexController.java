@@ -18,9 +18,7 @@ public class IndexController {
 		session.removeAttribute("from");
 		return "index";
 	}
-	
-	
-	
+
 	@GetMapping("admin")
 	public String showAdminMenu(HttpSession session) {
 		session.setAttribute("from","admin");

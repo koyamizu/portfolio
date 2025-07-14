@@ -113,7 +113,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 		try {
 			employeesManagementMapper.deleteById(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new EmployeeDataIntegrityViolationException("勤怠履歴の存在する従業員です", employeeId);
+			throw new EmployeeDataIntegrityViolationException("勤怠履歴やシフトデータの存在する従業員です", employeeId);
 		}
 	}
 

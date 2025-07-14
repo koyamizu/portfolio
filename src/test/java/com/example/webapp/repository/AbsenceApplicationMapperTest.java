@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
@@ -119,7 +120,14 @@ public class AbsenceApplicationMapperTest {
 		assertThat(actual.get("name")).isEqualTo(expected.getAbsenceReason().getName());
 		assertThat(actual.get("detail")).isEqualTo(expected.getDetail());
 	}
-	
+
+	@Test
+	void test_insert_invalid_because_shift_id_is_duplicated() {
+		AbsenceApplication expected=AbsenceApplicationTestDataGenerator.createAbsenceApplication(1, new AbsenceReason(1,"理由1"), "詳細1");
+		assertThrows(DataIntegrityViolationException.class,()->mapper.insert(expected));
+	}
+//	JdbcTemplateを用い、承認状況がnullの欠勤申請IDを抽出し、updateを実行。
+//	その後、そのIDを持つ欠勤申請の承認状況のみを抽出し、trueになっているか確認
 	@Test
 	void test_update() {
 		String isApproveIsNull="SELECT id FROM absence_applications WHERE is_approve is null;";

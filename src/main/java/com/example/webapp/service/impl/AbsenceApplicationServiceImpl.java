@@ -25,17 +25,18 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	private final AbsenceApplicationMapper absenceApplicationMapper;
 
 	@Override
-	public List<AbsenceApplication> get(String fromPage,Integer employeeId) throws InvalidAccessException {
+	public List<AbsenceApplication> get(String fromPage, Integer employeeId) throws InvalidAccessException {
 		if (fromPage.equals("admin")) {
 			return absenceApplicationMapper.selectAll();
 		}
-		if(fromPage.equals("user")) {
+		if (fromPage.equals("user")) {
 			return absenceApplicationMapper.selectAllByEmployeeId(employeeId);
 		}
 		throw new InvalidAccessException("遷移元ページが不明です");
 	}
+
 	@Override
-	public List<AbsenceApplication> getTodayApplications(){
+	public List<AbsenceApplication> getTodayApplications() {
 		return absenceApplicationMapper.selectTodayAndIsApproveEqualsNull();
 	}
 
@@ -48,22 +49,22 @@ public class AbsenceApplicationServiceImpl implements AbsenceApplicationService 
 	public void submitApplication(AbsenceApplicationForm form) throws DuplicateApplicationException {
 		AbsenceApplication application = AbsenceApplicationHelper.convertAbsenceApplication(form);
 		try {
-		absenceApplicationMapper.insert(application);
-		}catch(DataIntegrityViolationException e) {
+			absenceApplicationMapper.insert(application);
+		} catch (DataIntegrityViolationException e) {
 			throw new DuplicateApplicationException("すでに申請済みです");
 		}
 	}
 
 	@Override
 	public void updateApprove(Integer shiftId, Boolean decision) {
-			absenceApplicationMapper.update(shiftId, decision);
+		absenceApplicationMapper.update(shiftId, decision);
 	}
 
 	@Override
 	public void deleteApplication(Integer applicationId) throws InvalidEditException {
-		AbsenceApplication application=absenceApplicationMapper.selectByApplicationId(applicationId);
-		Boolean isPast=application.getShiftSchedule().getDate().isBefore(LocalDate.now());
-		if(isPast) {
+		AbsenceApplication application = absenceApplicationMapper.selectByApplicationId(applicationId);
+		Boolean isPast = application.getShiftSchedule().getDate().isBefore(LocalDate.now());
+		if (isPast) {
 			throw new InvalidEditException("過去の申請は削除できません");
 		}
 		absenceApplicationMapper.delete(applicationId);
