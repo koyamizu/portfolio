@@ -30,7 +30,7 @@
           ,t.created_at
           ,t.updated_at
 		  ,CASE
-		    WHEN t.clock_in IS NULL AND a.reason_id IS NULL THEN '不明'
+		    WHEN t.clock_in IS NULL AND a.reason_id IS NULL THEN '理由不明'
 		    WHEN t.clock_in IS NULL AND a.is_approve IS NULL THEN '承認忘れ'
 		    WHEN t.clock_in IS NULL AND a.is_approve=false THEN '未承認'
 		    WHEN t.clock_in IS NULL AND a.is_approve=true THEN ar.name	    
@@ -49,7 +49,7 @@
 	 	  ON a.reason_id=ar.id
 	 	WHERE
 	 	  MONTH(s.date)=#{targetMonth}
-<!--  	 	  AND s.date &lt; CURRENT_DATE  -->
+  	 	  AND s.date &lt; CURRENT_DATE  
 		ORDER BY s.date ASC
 		;
 	</select>

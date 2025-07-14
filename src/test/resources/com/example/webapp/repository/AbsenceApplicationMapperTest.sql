@@ -7,11 +7,12 @@ INSERT INTO employees (id,password, name, birth, tel, address, authority) VALUES
 INSERT INTO 
   `shift_schedules` (id,employee_id, date, scheduled_start, scheduled_end)
 VALUES
-  (1,1001,CURRENT_DATE,'06:00:00','09:00:00')
-  ,  (2,1002,CURRENT_DATE,'06:00:00','09:00:00')
-  ,  (3,1001,CURRENT_DATE+1,'06:00:00','09:00:00')
+  (1,1001,'2025-04-01','06:00:00','09:00:00')
+  ,  (2,1001,CURRENT_DATE,'06:00:00','09:00:00')
+  ,  (3,1002,CURRENT_DATE,'06:00:00','09:00:00')
+  ,  (4,1001,CURRENT_DATE+1,'06:00:00','09:00:00')
 --  新しい欠勤申請を出すために用意したシフト
-  ,  (4,1002,CURRENT_DATE+1,'06:00:00','09:00:00')
+  ,  (5,1002,CURRENT_DATE+1,'06:00:00','09:00:00')
 ;
 
 INSERT INTO `absence_reasons` (id,name) VALUES
@@ -22,7 +23,8 @@ INSERT INTO `absence_reasons` (id,name) VALUES
 
 INSERT INTO absence_applications (id,shift_id, reason_id, detail, is_approve)
 VALUES
-	(1,1,1,"詳細1",null)
+	(1,1,1,"詳細1",true)
 	,(2,2,2,"詳細2",true)
-	,(3,3,3,"詳細3",false)
+	,(3,3,2,"詳細3",null)
+	,(4,4,3,"詳細4",false)
 ;

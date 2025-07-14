@@ -9,7 +9,7 @@ import com.example.webapp.test_data.shift_schedule.FugaShift;
 import com.example.webapp.test_data.shift_schedule.HogeShift;
 import com.example.webapp.test_data.shift_schedule.PiyoShift;
 
-public class ShiftManagementTestData {
+public class ShiftManagementTestDataGenerator {
 	
 	private static LocalDate getNextMonthDate() {
 	    return LocalDate.now().plusMonths(1);
@@ -51,8 +51,9 @@ public class ShiftManagementTestData {
 		return null;
 	}
 	
-//	getAnyEmployeeRequestと内容は一緒だが、「シフト希望」と「確定シフト」は意味が違うので分けている
-	public static FullCalendarEntity getAnyEmployeeNextMonthSchedule(EMPLOYEE name,Integer year,Integer month,Integer date) {
+	public static FullCalendarEntity getAnyEmployeeNextMonthSchedule(EMPLOYEE name,Integer date) {
+		int year=getNextMonthYear();
+		int month=getNextMonthValue();
 		switch (name) {
 		case EMPLOYEE.hoge:
 			return new HogeShift(year,month,date);
@@ -107,7 +108,7 @@ public class ShiftManagementTestData {
 				);
 	}
 	
-	public static List<FullCalendarEntity> getPiyoRequests(){
+	public static List<FullCalendarEntity> getAllPiyoRequests(){
 		Integer year=getNextMonthYear();
 		Integer month=getNextMonthValue();
 		return List.of(
@@ -116,7 +117,7 @@ public class ShiftManagementTestData {
 				);
 	}
 	
-	public static List<FullCalendarEntity> getUpdatedHogeRequests(){
+	public static List<FullCalendarEntity> getLatestVersionHogeRequests(){
 		Integer year=getNextMonthYear();
 		Integer month=getNextMonthValue();
 		return List.of(
@@ -147,11 +148,11 @@ public class ShiftManagementTestData {
 	public static List<FullCalendarEntity> getUpdatedAprilSchedules(){
 		return List.of(
 				new HogeShift(4,1)
-				,new FugaShift(4,1)
+				,new FugaShift(4,15)
 				);
 	}
 	
-	public static List<FullCalendarEntity> getDuplicatedHogeScheduleToInsert(){
+	public static List<FullCalendarEntity> getDuplicatedHogeNextMonthScheduleToInsert(){
 		Integer year=getNextMonthYear();
 		Integer month=getNextMonthValue();
 		return List.of(

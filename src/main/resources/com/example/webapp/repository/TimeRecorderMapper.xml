@@ -20,7 +20,7 @@
 	</resultMap>
 
 	<!--当日出勤者選択 -->
-	<select id="selectByDate"
+	<select id="selectToday"
 		resultMap="ShiftWithEmployeeAndTimeRecordResult">
 		SELECT
 		  s.employee_id
@@ -35,23 +35,24 @@
 		  INNER JOIN employees AS e
  		  ON s.employee_id = e.id		  
 		WHERE
-		  s.date = #{date}
+		  s.date = CURRENT_DATE
 		;
 	</select>
-	<!-- シフトデータの抽出 -->
-	<select id="selectAMenberOfTodayEmployeesByEmployeeId">
-		SELECT
-		  s.employee_id as employeeId
-		  ,e.name 
-		FROM
-		  employees AS e
-		  INNER JOIN shift_schedules AS s
-		  ON e.id = s.employee_id
-		WHERE
-		  employee_id = #{employeeId}
-		  AND date = CURRENT_DATE
-		;
-	</select>
+<!--	消した？-->
+<!--	 シフトデータの抽出 -->
+<!--	<select id="selectAMenberOfTodayEmployeesByEmployeeId">-->
+<!--		SELECT-->
+<!--		  s.employee_id as employeeId-->
+<!--		  ,e.name -->
+<!--		FROM-->
+<!--		  employees AS e-->
+<!--		  INNER JOIN shift_schedules AS s-->
+<!--		  ON e.id = s.employee_id-->
+<!--		WHERE-->
+<!--		  employee_id = #{employeeId}-->
+<!--		  AND date = CURRENT_DATE-->
+<!--		;-->
+<!--	</select>-->
 <!--打刻データの抽出-->
 	<select id="selectTodayTimeRecordByEmployeeId">
 		SELECT

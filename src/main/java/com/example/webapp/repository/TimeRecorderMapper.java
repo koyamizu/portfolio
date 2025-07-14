@@ -1,6 +1,5 @@
 package com.example.webapp.repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +12,7 @@ import com.example.webapp.entity.TimeRecord;
 @Repository
 public interface TimeRecorderMapper {
 
-	List<ShiftSchedule> selectByDate(LocalDate date);
+	List<ShiftSchedule> selectToday();
 	
 	TimeRecord selectTodayTimeRecordByEmployeeId(Integer employeeId);
 

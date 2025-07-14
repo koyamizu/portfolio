@@ -1,6 +1,5 @@
 package com.example.webapp.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
@@ -29,9 +28,9 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	private final TimeRecorderMapper timeRecorderMapper;
 
 	@Override
-	public List<ShiftSchedule> getEmployeeWithClockTime(LocalDate date) throws NoDataException {
+	public List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataException {
 
-		List<ShiftSchedule> todayEmployeeList = timeRecorderMapper.selectByDate(date);
+		List<ShiftSchedule> todayEmployeeList = timeRecorderMapper.selectToday();
 
 		if (CollectionUtils.isEmpty(todayEmployeeList)) {
 //			TimeRecorderMapper.xmlに問題があるのでBadSqlGrammarExceptionを投げる

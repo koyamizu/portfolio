@@ -1,6 +1,5 @@
 package com.example.webapp.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.example.webapp.entity.Employee;
@@ -11,7 +10,7 @@ import com.example.webapp.exception.NoDataException;
 
 public interface TimeRecorderService {
 	
-	List<ShiftSchedule> getEmployeeWithClockTime(LocalDate date) throws NoDataException;
+	List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataException;
 
 	Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId) throws NoDataException;
 

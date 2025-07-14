@@ -1,5 +1,6 @@
 package com.example.webapp.service.impl;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,10 +10,11 @@ import org.springframework.util.CollectionUtils;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityException;
-import com.example.webapp.exception.ForeignKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
+import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
@@ -20,6 +22,7 @@ import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.EmployeesManagementService;
 import com.google.common.base.Objects;
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,13 +31,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmployeesManagementServiceImpl implements EmployeesManagementService {
 
-	private final EmployeesManagementMapper employeeManagementMapper;
+	private final EmployeesManagementMapper employeesManagementMapper;
 	private final WorkHistoryManagementMapper workHistoryManagementMapper;
 	private final ShiftManagementMapper shiftManagementMapper;
 
 	@Override
 	public List<Employee> getAllEmployees() throws NoDataException {
-		List<Employee> allEmployees = employeeManagementMapper.selectAll();
+		List<Employee> allEmployees = employeesManagementMapper.selectAll();
 
 		if (CollectionUtils.isEmpty(allEmployees)) {
 			throw new NoDataException("従業員一覧が取得できませんでした。");
@@ -44,7 +47,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException {
-		Employee employee = employeeManagementMapper.selectById(employeeId);
+		Employee employee = employeesManagementMapper.selectById(employeeId);
 		if (Objects.equal(employee, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
@@ -53,7 +56,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public EmployeeForm getEmployeeForm(Integer employeeId) throws InvalidEmployeeIdException {
-		Employee target = employeeManagementMapper.selectById(employeeId);
+		Employee target = employeesManagementMapper.selectById(employeeId);
 		if (Objects.equal(target, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
@@ -63,66 +66,71 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public List<Employee> getAllEmployeeIdAndName() {
-		return employeeManagementMapper.selectAllIdAndName();
+		return employeesManagementMapper.selectAllIdAndName();
 	}
 
 	@Override
 	public Integer getEmployeeIdByName(String name) {
-		return employeeManagementMapper.selectIdByName(name);
+		return employeesManagementMapper.selectIdByName(name);
 	}
 
 	@Override
-	public void insertEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException {
+	public void insertEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException, TooLongDataException {
 		Employee employee = EmployeeHelper.convertEmployee(employeeForm);
 		try {
-			employeeManagementMapper.insert(employee);
+			employeesManagementMapper.insert(employee);
 		} catch (DataIntegrityViolationException e) {
-			throw new DuplicateEmployeeException("従業員名が重複しています");
+			if (e.getCause().getClass().equals(SQLIntegrityConstraintViolationException.class)) {
+				throw new DuplicateEmployeeException("従業員名が重複しています");
+			}
+			if (e.getCause().getClass().equals(MysqlDataTruncation.class)) {
+				throw new TooLongDataException(e.getCause().getMessage());
+			}
 		}
 	}
 
 	@Override
-	public void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException {
+	public void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException, TooLongDataException {
 		Employee employee = EmployeeHelper.convertEmployee(employeeForm);
 		try {
-			employeeManagementMapper.update(employee);
+			employeesManagementMapper.update(employee);
 		} catch (DataIntegrityViolationException e) {
-			throw new DuplicateEmployeeException("従業員名が重複しています");
+			if (e.getCause().getClass().equals(SQLIntegrityConstraintViolationException.class)) {
+				throw new DuplicateEmployeeException("従業員名が重複しています");
+			}
+			if (e.getCause().getClass().equals(MysqlDataTruncation.class)) {
+				throw new TooLongDataException(e.getCause().getMessage());
+			}
 		}
 	}
 
 	@Override
-	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, EmployeeDataIntegrityException {
-		Employee target = employeeManagementMapper.selectById(employeeId);
+	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
+		Employee target = employeesManagementMapper.selectById(employeeId);
 		if (Objects.equal(target, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
 		}
 		try {
-			employeeManagementMapper.deleteById(employeeId);
+			employeesManagementMapper.deleteById(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new EmployeeDataIntegrityException("勤怠履歴の存在する従業員です", employeeId);
+			throw new EmployeeDataIntegrityViolationException("勤怠履歴の存在する従業員です", employeeId);
 		}
 	}
 
 	@Transactional
 	@Override
 	public void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId)
-			throws ForeignKeyViolationException {
-		employeeManagementMapper.setForeignKeyChecksOff();
+			throws ForeignKeyConstraintViolationException {
+		//外部キー制約違反はdeleteAllShiftSchdulesByEmployeeIdのみで起こりうる
+		employeesManagementMapper.setForeignKeyChecksOff();
 		try {
 			workHistoryManagementMapper.deleteAllTimeRecords(employeeId);
+			shiftManagementMapper.deleteAllShiftSchedulesByEmployeeId(employeeId);
+			shiftManagementMapper.deleteAllShiftRequestsByEmployeeId(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new ForeignKeyViolationException("Happened in deleteTimeRecords:"+e.getMessage());
-		}try {
-			shiftManagementMapper.deleteAllShiftSchedules(employeeId);
-		} catch (DataIntegrityViolationException e) {
-			throw new ForeignKeyViolationException("Happened in deleteShiftSchedules:"+e.getMessage());
-		}try {
-			shiftManagementMapper.deleteAllShiftRequests(employeeId);
-		} catch (DataIntegrityViolationException e) {
-			throw new ForeignKeyViolationException("Happened in deleteShiftRequests:"+e.getMessage());
+			throw new ForeignKeyConstraintViolationException("外部キー制約違反でシフトが削除できませんでした:" + e.getMessage());
 		} finally {
-			employeeManagementMapper.setForeignKeyChecksOn();
+			employeesManagementMapper.setForeignKeyChecksOn();
 		}
 	}
 }

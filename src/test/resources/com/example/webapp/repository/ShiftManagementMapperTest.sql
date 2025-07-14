@@ -17,6 +17,12 @@ VALUES
   ,(6,1002,'2025-05-11','06:00:00','09:00:00')  
 ;
 
+INSERT INTO
+  time_records(employee_id,date,clock_in,clock_out,created_at,updated_at)
+VALUES
+  (1001,'2025-05-01','05:59:59','09:01:01','2025-01-01 00:00:00','2025-12-31 00:00:00')
+;
+
 --MAKEDATE(YEAR(CURRENT_DATE),DAYOFYEAR(LAST_DAY(CURRENT_DATE))+1)は今月の最終日をDATE型で作成している。
 --そこから1日以上28日以下の日付を足していくことで、「翌月のシフト希望」になるようにしている。
 --↓クエリに「AND MONTH(date)=MONTH(CURRENT_DATE)+1」という条件があるため、このような操作をしている。

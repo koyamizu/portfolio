@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.example.webapp.entity.ShiftSchedule;
-import com.example.webapp.test_data.employee.Fuga;
+import com.example.webapp.test_data.employee.FugaEmployeeIdAndName;
 
 public class FugaTimeRecorderTable extends ShiftSchedule{
 	
@@ -15,7 +15,7 @@ public class FugaTimeRecorderTable extends ShiftSchedule{
 				,LocalTime.of(6,0,0)
 				,LocalTime.of(9,0,0)
 				,null
-				,new Fuga().getEmployeeIdAndName()
+				,new FugaEmployeeIdAndName()
 				,null
 				);
 	}
@@ -27,7 +27,7 @@ public class FugaTimeRecorderTable extends ShiftSchedule{
 				,LocalTime.of(6,0,0)
 				,LocalTime.of(9,0,0)
 				,null
-				,new Fuga().getEmployeeIdAndName()
+				,new FugaEmployeeIdAndName()
 				,new ClockTime(hour, minute,second)
 				);
 	}

@@ -7,7 +7,7 @@ import com.example.webapp.entity.AbsenceReason;
 import lombok.Data;
 
 @Data
-public class AbsenceReasonData {
+public class AbsenceReasonTestDataGenerator {
 	
 	public static List<AbsenceReason> getAllReasons(){
 		return List.of(new AbsenceReason(1,"理由1")

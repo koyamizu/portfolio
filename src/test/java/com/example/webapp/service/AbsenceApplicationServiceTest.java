@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.example.webapp.common.AbsenceApplicationTestData;
+import com.example.webapp.configuration.AbsenceApplicationTestData;
 import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.exception.InvalidAccessException;
 import com.example.webapp.repository.AbsenceApplicationMapper;

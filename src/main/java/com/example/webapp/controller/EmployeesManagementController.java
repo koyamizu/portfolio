@@ -18,10 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityException;
-import com.example.webapp.exception.ForeignKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
+import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.form.PasswordForm;
 import com.example.webapp.service.EmployeesManagementService;
@@ -51,7 +52,7 @@ public class EmployeesManagementController {
 	
 	@PostMapping("register")
 	public String updatePassword(@Validated PasswordForm passwordForm, BindingResult bindingResult,
-			RedirectAttributes attributes,HttpSession session) throws DuplicateEmployeeException {
+			RedirectAttributes attributes,HttpSession session) throws DuplicateEmployeeException, TooLongDataException {
 		if (bindingResult.hasErrors()) {
 			return "password/form";
 		}
@@ -74,7 +75,7 @@ public class EmployeesManagementController {
 
 	@PostMapping("update")
 	public String updateEmployee(@Validated EmployeeForm form, BindingResult bindingResult,
-			RedirectAttributes attributes) throws DuplicateEmployeeException {
+			RedirectAttributes attributes) throws DuplicateEmployeeException, TooLongDataException {
 		if (bindingResult.hasErrors()) {
 			return "employees/form";
 		}
@@ -84,7 +85,7 @@ public class EmployeesManagementController {
 	}
 
 	@GetMapping("delete/{employee-id}")
-	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes) throws InvalidEmployeeIdException, EmployeeDataIntegrityException {
+	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes) throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
 		service.deleteEmployee(employeeId);
 		attributes.addFlashAttribute("message",
 				"従業員ID:" + employeeId+" の従業員情報が削除されました");
@@ -92,7 +93,7 @@ public class EmployeesManagementController {
 	}
 	
 	@PostMapping("all-erase")
-	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId) throws ForeignKeyViolationException {
+	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId) throws ForeignKeyConstraintViolationException {
 		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(employeeId);
 		return "redirect:/employees/delete/"+employeeId;
 	}
@@ -110,10 +111,17 @@ public class EmployeesManagementController {
 		return "redirect:/employees";
 	}
 	
-	@ExceptionHandler(EmployeeDataIntegrityException.class)
-	public String confirmAllErase(EmployeeDataIntegrityException e, RedirectAttributes attributes) {
+	@ExceptionHandler(EmployeeDataIntegrityViolationException.class)
+	public String confirmAllErase(EmployeeDataIntegrityViolationException e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("confirmMessage", e.getMessage()+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？（この操作は取り消せません）");
 		attributes.addFlashAttribute("targetEmployeeId", e.getEmployeeId());
+		return "redirect:/employees";
+	}
+	
+	@ExceptionHandler(TooLongDataException.class)
+	public String showOriginOfTooLongDataException(Exception e, RedirectAttributes attributes) {
+		//TODO 原因を抜き出すロジック
+		attributes.addFlashAttribute("errorMessage", e.getMessage());
 		return "redirect:/employees";
 	}
 }

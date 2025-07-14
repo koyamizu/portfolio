@@ -1,13 +1,16 @@
 package com.example.webapp.test_data;
 
+import java.util.List;
+
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.test_data.employee.EMPLOYEE;
 import com.example.webapp.test_data.time_recorder_table.FugaTimeRecorderTable;
 import com.example.webapp.test_data.time_recorder_table.HogeTimeRecorderTable;
 import com.example.webapp.test_data.time_recorder_table.PiyoTimeRecorderTable;
 
-public class TimeRecordTestData {
+public class TimeRecorderTestDataGenerator {
 	
+	//いらないかも
 	public static ShiftSchedule getAnyEmployeeTimeRecorderTable(EMPLOYEE name) {
 		switch (name) {
 		case EMPLOYEE.hoge:
@@ -21,7 +24,7 @@ public class TimeRecordTestData {
 		}
 		return null;
 	}
-	
+	//いらないかも
 	public static ShiftSchedule getAnyEmployeeTimeRecorderTable(EMPLOYEE name,Integer hour,Integer minute,Integer second) {
 		switch (name) {
 		case EMPLOYEE.hoge:
@@ -34,5 +37,9 @@ public class TimeRecordTestData {
 			break;
 		}
 		return null;
+	}
+	
+	public static List<ShiftSchedule> getAllTimeRecorderTable() {
+		return List.of(new HogeTimeRecorderTable(),new FugaTimeRecorderTable(),new PiyoTimeRecorderTable());
 	}
 }

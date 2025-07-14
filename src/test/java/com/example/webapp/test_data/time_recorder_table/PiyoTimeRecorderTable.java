@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.example.webapp.entity.ShiftSchedule;
-import com.example.webapp.test_data.employee.Piyo;
+import com.example.webapp.test_data.employee.PiyoEmployeeIdAndName;
 
 public class PiyoTimeRecorderTable extends ShiftSchedule{
 	
@@ -15,7 +15,7 @@ public class PiyoTimeRecorderTable extends ShiftSchedule{
 				,LocalTime.of(6,0,0)
 				,LocalTime.of(9,0,0)
 				,null
-				,new Piyo().getEmployeeIdAndName()
+				,new PiyoEmployeeIdAndName()
 				,null
 				);
 	}
@@ -27,7 +27,7 @@ public class PiyoTimeRecorderTable extends ShiftSchedule{
 				,LocalTime.of(6,0,0)
 				,LocalTime.of(9,0,0)
 				,null
-				,new Piyo().getEmployeeIdAndName()
+				,new PiyoEmployeeIdAndName()
 				,new ClockTime(hour, minute,second)
 				);
 	}

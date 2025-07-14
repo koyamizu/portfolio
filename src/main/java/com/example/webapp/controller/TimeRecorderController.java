@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,7 +26,6 @@ import com.example.webapp.helper.Caster;
 import com.example.webapp.service.AbsenceApplicationService;
 import com.example.webapp.service.TimeRecorderService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -41,7 +42,7 @@ public class TimeRecorderController {
 
 		List<AbsenceApplication> todayAbsences = Caster
 				.castToAbsenceApplicationList(session.getAttribute("todayAbsences"));
-		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime(today);
+		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime();
 
 		//		当日欠勤者がセッションに保存されていないとき(ホームからタイムレコーダーに推移してきたとき)
 		if (Objects.equals(null, todayAbsences)) {
@@ -57,7 +58,7 @@ public class TimeRecorderController {
 	@PostMapping("/record")
 	public String showRecordPage(@RequestParam("employee-id") Integer employeeId, Model model,
 			RedirectAttributes attributes) throws NoDataException {
-		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime(today);
+		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime();
 		Employee targetEmployee = timeRecorderService.getEmployeeToClock(todayMembersWithClockTime, employeeId);
 		model.addAttribute("employee", targetEmployee);
 		model.addAttribute("today", today);

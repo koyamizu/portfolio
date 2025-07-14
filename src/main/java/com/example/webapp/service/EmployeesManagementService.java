@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityException;
-import com.example.webapp.exception.ForeignKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
+import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 
 public interface EmployeesManagementService {
@@ -21,11 +22,11 @@ public interface EmployeesManagementService {
 	
 	Integer getEmployeeIdByName(String name);
 	
-	void insertEmployee(EmployeeForm newEmployee) throws DuplicateEmployeeException;
+	void insertEmployee(EmployeeForm newEmployee) throws DuplicateEmployeeException, TooLongDataException;
 	
-	void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException;
+	void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException, TooLongDataException;
 	
-	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException,EmployeeDataIntegrityException;
+	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException,EmployeeDataIntegrityViolationException;
 
-	void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId) throws ForeignKeyViolationException;
+	void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId) throws ForeignKeyConstraintViolationException;
 }

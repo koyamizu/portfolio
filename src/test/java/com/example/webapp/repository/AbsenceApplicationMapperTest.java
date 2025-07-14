@@ -1,20 +1,26 @@
 package com.example.webapp.repository;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp.entity.AbsenceApplication;
 import com.example.webapp.entity.AbsenceReason;
-import com.example.webapp.entity.ShiftSchedule;
+import com.example.webapp.test_data.AbsenceApplicationTestDataGenerator;
+import com.example.webapp.test_data.AbsenceReasonTestDataGenerator;
+import com.example.webapp.test_data.employee.EMPLOYEE;
 
 @MybatisTest
 @Sql("AbsenceApplicationMapperTest.sql")
@@ -24,88 +30,112 @@ public class AbsenceApplicationMapperTest {
 	
 	@Autowired
 	private AbsenceApplicationMapper mapper;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	
 	@Test
 	void test_selectAll() {
+		List<AbsenceApplication> expecteds=AbsenceApplicationTestDataGenerator.getAllApplication();
 		 List<AbsenceApplication> actuals=mapper.selectAll();
-		 assertThat(actuals.size()).isEqualTo(3);
+		 assertThat(actuals.size()).isEqualTo(expecteds.size());
+		 for(int cnt=0;cnt<actuals.size();cnt++) {
+			 assertThat(actuals).extracting(a->a.getEmployee().getName()).contains(expecteds.get(cnt).getEmployee().getName());
+			 assertThat(actuals).extracting(a->a.getAbsenceReason().getName()).contains(expecteds.get(cnt).getAbsenceReason().getName());
+			 assertThat(actuals).extracting(AbsenceApplication::getDetail).contains(expecteds.get(cnt).getDetail());
+		 }
 	}
 	
 	@Test
-	void test_selectAllByEmployeeId() {
+	void test_selectAllByEmployeeId() {		
+		List<AbsenceApplication> expecteds=AbsenceApplicationTestDataGenerator.getAllHogeApplication();
 		List<AbsenceApplication> actuals=mapper.selectAllByEmployeeId(1001);
-		assertThat(actuals.size()).isEqualTo(2);
-		AbsenceApplication confirm
-		 = actuals.stream().filter(a->a.getShiftSchedule().getShiftId().equals(1)).findFirst().orElse(null);
-		assertThat(confirm.getApplicationId()).isEqualTo(1);
-		assertThat(confirm.getShiftSchedule().getDate()).isEqualTo(LocalDate.now());
-		assertThat(confirm.getEmployee().getName()).isEqualTo("hogehoge");
-		assertThat(confirm.getAbsenceReason().getName()).isEqualTo("理由1");
-		assertThat(confirm.getDetail()).isEqualTo("詳細1");
-		assertThat(confirm.getIsApprove()).isEqualTo(null);
+		assertThat(actuals.size()).isEqualTo(expecteds.size());
+		for(int cnt=0;cnt<actuals.size();cnt++) {
+		assertThat(actuals).extracting(a->a.getShiftSchedule().getDate()).contains(expecteds.get(cnt).getShiftSchedule().getDate());
+		assertThat(actuals).extracting(a->a.getEmployee().getName()).contains(expecteds.get(cnt).getEmployee().getName());
+		assertThat(actuals).extracting(a->a.getAbsenceReason().getName()).contains(expecteds.get(cnt).getAbsenceReason().getName());
+		assertThat(actuals).extracting(AbsenceApplication::getDetail).contains(expecteds.get(cnt).getDetail());
+		assertThat(actuals).extracting(AbsenceApplication::getIsApprove).contains(expecteds.get(cnt).getIsApprove());
+		}
 	}
 	
+	/*マッパーメソッドではシフトの日付を抽出していないので、getShiftSchedule().getDate()をするとnullになる。
+	 * 		<select id="selectTodayAndIsApproveEqualsNull" resultMap="AbsenceApplicationWithShiftScheduleAndEmployeeAndAbsenceResult">
+			SELECT
+			  aa.id
+			  ,e.name AS employee_name
+			  ,ar.name AS reason_name
+			FROM（以下略*/
 	@Test
 	void test_selectToday() {
+		List<AbsenceApplication> expecteds=AbsenceApplicationTestDataGenerator.getTodayApplication();
 		List<AbsenceApplication> actuals=mapper.selectTodayAndIsApproveEqualsNull();
-		AbsenceApplication actual=actuals.get(0);
-		assertThat(actual.getApplicationId()).isEqualTo(1);
-		assertThat(actual.getEmployee().getName()).isEqualTo("hogehoge");
-		assertThat(actual.getAbsenceReason().getName()).isEqualTo("理由1");
+		for(int cnt=0;cnt<actuals.size();cnt++) {
+//		assertThat(actuals).extracting(a->a.getShiftSchedule().getDate()).contains(expecteds.get(cnt).getShiftSchedule().getDate());
+		assertThat(actuals).extracting(a->a.getEmployee().getName()).contains(expecteds.get(cnt).getEmployee().getName());
+		assertThat(actuals).extracting(a->a.getAbsenceReason().getName()).contains(expecteds.get(cnt).getAbsenceReason().getName());
+		}
 	}
 
 	@Test
 	void test_selectByApplicationId() {
+		AbsenceApplication expected=AbsenceApplicationTestDataGenerator.getAnyEmployeeAbsenceApplication(EMPLOYEE.hoge, LocalDate.of(2025, 4, 1),new AbsenceReason(1,"理由1"), "詳細1");
 		AbsenceApplication actual=mapper.selectByApplicationId(1);
-		assertThat(actual.getEmployee().getName()).isEqualTo("hogehoge");
-		assertThat(actual.getShiftSchedule().getDate()).isEqualTo(LocalDate.now());
-		assertThat(actual.getAbsenceReason().getName()).isEqualTo("理由1");
-		assertThat(actual.getDetail()).isEqualTo("詳細1");
+		assertThat(actual.getEmployee().getName()).isEqualTo(expected.getEmployee().getName());
+		assertThat(actual.getShiftSchedule().getDate()).isEqualTo(expected.getShiftSchedule().getDate());
+		assertThat(actual.getAbsenceReason().getName()).isEqualTo(expected.getAbsenceReason().getName());
+		assertThat(actual.getDetail()).isEqualTo(expected.getDetail());
 	}
 	
 	@Test
 	void test_selectAllReasons() {
+		List<AbsenceReason> expecteds=AbsenceReasonTestDataGenerator.getAllReasons();
 		List<AbsenceReason> actuals=mapper.selectAllReasons();
-		assertThat(actuals.size()).isEqualTo(3);
-		AbsenceReason confirm=new AbsenceReason(1,"理由1");
-		assertThat(actuals).contains(confirm);
+		assertThat(actuals.size()).isEqualTo(expecteds.size());
+		assertThat(actuals).containsExactlyInAnyOrderElementsOf(actuals);
 	}
 	
 	@Test
 	void test_insert() {
-		var data=new AbsenceApplication();
-		var s=new ShiftSchedule();
-		var a=new AbsenceReason();
-		s.setShiftId(4);
-		a.setReasonId(1);
-		data.setShiftSchedule(s);
-		data.setAbsenceReason(a);
-		data.setDetail("詳細4");
-		mapper.insert(data);
-		AbsenceApplication actual=mapper.selectByApplicationId(4);
-		assertThat(actual).isNotNull();
+		AbsenceApplication expected=AbsenceApplicationTestDataGenerator.createAbsenceApplication(5, new AbsenceReason(1,"理由1"), "詳細1");
+		mapper.insert(expected);
+		String query="SELECT\n"
+				+ "		  shift_id\n"
+				+ "		  ,ar.name\n"
+				+ "		  ,aa.detail\n"
+				+ "		FROM\n"
+				+ "		  absence_applications AS aa\n"
+				+ "		  INNER JOIN shift_schedules AS s\n"
+				+ "		  ON aa.shift_id=s.id\n"
+				+ "		  INNER JOIN employees AS e\n"
+				+ "		  ON s.employee_id=e.id\n"
+				+ "		  INNER JOIN absence_reasons AS ar\n"
+				+ "		  ON aa.reason_id=ar.id\n"
+				+ "		WHERE\n"
+				+ "		  aa.id= ?\n"
+				+ "		;";
+		Map<String,Object> actual=jdbcTemplate.queryForMap(query,5);
+		assertThat(actual.get("shift_id")).isEqualTo(expected.getShiftSchedule().getShiftId());
+		assertThat(actual.get("name")).isEqualTo(expected.getAbsenceReason().getName());
+		assertThat(actual.get("detail")).isEqualTo(expected.getDetail());
 	}
 	
 	@Test
 	void test_update() {
-		mapper.update(1, true);
-//		selectByApplicationId()の戻り値はisApproveを含まない
-		//jdbcTemplateに書き換える
-		List<AbsenceApplication> actuals=mapper.selectAll();
-		AbsenceApplication actual=actuals.stream().filter(a->a.getShiftSchedule().getShiftId().equals(1)).findFirst().orElse(null);
-		assertThat(actual.getIsApprove()).isEqualTo(true);
-		mapper.update(1, false);
-		actuals=mapper.selectAll();
-		actual=actuals.stream().filter(a->a.getShiftSchedule().getShiftId().equals(1)).findFirst().orElse(null);
-		assertThat(actual.getIsApprove()).isEqualTo(false);
+		String isApproveIsNull="SELECT id FROM absence_applications WHERE is_approve is null;";
+		Integer target=jdbcTemplate.queryForObject(isApproveIsNull, Integer.class);
+		mapper.update(target, true);
+		String idEqualsTarget="SELECT is_approve FROM absence_applications WHERE id=?;";
+		Boolean actual=jdbcTemplate.queryForObject(idEqualsTarget, Boolean.class,target);
+		assertThat(actual).isEqualTo(true);
 	}
 	
 	@Test
 	void test_delete() {
-		AbsenceApplication target=mapper.selectByApplicationId(3);
-		assertThat(target).isNotNull();
+		String confirmNotNull="SELECT 1 FROM absence_applications WHERE id=?;";
+		Integer before=jdbcTemplate.queryForObject(confirmNotNull, Integer.class,3);
+		assertThat(before).isNotNull();
 		mapper.delete(3);
-		AbsenceApplication actual=mapper.selectByApplicationId(3);
-		assertThat(actual).isNull();
+		assertThrows(EmptyResultDataAccessException.class, ()->jdbcTemplate.queryForObject(confirmNotNull, Integer.class,3));
 	}
 }

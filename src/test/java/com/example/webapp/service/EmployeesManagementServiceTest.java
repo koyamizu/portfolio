@@ -9,164 +9,200 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.example.webapp.common.EmployeeTestDataOld;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityException;
-import com.example.webapp.exception.ForeignKeyViolationException;
+import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
+import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
+import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.impl.EmployeesManagementServiceImpl;
+import com.example.webapp.test_data.EmployeesManagementTestDataGenerator;
+import com.example.webapp.test_data.employee.EMPLOYEE;
 
 import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
+//サービスクラスのメソッドから返される値はデータベースから取得した値ではないので、メソッド内で値の加工がなかった場合は普通にisEqualsToでよい。
+//また、Mockitoはデータベースと直接値をやりとりしているわけではないので、jdbcTemplateを使っても何も値は返って来ない
 public class EmployeesManagementServiceTest {
 
 	@InjectMocks
 	EmployeesManagementServiceImpl service;
 
 	@Mock
-	EmployeesManagementMapper mapper;
+	EmployeesManagementMapper employeesManagementMapper;
 	@Mock
 	WorkHistoryManagementMapper workHistoryManagementMapper;
-
-	private EmployeeTestDataOld data = new EmployeeTestDataOld();
+	@Mock
+	ShiftManagementMapper shiftManagementMapper;
 
 	@Test
 	void test_getAllEmployees() throws NoDataException {
-		List<Employee> employees = data.createAllEmployees();
-		doReturn(employees).when(mapper).selectAll();
+		List<Employee> expecteds = EmployeesManagementTestDataGenerator.getAllEmployees();
+		doReturn(expecteds).when(employeesManagementMapper).selectAll();
 		List<Employee> actuals = service.getAllEmployees();
-		assertThat(actuals.size()).isEqualTo(employees.size());
+		assertThat(actuals.size()).isEqualTo(expecteds.size());
+		assertThat(actuals).containsExactlyInAnyOrderElementsOf(expecteds);
 	}
 
+	//		全ての従業員を抽出しようとしたが、戻り値が空だった時（ユーザーの操作というよりサーバー側のエラー）
 	@Test
-	void test_getAllEmployees_throws_NoDataExeption() {
-		doReturn(null).when(mapper).selectAll();
+	void test_getAllEmployees_throws_NoDataException() {
+		doReturn(null).when(employeesManagementMapper).selectAll();
 		assertThrows(NoDataException.class, () -> service.getAllEmployees());
 	}
 
 	@Test
 	void test_getEmployee() throws InvalidEmployeeIdException {
-		Employee yoshizuka = data.getYoshizuka();
-		doReturn(yoshizuka).when(mapper).selectById(1001);
+		Employee expected = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
+		doReturn(expected).when(employeesManagementMapper).selectById(1001);
 		Employee actual = service.getEmployee(1001);
-		assertThat(actual).isEqualTo(yoshizuka);
+		assertThat(actual).isEqualTo(expected);
 	}
 
+	//		存在しない従業員を抽出しようとした時
 	@Test
-	void test_getEmployee_throws_InvalidEmployeeeIdException() throws InvalidEmployeeIdException {
-		doReturn(null).when(mapper).selectById(1010);
+	void test_getEmployee_throws_InvalidEmployeeIdException() {
+		doReturn(null).when(employeesManagementMapper).selectById(1010);
 		assertThrows(InvalidEmployeeIdException.class, () -> service.getEmployee(1010));
 	}
 
 	@Test
 	void test_getEmployeeForm() throws InvalidEmployeeIdException {
-		Employee yoshizuka = data.getYoshizuka();
-		EmployeeForm yoshizukaForm = EmployeeHelper.convertEmployeeForm(yoshizuka);
-		doReturn(yoshizuka).when(mapper).selectById(1001);
+		Employee expected = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
+		EmployeeForm expectedForm = EmployeeHelper.convertEmployeeForm(expected);
+		doReturn(expected).when(employeesManagementMapper).selectById(1001);
 		EmployeeForm actual = service.getEmployeeForm(1001);
-		assertThat(actual).isEqualTo(yoshizukaForm);
+		assertThat(actual).isEqualTo(expectedForm);
 	}
 
+	//		存在しない従業員を抽出しようとした時
 	@Test
 	void test_getEmployeeForm_throws_InvalidEmployeeeIdException() {
-		doReturn(null).when(mapper).selectById(1010);
+		doReturn(null).when(employeesManagementMapper).selectById(1010);
 		assertThrows(InvalidEmployeeIdException.class, () -> service.getEmployeeForm(1010));
 	}
 
 	@Test
 	void test_getAllEmployeeIdAndName() {
-		List<Employee> employees = data.createTestEmployeeIdAndName();
-		doReturn(employees).when(mapper).selectAllIdAndName();
+		List<Employee> expecteds = EmployeesManagementTestDataGenerator.getAllEmployeeIdAndName();
+		doReturn(expecteds).when(employeesManagementMapper).selectAllIdAndName();
 		List<Employee> actuals = service.getAllEmployeeIdAndName();
-		assertThat(actuals).isEqualTo(employees);
+		assertThat(actuals).isEqualTo(expecteds);
 	}
 
 	@Test
 	void test_getEmployeeIdByName() {
-		Integer id = 1001;
-		doReturn(id).when(mapper).selectIdByName("吉塚");
-		Integer actual = service.getEmployeeIdByName("吉塚");
-		assertThat(actual).isEqualTo(id);
+		Integer expected = 1001;
+		doReturn(expected).when(employeesManagementMapper).selectIdByName("hoge");
+		Integer actual = service.getEmployeeIdByName("hoge");
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
-	void test_insertEmployee() throws DuplicateEmployeeException {
-		Employee newEmployee = data.getChihaya();
-		doNothing().when(mapper).insert(newEmployee);
-		EmployeeForm form = EmployeeHelper.convertEmployeeForm(newEmployee);
-		service.insertEmployee(form);
-		verify(mapper).insert(any());
+	void test_insertEmployee() throws DuplicateEmployeeException, TooLongDataException {
+		Employee dummy = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.foo);
+		doNothing().when(employeesManagementMapper).insert(dummy);
+		EmployeeForm dummyForm = EmployeeHelper.convertEmployeeForm(dummy);
+		service.insertEmployee(dummyForm);
+		verify(employeesManagementMapper).insert(any());
 	}
-
+	//		従業員を重複して登録しようとした時
+//	Mockito、DataIntegrityViolationExceptionのクラスを投げることまでしかできない。その先のロジックまで調べたいときは、結合テストをするしかない。
+//	サービスクラスのinsertEmployee()は、DataIntegrityViolationExceptionの中身によってふた通りの例外（DuplicateEmployeeExceptionとTooLongDataException）を出すが、
+//	Mockitoが放出するのは中身が空のDataIntegrityViolationExceptionのクラスのみなので、insertEmployee()の中の条件分岐は不可。
+//	Mockitoに何を渡そうがupdateEmployee()からはNullPointerExceptionが放出されるので、テストするのはひとパターンでいい。
 	@Test
-	void test_insertEmployee_throws_DuplicateEmployeeException() throws DuplicateEmployeeException {
-		Employee newEmployee = data.getYoshizuka();
-		doThrow(DataIntegrityViolationException.class).when(mapper).insert(newEmployee);
-		EmployeeForm form = EmployeeHelper.convertEmployeeForm(newEmployee);
-		assertThrows(DuplicateEmployeeException.class, () -> service.insertEmployee(form));
-	}
-
-	@Test
-	void test_updateEmployee() throws DuplicateEmployeeException, InvalidEmployeeIdException {
-		Employee original = data.getYoshizuka();
-		original.setName("吉津鹿");
-		EmployeeForm form = EmployeeHelper.convertEmployeeForm(original);
-
-		doNothing().when(mapper).update(original);
-		service.updateEmployee(form);
-
-		ArgumentCaptor<Employee> captor = ArgumentCaptor.forClass(Employee.class);
-		//		実際にmapperに渡された値を検証できる
-		verify(mapper).update(captor.capture());
-		Employee updated = captor.getValue();
-
-		assertThat(updated.getName()).isEqualTo("吉津鹿");
-	}
-
-	@Test
-	void test_deleteEmploye() throws InvalidEmployeeIdException, EmployeeDataIntegrityException {
-		Employee yoshizuka = data.getYoshizuka();
-		doReturn(yoshizuka).when(mapper).selectById(1001);
-		doNothing().when(mapper).deleteById(1001);
-		service.deleteEmployee(1001);
+	void test_insertEmployee_throws_NullPointerException()  {
+		Employee dummy = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
+		doThrow(DataIntegrityViolationException.class).when(employeesManagementMapper).insert(dummy);
+		EmployeeForm dummyForm = EmployeeHelper.convertEmployeeForm(dummy);
+		assertThrows(NullPointerException.class, () -> service.insertEmployee(dummyForm));
 	}
 	
+	@Test
+	void test_updateEmployee() throws DuplicateEmployeeException, TooLongDataException {
+		Employee target = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.fuga);
+		target.setName("hege");
+		EmployeeForm targetForm = EmployeeHelper.convertEmployeeForm(target);
+
+		doNothing().when(employeesManagementMapper).update(target);
+		service.updateEmployee(targetForm);
+		verify(employeesManagementMapper).update(target);
+	}
+
+//	Mockito、DataIntegrityViolationExceptionのクラスを投げることまでしかできない。その先のロジックまで調べたいときは、結合テストをするしかない。
+//	サービスクラスのupdateEmployee()は、DataIntegrityViolationExceptionの中身によってふた通りの例外（DuplicateEmployeeExceptionとTooLongDataException）を出すが、
+//	Mockitoが放出するのは中身が空のDataIntegrityViolationExceptionのクラスのみなので、updateEmployee()の中の条件分岐は不可。
+//	Mockitoに何を渡そうがupdateEmployee()からはNullPointerExceptionが放出されるので、テストするのはひとパターンでいい。
+	@Test
+	void test_updateEmployee_throws_NullPointerException() {
+		Employee target = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.fuga);
+		target.setName("hoge");
+		doThrow(DataIntegrityViolationException.class).when(employeesManagementMapper).update(target);
+		EmployeeForm targetForm = EmployeeHelper.convertEmployeeForm(target);
+		assertThrows(NullPointerException.class, () -> service.updateEmployee(targetForm));
+	}
+
+	@Test
+	void test_deleteEmploye() throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
+		Employee target = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
+		doReturn(target).when(employeesManagementMapper).selectById(1001);
+		doNothing().when(employeesManagementMapper).deleteById(1001);
+		service.deleteEmployee(1001);
+		verify(employeesManagementMapper).deleteById(1001);
+	}
+
+	//存在しない従業員を削除しようとしたとき
 	@Test
 	void test_deleteEmploye_throws_InvalidEmployeeIdException() {
-		doReturn(null).when(mapper).selectById(1010);
-		assertThrows(InvalidEmployeeIdException.class,()->service.deleteEmployee(1010));
+		doReturn(null).when(employeesManagementMapper).selectById(1010);
+		assertThrows(InvalidEmployeeIdException.class, () -> service.deleteEmployee(1010));
 	}
-	
+
+	//勤務履歴やシフト予定が存在する従業員を削除しようとした時
 	@Test
 	void test_deleteEmployee_throws_EmployeeDataIntegerityException() {
-		Employee yoshizuka = data.getYoshizuka();
-		doReturn(yoshizuka).when(mapper).selectById(1001);
-		doThrow(DataIntegrityViolationException.class).when(mapper).deleteById(1001);
-		assertThrows(EmployeeDataIntegrityException.class,()->service.deleteEmployee(1001));
+		Employee target = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
+		doReturn(target).when(employeesManagementMapper).selectById(1001);
+		doThrow(DataIntegrityViolationException.class).when(employeesManagementMapper).deleteById(1001);
+		assertThrows(EmployeeDataIntegrityViolationException.class, () -> service.deleteEmployee(1001));
 	}
 
 	@Test
-	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests() throws ForeignKeyViolationException {
+	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests() throws ForeignKeyConstraintViolationException {
+		doNothing().when(employeesManagementMapper).setForeignKeyChecksOff();
+		doNothing().when(workHistoryManagementMapper).deleteAllTimeRecords(1001);
+		doNothing().when(shiftManagementMapper).deleteAllShiftSchedulesByEmployeeId(1001);
+		doNothing().when(shiftManagementMapper).deleteAllShiftRequestsByEmployeeId(1001);
+		doNothing().when(employeesManagementMapper).setForeignKeyChecksOn();
 		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001);
+		verify(employeesManagementMapper).setForeignKeyChecksOff();
+		verify(workHistoryManagementMapper).deleteAllTimeRecords(1001);
+		verify(shiftManagementMapper).deleteAllShiftSchedulesByEmployeeId(1001);
+		verify(shiftManagementMapper).deleteAllShiftRequestsByEmployeeId(1001);
+		verify(employeesManagementMapper).setForeignKeyChecksOn();		
 	}
-	
+
 	@Test
-	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests_throws_ForeignKeyViolationException() throws ForeignKeyViolationException {
-		doThrow(DataIntegrityViolationException.class).when(workHistoryManagementMapper).deleteAllTimeRecords(1001);
-		assertThrows(ForeignKeyViolationException.class,()->service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001));
+	//		FOREIGIN_KEY_CHECK=0が実行されていないために起こる例外
+	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests_throws_ForeignKeyViolationException()
+			throws ForeignKeyConstraintViolationException {
+		doThrow(DataIntegrityViolationException.class).when(shiftManagementMapper)
+				.deleteAllShiftSchedulesByEmployeeId(1001);
+		assertThrows(ForeignKeyConstraintViolationException.class,
+				() -> service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001));
 	}
 }
