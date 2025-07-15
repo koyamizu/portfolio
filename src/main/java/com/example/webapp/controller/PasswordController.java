@@ -1,5 +1,7 @@
 package com.example.webapp.controller;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -9,12 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.webapp.exception.IllegalDataManipulatingException;
+import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.form.PasswordForm;
 import com.example.webapp.service.PasswordService;
 import com.example.webapp.utility.PasswordGenerator;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -45,7 +48,7 @@ public class PasswordController {
 
 	@PostMapping("update")
 	public String updatePassword(@Validated PasswordForm passwordForm, BindingResult bindingResult,
-			RedirectAttributes attributes) {
+			RedirectAttributes attributes) throws IllegalDataManipulatingException, TooLongDataException {
 		if (bindingResult.hasErrors()) {
 			return "password/form";
 		}

@@ -11,7 +11,9 @@
 	<div>
 		認証が必要です
 	</div>
-	<a th:href="@{/}">メニューへ</a>
+	<form method="post" name="logout" th:action="@{/logout}">
+		<a href="javascript:logout.submit()">ホームに戻る</a>
+	</form>
 </body>
 
 </html>
