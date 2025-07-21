@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.exception.InvalidEditException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.form.TimeRecordForm;
 import com.example.webapp.helper.TimeRecordHelper;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
 import com.example.webapp.service.WorkHistoryManagementService;
+import com.google.common.base.Objects;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,21 +29,20 @@ public class WorkHistoryManagementServiceImpl implements WorkHistoryManagementSe
 	}
 	
 	@Override
-	public List<TimeRecord> gettPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
-		
+	public List<TimeRecord> getPersonalWorkHistoriesToDateByEmployeeIdAndMonth(Integer employeeId,Integer targetMonth){
 		return mapper.selectByEmployeeIdAndMonth(employeeId,targetMonth);
 	}
 	
 	@Override
-	public List<Employee> selectWorkedEmployeesByMonth(Integer targerMonth){
+	public List<Employee> getWorkedEmployeesByMonth(Integer targerMonth){
 		return mapper.selectEmployeeByMonth(targerMonth);
 	}
 	
 	@Override
-	public TimeRecordForm getWorkHistoryDetailByEmployeeIdAndDate(Integer employeeId, LocalDate date) throws NoDataException {
+	public TimeRecordForm getWorkHistoryDetailByEmployeeIdAndDate(Integer employeeId, LocalDate date) throws NoDataFoundException {
 		TimeRecord targetHistory=mapper.selectByEmployeeIdAndDate(employeeId, date);
-		if(targetHistory.equals(null)) {
-			throw new NoDataException("勤怠履歴データが取得できませんでした。管理者にお問い合わせください。");
+		if(Objects.equal(null, targetHistory)) {
+			throw new NoDataFoundException("勤怠履歴データが取得できませんでした。管理者にお問い合わせください。");
 		}
 		return TimeRecordHelper.convertTimeRecordForm(targetHistory);
 	}

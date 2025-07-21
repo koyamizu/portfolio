@@ -49,15 +49,15 @@ public class FullCalendarHelper {
 		return display;
 	}
 	
-	public static List<FullCalendarForm> convertFullCalendarForm(List<FullCalendarEntity> entities) {
+	public static List<FullCalendarForm> convertFullCalendarForms(List<FullCalendarEntity> entities) {
 		return entities.stream().map(e->convertFullCalendarForm(e)).toList();
 	}
 	
-	public static List<FullCalendarEntity> convertFullCalendarEntity(List<FullCalendarForm> forms){
+	public static List<FullCalendarEntity> convertFullCalendarEntities(List<FullCalendarForm> forms){
 		return forms.stream().map(e->convertFullCalendarEntity(e)).toList();
 	}
 	
-	public static List<FullCalendarDisplay> convertFullCalendarDisplay(List<FullCalendarEntity> entities){
+	public static List<FullCalendarDisplay> convertFullCalendarDisplays(List<FullCalendarEntity> entities){
 		return entities.stream().map(e->convertFullCalendarDisplay(e)).toList();
 	}
 

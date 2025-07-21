@@ -16,6 +16,7 @@ import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateShiftException;
 import com.example.webapp.exception.InvalidEditException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.form.FullCalendarForm;
 import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.repository.EmployeesManagementMapper;
@@ -37,15 +38,19 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	private final EmployeesManagementMapper employeesManagementMapper;
 
 	@Override
-	public List<FullCalendarDisplay> getThreeMonthShifts(Integer targetMonth) {
+	public List<FullCalendarDisplay> getThreeMonthShifts(Integer targetMonth) throws NoDataFoundException {
 		List<FullCalendarEntity> entities=shiftManagementMapper.selectThreeMonthByTargetMonth(targetMonth);
-		return FullCalendarHelper.convertFullCalendarDisplay(entities);
+		if(CollectionUtils.isEmpty(entities)) {
+			throw new NoDataFoundException("シフトデータが見つかりませんでした");
+		}
+		return FullCalendarHelper.convertFullCalendarDisplays(entities);
 	}
 
+//	entitesがEmptyかどうかで表示する内容を変更するので、例外を放出する必要はない
 	@Override
-	public List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId) {
+	public List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId)  {
 		List<FullCalendarEntity> entities=shiftManagementMapper.selectRequestByEmployeeId(employeeId);
-		return FullCalendarHelper.convertFullCalendarDisplay(entities);
+		return FullCalendarHelper.convertFullCalendarDisplays(entities);
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	@Override
 	public List<FullCalendarDisplay> getOneMonthShifts(Integer targetMonth) {
 		List<FullCalendarEntity> entities=shiftManagementMapper.selectOneMonthByTargetMonth(targetMonth);
-		return FullCalendarHelper.convertFullCalendarDisplay(entities);
+		return FullCalendarHelper.convertFullCalendarDisplays(entities);
 	}
 
 	@Override
@@ -66,7 +71,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<FullCalendarForm> requestsForm = mapper.readValue(requestsStr,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
-		List<FullCalendarEntity> requests=FullCalendarHelper.convertFullCalendarEntity(requestsForm);
+		List<FullCalendarEntity> requests=FullCalendarHelper.convertFullCalendarEntities(requestsForm);
 		shiftManagementMapper.insertRequest(requests);
 	}
 
@@ -79,7 +84,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<FullCalendarForm> latestVersionForm = mapper.readValue(requestsStr,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
-		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntity(latestVersionForm);
+		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntities(latestVersionForm);
 
 		List<FullCalendarEntity> oldVersion = shiftManagementMapper.selectRequestByEmployeeId(employeeId);
 
@@ -108,7 +113,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<Employee> allEmployees = employeesManagementMapper.selectAllIdAndName();
 		List<Employee> notSubmits = shiftManagementMapper.selectNotSubmit();
 		List<FullCalendarEntity> requests = shiftManagementMapper.selectAllRequests();
-		List<FullCalendarDisplay> requestsDisplay=FullCalendarHelper.convertFullCalendarDisplay(requests);
+		List<FullCalendarDisplay> requestsDisplay=FullCalendarHelper.convertFullCalendarDisplays(requests);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", requestsDisplay);
 		return new ShiftCreateContainer(requestsDisplay, allEmployees, notSubmits);
 	}
@@ -117,18 +122,18 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 	public ShiftEditContainer initializeShiftEditContainerFields(Integer month) {
 		List<Employee> allEmployees = employeesManagementMapper.selectAllIdAndName();
 		List<FullCalendarEntity> shifts = shiftManagementMapper.selectOneMonthByTargetMonth(month);
-		List<FullCalendarDisplay> shiftsDisplay=FullCalendarHelper.convertFullCalendarDisplay(shifts);
+		List<FullCalendarDisplay> shiftsDisplay=FullCalendarHelper.convertFullCalendarDisplays(shifts);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shiftsDisplay);
 		return new ShiftEditContainer(shiftsDisplay, allEmployees);
 	}
 
 	@Override
-	public void createNextMonthShifts(String newShiftsStr) throws JsonMappingException, JsonProcessingException {
+	public void createNextMonthShifts(String newShiftsStr) throws JsonMappingException, JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
 		List<FullCalendarForm> newShiftsForm = mapper.readValue(newShiftsStr,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
-		List<FullCalendarEntity> newShifts=FullCalendarHelper.convertFullCalendarEntity(newShiftsForm);
+		List<FullCalendarEntity> newShifts=FullCalendarHelper.convertFullCalendarEntities(newShiftsForm);
 		shiftManagementMapper.insertShift(newShifts);
 	}
 
@@ -140,12 +145,12 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<FullCalendarForm> latestVersionForm = mapper.readValue(latestVersionStr,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
-		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntity(latestVersionForm);
-		List<FullCalendarEntity> additionals = latestVersion.stream().filter(r -> Objects.equals(r.getShiftId(), null))
+		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntities(latestVersionForm);
+		List<FullCalendarEntity> updated = latestVersion.stream().filter(r -> Objects.equals(r.getShiftId(), null))
 				.toList();
 		try {
-			if (!CollectionUtils.isEmpty(additionals)) {
-				shiftManagementMapper.insertShift(additionals);
+			if (!CollectionUtils.isEmpty(updated)) {
+				shiftManagementMapper.insertShift(updated);
 			}
 			shiftManagementMapper.deleteOldShiftByMonth(latestVersion, month);
 		} catch (DataIntegrityViolationException e) {

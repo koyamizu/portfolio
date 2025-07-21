@@ -21,7 +21,7 @@ import com.example.webapp.exception.DuplicateEmployeeException;
 import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.form.PasswordForm;
@@ -38,7 +38,7 @@ public class EmployeesManagementController {
 	private final EmployeesManagementService service;
 
 	@GetMapping
-	public String showEmployeesList(Model model) throws NoDataException {
+	public String showEmployeesList(Model model) throws NoDataFoundException {
 		List<Employee> employees = service.getAllEmployees();
 		model.addAttribute("employees", employees);
 		return "employees/list";
@@ -105,7 +105,7 @@ public class EmployeesManagementController {
 		return "employees/detail";
 	}
 
-	@ExceptionHandler({NoDataException.class,InvalidEmployeeIdException.class,DuplicateEmployeeException.class})
+	@ExceptionHandler({NoDataFoundException.class,InvalidEmployeeIdException.class,DuplicateEmployeeException.class})
 	public String redirectToEmployeesListPage(Exception e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("errorMessage", e.getMessage());
 		return "redirect:/employees";

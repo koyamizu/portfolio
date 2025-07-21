@@ -20,7 +20,7 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.Role;
 import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.exception.InvalidEditException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.form.TimeRecordForm;
 import com.example.webapp.service.EmployeesManagementService;
 import com.example.webapp.service.WorkHistoryManagementService;
@@ -73,7 +73,7 @@ public class WorkHistoryManagementController {
 		}
 		session.setAttribute("fromPage", targetMonth + "/" + employeeId);
 		List<TimeRecord> personalHistories = workHistoryManagementService
-				.gettPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,
+				.getPersonalWorkHistoriesToDateByEmployeeIdAndMonth(employeeId,
 						targetMonth);
 		List<Employee> employees = employeesManagementService.getAllEmployeeIdAndName();
 		model.addAttribute("employees", employees);
@@ -86,7 +86,7 @@ public class WorkHistoryManagementController {
 
 	@GetMapping("edit/{date}/{employee-id}")
 	public String showPersonalWorkHistory(@PathVariable("date") LocalDate targetDate,
-			@PathVariable("employee-id") Integer employeeId, Model model, HttpSession session) throws NoDataException {
+			@PathVariable("employee-id") Integer employeeId, Model model, HttpSession session) throws NoDataFoundException {
 		TimeRecordForm targetHistory = workHistoryManagementService.getWorkHistoryDetailByEmployeeIdAndDate(employeeId,
 				targetDate);
 		session.setAttribute("editPage", "edit/"+targetDate + "/" + employeeId);

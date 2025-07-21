@@ -21,7 +21,7 @@ import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.helper.Caster;
 import com.example.webapp.service.AbsenceApplicationService;
 import com.example.webapp.service.TimeRecorderService;
@@ -38,7 +38,7 @@ public class TimeRecorderController {
 	LocalDate today = LocalDate.now();
 
 	@GetMapping
-	public String showTimeRecorder(Model model, HttpSession session) throws NoDataException {
+	public String showTimeRecorder(Model model, HttpSession session) throws NoDataFoundException {
 
 		List<AbsenceApplication> todayAbsences = Caster
 				.castToAbsenceApplicationList(session.getAttribute("todayAbsences"));
@@ -57,7 +57,7 @@ public class TimeRecorderController {
 
 	@PostMapping("/record")
 	public String showRecordPage(@RequestParam("employee-id") Integer employeeId, Model model,
-			RedirectAttributes attributes) throws NoDataException {
+			RedirectAttributes attributes) throws NoDataFoundException {
 		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime();
 		Employee targetEmployee = timeRecorderService.getEmployeeToClock(todayMembersWithClockTime, employeeId);
 		model.addAttribute("employee", targetEmployee);
@@ -81,7 +81,7 @@ public class TimeRecorderController {
 		return "time-recorder/execute";
 	}
 
-	@ExceptionHandler({ InvalidClockException.class, NoDataException.class, InvalidEmployeeIdException.class,
+	@ExceptionHandler({ InvalidClockException.class, NoDataFoundException.class, InvalidEmployeeIdException.class,
 			DuplicateClockException.class, InvalidClockException.class })
 	public String redirectToTimeRecorderPage(Exception e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("errorMessage", e.getMessage());

@@ -6,13 +6,13 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 
 public interface TimeRecorderService {
 	
-	List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataException;
+	List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataFoundException;
 
-	Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId) throws NoDataException;
+	Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId) throws NoDataFoundException;
 
 	void clockIn(Integer employeeId) throws DuplicateClockException;
 

@@ -13,7 +13,7 @@ import com.example.webapp.exception.DuplicateEmployeeException;
 import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
@@ -36,11 +36,11 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	private final ShiftManagementMapper shiftManagementMapper;
 
 	@Override
-	public List<Employee> getAllEmployees() throws NoDataException {
+	public List<Employee> getAllEmployees() throws NoDataFoundException {
 		List<Employee> allEmployees = employeesManagementMapper.selectAll();
 
 		if (CollectionUtils.isEmpty(allEmployees)) {
-			throw new NoDataException("従業員一覧が取得できませんでした。");
+			throw new NoDataFoundException("従業員一覧が取得できませんでした。");
 		}
 		return allEmployees;
 	}

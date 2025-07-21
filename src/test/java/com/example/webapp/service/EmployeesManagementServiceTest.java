@@ -19,7 +19,7 @@ import com.example.webapp.exception.DuplicateEmployeeException;
 import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
@@ -49,7 +49,7 @@ public class EmployeesManagementServiceTest {
 	ShiftManagementMapper shiftManagementMapper;
 
 	@Test
-	void test_getAllEmployees() throws NoDataException {
+	void test_getAllEmployees() throws NoDataFoundException {
 		List<Employee> expecteds = EmployeesManagementTestDataGenerator.getAllEmployees();
 		doReturn(expecteds).when(employeesManagementMapper).selectAll();
 		List<Employee> actuals = service.getAllEmployees();
@@ -61,7 +61,7 @@ public class EmployeesManagementServiceTest {
 	@Test
 	void test_getAllEmployees_throws_NoDataException() {
 		doReturn(null).when(employeesManagementMapper).selectAll();
-		assertThrows(NoDataException.class, () -> service.getAllEmployees());
+		assertThrows(NoDataFoundException.class, () -> service.getAllEmployees());
 	}
 
 	@Test

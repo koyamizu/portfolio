@@ -7,7 +7,7 @@ import com.example.webapp.exception.DuplicateEmployeeException;
 import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 
@@ -16,7 +16,7 @@ public interface EmployeesManagementService {
 	
 	Employee getEmployee(Integer employeeId) throws InvalidEmployeeIdException;
 	
-	List<Employee> getAllEmployees() throws NoDataException;
+	List<Employee> getAllEmployees() throws NoDataFoundException;
 	
 	List<Employee> getAllEmployeeIdAndName();
 	

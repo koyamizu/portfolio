@@ -8,13 +8,14 @@ import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateShiftException;
 import com.example.webapp.exception.InvalidEditException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 public interface ShiftManagementService {
-	List<FullCalendarDisplay> getThreeMonthShifts(Integer targetMonth);
+	List<FullCalendarDisplay> getThreeMonthShifts(Integer targetMonth) throws NoDataFoundException;
 
-	List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId);
+	List<FullCalendarDisplay> getPersonalShiftRequests(Integer employeeId) ;
 	
 	List<ShiftSchedule> getAllShiftsAfterToday(Integer employeeId);
 

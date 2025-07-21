@@ -13,7 +13,7 @@ import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.entity.TimeRecord;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
-import com.example.webapp.exception.NoDataException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.repository.TimeRecorderMapper;
 import com.example.webapp.service.TimeRecorderService;
 import com.google.common.base.Objects;
@@ -28,7 +28,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	private final TimeRecorderMapper timeRecorderMapper;
 
 	@Override
-	public List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataException {
+	public List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataFoundException {
 
 		List<ShiftSchedule> todayEmployeeList = timeRecorderMapper.selectToday();
 
@@ -42,13 +42,13 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 
 	@Override
 	public Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId)
-			throws NoDataException {
+			throws NoDataFoundException {
 //		↓これsessionからEmployees取り出してその中から打刻するメンバーをemployeeIdで取り出せばいいから不要な気がする
 		List<Employee> employees = todayMembersWithClockTime.stream().map(ShiftSchedule::getEmployee).toList();
 		Employee employeeToClock = employees.stream().filter(e -> e.getEmployeeId().equals(employeeId))
 			    .findFirst().orElse(null);
 		if (Objects.equal(employeeToClock, null)) {
-			throw new NoDataException("その従業員IDの方は本日出勤予定ではありません");
+			throw new NoDataFoundException("その従業員IDの方は本日出勤予定ではありません");
 		}
 		return employeeToClock;
 	}

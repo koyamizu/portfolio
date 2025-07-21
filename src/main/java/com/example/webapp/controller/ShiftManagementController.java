@@ -25,6 +25,7 @@ import com.example.webapp.entity.ShiftEditContainer;
 import com.example.webapp.entity.State;
 import com.example.webapp.exception.DuplicateShiftException;
 import com.example.webapp.exception.InvalidEditException;
+import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.helper.FullCalendarHelper;
 import com.example.webapp.service.ShiftManagementService;
 import com.example.webapp.utility.ShiftRequestDeadLine;
@@ -40,7 +41,7 @@ public class ShiftManagementController {
 	private final ShiftManagementService shiftManagementService;
 
 	@GetMapping
-	public String showShiftSchedule(HttpSession session, Model model) {
+	public String showShiftSchedule(HttpSession session, Model model) throws NoDataFoundException {
 		Integer thisMonth = LocalDate.now().getMonthValue();
 		List<FullCalendarDisplay> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
 		FullCalendarHelper.setColorProperties("#02e09a", "#006666", shifts);
