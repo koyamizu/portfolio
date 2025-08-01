@@ -43,8 +43,8 @@ FK…外部キー
 
 
 # アプリのURL
-
-[https://work-management-app-7126fd9d36c3.herokuapp.com/](https://work-management-app-7126fd9d36c3.herokuapp.com/)
+8/1追記　月が変わったので、ダミーデータ再作成のために一時的に公開を停止します。
+~~[ttps://work-management-app-7126fd9d36c3.herokuapp.com/](ttps://work-management-app-7126fd9d36c3.herokuapp.com/)~~
 
 # テスト用アカウント
 
