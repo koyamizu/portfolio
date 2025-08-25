@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -55,27 +54,30 @@ public class FullCalendarHelperTest {
 		List<FullCalendarDisplay> targetsDisplay = FullCalendarHelper.convertFullCalendarDisplays(targets);
 
 		for (int cnt = 0; cnt < targetsDisplay.size(); cnt++) {
-			assertThat(targetsDisplay).extracting(t->t.getId()).contains(targets.get(cnt).getShiftId());
-			assertThat(targetsDisplay).extracting(t->t.getEmployeeId()).contains(targets.get(cnt).getEmployee().getEmployeeId());
-			assertThat(targetsDisplay).extracting(t->t.getTitle()).contains(targets.get(cnt).getEmployee().getName());
-			assertThat(targetsDisplay).extracting(t->t.getStart()).contains(targets.get(cnt).getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			assertThat(targetsDisplay).extracting(t->t.getScheduledStart()).contains(targets.get(cnt).getScheduledStart().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-			assertThat(targetsDisplay).extracting(t->t.getScheduledEnd()).contains(targets.get(cnt).getScheduledEnd().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
+			assertThat(targetsDisplay).extracting(t -> t.getId()).contains(targets.get(cnt).getShiftId());
+			assertThat(targetsDisplay).extracting(t -> t.getEmployeeId())
+					.contains(targets.get(cnt).getEmployee().getEmployeeId());
+			assertThat(targetsDisplay).extracting(t -> t.getTitle()).contains(targets.get(cnt).getEmployee().getName());
+			assertThat(targetsDisplay).extracting(t -> t.getStart())
+					.contains(targets.get(cnt).getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			assertThat(targetsDisplay).extracting(t -> t.getScheduledStart())
+					.contains(targets.get(cnt).getScheduledStart().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+			assertThat(targetsDisplay).extracting(t -> t.getScheduledEnd())
+					.contains(targets.get(cnt).getScheduledEnd().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 		}
 	}
-	
+
+	//	@Test
+	//	void test_convertFullCalendarForms_when_targets_is_empty() {
+	//		List<FullCalendarEntity> targets = new ArrayList<FullCalendarEntity>();
+	//		//false
+	//		assertThrows(NullPointerException.class,()-> FullCalendarHelper.convertFullCalendarDisplays(targets));
+	//	}
+	//	
 	@Test
-	void test_convertFullCalendarForms_when_targets_is_empty() {
-		List<FullCalendarEntity> targets = new ArrayList<FullCalendarEntity>();
-		//false
-		assertThrows(NullPointerException.class,()-> FullCalendarHelper.convertFullCalendarDisplays(targets));
+	void test_convertFullCalendarForms_when_targets_is_null() {
+		List<FullCalendarEntity> targets = null;
+		//true
+		assertThrows(NullPointerException.class, () -> FullCalendarHelper.convertFullCalendarDisplays(targets));
 	}
-	
-//	@Test
-//	void test_convertFullCalendarForms_when_targets_is_null() {
-//		List<FullCalendarEntity> targets = null;
-//		//true
-//		assertThrows(NullPointerException.class,()-> FullCalendarHelper.convertFullCalendarDisplays(targets));
-//	}
 }
