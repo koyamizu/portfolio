@@ -128,7 +128,7 @@ public class AbsenceApplicationController {
 	 * @return
 	 * @throws InvalidEditException
 	 */
-	@GetMapping("delete/{application-id}")
+	@PostMapping("delete/{application-id}")
 	public String deleteApplication(@PathVariable("application-id") Integer applicationId, RedirectAttributes attributes) throws InvalidEditException {
 		absenceApplicationService.deleteApplication(applicationId);
 		attributes.addFlashAttribute("message", "申請を削除しました");

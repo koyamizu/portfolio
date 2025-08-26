@@ -53,7 +53,11 @@
 						<td><a th:href="@{/employees/detail/{employee-id}(employee-id=*{employeeId})}"
 								id="detail">詳細</a></td>
 						<td><a th:href="@{/employees/edit/{employee-id}(employee-id=*{employeeId})}">編集</a></td>
-						<td><a th:href="@{/employees/delete/{employee-id}(employee-id=*{employeeId})}">削除</a></tdth>
+						<td>
+							<form method="post" th:action="@{/employees/delete/{employee-id}(employee-id=*{employeeId})}">
+								<a href="javascript:void(0)" onclick="this.parentNode.submit()">削除</a>
+							</form>
+						</td>
 					</th:block>
 				</tr>
 			</tbody>

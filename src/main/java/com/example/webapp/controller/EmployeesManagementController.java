@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
@@ -84,7 +86,7 @@ public class EmployeesManagementController {
 		return "redirect:/employees";
 	}
 
-	@GetMapping("delete/{employee-id}")
+	@PostMapping("delete/{employee-id}")
 	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes) throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
 		service.deleteEmployee(employeeId);
 		attributes.addFlashAttribute("message",
@@ -93,6 +95,7 @@ public class EmployeesManagementController {
 	}
 	
 	@PostMapping("all-erase")
+	@ResponseStatus(HttpStatus.PERMANENT_REDIRECT)
 	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId) throws ForeignKeyConstraintViolationException {
 		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(employeeId);
 		return "redirect:/employees/delete/"+employeeId;
