@@ -1,4 +1,4 @@
-package com.example.webapp.entity;
+package com.example.webapp.utility;
 
 import static org.assertj.core.api.Assertions.*;
 

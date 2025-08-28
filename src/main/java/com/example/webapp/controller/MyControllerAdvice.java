@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.TypeMismatchDataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -22,5 +23,11 @@ public class MyControllerAdvice {
 	public String showDatabaseErrorPage(Exception e) {
 		e.printStackTrace();
 		return "error/system-error";
+	}
+	
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public String showNotSupportedErrorPage(Exception e) {
+		e.printStackTrace();
+		return "error/405";
 	}
 }

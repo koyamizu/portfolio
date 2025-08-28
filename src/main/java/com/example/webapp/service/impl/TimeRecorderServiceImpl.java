@@ -28,7 +28,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	private final TimeRecorderMapper timeRecorderMapper;
 
 	@Override
-	public List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataFoundException {
+	public List<ShiftSchedule> getEmployeeWithClockTime(){
 
 		List<ShiftSchedule> todayEmployeeList = timeRecorderMapper.selectToday();
 

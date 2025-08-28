@@ -105,7 +105,8 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	}
 
 	@Override
-	public void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
+	public void deleteEmployee(Integer employeeId)
+			throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
 		Employee target = employeesManagementMapper.selectById(employeeId);
 		if (Objects.equal(target, null)) {
 			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
@@ -121,11 +122,12 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	@Override
 	public void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId)
 			throws ForeignKeyConstraintViolationException {
-		//外部キー制約違反はdeleteAllShiftSchdulesByEmployeeIdのみで起こりうる
+		//		外部キー制約違反はdeleteAllShiftSchdulesByEmployeeIdのみで起こりうる。
+		//		absence_applicationsがshift_schedulesのshift_idを外部参照しているため。
 		employeesManagementMapper.setForeignKeyChecksOff();
 		try {
-			workHistoryManagementMapper.deleteAllTimeRecords(employeeId);
 			shiftManagementMapper.deleteAllShiftSchedulesByEmployeeId(employeeId);
+			workHistoryManagementMapper.deleteAllTimeRecords(employeeId);
 			shiftManagementMapper.deleteAllShiftRequestsByEmployeeId(employeeId);
 		} catch (DataIntegrityViolationException e) {
 			throw new ForeignKeyConstraintViolationException("外部キー制約違反でシフトが削除できませんでした:" + e.getMessage());

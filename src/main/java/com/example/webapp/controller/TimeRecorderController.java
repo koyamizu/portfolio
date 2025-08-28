@@ -20,7 +20,6 @@ import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
-import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.helper.Caster;
 import com.example.webapp.service.AbsenceApplicationService;
@@ -81,8 +80,7 @@ public class TimeRecorderController {
 		return "time-recorder/execute";
 	}
 
-	@ExceptionHandler({ InvalidClockException.class, NoDataFoundException.class, InvalidEmployeeIdException.class,
-			DuplicateClockException.class, InvalidClockException.class })
+	@ExceptionHandler({ InvalidClockException.class, NoDataFoundException.class, DuplicateClockException.class })
 	public String redirectToTimeRecorderPage(Exception e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("errorMessage", e.getMessage());
 		return "redirect:/time-recorder";

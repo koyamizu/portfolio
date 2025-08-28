@@ -3,13 +3,13 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>404</title>
+	<title>405</title>
 </head>
 
 <body>
-	<h2>404 -Not Found</h2>
+	<h2>405 -Method Not Allowed</h2>
 	<div>
-		対応するページが存在しません。
+		HTTPのPOSTメソッドは、このURLではサポートされていません。
 	</div>
 	<form method="post" name="logout" th:action="@{/logout}">
 		<a href="javascript:logout.submit()">ホームに戻る</a>

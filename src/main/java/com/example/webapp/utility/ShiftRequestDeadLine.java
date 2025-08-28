@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class ShiftRequestDeadLine {
 
-	private LocalDate deadLine;
+	private final LocalDate deadLine;
 //	private static LocalDate today;
 //	static {
 //		today=LocalDate.now();

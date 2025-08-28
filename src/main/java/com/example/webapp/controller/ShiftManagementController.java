@@ -35,6 +35,11 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+/* TODO
+ * 共通パスなくす。/shift、/shift-request、/shift-managementにする。
+ * 
+ * 
+ * */
 @RequestMapping("/shift")
 public class ShiftManagementController {
 
