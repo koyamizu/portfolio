@@ -12,9 +12,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.example.webapp.entity.Employee;
 import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.entity.TimeRecord;
+import com.example.webapp.test_data.EmployeesManagementTestDataGenerator;
 import com.example.webapp.test_data.TimeRecorderTestDataGenerator;
+import com.example.webapp.test_data.employee.EMPLOYEE;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +39,13 @@ public class TimeRecorderMapperTest {
 		for(int cnt=0;cnt<actuals.size();cnt++) {
 			assertThat(actuals).extracting(ShiftSchedule::getEmployee).contains(expecteds.get(cnt).getEmployee());
 		}
+	}
+	
+	@Test
+	void test_selectEmployeeToClock() {
+		Employee actual=mapper.selectEmployeeToClock(1001);
+		Employee expected=EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
+		actual.equals(expected);
 	}
 
 	@Test

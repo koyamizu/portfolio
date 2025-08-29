@@ -27,7 +27,6 @@ import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class EmployeesManagementServiceImpl implements EmployeesManagementService {
 
@@ -114,7 +113,8 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 		try {
 			employeesManagementMapper.deleteById(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new EmployeeDataIntegrityViolationException("勤怠履歴やシフトデータの存在する従業員です", employeeId);
+			throw new EmployeeDataIntegrityViolationException(
+					"勤怠履歴やシフトデータの存在する従業員です", employeeId);
 		}
 	}
 
@@ -130,7 +130,8 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 			workHistoryManagementMapper.deleteAllTimeRecords(employeeId);
 			shiftManagementMapper.deleteAllShiftRequestsByEmployeeId(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new ForeignKeyConstraintViolationException("外部キー制約違反でシフトが削除できませんでした:" + e.getMessage());
+			throw new ForeignKeyConstraintViolationException(
+					"外部キー制約違反でシフトが削除できませんでした:" + e.getMessage());
 		} finally {
 			employeesManagementMapper.setForeignKeyChecksOn();
 		}

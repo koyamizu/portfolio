@@ -2,7 +2,6 @@ package com.example.webapp.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,15 +20,16 @@ import com.example.webapp.entity.ShiftSchedule;
 import com.example.webapp.exception.DuplicateClockException;
 import com.example.webapp.exception.InvalidClockException;
 import com.example.webapp.exception.NoDataFoundException;
-import com.example.webapp.helper.Caster;
 import com.example.webapp.service.AbsenceApplicationService;
 import com.example.webapp.service.TimeRecorderService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/time-recorder")
 @RequiredArgsConstructor
+@Slf4j
 public class TimeRecorderController {
 
 	private final TimeRecorderService timeRecorderService;
@@ -38,16 +38,9 @@ public class TimeRecorderController {
 
 	@GetMapping
 	public String showTimeRecorder(Model model, HttpSession session) throws NoDataFoundException {
-
-		List<AbsenceApplication> todayAbsences = Caster
-				.castToAbsenceApplicationList(session.getAttribute("todayAbsences"));
+		
 		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime();
-
-		//		当日欠勤者がセッションに保存されていないとき(ホームからタイムレコーダーに推移してきたとき)
-		if (Objects.equals(null, todayAbsences)) {
-			todayAbsences = absenceApplicationService.getTodayApplications();
-			session.setAttribute("todayAbsences", todayAbsences);
-		}
+		List<AbsenceApplication> todayAbsences = absenceApplicationService.getTodayApplications();
 
 		model.addAttribute("todayAbsences", todayAbsences);
 		model.addAttribute("todayMembersWithClockTime", todayMembersWithClockTime);
@@ -58,7 +51,7 @@ public class TimeRecorderController {
 	public String showRecordPage(@RequestParam("employee-id") Integer employeeId, Model model,
 			RedirectAttributes attributes) throws NoDataFoundException {
 		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime();
-		Employee targetEmployee = timeRecorderService.getEmployeeToClock(todayMembersWithClockTime, employeeId);
+		Employee targetEmployee = timeRecorderService.getEmployeeToClock(employeeId);
 		model.addAttribute("employee", targetEmployee);
 		model.addAttribute("today", today);
 		return "time-recorder/record";

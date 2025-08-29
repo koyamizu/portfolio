@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,12 +39,11 @@ import lombok.RequiredArgsConstructor;
  * 
  * 
  * */
-@RequestMapping("/shift")
 public class ShiftManagementController {
 
 	private final ShiftManagementService shiftManagementService;
 
-	@GetMapping
+	@GetMapping("shift")
 	public String showShiftSchedule(HttpSession session, Model model) throws NoDataFoundException {
 		Integer thisMonth = LocalDate.now().getMonthValue();
 		List<FullCalendarDisplay> shifts = shiftManagementService.getThreeMonthShifts(thisMonth);
@@ -57,7 +55,7 @@ public class ShiftManagementController {
 		return "shift/schedule";
 	}
 
-	@GetMapping("request")
+	@GetMapping("shift-request")
 	public String showRequestPage(Authentication authentication, Model model,RedirectAttributes attributes) {
 		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
 		model.addAttribute("deadLine", deadLine.toString());
@@ -85,7 +83,7 @@ public class ShiftManagementController {
 		return "shift/request";
 	}
 
-	@GetMapping("request/edit")
+	@GetMapping("shift-request/edit")
 	public String editRequests(Authentication authentication, Model model,RedirectAttributes attributes) {
 		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
 		if(deadLine.isOverDeadLine(LocalDate.now())) {
@@ -101,7 +99,7 @@ public class ShiftManagementController {
 	}
 
 	//↓ここから
-	@PostMapping("request/submit")
+	@PostMapping("shift-request/submit")
 	public String submitRequests(@RequestParam String selectedDatesJson,
 			@RequestParam State state,
 			RedirectAttributes attributes, Authentication auth)
@@ -109,7 +107,7 @@ public class ShiftManagementController {
 
 		if (selectedDatesJson.equals("[]")) {
 			attributes.addFlashAttribute("errorMessage", "日付を選択してください");
-			return "redirect:/shift/request";
+			return "redirect:/shift-request";
 		}
 
 		Integer employeeId = Integer.parseInt(auth.getName());
@@ -117,17 +115,17 @@ public class ShiftManagementController {
 		if (state.equals(State.NEW)) {
 			shiftManagementService.registerShiftRequests(selectedDatesJson, employeeId);
 			attributes.addFlashAttribute("message", "シフト希望の提出が完了しました");
-			return "redirect:/shift/request";
+			return "redirect:/shift-request";
 		}
 
 		if (state.equals(State.EDIT)) {
 			shiftManagementService.updateShiftRequests(selectedDatesJson, employeeId);
 			attributes.addFlashAttribute("message", "シフト希望を更新しました");
 		}
-		return "redirect:/shift/request";
+		return "redirect:/shift-request";
 	}
 
-	@GetMapping("create")
+	@GetMapping("shift-management")
 	public String showCreatePage(Model model) {
 		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
 		model.addAttribute("deadLine", deadLine.toString());
@@ -157,7 +155,7 @@ public class ShiftManagementController {
 		return "shift/create";
 	}
 
-	@GetMapping("create/edit/{month}")
+	@GetMapping("shift-management/edit/{month}")
 	public String deleteShifts(@PathVariable Integer month, Model model) {
 		ShiftEditContainer container = shiftManagementService.initializeShiftEditContainerFields(month);
 		//		確定したシフトの編集なので、requestというよりshiftなのだが、
@@ -169,7 +167,7 @@ public class ShiftManagementController {
 		return "shift/create";
 	}
 
-	@PostMapping("create/submit")
+	@PostMapping("shift-management/submit")
 	public String submitShifts(@RequestParam String selectedDatesJson,
 			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month
 			,HttpSession session)
@@ -192,19 +190,19 @@ public class ShiftManagementController {
 			shiftManagementService.createNextMonthShifts(selectedDatesJson);
 			attributes.addFlashAttribute("message", "シフトの作成が完了しました");
 		}
-		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift/create";
+		String path = (month == LocalDate.now().getMonthValue()) ? "/shift" : "/shift-management";
 		return "redirect:" + path;
 	}
 
 	@ExceptionHandler({ DuplicateShiftException.class })
 	public String redirectToShiftRequestPage(Exception e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("errorMessage", e.getMessage());
-		return "redirect:/shift/request";
+		return "redirect:/shift-request";
 	}
 
 	@ExceptionHandler({ InvalidEditException.class })
 	public String redirectToShiftCreatePage(Exception e, RedirectAttributes attributes) {
 		attributes.addFlashAttribute("errorMessage", e.getMessage());
-		return "redirect:/shift/create/edit/" + LocalDate.now().getMonthValue();
+		return "redirect:/shift-management/edit/" + LocalDate.now().getMonthValue();
 	}
 }

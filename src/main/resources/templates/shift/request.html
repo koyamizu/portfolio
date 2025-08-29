@@ -27,7 +27,7 @@
 		<p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
 		<div th:unless="${state}=='CONFIRM'">
 			<p>シフト提出期限:&nbsp;<span th:text="${deadLine}"></span></p>
-			<form id="shift-form" th:action="@{/shift/request/submit}" method="post">
+			<form id="shift-form" th:action="@{/shift-request/submit}" method="post">
 				<input type="hidden" name="selectedDatesJson" id="selectedDatesInput" value="[]">
 				<input type="hidden" name="state" th:value="${state}">
 				<input type="submit" th:value="${state}=='NEW'?'提出':'更新'">
@@ -45,7 +45,7 @@
 			<p>来月の希望シフトは以下の日程で提出済みです</p>
 			<p>変更はありますか？（シフト編集期限:&nbsp;<span th:text="${deadLine}"></span>）</p>
 			<div class="shift-confirm">
-				<a th:href="@{/shift/request/edit}">ある</a>
+				<a th:href="@{/shift-request/edit}">ある</a>
 				<a th:href="@{/shift}">ない</a>
 			</div>
 <!--			<p>シフト編集期限<span th:text="${deadLine}"></span></p>-->

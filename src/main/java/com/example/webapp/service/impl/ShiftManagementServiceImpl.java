@@ -84,12 +84,13 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 		List<FullCalendarForm> latestVersionForm = mapper.readValue(requestsStr,
 				new TypeReference<List<FullCalendarForm>>() {
 				});
+		//		フォームから送信された希望日	
 		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntities(latestVersionForm);
-
+		//		現在のシフト希望日
 		List<FullCalendarEntity> oldVersion = shiftManagementMapper.selectRequestByEmployeeId(employeeId);
-
+		
 		List<FullCalendarEntity> additionals= latestVersion.stream()
-				//				新しく追加した希望日
+				//				カレンダーで選択した希望日
 				.filter(l -> Objects.equals(l.getShiftId(), null)
 						//						かつ、すでに登録してある日付と重複していない
 						&& oldVersion.stream().noneMatch(o -> l.getStart().isEqual(o.getStart())))
@@ -103,7 +104,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 				throw new DuplicateShiftException("シフト日が重複して登録されています");
 			}
 		}
-		//newRequestsに存在しない日付を削除
+		//latestVersionに存在しない日付を削除
 		shiftManagementMapper.deleteOldRequestByEmployeeId(latestVersion, employeeId);
 
 	}

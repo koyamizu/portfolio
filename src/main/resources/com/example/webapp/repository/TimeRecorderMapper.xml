@@ -38,22 +38,23 @@
 		  s.date = CURRENT_DATE
 		;
 	</select>
-<!--	消した？-->
-<!--	 シフトデータの抽出 -->
-<!--	<select id="selectAMenberOfTodayEmployeesByEmployeeId">-->
-<!--		SELECT-->
-<!--		  s.employee_id as employeeId-->
-<!--		  ,e.name -->
-<!--		FROM-->
-<!--		  employees AS e-->
-<!--		  INNER JOIN shift_schedules AS s-->
-<!--		  ON e.id = s.employee_id-->
-<!--		WHERE-->
-<!--		  employee_id = #{employeeId}-->
-<!--		  AND date = CURRENT_DATE-->
-<!--		;-->
-<!--	</select>-->
-<!--打刻データの抽出-->
+
+	<!--打刻する従業員を抽出-->
+	<select id="selectEmployeeToClock" resultType="com.example.webapp.entity.Employee">
+		SELECT
+		  s.employee_id
+		  ,e.name
+		FROM
+		  shift_schedules AS s
+		  INNER JOIN employees AS e
+ 		  ON s.employee_id = e.id		  
+		WHERE
+		  s.date = CURRENT_DATE
+		  AND s.employee_id = #{employeeId}
+		;
+	</select>
+	
+	<!--打刻データの抽出-->
 	<select id="selectTodayTimeRecordByEmployeeId">
 		SELECT
 		  clock_in AS clockIn

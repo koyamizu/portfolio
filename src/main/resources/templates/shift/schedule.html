@@ -16,12 +16,12 @@
 		<nav>
 			<ul>
 				<li th:if="${from} == 'user' or ${from} == 'admin'">
-					<a th:href="@{/shift/request}">従業員シフト提出</a></li>
+					<a th:href="@{/shift-request}">従業員シフト提出</a></li>
 				<li th:if="${from} == 'admin'">
-					<a th:href="@{/shift/create/edit/{month}(month=${thisMonth})}">今月のシフト変更</a>
+					<a th:href="@{/shift-management/edit/{month}(month=${thisMonth})}">今月のシフト変更</a>
 				</li>
 				<li th:if="${from} == 'admin'">
-					<a th:href="@{/shift/create}">来月のシフト作成</a>
+					<a th:href="@{/shift-management}">来月のシフト作成</a>
 				</li>
 				<li class="li-index">
 					<a th:href="${from}?@{/{from}(from=${from})}:'javascript:history.back()'">戻る</a>

@@ -41,12 +41,9 @@ public class TimeRecorderServiceImpl implements TimeRecorderService {
 	}
 
 	@Override
-	public Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId)
+	public Employee getEmployeeToClock(Integer employeeId)
 			throws NoDataFoundException {
-//		↓これsessionからEmployees取り出してその中から打刻するメンバーをemployeeIdで取り出せばいいから不要な気がする
-		List<Employee> employees = todayMembersWithClockTime.stream().map(ShiftSchedule::getEmployee).toList();
-		Employee employeeToClock = employees.stream().filter(e -> e.getEmployeeId().equals(employeeId))
-			    .findFirst().orElse(null);
+		Employee employeeToClock = timeRecorderMapper.selectEmployeeToClock(employeeId);
 		if (Objects.equal(employeeToClock, null)) {
 			throw new NoDataFoundException("その従業員IDの方は本日出勤予定ではありません");
 		}

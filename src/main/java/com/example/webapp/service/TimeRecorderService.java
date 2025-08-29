@@ -12,7 +12,7 @@ public interface TimeRecorderService {
 	
 	List<ShiftSchedule> getEmployeeWithClockTime() throws NoDataFoundException;
 
-	Employee getEmployeeToClock(List<ShiftSchedule> todayMembersWithClockTime,Integer employeeId) throws NoDataFoundException;
+	Employee getEmployeeToClock(Integer employeeId) throws NoDataFoundException;
 
 	void clockIn(Integer employeeId) throws DuplicateClockException;
 

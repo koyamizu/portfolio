@@ -87,7 +87,8 @@ public class EmployeesManagementController {
 	}
 
 	@PostMapping("delete/{employee-id}")
-	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes) throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
+	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes)
+			throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
 		service.deleteEmployee(employeeId);
 		attributes.addFlashAttribute("message",
 				"従業員ID:" + employeeId+" の従業員情報が削除されました");
@@ -96,7 +97,8 @@ public class EmployeesManagementController {
 	
 	@PostMapping("all-erase")
 	@ResponseStatus(HttpStatus.PERMANENT_REDIRECT)
-	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId) throws ForeignKeyConstraintViolationException {
+	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId)
+			throws ForeignKeyConstraintViolationException {
 		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(employeeId);
 		return "redirect:/employees/delete/"+employeeId;
 	}
@@ -116,7 +118,8 @@ public class EmployeesManagementController {
 	
 	@ExceptionHandler(EmployeeDataIntegrityViolationException.class)
 	public String confirmAllErase(EmployeeDataIntegrityViolationException e, RedirectAttributes attributes) {
-		attributes.addFlashAttribute("confirmMessage", e.getMessage()+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？（この操作は取り消せません）");
+		attributes.addFlashAttribute("confirmMessage", e.getMessage()
+				+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？（この操作は取り消せません）");
 		attributes.addFlashAttribute("targetEmployeeId", e.getEmployeeId());
 		return "redirect:/employees";
 	}
