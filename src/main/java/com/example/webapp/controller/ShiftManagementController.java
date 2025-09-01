@@ -56,27 +56,27 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("shift-request")
-	public String showRequestPage(Authentication authentication, Model model,RedirectAttributes attributes) {
-		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
+	public String showRequestPage(Authentication authentication, Model model, RedirectAttributes attributes) {
+		ShiftRequestDeadLine deadLine = new ShiftRequestDeadLine(LocalDate.now());
 		model.addAttribute("deadLine", deadLine.toString());
-		
+
 		Integer employeeId = Integer.parseInt(authentication.getName());
 		List<FullCalendarDisplay> requests = shiftManagementService.getPersonalShiftRequests(employeeId);
-		
+
 		State state = CollectionUtils.isEmpty(requests) ? State.NEW : State.CONFIRM;
-		
+
 		if (state.equals(State.CONFIRM)) {
 			FullCalendarHelper.setColorProperties("transparent", "transparent", requests);
 			model.addAttribute("requests", requests);
 			model.addAttribute("state", state.toString());
 			return "shift/request";
 		}
-		
-		if(deadLine.isOverDeadLine(LocalDate.now())) {
+
+		if (deadLine.isOverDeadLine(LocalDate.now())) {
 			attributes.addFlashAttribute("errorMessage", "シフトの提出期限を超えています。責任者に直接希望日を伝えてください。");
 			return "redirect:/shift";
 		}
-		
+
 		if (state.equals(State.NEW)) {
 			model.addAttribute("state", state.toString());
 		}
@@ -84,9 +84,9 @@ public class ShiftManagementController {
 	}
 
 	@GetMapping("shift-request/edit")
-	public String editRequests(Authentication authentication, Model model,RedirectAttributes attributes) {
-		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
-		if(deadLine.isOverDeadLine(LocalDate.now())) {
+	public String editRequests(Authentication authentication, Model model, RedirectAttributes attributes) {
+		ShiftRequestDeadLine deadLine = new ShiftRequestDeadLine(LocalDate.now());
+		if (deadLine.isOverDeadLine(LocalDate.now())) {
 			attributes.addFlashAttribute("errorMessage", "シフトの編集可能な日付を超えています。変更があれば、責任者に直接伝えてください。");
 			return "redirect:/shift";
 		}
@@ -127,15 +127,15 @@ public class ShiftManagementController {
 
 	@GetMapping("shift-management")
 	public String showCreatePage(Model model) {
-		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
+		ShiftRequestDeadLine deadLine = new ShiftRequestDeadLine(LocalDate.now());
 		model.addAttribute("deadLine", deadLine.toString());
-		
+
 		Integer nextMonth = LocalDate.now().plus(1, ChronoUnit.MONTHS).getMonthValue();
 		model.addAttribute("month", nextMonth);
 		//id,start(date)のみの情報が返ってくる
 		List<FullCalendarDisplay> nextMonthShifts = shiftManagementService
 				.getOneMonthShifts(nextMonth);
-		
+
 		State state = CollectionUtils.isEmpty(nextMonthShifts) ? State.NEW : State.CONFIRM;
 		model.addAttribute("state", state.toString());
 
@@ -158,8 +158,10 @@ public class ShiftManagementController {
 	@GetMapping("shift-management/edit/{month}")
 	public String deleteShifts(@PathVariable Integer month, Model model) {
 		ShiftEditContainer container = shiftManagementService.initializeShiftEditContainerFields(month);
+		//		List<FullCalendarEntity> oldVersion =FullCalendarHelper.convertFullCalendarEntitiesFromDisplays(container.getShifts());
 		//		確定したシフトの編集なので、requestというよりshiftなのだが、
 		//		initializeCalendarの引数が「requests」なので、requestsとして格納
+		//		session.setAttribute("oldVersion", oldVersion);
 		model.addAttribute("requests", container.getShifts());
 		model.addAttribute("month", month);
 		model.addAttribute("state", State.EDIT.toString());
@@ -169,23 +171,23 @@ public class ShiftManagementController {
 
 	@PostMapping("shift-management/submit")
 	public String submitShifts(@RequestParam String selectedDatesJson,
-			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month
-			,HttpSession session)
+			RedirectAttributes attributes, @RequestParam State state, @RequestParam Integer month, HttpSession session)
 			throws JsonProcessingException, InvalidEditException {
 
 		if (state.equals(State.EDIT)) {
+			//			List<FullCalendarEntity> oldVersion=Caster.castToFullCalendarEntityList( session.getAttribute("oldVersion"));
 			shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
 			return "redirect:/shift";
 		}
-		
-		ShiftRequestDeadLine deadLine=new ShiftRequestDeadLine(LocalDate.now());
-		
-		if(deadLine.isJustOrUnderDeadLine(LocalDate.now())) {
-			attributes.addFlashAttribute("errorMessage", deadLine.toString()+"まではシフトの作成ができません");
+
+		ShiftRequestDeadLine deadLine = new ShiftRequestDeadLine(LocalDate.now());
+
+		if (deadLine.isJustOrUnderDeadLine(LocalDate.now())) {
+			attributes.addFlashAttribute("errorMessage", deadLine.toString() + "まではシフトの作成ができません");
 			return "redirect:/shift";
 		}
-		
+
 		if (state.equals(State.NEW)) {
 			shiftManagementService.createNextMonthShifts(selectedDatesJson);
 			attributes.addFlashAttribute("message", "シフトの作成が完了しました");

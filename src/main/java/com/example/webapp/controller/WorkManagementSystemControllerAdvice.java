@@ -9,17 +9,15 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.example.webapp.exception.ForeignKeyConstraintViolationException;
-
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
 @Slf4j
-public class MyControllerAdvice {
+public class WorkManagementSystemControllerAdvice {
 
 	@ExceptionHandler({DataAccessResourceFailureException.class,BadSqlGrammarException.class
 		,EmptyResultDataAccessException.class,TypeMismatchDataAccessException.class
-		,NullPointerException.class,DataIntegrityViolationException.class,ForeignKeyConstraintViolationException.class})
+		,NullPointerException.class,DataIntegrityViolationException.class})
 	public String showDatabaseErrorPage(Exception e) {
 		e.printStackTrace();
 		return "error/system-error";

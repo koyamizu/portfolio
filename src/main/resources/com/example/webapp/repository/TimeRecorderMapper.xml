@@ -42,7 +42,7 @@
 	<!--打刻する従業員を抽出-->
 	<select id="selectEmployeeToClock" resultType="com.example.webapp.entity.Employee">
 		SELECT
-		  s.employee_id
+		  s.employee_id AS employeeId
 		  ,e.name
 		FROM
 		  shift_schedules AS s

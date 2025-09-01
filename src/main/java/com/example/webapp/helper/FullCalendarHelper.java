@@ -1,5 +1,7 @@
 package com.example.webapp.helper;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -37,6 +39,19 @@ public class FullCalendarHelper {
 		entity.setScheduledEnd(form.getScheduledEnd());
 	    return entity;
 	}
+	
+	public static FullCalendarEntity convertFullCalendarEntity(FullCalendarDisplay display) {
+	    FullCalendarEntity entity = new FullCalendarEntity();
+	    Employee employee=new Employee();
+	    employee.setEmployeeId(display.getEmployeeId());
+	    employee.setName(display.getTitle());
+	    entity.setShiftId(display.getId());
+	    entity.setEmployee(employee);
+		entity.setStart(LocalDate.parse(display.getStart()));
+		entity.setScheduledStart(LocalTime.parse(display.getScheduledStart()));
+		entity.setScheduledEnd(LocalTime.parse(display.getScheduledEnd()));
+	    return entity;
+	}
 
 	public static FullCalendarDisplay convertFullCalendarDisplay(FullCalendarEntity entity) {
 		FullCalendarDisplay display = new FullCalendarDisplay();
@@ -55,6 +70,10 @@ public class FullCalendarHelper {
 	
 	public static List<FullCalendarEntity> convertFullCalendarEntities(List<FullCalendarForm> forms){
 		return forms.stream().map(e->convertFullCalendarEntity(e)).toList();
+	}
+	
+	public static List<FullCalendarEntity> convertFullCalendarEntitiesFromDisplays(List<FullCalendarDisplay> displays){
+		return displays.stream().map(e->convertFullCalendarEntity(e)).toList();
 	}
 	
 	public static List<FullCalendarDisplay> convertFullCalendarDisplays(List<FullCalendarEntity> entities){

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FullCalendarEntity {
 	//シフトid
-	//Fullcalendarに表示する際に、「id」という名称である必要があるので、ここは「id」で固定
 	private Integer shiftId;
 	
 	private Employee employee;

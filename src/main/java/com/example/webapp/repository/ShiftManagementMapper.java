@@ -31,8 +31,8 @@ public interface ShiftManagementMapper {
 
 	void deleteOldShiftByMonth(List<FullCalendarEntity> newShifts,Integer targetMonth);
 	
-	void deleteAllShiftSchedulesByEmployeeId(Integer employeeId);
+	void deleteAllShiftSchedules(Integer employeeId);
 	
-	void deleteAllShiftRequestsByEmployeeId(Integer employeeId);
+	void deleteAllShiftRequests(Integer employeeId);
 
 }

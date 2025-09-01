@@ -41,6 +41,18 @@ public class FullCalendarHelperTest {
 		assertThat(targetForm.getScheduledStart()).isEqualTo(target.getScheduledStart());
 		assertThat(targetForm.getScheduledEnd()).isEqualTo(target.getScheduledEnd());
 	}
+	
+	@Test
+	void test_convertFullCalendarEntity_From_FullCalendarDisplay() {
+		FullCalendarEntity expected = ShiftManagementTestDataGenerator.getAnyEmployeeSchedule(EMPLOYEE.hoge, 1, 15);
+		FullCalendarDisplay targetDisplay =FullCalendarHelper.convertFullCalendarDisplay(expected);
+		FullCalendarEntity actual=FullCalendarHelper.convertFullCalendarEntity(targetDisplay);
+		assertThat(actual.getShiftId()).isEqualTo(expected.getShiftId());
+		assertThat(actual.getEmployee()).isEqualTo(expected.getEmployee());
+		assertThat(actual.getStart()).isEqualTo(expected.getStart());
+		assertThat(actual.getScheduledStart()).isEqualTo(expected.getScheduledStart());
+		assertThat(actual.getScheduledEnd()).isEqualTo(expected.getScheduledEnd());
+	}
 
 	@Test
 	void test_convertFullCalendarForm_invalid_because_target_is_null() {

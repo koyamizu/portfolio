@@ -30,7 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ShiftManagementServiceImpl implements ShiftManagementService {
 
@@ -147,7 +146,16 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 				new TypeReference<List<FullCalendarForm>>() {
 				});
 		List<FullCalendarEntity> latestVersion=FullCalendarHelper.convertFullCalendarEntities(latestVersionForm);
-		List<FullCalendarEntity> updated = latestVersion.stream().filter(r -> Objects.equals(r.getShiftId(), null))
+		List<FullCalendarEntity> updated 
+		= latestVersion.stream().filter(l -> Objects.equals(l.getShiftId(), null)
+//				エラーが起きていたので↓のコードを追加したのだが、単純にcreate-calendar.jsの158行目の
+//				return e.id == request.publicIdの等値演算子が「=」になっていたというだけのミスだった。
+//				選択解除→再選択しても、最初のshiftIdがそのままJson配列に入るようにしているので、
+//				再選択したからといってshiftIdがnullになることはないと思われる
+//				よって↓のコードは不要だが、一応残しておく
+//					&& oldVersion.stream().noneMatch(o -> l.getStart().isEqual(o.getStart())
+//							&&l.getEmployee().getEmployeeId().equals(o.getEmployee().getEmployeeId()))
+				)
 				.toList();
 		try {
 			if (!CollectionUtils.isEmpty(updated)) {
@@ -155,6 +163,7 @@ public class ShiftManagementServiceImpl implements ShiftManagementService {
 			}
 			shiftManagementMapper.deleteOldShiftByMonth(latestVersion, month);
 		} catch (DataIntegrityViolationException e) {
+			e.printStackTrace();
 			throw new InvalidEditException("勤怠履歴のあるシフト/欠勤申請の出されているシフトは編集できません");
 		}
 	}

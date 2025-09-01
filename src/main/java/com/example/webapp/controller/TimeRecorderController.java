@@ -50,7 +50,6 @@ public class TimeRecorderController {
 	@PostMapping("/record")
 	public String showRecordPage(@RequestParam("employee-id") Integer employeeId, Model model,
 			RedirectAttributes attributes) throws NoDataFoundException {
-		List<ShiftSchedule> todayMembersWithClockTime = timeRecorderService.getEmployeeWithClockTime();
 		Employee targetEmployee = timeRecorderService.getEmployeeToClock(employeeId);
 		model.addAttribute("employee", targetEmployee);
 		model.addAttribute("today", today);

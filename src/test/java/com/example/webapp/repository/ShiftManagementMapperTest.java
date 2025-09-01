@@ -199,7 +199,7 @@ public class ShiftManagementMapperTest {
 		String query = "SELECT employee_id FROM shift_schedules WHERE employee_id=?";
 		List<Map<String, Object>> before = jdbcTemplate.queryForList(query, 1001);
 		assertThat(before).isNotEmpty();
-		mapper.deleteAllShiftSchedulesByEmployeeId(1001);
+		mapper.deleteAllShiftSchedules(1001);
 		List<Map<String, Object>> after = jdbcTemplate.queryForList(query, 1001);
 		assertThat(after).isEmpty();
 		jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS = 1;");
@@ -211,7 +211,7 @@ public class ShiftManagementMapperTest {
 		String query = "SELECT employee_id FROM shift_schedules WHERE employee_id=?";
 		List<Map<String, Object>> before = jdbcTemplate.queryForList(query, 1001);
 		assertThat(before).isNotEmpty();
-		assertThrows(DataIntegrityViolationException.class, () -> mapper.deleteAllShiftSchedulesByEmployeeId(1001));
+		assertThrows(DataIntegrityViolationException.class, () -> mapper.deleteAllShiftSchedules(1001));
 	}
 
 	@Test
@@ -220,7 +220,7 @@ public class ShiftManagementMapperTest {
 		String query = "SELECT employee_id FROM shift_requests WHERE employee_id=?";
 		List<Map<String, Object>> before = jdbcTemplate.queryForList(query, 1001);
 		assertThat(before).isNotEmpty();
-		mapper.deleteAllShiftRequestsByEmployeeId(1001);
+		mapper.deleteAllShiftRequests(1001);
 		List<Map<String, Object>> after = jdbcTemplate.queryForList(query, 1001);
 		assertThat(after).isEmpty();
 	}

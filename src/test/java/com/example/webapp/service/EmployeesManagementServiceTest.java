@@ -23,6 +23,7 @@ import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
+import com.example.webapp.repository.AbsenceApplicationMapper;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
@@ -47,6 +48,8 @@ public class EmployeesManagementServiceTest {
 	WorkHistoryManagementMapper workHistoryManagementMapper;
 	@Mock
 	ShiftManagementMapper shiftManagementMapper;
+	@Mock
+	AbsenceApplicationMapper absenceApplicationMapper;
 
 	@Test
 	void test_getAllEmployees() throws NoDataFoundException {
@@ -157,20 +160,20 @@ public class EmployeesManagementServiceTest {
 	}
 
 	@Test
-	void test_deleteEmploye() throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
+	void test_deleteEmploye() throws InvalidEmployeeIdException,ForeignKeyConstraintViolationException {
 		Employee target = EmployeesManagementTestDataGenerator.getEmployee(EMPLOYEE.hoge);
 		doReturn(target).when(employeesManagementMapper).selectById(1001);
 		doNothing().when(employeesManagementMapper).deleteById(1001);
 		service.deleteEmployee(1001);
 		verify(employeesManagementMapper).deleteById(1001);
 	}
-
-	//存在しない従業員を削除しようとしたとき
-	@Test
-	void test_deleteEmploye_throws_InvalidEmployeeIdException() {
-		doReturn(null).when(employeesManagementMapper).selectById(1010);
-		assertThrows(InvalidEmployeeIdException.class, () -> service.deleteEmployee(1010));
-	}
+//	9/1 POSTメソッドなのでdelete/{employee-id}には直にアクセスできない。よって不要。
+//	//存在しない従業員を削除しようとしたとき
+//	@Test
+//	void test_deleteEmploye_throws_InvalidEmployeeIdException() {
+//		doReturn(null).when(employeesManagementMapper).selectById(1010);
+//		assertThrows(InvalidEmployeeIdException.class, () -> service.deleteEmployee(1010));
+//	}
 
 	//勤務履歴やシフト予定が存在する従業員を削除しようとした時
 	@Test
@@ -182,27 +185,27 @@ public class EmployeesManagementServiceTest {
 	}
 
 	@Test
-	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests() throws ForeignKeyConstraintViolationException {
-		doNothing().when(employeesManagementMapper).setForeignKeyChecksOff();
-		doNothing().when(workHistoryManagementMapper).deleteAllTimeRecords(1001);
-		doNothing().when(shiftManagementMapper).deleteAllShiftSchedulesByEmployeeId(1001);
-		doNothing().when(shiftManagementMapper).deleteAllShiftRequestsByEmployeeId(1001);
-		doNothing().when(employeesManagementMapper).setForeignKeyChecksOn();
-		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001);
-		verify(employeesManagementMapper).setForeignKeyChecksOff();
-		verify(workHistoryManagementMapper).deleteAllTimeRecords(1001);
-		verify(shiftManagementMapper).deleteAllShiftSchedulesByEmployeeId(1001);
-		verify(shiftManagementMapper).deleteAllShiftRequestsByEmployeeId(1001);
-		verify(employeesManagementMapper).setForeignKeyChecksOn();		
+	void test_eraseAbsenceApplicationsTimeRecordsShiftRequestsAndShiftSchedules() throws ForeignKeyConstraintViolationException {
+		doNothing().when(absenceApplicationMapper).deleteAll(1001);
+		doNothing().when(workHistoryManagementMapper).deleteAll(1001);
+		doNothing().when(shiftManagementMapper).deleteAllShiftRequests(1001);
+		doNothing().when(shiftManagementMapper).deleteAllShiftSchedules(1001);
+		service.eraseAbsenceApplicationsWorkHistoriesShiftRequestsAndShiftSchedules(1001);
+		verify(absenceApplicationMapper).deleteAll(1001);
+		verify(workHistoryManagementMapper).deleteAll(1001);
+		verify(shiftManagementMapper).deleteAllShiftRequests(1001);
+		verify(shiftManagementMapper).deleteAllShiftSchedules(1001);
 	}
 
-	@Test
-	//		FOREIGIN_KEY_CHECK=0が実行されていないために起こる例外
-	void test_eraseShiftSchedulesAndTimeRecordsAndShiftRequests_throws_ForeignKeyViolationException()
-			throws ForeignKeyConstraintViolationException {
-		doThrow(DataIntegrityViolationException.class).when(shiftManagementMapper)
-				.deleteAllShiftSchedulesByEmployeeId(1001);
-		assertThrows(ForeignKeyConstraintViolationException.class,
-				() -> service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(1001));
-	}
+//	@Test
+//	
+//		FOREIGIN_KEY_CHECK=0が実行されていないために起こる例外
+//	ShiftSchedulesより前にAbsenceApplicationsを消せばいいため、不要
+//	void test_eraseAbsenceApplicationsTimeRecordsShiftRequestsAndShiftSchedules_throws_ForeignKeyViolationException()
+//			throws ForeignKeyConstraintViolationException {
+//		doThrow(DataIntegrityViolationException.class).when(shiftManagementMapper)
+//				.deleteAllShiftSchedules(1001);
+//		assertThrows(ForeignKeyConstraintViolationException.class,
+//				() -> service.eraseAbsenceApplicationsTimeRecordsShiftRequestsAndShiftSchedules(1001));
+//	}
 }

@@ -1,6 +1,6 @@
 package com.example.webapp.exception;
 
-public class InvalidEditException extends Exception {
+public class InvalidEditException extends RuntimeException {
 
 	public InvalidEditException() {
 		super();

@@ -166,7 +166,7 @@
 		;
 	</delete>
 	
-	<delete id="deleteAllShiftSchedulesByEmployeeId">
+	<delete id="deleteAllShiftSchedules">
 		DELETE FROM
 		  shift_schedules
 		WHERE
@@ -174,7 +174,7 @@
 		;
 	</delete>
 	
-	<delete id="deleteAllShiftRequestsByEmployeeId">
+	<delete id="deleteAllShiftRequests">
 		DELETE FROM
 		  shift_requests
 		WHERE

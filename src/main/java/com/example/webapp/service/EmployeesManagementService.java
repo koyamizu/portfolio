@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataFoundException;
@@ -26,7 +25,7 @@ public interface EmployeesManagementService {
 	
 	void updateEmployee(EmployeeForm employeeForm) throws DuplicateEmployeeException, TooLongDataException;
 	
-	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException,EmployeeDataIntegrityViolationException;
+	void deleteEmployee(Integer employeeId) throws InvalidEmployeeIdException,ForeignKeyConstraintViolationException;
 
-	void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId) throws ForeignKeyConstraintViolationException;
+	void eraseAbsenceApplicationsWorkHistoriesShiftRequestsAndShiftSchedules(Integer employeeId);
 }

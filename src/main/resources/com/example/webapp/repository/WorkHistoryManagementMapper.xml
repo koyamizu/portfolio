@@ -26,7 +26,6 @@
 		  ,e.name AS employee_name
 		  ,t.clock_in
 		  ,t.clock_out
-<!--		  ,SUBTIME(t.clock_out, t.clock_in) AS work_time-->
           ,t.created_at
           ,t.updated_at
 		  ,CASE
@@ -135,7 +134,7 @@
 		;
 	</update>
 	
-	<delete id="deleteAllTimeRecords">
+	<delete id="deleteAll">
 		DELETE FROM
 		  time_records
 		WHERE

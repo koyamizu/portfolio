@@ -148,4 +148,22 @@
 		  id=#{applicationId}
 		;
 	</delete>
+	
+	<delete id="deleteAll">
+		DELETE
+		FROM
+		  absence_applications
+		WHERE
+		  shift_id
+		IN
+		  (
+		  SELECT
+		    id
+		  FROM
+		    shift_schedules
+		  WHERE
+		    employee_id = #{employeeId}
+		  )
+		;
+	</delete>
 </mapper>

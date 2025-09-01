@@ -21,5 +21,5 @@ public interface WorkHistoryManagementMapper {
 
 	void update(TimeRecord updatedHistory);
 	
-	void deleteAllTimeRecords(Integer employeeId);
+	void deleteAll(Integer employeeId);
 }

@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataFoundException;
@@ -87,40 +86,45 @@ public class EmployeesManagementController {
 	}
 
 	@PostMapping("delete/{employee-id}")
-	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes)
-			throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
+	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes
+			,HttpSession session)
+			throws InvalidEmployeeIdException, ForeignKeyConstraintViolationException {
+		session.setAttribute("employeeIdToDelete", employeeId);
 		service.deleteEmployee(employeeId);
 		attributes.addFlashAttribute("message",
 				"従業員ID:" + employeeId+" の従業員情報が削除されました");
+		session.removeAttribute("employeeIdToDelete");
 		return "redirect:/employees";
 	}
 	
 	@PostMapping("all-erase")
 	@ResponseStatus(HttpStatus.PERMANENT_REDIRECT)
-	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId)
-			throws ForeignKeyConstraintViolationException {
-		service.eraseShiftSchedulesAndTimeRecordsAndShiftRequests(employeeId);
+	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId) {
+		service.eraseAbsenceApplicationsWorkHistoriesShiftRequestsAndShiftSchedules(employeeId);
 		return "redirect:/employees/delete/"+employeeId;
 	}
 	
 	@GetMapping("detail/{employee-id}")
-	public String showEmployeeDetail(@PathVariable("employee-id") Integer employeeId, Model model) throws InvalidEmployeeIdException {
+	public String showEmployeeDetail(@PathVariable("employee-id") Integer employeeId, Model model) 
+			throws InvalidEmployeeIdException {
 		Employee employee = service.getEmployee(employeeId);
 		model.addAttribute("employee", employee);
 		return "employees/detail";
 	}
 
-	@ExceptionHandler({NoDataFoundException.class,InvalidEmployeeIdException.class,DuplicateEmployeeException.class})
-	public String redirectToEmployeesListPage(Exception e, RedirectAttributes attributes) {
-		attributes.addFlashAttribute("errorMessage", e.getMessage());
+	@ExceptionHandler(ForeignKeyConstraintViolationException.class)
+	public String confirmAllErase(ForeignKeyConstraintViolationException e, RedirectAttributes attributes
+			,HttpSession session) {
+		Integer targetEmployeeId=(Integer) session.getAttribute("employeeIdToDelete");
+		attributes.addFlashAttribute("confirmMessage", e.getMessage()
+				+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？（この操作は取り消せません）");
+		attributes.addFlashAttribute("targetEmployeeId",targetEmployeeId);
 		return "redirect:/employees";
 	}
 	
-	@ExceptionHandler(EmployeeDataIntegrityViolationException.class)
-	public String confirmAllErase(EmployeeDataIntegrityViolationException e, RedirectAttributes attributes) {
-		attributes.addFlashAttribute("confirmMessage", e.getMessage()
-				+"\n「はい」を押すと、シフト情報と勤怠履歴が全て削除されますがよろしいでしょうか？（この操作は取り消せません）");
-		attributes.addFlashAttribute("targetEmployeeId", e.getEmployeeId());
+	@ExceptionHandler({NoDataFoundException.class,InvalidEmployeeIdException.class,DuplicateEmployeeException.class})
+	public String redirectToEmployeesListPage(Exception e, RedirectAttributes attributes) {
+		attributes.addFlashAttribute("errorMessage", e.getMessage());
 		return "redirect:/employees";
 	}
 	

@@ -10,13 +10,13 @@ import org.springframework.util.CollectionUtils;
 
 import com.example.webapp.entity.Employee;
 import com.example.webapp.exception.DuplicateEmployeeException;
-import com.example.webapp.exception.EmployeeDataIntegrityViolationException;
 import com.example.webapp.exception.ForeignKeyConstraintViolationException;
 import com.example.webapp.exception.InvalidEmployeeIdException;
 import com.example.webapp.exception.NoDataFoundException;
 import com.example.webapp.exception.TooLongDataException;
 import com.example.webapp.form.EmployeeForm;
 import com.example.webapp.helper.EmployeeHelper;
+import com.example.webapp.repository.AbsenceApplicationMapper;
 import com.example.webapp.repository.EmployeesManagementMapper;
 import com.example.webapp.repository.ShiftManagementMapper;
 import com.example.webapp.repository.WorkHistoryManagementMapper;
@@ -33,6 +33,7 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 	private final EmployeesManagementMapper employeesManagementMapper;
 	private final WorkHistoryManagementMapper workHistoryManagementMapper;
 	private final ShiftManagementMapper shiftManagementMapper;
+	private final AbsenceApplicationMapper absenceApplicationMapper;
 
 	@Override
 	public List<Employee> getAllEmployees() throws NoDataFoundException {
@@ -105,35 +106,20 @@ public class EmployeesManagementServiceImpl implements EmployeesManagementServic
 
 	@Override
 	public void deleteEmployee(Integer employeeId)
-			throws InvalidEmployeeIdException, EmployeeDataIntegrityViolationException {
-		Employee target = employeesManagementMapper.selectById(employeeId);
-		if (Objects.equal(target, null)) {
-			throw new InvalidEmployeeIdException("そのIDをもつ従業員データは存在しません");
-		}
+			throws InvalidEmployeeIdException, ForeignKeyConstraintViolationException {
 		try {
 			employeesManagementMapper.deleteById(employeeId);
 		} catch (DataIntegrityViolationException e) {
-			throw new EmployeeDataIntegrityViolationException(
-					"勤怠履歴やシフトデータの存在する従業員です", employeeId);
+			throw new ForeignKeyConstraintViolationException("勤怠履歴やシフトデータの存在する従業員です");
 		}
 	}
 
 	@Transactional
 	@Override
-	public void eraseShiftSchedulesAndTimeRecordsAndShiftRequests(Integer employeeId)
-			throws ForeignKeyConstraintViolationException {
-		//		外部キー制約違反はdeleteAllShiftSchdulesByEmployeeIdのみで起こりうる。
-		//		absence_applicationsがshift_schedulesのshift_idを外部参照しているため。
-		employeesManagementMapper.setForeignKeyChecksOff();
-		try {
-			shiftManagementMapper.deleteAllShiftSchedulesByEmployeeId(employeeId);
-			workHistoryManagementMapper.deleteAllTimeRecords(employeeId);
-			shiftManagementMapper.deleteAllShiftRequestsByEmployeeId(employeeId);
-		} catch (DataIntegrityViolationException e) {
-			throw new ForeignKeyConstraintViolationException(
-					"外部キー制約違反でシフトが削除できませんでした:" + e.getMessage());
-		} finally {
-			employeesManagementMapper.setForeignKeyChecksOn();
-		}
+	public void eraseAbsenceApplicationsWorkHistoriesShiftRequestsAndShiftSchedules(Integer employeeId) {
+		absenceApplicationMapper.deleteAll(employeeId);
+		workHistoryManagementMapper.deleteAll(employeeId);
+		shiftManagementMapper.deleteAllShiftRequests(employeeId);
+		shiftManagementMapper.deleteAllShiftSchedules(employeeId);
 	}
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -145,5 +146,18 @@ public class AbsenceApplicationMapperTest {
 		assertThat(before).isNotNull();
 		mapper.delete(3);
 		assertThrows(EmptyResultDataAccessException.class, ()->jdbcTemplate.queryForObject(confirmNotNull, Integer.class,3));
+	}
+	
+	@Test
+	void test_deleteAll() {
+		String confirmNotNull="SELECT AA.id FROM absence_applications as AA INNER JOIN shift_schedules as SS "
+				+ "ON AA.shift_id = SS.id WHERE SS.employee_id=?;";
+		@SuppressWarnings("rawtypes")
+		List<ArrayList> before=jdbcTemplate.queryForList(confirmNotNull, ArrayList.class,1001);
+		assertThat(before).isNotEmpty();
+		mapper.deleteAll(1001);
+		@SuppressWarnings("rawtypes")
+		List<ArrayList> after=jdbcTemplate.queryForList(confirmNotNull, ArrayList.class,1001);
+		assertThat(after).isEmpty();
 	}
 }

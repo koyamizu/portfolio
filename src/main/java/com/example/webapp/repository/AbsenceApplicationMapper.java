@@ -25,4 +25,6 @@ public interface AbsenceApplicationMapper {
 	void update(Integer shiftId,Boolean decision);
 	
 	void delete(Integer applicationId);
+	
+	void deleteAll(Integer employeeId);
 }

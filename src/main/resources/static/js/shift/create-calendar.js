@@ -155,7 +155,7 @@ function initializeCalendar(events, month) {
 			evtEl.firstChild.style.color = 'rgb(92,92,92)';
 		} else {
 			shift = events.find(e => {
-				return e.id = request.publicId
+				return e.id == request.publicId
 			});
 			selectedShifts.push({
 				id: parseInt(shift.id, 10),

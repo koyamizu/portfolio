@@ -108,7 +108,7 @@ public class WorkHistoryManagementMapperTest {
 		String query="SELECT employee_id FROM time_records WHERE employee_id=?";
 		List<Map<String, Object>> before=jdbcTemplate.queryForList(query,1002);
 		assertThat(before).isNotEmpty();
-		mapper.deleteAllTimeRecords(1002);
+		mapper.deleteAll(1002);
 		List<Map<String,Object>> after=jdbcTemplate.queryForList(query,1002);
 		assertThat(after).isEmpty();
 	}

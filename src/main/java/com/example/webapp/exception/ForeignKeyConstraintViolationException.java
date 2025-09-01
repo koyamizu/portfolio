@@ -1,7 +1,6 @@
 package com.example.webapp.exception;
 
 public class ForeignKeyConstraintViolationException extends Exception{
-	private Integer employeeId;
 	
 	public ForeignKeyConstraintViolationException() {
 		super();
@@ -11,7 +10,4 @@ public class ForeignKeyConstraintViolationException extends Exception{
 		super(message);
 	}
 	
-	public Integer getEmployeeId() {
-		return this.employeeId;
-	}
 }
