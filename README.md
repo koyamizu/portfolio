@@ -46,6 +46,8 @@ FK…外部キー
 
 
 # アプリのURL
+9/2追記 現在、複数の企業様にエントリーさせていただいております。同時接続がされた時はDBにコネクション数が上限を超え、アプリが立ち上がらないことがあります。
+恐れ入りますが、その際は時間を変えてアクセスいただけると幸いでございます。お手数おかけして申し訳ございません。
 [https://work-management-app-7126fd9d36c3.herokuapp.com/](https://work-management-app-7126fd9d36c3.herokuapp.com/)
 
 # テスト用アカウント
@@ -95,12 +97,12 @@ FK…外部キー
 | パスワード作成画面 | POST | /password/create |  |
 | パスワード作成/更新処理 | POST | /password/update |  |
 | シフト表画面 | GET | /shift |  |
-| シフト希望登録画面 | GET | /shift/request |  |
-| シフト希望送信処理 | POST | /shift/request/submit |  |
-| シフト希望編集画面 | GET | /shift/request/edit |  |
-| シフト表作成画面 | GET | /shift/create | 管理者 |
-| シフト表作成処理 | POST | /shift/create/submit | 管理者 |
-| シフト表編集画面 | GET | /shift/create/edit/{month} | 管理者 |
+| シフト希望登録画面 | GET | /shift-request |  |
+| シフト希望送信処理 | POST | /shift-request/submit |  |
+| シフト希望編集画面 | GET | /shift-request/edit |  |
+| シフト表作成画面 | GET | /shift-management | 管理者 |
+| シフト表作成処理 | POST | /shift-management/submit | 管理者 |
+| シフト表編集画面 | GET | /shift-management/edit/{month} | 管理者 |
 | 勤怠履歴画面（全従業員） | GET | /work-history/{month} | 管理者 |
 | 勤怠履歴画面（個別の従業員） | GET | /work-history/{month}/{employee-id} |  |
 | 勤怠履歴編集画面 | GET | /work-history/edit/{date}/{employee-id} | 管理者 |
@@ -116,67 +118,61 @@ FK…外部キー
 
 ## ホーム画面
 
-![image](https://github.com/user-attachments/assets/b784dde2-f752-4f1e-98ab-7e6d9ae11322)
+<img width="1470" height="832" alt="ホーム画面" src="https://github.com/user-attachments/assets/b82d7bb5-9011-4913-a0a7-c6e5784c6199" />
 
 ## ログイン画面
-
-![image 1](https://github.com/user-attachments/assets/e3b47f4e-0f19-4285-9090-e960fc5bec32)
+<img width="1470" height="830" alt="ログイン画面" src="https://github.com/user-attachments/assets/e859b162-e5a2-46ab-b6f0-d01a076c4c82" />
 
 ### エラー１：アクセス権限のないページへの推移
 
 「タイムレコーダー」と「管理者メニュー」に移るには管理者権限が必要です。権限のないアカウントでログインしようとするとエラーページに推移するようにしています。
-
-![image 2](https://github.com/user-attachments/assets/87b45514-4c86-4b80-90c1-a8eb7670144a)
+<img width="1470" height="832" alt="権限のないページに遷移" src="https://github.com/user-attachments/assets/bfa51fbd-dd48-4648-8ac9-d39e7dcfcab7" />
 
 ### エラー２：IDまたはパスワード間違い
-
-![image 3](https://github.com/user-attachments/assets/87238f21-d1ff-40b3-a21f-f9d8289f6e90)
+<img width="1470" height="832" alt="ログインエラー" src="https://github.com/user-attachments/assets/85282375-8e06-42de-8333-bacc4ea7e071" />
 
 ## タイムレコーダー画面
+<img width="1470" height="832" alt="タイムレコーダートップ" src="https://github.com/user-attachments/assets/eb7f3353-2392-4aa1-879e-fcdf4cb50173" />
 
-![image 4](https://github.com/user-attachments/assets/ae3cb392-ddce-469c-979d-6c23f436ad68)
-
-### エラー１：出勤予定のない従業員のIDを入力したとき
-
-![image 5](https://github.com/user-attachments/assets/057c4871-1132-49d4-973f-f015a09bedcb)
-
-### エラー２：存在しない従業員IDを入力したとき
-
-![image 6](https://github.com/user-attachments/assets/30c6d612-fcce-4914-8528-056770a6687d)
+### エラー１：出勤予定のない従業員のIDを入力したとき、または存在しない従業員IDを入力したとき
+<img width="1470" height="832" alt="従業員IDミスエラー" src="https://github.com/user-attachments/assets/14dd7629-598e-49d5-a902-1ebfa067b6b1" />
 
 ## 打刻画面
-
-![image 7](https://github.com/user-attachments/assets/9ab8fd57-b002-4101-8531-d3ce356e7f52)
+<img width="1470" height="832" alt="打刻画面" src="https://github.com/user-attachments/assets/4d5f262a-a31e-4a52-b47f-745621492666" />
 
 ### エラー１：出勤していないにもかかわらず退勤を押したとき
-
-![image 8](https://github.com/user-attachments/assets/af7fb7d1-0362-4b6a-a43d-179dcf9ddf6a)
+<img width="1470" height="305" alt="TRエラー①" src="https://github.com/user-attachments/assets/7c1a81a9-54cb-443b-9d9d-98615478983c" />
 
 ### エラー２：出勤を重複して押したとき
-
-![image 9](https://github.com/user-attachments/assets/3a530b0e-5a2d-4416-b71a-0ed2fbe33d2c)
+<img width="1470" height="305" alt="TRエラー②" src="https://github.com/user-attachments/assets/e9990c2a-fbf9-4ae2-a128-896817cb96d4" />
 
 ### エラー３：退勤を重複して押したとき
-
-![image 10](https://github.com/user-attachments/assets/8ddcd1f7-cc43-4244-8356-8c16fcdee203)
+<img width="1470" height="304" alt="TRエラー③" src="https://github.com/user-attachments/assets/60510bee-ec6d-480c-8737-555c7a6cf7c0" />
 
 ## 打刻完了画面
 
 ### 出勤
-
-![image 11](https://github.com/user-attachments/assets/a1ca9648-2863-4116-9e59-379f18b1ce7e)
+<img width="1470" height="308" alt="出勤" src="https://github.com/user-attachments/assets/c07406ff-4bb9-46c4-bb92-eb2b26ac5faa" />
 
 ### 退勤
-
-![image 12](https://github.com/user-attachments/assets/8a9e9d6d-8c00-4810-9abe-273891b9b97c)
+<img width="1470" height="308" alt="退勤" src="https://github.com/user-attachments/assets/57a6c5d3-2840-49d8-bfe3-34c2e3697a0e" />
 
 ## シフト表
-
-![image 13](https://github.com/user-attachments/assets/23a1402c-5622-4fb9-a4a8-3a39321d26f3)
+<img width="1470" height="831" alt="シフト（タイムレコーダー）" src="https://github.com/user-attachments/assets/e66c9049-5e47-4c39-95e3-00440b036a23" />
 
 従業員名にカーソルを合わせると、その従業員のシフトだけ表示されるようにしています。
+![従業員名切り替え](https://github.com/user-attachments/assets/affa1444-55f2-44b2-bd0d-a59d312be180)
 
-![image 14](https://github.com/user-attachments/assets/9c9a109d-f009-4f9a-bd62-753c6756c561)
+### ナビゲーションメニューの切り替え
+どのページから推移してきたかで、ナビゲーションメニューに表示される内容が変更されるようになっております。
+<br><br>
+タイムレコーダーから
+<img width="1470" height="171" alt="シフトnav（TR）" src="https://github.com/user-attachments/assets/d3f6c49f-2c8a-4781-b743-80782dc1d60b" />
+管理者メニューから
+<img width="1470" height="171" alt="シフトnav（管理者）" src="https://github.com/user-attachments/assets/fa486341-c823-4a53-95d2-6be4bed098f7" />
+従業員メニューから
+<img width="1470" height="171" alt="シフトnav（従業員）" src="https://github.com/user-attachments/assets/8b648fef-5413-4abc-9d52-33a7915ecf92" />
+
 
 ## 管理者メニュー
 
