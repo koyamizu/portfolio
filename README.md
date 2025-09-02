@@ -120,9 +120,6 @@ FK…外部キー
 
 <img width="1470" height="832" alt="ホーム画面" src="https://github.com/user-attachments/assets/b82d7bb5-9011-4913-a0a7-c6e5784c6199" />
 
-## 管理者メニュー
-<img width="1470" height="831" alt="管理者メニュー" src="https://github.com/user-attachments/assets/010351c9-08f4-48e2-9231-28ebd8ff5230" />
-
 ## ログイン画面
 <img width="1470" height="830" alt="ログイン画面" src="https://github.com/user-attachments/assets/e859b162-e5a2-46ab-b6f0-d01a076c4c82" />
 
@@ -193,7 +190,8 @@ FK…外部キー
 
 ![image 17](https://github.com/user-attachments/assets/2151b80b-3916-4266-8bba-49577c5eb3e5)
 
-### エラー：すでに勤怠履歴があったり、当日のシフトであっても打刻済みだったりすると、シフトの変更はできません。
+### エラー：打刻データが存在するとき
+すでに勤怠履歴があったり、当日のシフトであっても打刻済みだったりすると、シフトの変更はできません。DBの、打刻時刻を保存するテーブル（time_records）がシフトデータを保存するテーブル（shift_schedules）を外部参照しているからです。
 <img width="1470" height="831" alt="東郷が打刻ずみなのでエラー" src="https://github.com/user-attachments/assets/5c49e20e-3480-4636-9bfb-ef6d3e4bf9af" />
 
 ## 来月のシフト作成
@@ -207,6 +205,7 @@ FK…外部キー
 ![レコーディング_2025-06-17_122600](https://github.com/user-attachments/assets/26c2485f-72a8-47c7-bb42-aea872fa9b45)
 
 ### エラー：シフト作成可能日より前に作成しようとしたとき
+このアプリでは、シフトの提出期限を第三金曜日に設定しております。
 <img width="1469" height="830" alt="シフト作成不可" src="https://github.com/user-attachments/assets/529b2867-f96d-460f-8cca-01f52a4790cd" />
 
 なお、今回のアプリで使用しているjsファイルのほとんどはChatGPTによって生成しておりますが、「今月のシフト変更」と「来月のシフト作成」で使用しているjsファイル（\main\resources\static\js\shift\create-calendar.js）はChatGPTは使用せずに私自身で記述、編集しております。
@@ -285,10 +284,14 @@ FK…外部キー
 
 IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振られます。
 <img width="1470" height="830" alt="従業員新規登録完了" src="https://github.com/user-attachments/assets/754b73dc-929a-4f10-b93e-635dcc66dbeb" />
+<br>
 <img width="1470" height="830" alt="登録の確認" src="https://github.com/user-attachments/assets/dcf18d50-60e1-4aad-b632-2abf297da56b" />
 
-### エラー１：Validationチェック
+### エラー１：入力チェックエラー
 <img width="1470" height="830" alt="新規従業員登録(エラー)" src="https://github.com/user-attachments/assets/bec837c1-73bc-43fa-ad7a-8d6b63c240c6" />
+EmployeeFormクラスです。
+<img width="1135" height="800" alt="EmployeeForm" src="https://github.com/user-attachments/assets/e2ec18a9-92f2-4b4b-97ab-0dd1544b02f3" />
+
 
 ### エラー２：空欄のフィールドがあったとき
 
@@ -297,13 +300,14 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 ![image 37](https://github.com/user-attachments/assets/f0123c1f-7337-4e00-8c28-06938a387ecd)
 
 ## 従業員削除
+先ほど新規登録した「千早」を削除します。
 <img width="1470" height="830" alt="今登録した従業員の削除" src="https://github.com/user-attachments/assets/4ef0ba16-6aa2-4f69-a7f4-25625bd711fb" />
 
 ### エラー：シフト、勤怠履歴、欠勤申請のある従業員を削除
 シフト、勤怠履歴、欠勤申請のある従業員を削除しようとすると、確認のポップアップウィンドウが表示されます。
 <img width="1470" height="830" alt="従業員削除の確認" src="https://github.com/user-attachments/assets/5dec35bf-6bda-43c4-9217-f1ad6a816671" />
 
-シフトデータを保存するテーブル（shift_schedules）、打刻時刻を保存するテーブル（time_records）、シフト希望を保存するテーブル（shift_requests）がそれぞれ従業員テーブル（employees）のemployee_idカラムを参照しているので、そのままでは削除できないようになっております。
+シフトデータを保存するテーブル（shift_schedules）、打刻時刻を保存するテーブル（time_records）、シフト希望を保存するテーブル（shift_requests）がそれぞれ従業員テーブル（employees）のemployee_idカラムを外部参照しているので、そのままでは削除できないようになっております。
 ![IMG_1459](https://github.com/user-attachments/assets/3b108156-9844-4258-8ec2-6f590d5efb13)
 「OK」を押すと、削除のロジックが実行され、従業員に関する情報が全て削除されます。
 <img width="1470" height="830" alt="篠崎の削除" src="https://github.com/user-attachments/assets/ed0291f3-e7a7-49e1-ad22-869ef6f1f11b" />
@@ -359,9 +363,18 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 
 ![image 48](https://github.com/user-attachments/assets/feeb4092-1b13-42cd-b1d9-b1b26c8f528f)
 
+### エラー：重複して申請
+
+<img width="1469" height="832" alt="重複して欠勤申請" src="https://github.com/user-attachments/assets/f848a9ba-39c5-4e9c-9116-50a62d6dd08a" />
+
 ## 欠勤申請削除
 
 ![image 49](https://github.com/user-attachments/assets/9ede0ec7-d05e-4b30-8a19-efc7eb5690df)
+
+### エラー：過去の欠勤申請を削除
+データに一貫性がなくなるので、削除できないようにしています。
+<img width="1470" height="830" alt="過去の欠勤申請を削除(エラー)" src="https://github.com/user-attachments/assets/11157354-3533-4ddd-8e05-54023dfb17e2" />
+
 
 # 実装予定の機能
 
