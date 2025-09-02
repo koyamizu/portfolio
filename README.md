@@ -120,6 +120,9 @@ FK…外部キー
 
 <img width="1470" height="832" alt="ホーム画面" src="https://github.com/user-attachments/assets/b82d7bb5-9011-4913-a0a7-c6e5784c6199" />
 
+## 管理者メニュー
+<img width="1470" height="831" alt="管理者メニュー" src="https://github.com/user-attachments/assets/010351c9-08f4-48e2-9231-28ebd8ff5230" />
+
 ## ログイン画面
 <img width="1470" height="830" alt="ログイン画面" src="https://github.com/user-attachments/assets/e859b162-e5a2-46ab-b6f0-d01a076c4c82" />
 
@@ -158,8 +161,9 @@ FK…外部キー
 <img width="1470" height="308" alt="退勤" src="https://github.com/user-attachments/assets/57a6c5d3-2840-49d8-bfe3-34c2e3697a0e" />
 
 ## シフト表
+カレンダー部分には、FullCalendarというJavaScriptライブラリを使用しております。
 <img width="1470" height="831" alt="シフト（タイムレコーダー）" src="https://github.com/user-attachments/assets/e66c9049-5e47-4c39-95e3-00440b036a23" />
-
+<br>
 従業員名にカーソルを合わせると、その従業員のシフトだけ表示されるようにしています。
 ![従業員名切り替え](https://github.com/user-attachments/assets/affa1444-55f2-44b2-bd0d-a59d312be180)
 
@@ -175,17 +179,12 @@ FK…外部キー
 
 
 ## 管理者メニュー
-
-![image 15](https://github.com/user-attachments/assets/db1d34c4-474d-46a4-bd12-c62c0556bb88)
+<img width="1470" height="831" alt="管理者メニュー" src="https://github.com/user-attachments/assets/9b7c9178-5e8d-43a4-9506-2d3771da0056" />
 
 ## シフト管理
-
-htmlファイルは「シフト表」と同じものを使用していますが、「シフト表」ページでは「今月のシフト変更」と「来月のシフト作成」は表示されないようにしています。
-
-![image 16](https://github.com/user-attachments/assets/68f241c1-0421-413d-8ea0-b6150972466e)
+<img width="1470" height="830" alt="シフト表(管理者)" src="https://github.com/user-attachments/assets/fdc5a858-4383-4c2b-bf09-831b73a2f6d7" />
 
 ## 今月のシフト変更
-
 「古賀」を「小森江」に変更する様子です。途中、「東郷」を追加しようとしていますが、6/17のシフトには既に「東郷」があるので、追加できないようになっています。ドラッグ&ドロップでシフトを追加していく部分に関しては、こちらのページ（[https://mr-hamasan.com/homemade-mogumogu-9/](https://mr-hamasan.com/homemade-mogumogu-9/)）を参考にしております。
 
 ![レコーディング_2025-06-17_112242_(1)](https://github.com/user-attachments/assets/6fad1490-716a-4011-aeb9-8c4a1df44bcd)
@@ -193,6 +192,9 @@ htmlファイルは「シフト表」と同じものを使用していますが�
 「古賀」から「小森江」に変更されています。
 
 ![image 17](https://github.com/user-attachments/assets/2151b80b-3916-4266-8bba-49577c5eb3e5)
+
+### エラー：すでに勤怠履歴があったり、当日のシフトであっても打刻済みだったりすると、シフトの変更はできません。
+<img width="1470" height="831" alt="東郷が打刻ずみなのでエラー" src="https://github.com/user-attachments/assets/5c49e20e-3480-4636-9bfb-ef6d3e4bf9af" />
 
 ## 来月のシフト作成
 
@@ -204,35 +206,48 @@ htmlファイルは「シフト表」と同じものを使用していますが�
 
 ![レコーディング_2025-06-17_122600](https://github.com/user-attachments/assets/26c2485f-72a8-47c7-bb42-aea872fa9b45)
 
+### エラー：シフト作成可能日より前に作成しようとしたとき
+<img width="1469" height="830" alt="シフト作成不可" src="https://github.com/user-attachments/assets/529b2867-f96d-460f-8cca-01f52a4790cd" />
+
 なお、今回のアプリで使用しているjsファイルのほとんどはChatGPTによって生成しておりますが、「今月のシフト変更」と「来月のシフト作成」で使用しているjsファイル（\main\resources\static\js\shift\create-calendar.js）はChatGPTは使用せずに私自身で記述、編集しております。
 
 ## 勤怠履歴（管理者メニュー）
 
-### 5月の全員分の勤怠履歴
+### 8月の全員分の勤怠履歴
+<img width="1470" height="831" alt="勤怠履歴(管理者)" src="https://github.com/user-attachments/assets/786de5e0-5e08-4d9f-b5f2-1f842c4c7c6e" />
 
-![image 19](https://github.com/user-attachments/assets/8250b5b7-a9fc-4912-80c8-99250a64543e)
+### 8月の「吉塚」の勤怠履歴
+<img width="1470" height="831" alt="勤怠履歴従業員選択(管理者)" src="https://github.com/user-attachments/assets/7a7451e7-4208-4cb2-af63-0a0acff9ce86" />
 
-### 5月の「古賀」の勤怠履歴
+### 8月の「小森江」の勤怠履歴
+パスパラメータでリソースを指定しています。
+<img width="1470" height="831" alt="パスパラメータで切り替え" src="https://github.com/user-attachments/assets/7c7a55bc-546d-4c33-a20a-180b253fa1a8" />
 
-![image 20](https://github.com/user-attachments/assets/fc04c620-1719-42ca-b234-8bbd8289064e)
+### 欠勤理由の表示
+欠勤があった時は、欠勤理由が表示されるようになっております。
+<img width="1470" height="831" alt="欠勤があったときは欠勤理由が出てくる" src="https://github.com/user-attachments/assets/204f9bd6-0dc0-4070-8d82-a7806d22c87b" />
+勤怠履歴データを抽出するためのSQLクエリ文です。DBアクセスにはMyBatisを使用しており、xmlファイルにSQLクエリを記述し、マッパーメソッドでサービスから呼び出します。
+<img width="1134" height="818" alt="勤怠履歴SQLクエリ" src="https://github.com/user-attachments/assets/9aa98697-adab-47e9-a2f3-1c8892de89ec" />
 
 ## 勤怠履歴修正画面
-
-![image 21](https://github.com/user-attachments/assets/f565ba70-b026-4eaf-adcc-0a9e2e94eebd)
+<img width="1470" height="831" alt="勤怠修正" src="https://github.com/user-attachments/assets/24013562-07da-4146-b319-e1c4eb5b9af2" />
 
 ### 修正後
 
-勤怠履歴を修正した場合、更新後は「更新日時」が赤色になるようにしています。
+勤怠履歴を修正した場合、更新後は「更新日時」が赤色になるようにしています。給与に関わるためです。
+<img width="1470" height="831" alt="修正したら更新日時が赤になる" src="https://github.com/user-attachments/assets/663d6846-a186-4792-85ad-a173cc976b00" />
 
-![image 22](https://github.com/user-attachments/assets/05e9e001-cf2a-4112-8f6c-0124f9bf5140)
+### エラー：勤務時間が不正の時
+退勤時間より出勤時間を早くすると、エラーになります。
+<img width="1470" height="831" alt="退勤より出勤時間を早くすると" src="https://github.com/user-attachments/assets/735d8618-f375-494e-989d-eb316eb53718" />
+<img width="1470" height="831" alt="エラーになる" src="https://github.com/user-attachments/assets/4dfa0747-d9e8-4b1f-8354-34c756fe0937" />
 
 ## 従業員一覧
 
-![image 23](https://github.com/user-attachments/assets/d940fd94-3912-44c6-93d5-d19d4e0346c0)
+<img width="1470" height="830" alt="従業員一覧" src="https://github.com/user-attachments/assets/0d9ed462-1227-4685-84b3-fa89aaa34fb6" />
 
 ## 従業員詳細
-
-![image 24](https://github.com/user-attachments/assets/ab07a513-cdbc-4ab3-8695-ac17411d539b)
+<img width="1470" height="830" alt="従業員詳細" src="https://github.com/user-attachments/assets/589e28d7-cb28-4f12-b583-fac336cbfc3b" />
 
 電話番号の市外局番については、念のために、現在使用されていない030にしております。
 
@@ -250,16 +265,6 @@ htmlファイルは「シフト表」と同じものを使用していますが�
 
 ![image 27](https://github.com/user-attachments/assets/4de1aa96-d571-4bb0-9fed-7f82c072acd0)
 
-## 従業員削除
-
-![image 28](https://github.com/user-attachments/assets/9318ad55-3206-4e50-8c5a-702412e7254b)
-
-### エラー１：シフトに登録されている従業員を削除
-
-シフトデータを保存するテーブル（shift_schedules）に外部制約がかかっており、従業員テーブル（employees）のemployee_idカラムを参照しているので、削除できないようになっております。
-
-![image 29](https://github.com/user-attachments/assets/6984fa83-6ba5-4423-8eb1-3c87c2aa6ae9)
-
 ## パスワード再設定
 
 ![image 30](https://github.com/user-attachments/assets/7b137bc1-e95a-4048-b2ae-9e181481dd58)
@@ -273,20 +278,17 @@ htmlファイルは「シフト表」と同じものを使用していますが�
 ## 新規従業員登録
 
 「従業員情報編集」と同一のHTMLファイルを用いております。Thymeleafで動的に表示を変更しております。
-
-![image 33](https://github.com/user-attachments/assets/4589030f-0b84-4d3d-b992-fbe15aec474e)
+<img width="1470" height="830" alt="新規従業員登録" src="https://github.com/user-attachments/assets/ac99b22d-7ca1-4360-9e2e-3c01dc4f040b" />
 
 こちらも、「パスワード再設定」と同じHTMLファイルを用いております。
-
-![image 34](https://github.com/user-attachments/assets/38867404-e71a-4bb4-bd26-5d4ba7707e3b)
+<img width="1470" height="830" alt="パスワード登録画面" src="https://github.com/user-attachments/assets/f7b5fa74-8464-4734-bddb-397925b49369" />
 
 IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振られます。
-
-![image 35](https://github.com/user-attachments/assets/cf3b751f-0c17-4c26-8f54-344b44ac6a56)
+<img width="1470" height="830" alt="従業員新規登録完了" src="https://github.com/user-attachments/assets/754b73dc-929a-4f10-b93e-635dcc66dbeb" />
+<img width="1470" height="830" alt="登録の確認" src="https://github.com/user-attachments/assets/dcf18d50-60e1-4aad-b632-2abf297da56b" />
 
 ### エラー１：Validationチェック
-
-![image 36](https://github.com/user-attachments/assets/6ab91e4b-eb24-48a6-b380-9f8a95eae577)
+<img width="1470" height="830" alt="新規従業員登録(エラー)" src="https://github.com/user-attachments/assets/bec837c1-73bc-43fa-ad7a-8d6b63c240c6" />
 
 ### エラー２：空欄のフィールドがあったとき
 
@@ -294,17 +296,32 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 
 ![image 37](https://github.com/user-attachments/assets/f0123c1f-7337-4e00-8c28-06938a387ecd)
 
+## 従業員削除
+<img width="1470" height="830" alt="今登録した従業員の削除" src="https://github.com/user-attachments/assets/4ef0ba16-6aa2-4f69-a7f4-25625bd711fb" />
+
+### エラー：シフト、勤怠履歴、欠勤申請のある従業員を削除
+シフト、勤怠履歴、欠勤申請のある従業員を削除しようとすると、確認のポップアップウィンドウが表示されます。
+<img width="1470" height="830" alt="従業員削除の確認" src="https://github.com/user-attachments/assets/5dec35bf-6bda-43c4-9217-f1ad6a816671" />
+
+シフトデータを保存するテーブル（shift_schedules）、打刻時刻を保存するテーブル（time_records）、シフト希望を保存するテーブル（shift_requests）がそれぞれ従業員テーブル（employees）のemployee_idカラムを参照しているので、そのままでは削除できないようになっております。
+![IMG_1459](https://github.com/user-attachments/assets/3b108156-9844-4258-8ec2-6f590d5efb13)
+「OK」を押すと、削除のロジックが実行され、従業員に関する情報が全て削除されます。
+<img width="1470" height="830" alt="篠崎の削除" src="https://github.com/user-attachments/assets/ed0291f3-e7a7-49e1-ad22-869ef6f1f11b" />
+
+
 ## 欠勤申請一覧（管理者メニュー）
 
 アプリを立ち上げた初期状態では、申請ID5が未承認となっております。
+<img width="1470" height="830" alt="欠勤申請一覧(管理者)" src="https://github.com/user-attachments/assets/de9cc5c2-0629-497e-a2a2-2856af846404" />
 
-![image 38](https://github.com/user-attachments/assets/c95fd69c-885b-4615-81fb-a182743c8109)
+### 承認
+<img width="1470" height="830" alt="承認完了" src="https://github.com/user-attachments/assets/0d843ef6-afe0-406e-8ebb-8a177ef3d14f" />
 
-![image 39](https://github.com/user-attachments/assets/df6bfe3c-b7ef-4ee0-8a6b-6ed2dac471c9)
+### 不承認
+<img width="1470" height="830" alt="承認完了（不承認）" src="https://github.com/user-attachments/assets/685ae0e7-cf91-4d13-801e-9b838d52ae36" />
 
 ## 従業員メニュー
-
-![image 40](https://github.com/user-attachments/assets/d4daa02a-548b-4b20-92ef-fbc20c3bd3ed)
+<img width="1470" height="830" alt="従業員メニュー" src="https://github.com/user-attachments/assets/fe9005e4-370c-4283-b6b8-b468dbefb03d" />
 
 ## 従業員シフト提出
 
@@ -316,13 +333,15 @@ IDは連番で、DBに情報を登録するときにAUTO_INCREMENTで割り振�
 
 ![image 41](https://github.com/user-attachments/assets/ca09243d-89cc-43bc-9143-b60f0db8e1ec)
 
-## 勤怠履歴（従業員メニュー）
+### エラー２：シフト提出期限越え
+<img width="1470" height="830" alt="シフト提出期限超え" src="https://github.com/user-attachments/assets/7da613ff-993d-4500-b98c-abe07fd5397a" />
 
-![image 42](https://github.com/user-attachments/assets/81ef5d07-64de-4af5-ad84-98bcc217c763)
+
+## 勤怠履歴（従業員メニュー）
+<img width="1470" height="830" alt="勤怠履歴(従業員)" src="https://github.com/user-attachments/assets/c51a0cbe-8af0-4ee7-9ba4-3ff737499cf9" />
 
 ## 欠勤申請一覧（従業員メニュー）
-
-![image 43](https://github.com/user-attachments/assets/305cd804-1f16-4c64-9239-108df587e1fa)
+<img width="1470" height="830" alt="欠勤申請一覧(従業員)" src="https://github.com/user-attachments/assets/e7a07ab3-2e3b-4579-9e19-37a9c44041fc" />
 
 ## 欠勤申請フォーム
 
