@@ -67,7 +67,6 @@
 		  ,birth = #{birth}
 		  ,tel = #{tel}
 		  ,address = #{address}
-		  ,updated_at = now()
 		WHERE
 		  id = #{employeeId}
 		;

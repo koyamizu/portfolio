@@ -32,8 +32,8 @@ CREATE TABLE employees (
     address VARCHAR(50) NOT NULL,
     authority ENUM('ADMIN', 'USER') NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    password_updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP　ON UPDATE CURRENT_TIMESTAMP,
+    password_updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 )
     AUTO_INCREMENT=1001
@@ -72,7 +72,7 @@ CREATE TABLE absence_applications (
     detail TEXT NOT NULL,
     is_approve TINYINT(1) DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT fk_absence_applications_shift_id FOREIGN KEY (shift_id)
         REFERENCES shift_schedules(id),
@@ -86,6 +86,8 @@ CREATE TABLE time_records (
     clock_in TIME NOT NULL,
     clock_out TIME DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--    ON UPDATE CURRENT_TIMESTAMPをかけていないのは、勤怠履歴一覧画面で作成日!=更新日の時に、更新検出という目的で
+--	　色を変えるようにしているため。
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (date, employee_id)
     ,CONSTRAINT fk_time_records_employee_date FOREIGN KEY (employee_id,date)

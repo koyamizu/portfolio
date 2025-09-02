@@ -127,7 +127,6 @@
 		SET
 		  clock_in = #{clockIn}
 		  ,clock_out = #{clockOut}
-		  ,updated_at = NOW()
 		WHERE
 		  date=#{date}
 		  AND employee_id=#{employeeId}

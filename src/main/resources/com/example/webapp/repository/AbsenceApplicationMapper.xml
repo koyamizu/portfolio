@@ -134,7 +134,6 @@
 		  absence_applications
 		SET
 		  is_approve=#{decision}
-		  ,updated_at=now()
 		WHERE
 		  shift_id=#{shiftId}
 		;
