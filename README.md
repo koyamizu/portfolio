@@ -350,18 +350,14 @@ EmployeeFormクラスです。
 ## 欠勤申請フォーム
 
 申請する従業員のその月の出勤日しか選べないようにしております。
+<img width="1469" height="831" alt="欠勤申請日付" src="https://github.com/user-attachments/assets/de95d844-19d3-4431-8cd7-812c3bf70bb0" />
+<img width="1469" height="831" alt="欠勤申請理由" src="https://github.com/user-attachments/assets/0109f52e-683f-4037-939c-e5031c5070aa" />
+<img width="1470" height="830" alt="欠勤申請フォーム" src="https://github.com/user-attachments/assets/e0f97938-8688-442b-8d2f-3810774324a1" />
+<img width="1470" height="830" alt="欠勤申請完了" src="https://github.com/user-attachments/assets/f6707d47-5151-433b-aeba-278cbb0a05b2" />
 
-![image 44](https://github.com/user-attachments/assets/bf000c2b-6cc6-498d-bf5f-af99351e8570)
-
-![image 45](https://github.com/user-attachments/assets/adbfe98a-a81e-44ca-9ce8-3c7c2fe0008f)
-
-![image 46](https://github.com/user-attachments/assets/54ff8350-21e7-4d7b-ab17-0dc5c17f81ed)
-
-![image 47](https://github.com/user-attachments/assets/0bc101b9-15f2-4196-8deb-7929f463f720)
 
 また、当日に欠勤申請を出したときには、タイムレコーダーに申請者の名前が表示されるようにしております。
-
-![image 48](https://github.com/user-attachments/assets/feeb4092-1b13-42cd-b1d9-b1b26c8f528f)
+<img width="1470" height="830" alt="当日欠勤申請表示" src="https://github.com/user-attachments/assets/956726ac-fc44-4e8d-8592-9be5b942bfe4" />
 
 ### エラー：重複して申請
 
@@ -372,7 +368,7 @@ EmployeeFormクラスです。
 ![image 49](https://github.com/user-attachments/assets/9ede0ec7-d05e-4b30-8a19-efc7eb5690df)
 
 ### エラー：過去の欠勤申請を削除
-データに一貫性がなくなるので、削除できないようにしています。
+データに一貫性が無くなるので、削除できないようにしています。
 <img width="1470" height="830" alt="過去の欠勤申請を削除(エラー)" src="https://github.com/user-attachments/assets/11157354-3533-4ddd-8e05-54023dfb17e2" />
 
 
