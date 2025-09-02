@@ -87,7 +87,8 @@ public class ShiftManagementController {
 	public String editRequests(Authentication authentication, Model model, RedirectAttributes attributes) {
 		ShiftRequestDeadLine deadLine = new ShiftRequestDeadLine(LocalDate.now());
 		if (deadLine.isOverDeadLine(LocalDate.now())) {
-			attributes.addFlashAttribute("errorMessage", "シフトの編集可能な日付を超えています。変更があれば、責任者に直接伝えてください。");
+			attributes.addFlashAttribute("errorMessage"
+					, "シフトの編集可能な日付を超えています。変更があれば、責任者に直接伝えてください。");
 			return "redirect:/shift";
 		}
 		Integer employeeId = Integer.parseInt(authentication.getName());
@@ -98,7 +99,6 @@ public class ShiftManagementController {
 		return "shift/request";
 	}
 
-	//↓ここから
 	@PostMapping("shift-request/submit")
 	public String submitRequests(@RequestParam String selectedDatesJson,
 			@RequestParam State state,
@@ -175,7 +175,6 @@ public class ShiftManagementController {
 			throws JsonProcessingException, InvalidEditException {
 
 		if (state.equals(State.EDIT)) {
-			//			List<FullCalendarEntity> oldVersion=Caster.castToFullCalendarEntityList( session.getAttribute("oldVersion"));
 			shiftManagementService.updateShiftSchedules(selectedDatesJson, month);
 			attributes.addFlashAttribute("message", "シフトを更新しました");
 			return "redirect:/shift";

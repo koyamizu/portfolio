@@ -86,19 +86,18 @@ public class EmployeesManagementController {
 	}
 
 	@PostMapping("delete/{employee-id}")
-	public String deleteEmployee(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes
+	public String delete(@PathVariable("employee-id") Integer employeeId, RedirectAttributes attributes
 			,HttpSession session)
-			throws InvalidEmployeeIdException, ForeignKeyConstraintViolationException {
+					throws InvalidEmployeeIdException, ForeignKeyConstraintViolationException {
 		session.setAttribute("employeeIdToDelete", employeeId);
 		service.deleteEmployee(employeeId);
-		attributes.addFlashAttribute("message",
-				"従業員ID:" + employeeId+" の従業員情報が削除されました");
+		attributes.addFlashAttribute("message","従業員ID:" + employeeId+" の従業員情報が削除されました");
 		session.removeAttribute("employeeIdToDelete");
 		return "redirect:/employees";
 	}
 	
 	@PostMapping("all-erase")
-	@ResponseStatus(HttpStatus.PERMANENT_REDIRECT)
+	@ResponseStatus(HttpStatus.TEMPORARY_REDIRECT)
 	public String eraseAllEmployeeInformation(@RequestParam("employee-id") Integer employeeId) {
 		service.eraseAbsenceApplicationsWorkHistoriesShiftRequestsAndShiftSchedules(employeeId);
 		return "redirect:/employees/delete/"+employeeId;
